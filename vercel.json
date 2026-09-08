@@ -41,6 +41,10 @@
       "destination": "/profile.html"
     },
     {
+      "source": "/profile/:username",
+      "destination": "/profile.html"
+    },
+    {
       "source": "/shop",
       "destination": "/shop.html"
     },
@@ -65,56 +69,49 @@
       "destination": "/support.html"
     },
     {
-  "source": "/admin",
-  "destination": "/admin.html"
-   },
-   {
-  "source": "/admin/staff",
-  "destination": "/admin-staff.html" 
-  },
-  {
-  "source": "/admin/support",
-  "destination": "/admin-support.html" 
-  },
-  {
-  "source": "/admin/audit",
-  "destination": "/admin-audit.html"
-  },
-  {
-  "source": "/admin/economy",
-  "destination": "/admin-economy.html"
-  },
-  {
-  "source": "/admin/users",
-  "destination": "/admin-users.html"
- },
-  {
-  "source": "/admin/games",
-  "destination": "/admin-games.html"
-  },
-  {
-  "source": "/admin/shop",
-  "destination": "/admin-shop.html"
-  },
-  {
-  "source": "/admin/leaderboard",
-  "destination": "/admin-leaderboard.html"
-  },
-  {
-  "source": "/admin/daily",
-  "destination": "/admin-daily.html"
-  },
-  {
-  "source": "/inventory",
-  "destination": "/inventory.html"
-  },
-  {
-  "rewrites": [
+      "source": "/inventory",
+      "destination": "/inventory.html"
+    },
+
     {
-      "source": "/profile/:username",
-      "destination": "/profile.html"
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/admin/staff",
+      "destination": "/admin-staff.html"
+    },
+    {
+      "source": "/admin/support",
+      "destination": "/admin-support.html"
+    },
+    {
+      "source": "/admin/audit",
+      "destination": "/admin-audit.html"
+    },
+    {
+      "source": "/admin/economy",
+      "destination": "/admin-economy.html"
+    },
+    {
+      "source": "/admin/users",
+      "destination": "/admin-users.html"
+    },
+    {
+      "source": "/admin/games",
+      "destination": "/admin-games.html"
+    },
+    {
+      "source": "/admin/shop",
+      "destination": "/admin-shop.html"
+    },
+    {
+      "source": "/admin/leaderboard",
+      "destination": "/admin-leaderboard.html"
+    },
+    {
+      "source": "/admin/daily",
+      "destination": "/admin-daily.html"
     }
-  ]
-}
   ]
 }
