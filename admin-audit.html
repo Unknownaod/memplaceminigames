@@ -1,0 +1,2629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Audit Logs — Middle Eastern Mixing</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191511;
+
+      --surface: #191511;
+      --surface-2: #211c16;
+      --surface-3: #292219;
+
+      --border: rgba(255,255,255,0.08);
+
+      --text: #f2eee7;
+      --muted: #9d9589;
+
+      --accent: #d6a85c;
+      --accent-soft: rgba(214,168,92,0.12);
+
+      --green: #7fca9a;
+      --red: #d77d7d;
+      --blue: #7da9d7;
+      --purple: #aa8bd1;
+
+      --radius: 14px;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      background: var(--black);
+    }
+
+
+    body {
+      margin: 0;
+
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(214,168,92,0.055),
+          transparent 35%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      height: 68px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        rgba(11,10,8,0.88);
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+
+    .header-inner {
+      width: min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+      height: 100%;
+
+      margin: 0 auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .brand {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      min-width: 0;
+
+      text-decoration: none;
+
+      color: var(--text);
+    }
+
+
+    .brand img {
+      width: 36px;
+      height: 36px;
+
+      border-radius: 9px;
+
+      object-fit: cover;
+    }
+
+
+    .brand-text {
+      min-width: 0;
+    }
+
+
+    .brand-title {
+      font-size: 14px;
+
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+
+    .brand-subtitle {
+      margin-top: 2px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      white-space: nowrap;
+    }
+
+
+    .back-button {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      height: 38px;
+
+      padding:
+        0 14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        var(--surface);
+
+      color: var(--text);
+
+      text-decoration: none;
+
+      font-size: 13px;
+
+      font-weight: 600;
+
+      transition:
+        border-color .15s ease,
+        background .15s ease;
+    }
+
+
+    .back-button:hover {
+      background:
+        var(--surface-2);
+
+      border-color:
+        rgba(214,168,92,0.35);
+    }
+
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    .page {
+      width: min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+      margin: 0 auto;
+
+      padding:
+        38px 0 70px;
+    }
+
+
+    .page-header {
+      display: flex;
+
+      align-items: flex-start;
+
+      justify-content: space-between;
+
+      gap: 24px;
+
+      margin-bottom: 28px;
+    }
+
+
+    .page-title {
+      margin: 0;
+
+      font-size: 30px;
+
+      line-height: 1.1;
+
+      letter-spacing: -0.7px;
+    }
+
+
+    .page-description {
+      margin:
+        9px 0 0;
+
+      max-width: 680px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.6;
+    }
+
+
+    .access-badge {
+      flex-shrink: 0;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      padding:
+        8px 11px;
+
+      border:
+        1px solid
+        rgba(214,168,92,0.2);
+
+      border-radius: 999px;
+
+      background:
+        var(--accent-soft);
+
+      color:
+        var(--accent);
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: .5px;
+    }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    .stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 14px;
+
+      margin-bottom: 20px;
+    }
+
+
+    .stat {
+      padding: 18px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        var(--surface);
+    }
+
+
+    .stat-label {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      font-weight: 600;
+    }
+
+
+    .stat-value {
+      margin-top: 7px;
+
+      font-size: 25px;
+
+      font-weight: 750;
+
+      letter-spacing: -0.5px;
+    }
+
+
+    /* ==========================================
+       FILTERS
+    ========================================== */
+
+    .filters {
+      display: grid;
+
+      grid-template-columns:
+        minmax(220px, 1fr)
+        180px
+        180px
+        auto;
+
+      gap: 10px;
+
+      padding: 14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        var(--surface);
+
+      margin-bottom: 18px;
+    }
+
+
+    .field {
+      min-width: 0;
+    }
+
+
+    .field input,
+    .field select {
+      width: 100%;
+
+      height: 42px;
+
+      padding:
+        0 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      outline: none;
+
+      background:
+        var(--black-2);
+
+      color:
+        var(--text);
+
+      font-size: 13px;
+
+      transition:
+        border-color .15s ease;
+    }
+
+
+    .field input::placeholder {
+      color:
+        #6f685e;
+    }
+
+
+    .field input:focus,
+    .field select:focus {
+      border-color:
+        rgba(214,168,92,0.5);
+    }
+
+
+    .clear-button {
+      height: 42px;
+
+      padding:
+        0 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--text);
+
+      font-size: 13px;
+
+      font-weight: 650;
+    }
+
+
+    .clear-button:hover {
+      background:
+        var(--surface-3);
+    }
+
+
+    /* ==========================================
+       LOG CARD
+    ========================================== */
+
+    .logs-card {
+      overflow: hidden;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        var(--surface);
+    }
+
+
+    .logs-header {
+      min-height: 58px;
+
+      padding:
+        0 18px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .logs-title {
+      font-size: 14px;
+
+      font-weight: 700;
+    }
+
+
+    .logs-count {
+      color:
+        var(--muted);
+
+      font-size: 12px;
+    }
+
+
+    /* ==========================================
+       LOG ROW
+    ========================================== */
+
+    .logs-list {
+      display: flex;
+
+      flex-direction: column;
+    }
+
+
+    .log {
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .log:last-child {
+      border-bottom: 0;
+    }
+
+
+    .log-main {
+      padding:
+        17px 18px;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(210px, 1.1fr)
+        minmax(170px, .8fr)
+        minmax(150px, .7fr)
+        180px
+        auto;
+
+      align-items: center;
+
+      gap: 18px;
+    }
+
+
+    .log-main.clickable {
+      cursor: pointer;
+    }
+
+
+    .log-main.clickable:hover {
+      background:
+        rgba(255,255,255,0.018);
+    }
+
+
+    .staff {
+      min-width: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 11px;
+    }
+
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 50%;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--accent);
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+    }
+
+
+    .staff-info {
+      min-width: 0;
+    }
+
+
+    .staff-name {
+      overflow: hidden;
+
+      color:
+        var(--text);
+
+      font-size: 13px;
+
+      font-weight: 650;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+    }
+
+
+    .staff-id {
+      margin-top: 3px;
+
+      overflow: hidden;
+
+      color:
+        var(--muted);
+
+      font-size: 11px;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+    }
+
+
+    .role {
+      display: inline-flex;
+
+      align-items: center;
+
+      width: fit-content;
+
+      padding:
+        5px 8px;
+
+      border-radius: 7px;
+
+      font-size: 10px;
+
+      font-weight: 750;
+
+      text-transform: uppercase;
+
+      letter-spacing: .35px;
+
+      background:
+        var(--surface-2);
+
+      border:
+        1px solid var(--border);
+    }
+
+
+    .role.owner {
+      color:
+        var(--accent);
+
+      border-color:
+        rgba(214,168,92,0.22);
+
+      background:
+        var(--accent-soft);
+    }
+
+
+    .role.manager {
+      color:
+        var(--purple);
+    }
+
+
+    .role.admin {
+      color:
+        var(--blue);
+    }
+
+
+    .role.moderator {
+      color:
+        var(--green);
+    }
+
+
+    .action {
+      display: flex;
+
+      align-items: center;
+
+      min-width: 0;
+    }
+
+
+    .action-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      width: fit-content;
+
+      max-width: 100%;
+
+      padding:
+        6px 9px;
+
+      border-radius: 7px;
+
+      background:
+        var(--surface-2);
+
+      border:
+        1px solid var(--border);
+
+      color:
+        var(--text);
+
+      font-size: 11px;
+
+      font-weight: 650;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+    }
+
+
+    .action-badge.staff-action {
+      color:
+        var(--accent);
+    }
+
+
+    .action-badge.support-action {
+      color:
+        var(--blue);
+    }
+
+
+    .action-badge.danger {
+      color:
+        var(--red);
+
+      border-color:
+        rgba(215,125,125,0.16);
+    }
+
+
+    .target {
+      min-width: 0;
+    }
+
+
+    .target-type {
+      color:
+        var(--text);
+
+      font-size: 12px;
+
+      font-weight: 650;
+    }
+
+
+    .target-id {
+      margin-top: 3px;
+
+      overflow: hidden;
+
+      color:
+        var(--muted);
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        monospace;
+
+      font-size: 10px;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+    }
+
+
+    .date {
+      color:
+        var(--muted);
+
+      font-size: 11px;
+
+      line-height: 1.45;
+    }
+
+
+    .expand {
+      width: 28px;
+      height: 28px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border: 0;
+
+      border-radius: 7px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--muted);
+
+      transition:
+        transform .15s ease,
+        background .15s ease;
+    }
+
+
+    .expand:hover {
+      background:
+        var(--surface-3);
+
+      color:
+        var(--text);
+    }
+
+
+    .log.open .expand {
+      transform:
+        rotate(180deg);
+    }
+
+
+    /* ==========================================
+       DETAILS
+    ========================================== */
+
+    .log-details {
+      display: none;
+
+      padding:
+        0 18px 18px 63px;
+    }
+
+
+    .log.open .log-details {
+      display: block;
+    }
+
+
+    .details-box {
+      padding:
+        14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        var(--black-2);
+    }
+
+
+    .details-title {
+      margin-bottom: 9px;
+
+      color:
+        var(--muted);
+
+      font-size: 10px;
+
+      font-weight: 750;
+
+      text-transform: uppercase;
+
+      letter-spacing: .6px;
+    }
+
+
+    .details-pre {
+      margin: 0;
+
+      overflow-x: auto;
+
+      color:
+        #cfc8bc;
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+
+      font-size: 11px;
+
+      line-height: 1.65;
+
+      white-space: pre-wrap;
+
+      word-break: break-word;
+    }
+
+
+    /* ==========================================
+       EMPTY / LOADING
+    ========================================== */
+
+    .state {
+      padding:
+        55px 20px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    .state-title {
+      margin-bottom: 6px;
+
+      color:
+        var(--text);
+
+      font-size: 14px;
+
+      font-weight: 700;
+    }
+
+
+    /* ==========================================
+       LOAD MORE
+    ========================================== */
+
+    .logs-footer {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 16px;
+
+      border-top:
+        1px solid var(--border);
+    }
+
+
+    .load-more {
+      height: 38px;
+
+      padding:
+        0 18px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 9px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--text);
+
+      font-size: 12px;
+
+      font-weight: 650;
+    }
+
+
+    .load-more:hover {
+      background:
+        var(--surface-3);
+    }
+
+
+    .load-more:disabled {
+      opacity: .45;
+
+      cursor:
+        default;
+    }
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    .toast {
+      position: fixed;
+
+      right: 20px;
+      bottom: 20px;
+
+      z-index: 100;
+
+      max-width: 360px;
+
+      padding:
+        12px 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        var(--surface-3);
+
+      color:
+        var(--text);
+
+      box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.35);
+
+      font-size: 12px;
+
+      opacity: 0;
+
+      transform:
+        translateY(10px);
+
+      pointer-events: none;
+
+      transition:
+        opacity .2s ease,
+        transform .2s ease;
+    }
+
+
+    .toast.show {
+      opacity: 1;
+
+      transform:
+        translateY(0);
+    }
+
+
+    .toast.error {
+      border-color:
+        rgba(215,125,125,0.3);
+
+      color:
+        var(--red);
+    }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 950px) {
+
+      .stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+
+      .filters {
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+
+      .log-main {
+        grid-template-columns:
+          minmax(190px, 1fr)
+          minmax(150px, 1fr)
+          auto;
+      }
+
+
+      .target,
+      .date {
+        display: none;
+      }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .header-inner,
+      .page {
+        width:
+          calc(100% - 22px);
+      }
+
+
+      .page {
+        padding-top: 25px;
+      }
+
+
+      .page-header {
+        flex-direction: column;
+      }
+
+
+      .access-badge {
+        align-self: flex-start;
+      }
+
+
+      .stats {
+        grid-template-columns:
+          1fr 1fr;
+
+        gap: 9px;
+      }
+
+
+      .stat {
+        padding: 14px;
+      }
+
+
+      .stat-value {
+        font-size: 21px;
+      }
+
+
+      .filters {
+        grid-template-columns:
+          1fr;
+
+        padding: 10px;
+      }
+
+
+      .log-main {
+        grid-template-columns:
+          minmax(0, 1fr)
+          auto;
+
+        gap: 12px;
+      }
+
+
+      .action {
+        display: none;
+      }
+
+
+      .log-details {
+        padding:
+          0 12px 14px 12px;
+      }
+
+
+      .logs-header {
+        padding:
+          0 13px;
+      }
+
+
+      .brand-subtitle {
+        display: none;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a
+        href="/admin"
+        class="brand"
+      >
+
+        <img
+          src="/logo.gif"
+          alt="Middle Eastern Mixing"
+        >
+
+        <div class="brand-text">
+
+          <div class="brand-title">
+            Middle Eastern Mixing
+          </div>
+
+          <div class="brand-subtitle">
+            Administration
+          </div>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="/admin"
+        class="back-button"
+      >
+        ← Admin Dashboard
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <main class="page">
+
+    <div class="page-header">
+
+      <div>
+
+        <h1 class="page-title">
+          Audit Logs
+        </h1>
+
+        <p class="page-description">
+          Review administrative actions performed across
+          staff management and support operations.
+        </p>
+
+      </div>
+
+
+      <div class="access-badge">
+        Manager+
+      </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         STATS
+    =========================================== -->
+
+    <section class="stats">
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Total Loaded
+        </div>
+
+        <div
+          class="stat-value"
+          id="totalCount"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Staff Actions
+        </div>
+
+        <div
+          class="stat-value"
+          id="staffCount"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Support Actions
+        </div>
+
+        <div
+          class="stat-value"
+          id="supportCount"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Destructive Actions
+        </div>
+
+        <div
+          class="stat-value"
+          id="dangerCount"
+        >
+          0
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         FILTERS
+    =========================================== -->
+
+    <section class="filters">
+
+      <div class="field">
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search staff, action, or target..."
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <select id="actionFilter">
+
+          <option value="">
+            All actions
+          </option>
+
+          <option value="staff_added">
+            Staff added
+          </option>
+
+          <option value="staff_role_changed">
+            Staff role changed
+          </option>
+
+          <option value="staff_removed">
+            Staff removed
+          </option>
+
+          <option value="support_reply">
+            Support reply
+          </option>
+
+          <option value="support_status_changed">
+            Support status changed
+          </option>
+
+          <option value="support_assigned">
+            Support assigned
+          </option>
+
+          <option value="support_internal_note">
+            Internal note
+          </option>
+
+          <option value="support_deleted">
+            Support deleted
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <select id="targetFilter">
+
+          <option value="">
+            All targets
+          </option>
+
+          <option value="staff">
+            Staff
+          </option>
+
+          <option value="support_ticket">
+            Support ticket
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        class="clear-button"
+        id="clearButton"
+        type="button"
+      >
+        Clear
+      </button>
+
+    </section>
+
+
+    <!-- ==========================================
+         LOGS
+    =========================================== -->
+
+    <section class="logs-card">
+
+      <div class="logs-header">
+
+        <div class="logs-title">
+          Activity
+        </div>
+
+        <div
+          class="logs-count"
+          id="logsCount"
+        >
+          Loading...
+        </div>
+
+      </div>
+
+
+      <div
+        class="logs-list"
+        id="logsList"
+      >
+
+        <div class="state">
+
+          <div class="state-title">
+            Loading audit logs
+          </div>
+
+          Please wait...
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="logs-footer"
+        id="logsFooter"
+        style="display:none;"
+      >
+
+        <button
+          class="load-more"
+          id="loadMoreButton"
+          type="button"
+        >
+          Load More
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <div
+    class="toast"
+    id="toast"
+  ></div>
+
+
+  <script>
+
+    const API =
+      "https://api.memplace.xyz";
+
+
+    let logs = [];
+
+    let lastCreatedAt = null;
+
+    let loading = false;
+
+    let hasMore = false;
+
+
+    const logsList =
+      document.getElementById(
+        "logsList"
+      );
+
+
+    const logsCount =
+      document.getElementById(
+        "logsCount"
+      );
+
+
+    const logsFooter =
+      document.getElementById(
+        "logsFooter"
+      );
+
+
+    const loadMoreButton =
+      document.getElementById(
+        "loadMoreButton"
+      );
+
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+
+    const actionFilter =
+      document.getElementById(
+        "actionFilter"
+      );
+
+
+    const targetFilter =
+      document.getElementById(
+        "targetFilter"
+      );
+
+
+    const clearButton =
+      document.getElementById(
+        "clearButton"
+      );
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    let toastTimer = null;
+
+
+    function showToast(
+      message,
+      error = false
+    ) {
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+
+      toast.textContent =
+        message;
+
+
+      toast.classList.toggle(
+        "error",
+        error
+      );
+
+
+      toast.classList.add(
+        "show"
+      );
+
+
+      clearTimeout(
+        toastTimer
+      );
+
+
+      toastTimer =
+        setTimeout(() => {
+
+          toast.classList.remove(
+            "show"
+          );
+
+        }, 3500);
+
+    }
+
+
+    /* ==========================================
+       ESCAPE HTML
+    ========================================== */
+
+    function escapeHtml(
+      value
+    ) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+
+      return String(value)
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
+
+    }
+
+
+    /* ==========================================
+       FORMAT DATE
+    ========================================== */
+
+    function formatDate(
+      value
+    ) {
+
+      if (!value) {
+        return "Unknown date";
+      }
+
+
+      const date =
+        new Date(value);
+
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "Unknown date";
+      }
+
+
+      return date.toLocaleString(
+        undefined,
+        {
+          dateStyle:
+            "medium",
+          timeStyle:
+            "short"
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       FORMAT ACTION
+    ========================================== */
+
+    function formatAction(
+      action
+    ) {
+
+      const labels = {
+
+        staff_added:
+          "Staff added",
+
+        staff_role_changed:
+          "Role changed",
+
+        staff_removed:
+          "Staff removed",
+
+        support_reply:
+          "Support reply",
+
+        support_status_changed:
+          "Status changed",
+
+        support_assigned:
+          "Ticket assigned",
+
+        support_internal_note:
+          "Internal note",
+
+        support_deleted:
+          "Ticket deleted"
+
+      };
+
+
+      return (
+        labels[action] ||
+        String(action || "Unknown action")
+      );
+
+    }
+
+
+    /* ==========================================
+       ACTION CLASS
+    ========================================== */
+
+    function actionClass(
+      action
+    ) {
+
+      if (
+        action ===
+        "staff_added" ||
+        action ===
+        "staff_role_changed"
+      ) {
+
+        return "staff-action";
+
+      }
+
+
+      if (
+        action ===
+        "staff_removed" ||
+        action ===
+        "support_deleted"
+      ) {
+
+        return "danger";
+
+      }
+
+
+      return "support-action";
+
+    }
+
+
+    /* ==========================================
+       ROLE CLASS
+    ========================================== */
+
+    function roleClass(
+      role
+    ) {
+
+      const allowed = [
+        "owner",
+        "manager",
+        "admin",
+        "moderator"
+      ];
+
+
+      return allowed.includes(
+        role
+      )
+        ? role
+        : "";
+
+    }
+
+
+    /* ==========================================
+       INITIAL
+    ========================================== */
+
+    function staffInitial(
+      username
+    ) {
+
+      const value =
+        String(
+          username ||
+          "?"
+        ).trim();
+
+
+      if (!value) {
+        return "?";
+      }
+
+
+      return value
+        .charAt(0)
+        .toUpperCase();
+
+    }
+
+
+    /* ==========================================
+       GET QUERY
+    ========================================== */
+
+    function getQuery(
+      loadNext = false
+    ) {
+
+      const params =
+        new URLSearchParams();
+
+
+      const search =
+        searchInput.value.trim();
+
+
+      const action =
+        actionFilter.value;
+
+
+      const target =
+        targetFilter.value;
+
+
+      if (search) {
+        params.set(
+          "search",
+          search
+        );
+      }
+
+
+      if (action) {
+        params.set(
+          "action",
+          action
+        );
+      }
+
+
+      if (target) {
+        params.set(
+          "targetType",
+          target
+        );
+      }
+
+
+      params.set(
+        "limit",
+        "100"
+      );
+
+
+      if (
+        loadNext &&
+        lastCreatedAt
+      ) {
+
+        params.set(
+          "before",
+          lastCreatedAt
+        );
+
+      }
+
+
+      return params.toString();
+
+    }
+
+
+    /* ==========================================
+       LOAD LOGS
+    ========================================== */
+
+    async function loadLogs(
+      loadNext = false
+    ) {
+
+      if (loading) {
+        return;
+      }
+
+
+      loading = true;
+
+
+      if (!loadNext) {
+
+        logs = [];
+
+        lastCreatedAt = null;
+
+        hasMore = false;
+
+        logsList.innerHTML = `
+
+          <div class="state">
+
+            <div class="state-title">
+              Loading audit logs
+            </div>
+
+            Please wait...
+
+          </div>
+
+        `;
+
+      }
+
+
+      try {
+
+        const query =
+          getQuery(
+            loadNext
+          );
+
+
+        const response =
+          await fetch(
+            `${API}/api/admin/audit?${query}`,
+            {
+              method:
+                "GET",
+
+              credentials:
+                "include",
+
+              cache:
+                "no-store"
+            }
+          );
+
+
+        const data =
+          await response.json()
+            .catch(
+              () => ({})
+            );
+
+
+        if (
+          response.status ===
+          403
+        ) {
+
+          window.location.href =
+            "/admin";
+
+          return;
+
+        }
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.error ||
+            "Unable to load audit logs."
+          );
+
+        }
+
+
+        const incoming =
+          Array.isArray(
+            data.logs
+          )
+            ? data.logs
+            : [];
+
+
+        if (loadNext) {
+
+          logs =
+            logs.concat(
+              incoming
+            );
+
+        } else {
+
+          logs =
+            incoming;
+
+        }
+
+
+        /*
+         * If we received a full page,
+         * assume another page may exist.
+         */
+
+        hasMore =
+          incoming.length >=
+          100;
+
+
+        if (incoming.length) {
+
+          const last =
+            incoming[
+              incoming.length - 1
+            ];
+
+
+          lastCreatedAt =
+            last.createdAt ||
+            null;
+
+        }
+
+
+        renderLogs();
+
+      } catch (error) {
+
+        console.error(
+          "AUDIT LOAD ERROR:",
+          error
+        );
+
+
+        if (!loadNext) {
+
+          logsList.innerHTML = `
+
+            <div class="state">
+
+              <div class="state-title">
+                Unable to load audit logs
+              </div>
+
+              ${escapeHtml(
+                error.message
+              )}
+
+            </div>
+
+          `;
+
+        }
+
+
+        showToast(
+          error.message ||
+          "Unable to load audit logs.",
+          true
+        );
+
+      } finally {
+
+        loading = false;
+
+        updateLoadMore();
+
+      }
+
+    }
+
+
+    /* ==========================================
+       RENDER
+    ========================================== */
+
+    function renderLogs() {
+
+      updateStats();
+
+
+      logsCount.textContent =
+        `${logs.length} loaded`;
+
+
+      if (!logs.length) {
+
+        logsList.innerHTML = `
+
+          <div class="state">
+
+            <div class="state-title">
+              No audit logs found
+            </div>
+
+            Try changing your filters.
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      logsList.innerHTML =
+        logs.map(
+          (log, index) =>
+            renderLog(
+              log,
+              index
+            )
+        ).join("");
+
+    }
+
+
+    /* ==========================================
+       RENDER LOG
+    ========================================== */
+
+    function renderLog(
+      log,
+      index
+    ) {
+
+      const username =
+        log.staffUsername ||
+        "Unknown staff";
+
+
+      const role =
+        log.staffRole ||
+        "unknown";
+
+
+      const targetType =
+        log.targetType ||
+        "System";
+
+
+      const targetId =
+        log.targetId ||
+        "—";
+
+
+      const action =
+        log.action ||
+        "unknown";
+
+
+      let details =
+        log.details;
+
+
+      if (
+        details === null ||
+        details === undefined
+      ) {
+
+        details = {};
+
+      }
+
+
+      let detailsText;
+
+
+      try {
+
+        detailsText =
+          JSON.stringify(
+            details,
+            null,
+            2
+          );
+
+      } catch {
+
+        detailsText =
+          String(details);
+
+      }
+
+
+      return `
+
+        <article
+          class="log"
+          data-index="${index}"
+        >
+
+          <div
+            class="log-main clickable"
+            onclick="toggleLog(${index})"
+          >
+
+            <div class="staff">
+
+              <div class="avatar">
+                ${escapeHtml(
+                  staffInitial(username)
+                )}
+              </div>
+
+              <div class="staff-info">
+
+                <div class="staff-name">
+                  ${escapeHtml(username)}
+                </div>
+
+                <div class="staff-id">
+                  ${escapeHtml(
+                    log.staffId ||
+                    "Unknown ID"
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <span
+                class="role ${roleClass(role)}"
+              >
+                ${escapeHtml(role)}
+              </span>
+
+            </div>
+
+
+            <div class="action">
+
+              <span
+                class="action-badge ${actionClass(action)}"
+              >
+                ${escapeHtml(
+                  formatAction(action)
+                )}
+              </span>
+
+            </div>
+
+
+            <div class="target">
+
+              <div class="target-type">
+                ${escapeHtml(
+                  targetType
+                )}
+              </div>
+
+              <div class="target-id">
+                ${escapeHtml(
+                  targetId
+                )}
+              </div>
+
+            </div>
+
+
+            <div class="date">
+              ${escapeHtml(
+                formatDate(
+                  log.createdAt
+                )
+              )}
+            </div>
+
+
+            <button
+              class="expand"
+              type="button"
+              aria-label="Show details"
+              onclick="
+                event.stopPropagation();
+                toggleLog(${index});
+              "
+            >
+              ↓
+            </button>
+
+          </div>
+
+
+          <div class="log-details">
+
+            <div class="details-box">
+
+              <div class="details-title">
+                Action details
+              </div>
+
+              <pre class="details-pre">${escapeHtml(
+                detailsText
+              )}</pre>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* ==========================================
+       TOGGLE LOG
+    ========================================== */
+
+    function toggleLog(
+      index
+    ) {
+
+      const element =
+        document.querySelector(
+          `.log[data-index="${index}"]`
+        );
+
+
+      if (!element) {
+        return;
+      }
+
+
+      element.classList.toggle(
+        "open"
+      );
+
+    }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    function updateStats() {
+
+      const staffActions =
+        logs.filter(log =>
+          String(
+            log.action || ""
+          ).startsWith(
+            "staff_"
+          )
+        ).length;
+
+
+      const supportActions =
+        logs.filter(log =>
+          String(
+            log.action || ""
+          ).startsWith(
+            "support_"
+          )
+        ).length;
+
+
+      const dangerActions =
+        logs.filter(log =>
+          log.action ===
+            "staff_removed" ||
+          log.action ===
+            "support_deleted"
+        ).length;
+
+
+      document.getElementById(
+        "totalCount"
+      ).textContent =
+        logs.length;
+
+
+      document.getElementById(
+        "staffCount"
+      ).textContent =
+        staffActions;
+
+
+      document.getElementById(
+        "supportCount"
+      ).textContent =
+        supportActions;
+
+
+      document.getElementById(
+        "dangerCount"
+      ).textContent =
+        dangerActions;
+
+    }
+
+
+    /* ==========================================
+       LOAD MORE
+    ========================================== */
+
+    function updateLoadMore() {
+
+      logsFooter.style.display =
+        logs.length && hasMore
+          ? "flex"
+          : "none";
+
+
+      loadMoreButton.disabled =
+        loading;
+
+    }
+
+
+    loadMoreButton.addEventListener(
+      "click",
+      () => {
+
+        loadLogs(true);
+
+      }
+    );
+
+
+    /* ==========================================
+       FILTER EVENTS
+    ========================================== */
+
+    let searchTimer =
+      null;
+
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        clearTimeout(
+          searchTimer
+        );
+
+
+        searchTimer =
+          setTimeout(
+            () => {
+              loadLogs(false);
+            },
+            300
+          );
+
+      }
+    );
+
+
+    actionFilter.addEventListener(
+      "change",
+      () => {
+
+        loadLogs(false);
+
+      }
+    );
+
+
+    targetFilter.addEventListener(
+      "change",
+      () => {
+
+        loadLogs(false);
+
+      }
+    );
+
+
+    clearButton.addEventListener(
+      "click",
+      () => {
+
+        searchInput.value =
+          "";
+
+        actionFilter.value =
+          "";
+
+        targetFilter.value =
+          "";
+
+        loadLogs(false);
+
+      }
+    );
+
+
+    /* ==========================================
+       AUTH CHECK
+    ========================================== */
+
+    async function checkAccess() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API}/api/admin/me`,
+            {
+              method:
+                "GET",
+
+              credentials:
+                "include",
+
+              cache:
+                "no-store"
+            }
+          );
+
+
+        const data =
+          await response.json()
+            .catch(
+              () => ({})
+            );
+
+
+        if (
+          !response.ok ||
+          !data.success ||
+          !data.staff
+        ) {
+
+          window.location.href =
+            "/";
+
+          return false;
+
+        }
+
+
+        const role =
+          String(
+            data.role ||
+            ""
+          ).toLowerCase();
+
+
+        if (
+          role !== "manager" &&
+          role !== "owner"
+        ) {
+
+          window.location.href =
+            "/admin";
+
+          return false;
+
+        }
+
+
+        return true;
+
+      } catch (error) {
+
+        console.error(
+          "ADMIN ACCESS ERROR:",
+          error
+        );
+
+
+        window.location.href =
+          "/";
+
+        return false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       START
+    ========================================== */
+
+    (async function init() {
+
+      const allowed =
+        await checkAccess();
+
+
+      if (!allowed) {
+        return;
+      }
+
+
+      await loadLogs();
+
+    })();
+
+  </script>
+
+</body>
+</html>
