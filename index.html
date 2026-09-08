@@ -1050,6 +1050,170 @@
         align-items: flex-start;
       }
     }
+
+    /* ==========================================
+   LEADERBOARD LIST
+========================================== */
+
+.leaderboard-list {
+  width: 100%;
+}
+
+.leaderboard-row {
+  display: grid;
+
+  grid-template-columns:
+    34px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-height: 62px;
+
+  padding: 10px 18px;
+
+  border-bottom: 1px solid var(--border);
+
+  transition:
+    background 0.18s ease;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: 0;
+}
+
+.leaderboard-row:hover {
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.leaderboard-rank {
+  color: var(--text-muted);
+
+  font-size: 11px;
+  font-weight: 750;
+
+  text-align: center;
+}
+
+.leaderboard-rank.top {
+  color: var(--accent);
+}
+
+.leaderboard-user {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.leaderboard-avatar {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: var(--black-3);
+
+  border: 1px solid var(--border);
+}
+
+.leaderboard-avatar img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.leaderboard-avatar-fallback {
+  color: var(--text-muted);
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.leaderboard-user-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.leaderboard-username {
+  overflow: hidden;
+
+  color: var(--text-soft);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard-games {
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+.leaderboard-balance {
+  color: var(--text);
+
+  font-size: 11px;
+  font-weight: 750;
+
+  white-space: nowrap;
+}
+
+.leaderboard-empty {
+  min-height: 175px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+.leaderboard-error {
+  min-height: 175px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  color: var(--danger);
+
+  font-size: 10px;
+
+  text-align: center;
+}
   </style>
 </head>
 
@@ -1407,7 +1571,7 @@
 
                 <span class="status-dot soon"></span>
 
-                Coming Soon
+                Casino
 
               </span>
 
@@ -1427,7 +1591,7 @@
 
         <a
           href="/slots"
-          class="game-card disabled"
+          class="game-card"
           aria-disabled="true"
         >
 
@@ -1454,7 +1618,7 @@
 
                 <span class="status-dot soon"></span>
 
-                Coming Soon
+                Casino
 
               </span>
 
@@ -1474,7 +1638,7 @@
 
         <a
           href="/dice"
-          class="game-card disabled"
+          class="game-card"
           aria-disabled="true"
         >
 
@@ -1501,8 +1665,8 @@
 
                 <span class="status-dot soon"></span>
 
-                Coming Soon
-
+                Casino
+                
               </span>
 
 
@@ -1521,7 +1685,7 @@
 
         <a
           href="/duels"
-          class="game-card disabled"
+          class="game-card"
           aria-disabled="true"
         >
 
@@ -1548,7 +1712,7 @@
 
                 <span class="status-dot soon"></span>
 
-                Coming Soon
+               Multiplayer
 
               </span>
 
@@ -1595,7 +1759,7 @@
 
                 <span class="status-dot soon"></span>
 
-                Coming Soon
+                Knowledge
 
               </span>
 
@@ -1623,49 +1787,39 @@
     <div class="lower-grid">
 
 
-      <!-- ========================================
-           LEADERBOARD
-      ========================================= -->
+<!-- ========================================
+     LEADERBOARD
+========================================= -->
 
-      <section class="panel">
+<section class="panel">
 
-        <div class="panel-header">
+  <div class="panel-header">
 
-          <h2 class="panel-header-title">
-            Leaderboard
-          </h2>
+    <h2 class="panel-header-title">
+      Leaderboard
+    </h2>
 
-          <a
-            href="/leaderboard"
-            class="panel-header-link"
-          >
-            View all →
-          </a>
+    <a
+      href="/leaderboard"
+      class="panel-header-link"
+    >
+      View all →
+    </a>
 
-        </div>
+  </div>
 
+  <div
+    id="leaderboard"
+    class="leaderboard-list"
+  >
 
-        <div
-          id="leaderboard"
-          class="empty-state"
-        >
+    <div class="loading">
+      Loading leaderboard...
+    </div>
 
-          <div class="empty-icon">
-            🏆
-          </div>
+  </div>
 
-          <div class="empty-title">
-            No leaderboard data
-          </div>
-
-          <div class="empty-description">
-            Leaderboard information will appear here
-            once the game system is connected.
-          </div>
-
-        </div>
-
-      </section>
+</section>
 
 
       <!-- ========================================
@@ -1819,16 +1973,46 @@
 <script>
 
   /* ==========================================
-     PROFILE BUTTON
+     ELEMENTS
   ========================================== */
 
   const profileButton =
     document.getElementById("profileButton");
 
+  const profileName =
+    document.getElementById("profileName");
+
+  const profileAvatar =
+    document.getElementById("profileAvatar");
+
+  const userBalance =
+    document.getElementById("userBalance");
+
+  const userRank =
+    document.getElementById("userRank");
+
+  const leaderboard =
+    document.getElementById("leaderboard");
+
+
+  /* ==========================================
+     PROFILE BUTTON
+  ========================================== */
 
   profileButton.addEventListener(
     "click",
     function () {
+
+      if (
+        profileName.textContent === "Login"
+      ) {
+
+        window.location.href =
+          "https://api.memplace.xyz/api/auth/login";
+
+        return;
+
+      }
 
       window.location.href =
         "/profile";
@@ -1838,7 +2022,7 @@
 
 
   /* ==========================================
-     LOAD MINIGAMES USER
+     LOAD CURRENT USER
   ========================================== */
 
   async function loadCurrentUser() {
@@ -1856,15 +2040,11 @@
         );
 
 
-      /* ==========================================
-         NOT LOGGED IN
-      ========================================== */
-
       if (response.status === 401) {
 
         showLoggedOutState();
 
-        return;
+        return null;
 
       }
 
@@ -1872,7 +2052,7 @@
       if (!response.ok) {
 
         throw new Error(
-          "User request failed"
+          `User request failed: ${response.status}`
         );
 
       }
@@ -1882,68 +2062,35 @@
         await response.json();
 
 
-      /* ==========================================
-         CHECK RESPONSE
-      ========================================== */
-
       if (
         !data ||
+        !data.authenticated ||
         !data.user
       ) {
 
         showLoggedOutState();
 
-        return;
+        return null;
 
       }
 
 
-      /* ==========================================
-         USER DATA
-      ========================================== */
-
       const user =
         data.user;
-
-
-      const profileName =
-        document.getElementById(
-          "profileName"
-        );
-
-
-      const profileAvatar =
-        document.getElementById(
-          "profileAvatar"
-        );
-
-
-      const userBalance =
-        document.getElementById(
-          "userBalance"
-        );
-
-
-      const userRank =
-        document.getElementById(
-          "userRank"
-        );
 
 
       /* ==========================================
          USERNAME
       ========================================== */
 
-      if (user.username) {
-
-        profileName.textContent =
-          user.username;
-
-      }
+      profileName.textContent =
+        user.username ||
+        user.discordUsername ||
+        "Profile";
 
 
       /* ==========================================
-         DISCORD AVATAR
+         AVATAR
       ========================================== */
 
       if (
@@ -1952,11 +2099,14 @@
       ) {
 
         const avatarUrl =
-          `https://cdn.discordapp.com/avatars/${encodeURIComponent(user.id)}/${encodeURIComponent(user.avatar)}.png?size=64`;
+          `https://cdn.discordapp.com/avatars/${encodeURIComponent(
+            user.id
+          )}/${encodeURIComponent(
+            user.avatar
+          )}.png?size=64`;
 
 
-        profileAvatar.innerHTML =
-          "";
+        profileAvatar.innerHTML = "";
 
 
         const avatarImage =
@@ -1966,30 +2116,23 @@
         avatarImage.src =
           avatarUrl;
 
-
         avatarImage.alt =
           "";
-
 
         avatarImage.width =
           32;
 
-
         avatarImage.height =
           32;
-
 
         avatarImage.style.width =
           "100%";
 
-
         avatarImage.style.height =
           "100%";
 
-
         avatarImage.style.display =
           "block";
-
 
         avatarImage.style.objectFit =
           "cover";
@@ -2007,8 +2150,7 @@
       ========================================== */
 
       if (
-        typeof user.balance ===
-        "number"
+        typeof user.balance === "number"
       ) {
 
         userBalance.textContent =
@@ -2019,29 +2161,7 @@
       }
 
 
-      /* ==========================================
-         RANK
-      ==========================================
-         
-         Rank will be provided by the
-         leaderboard system later.
-      ========================================== */
-
-      if (
-        typeof user.rank !==
-        "undefined"
-      ) {
-
-        userRank.textContent =
-          "#" +
-          user.rank;
-
-      } else {
-
-        userRank.textContent =
-          "—";
-
-      }
+      return user;
 
     } catch (error) {
 
@@ -2050,7 +2170,312 @@
         error
       );
 
+      return null;
+
     }
+
+  }
+
+
+  /* ==========================================
+     LOAD LEADERBOARD
+  ========================================== */
+
+  async function loadLeaderboard() {
+
+    try {
+
+      leaderboard.innerHTML = `
+        <div class="loading">
+          Loading leaderboard...
+        </div>
+      `;
+
+
+      const response =
+        await fetch(
+          "https://api.memplace.xyz/api/leaderboard",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          `Leaderboard request failed: ${response.status}`
+        );
+
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !data ||
+        !Array.isArray(
+          data.leaderboard
+        )
+      ) {
+
+        throw new Error(
+          "Invalid leaderboard response"
+        );
+
+      }
+
+
+      const players =
+        data.leaderboard.slice(
+          0,
+          5
+        );
+
+
+      /* ==========================================
+         EMPTY
+      ========================================== */
+
+      if (
+        players.length === 0
+      ) {
+
+        leaderboard.innerHTML = `
+          <div class="leaderboard-empty">
+            No players have entered the leaderboard yet.
+          </div>
+        `;
+
+        userRank.textContent =
+          "—";
+
+        return;
+
+      }
+
+
+      /* ==========================================
+         RENDER
+      ========================================== */
+
+      leaderboard.innerHTML =
+        players
+          .map(
+            player => {
+
+              const rank =
+                Number(
+                  player.rank
+                );
+
+
+              const username =
+                escapeHtml(
+                  player.username ||
+                  player.discordUsername ||
+                  "Unknown User"
+                );
+
+
+              const gamesPlayed =
+                Number(
+                  player.gamesPlayed || 0
+                );
+
+
+              const balance =
+                Number(
+                  player.balance || 0
+                ).toLocaleString();
+
+
+              let avatarHtml =
+                `
+                  <span class="leaderboard-avatar-fallback">
+                    ?
+                  </span>
+                `;
+
+
+              if (
+                player.avatar &&
+                player.id
+              ) {
+
+                const avatarUrl =
+                  `https://cdn.discordapp.com/avatars/${encodeURIComponent(
+                    player.id
+                  )}/${encodeURIComponent(
+                    player.avatar
+                  )}.png?size=64`;
+
+
+                avatarHtml =
+                  `
+                    <img
+                      src="${avatarUrl}"
+                      alt=""
+                      loading="lazy"
+                    >
+                  `;
+
+              }
+
+
+              return `
+                <div class="leaderboard-row">
+
+                  <div
+                    class="leaderboard-rank ${
+                      rank <= 3
+                        ? "top"
+                        : ""
+                    }"
+                  >
+                    #${rank}
+                  </div>
+
+
+                  <div class="leaderboard-user">
+
+                    <div class="leaderboard-avatar">
+                      ${avatarHtml}
+                    </div>
+
+
+                    <div class="leaderboard-user-info">
+
+                      <div class="leaderboard-username">
+                        ${username}
+                      </div>
+
+                      <div class="leaderboard-games">
+                        ${gamesPlayed.toLocaleString()} games
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="leaderboard-balance">
+                    ${balance}
+                  </div>
+
+                </div>
+              `;
+
+            }
+          )
+          .join("");
+
+
+      /* ==========================================
+         DETERMINE CURRENT USER RANK
+      ========================================== */
+
+      try {
+
+        const userResponse =
+          await fetch(
+            "https://api.memplace.xyz/api/user/me",
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+
+
+        if (
+          userResponse.ok
+        ) {
+
+          const userData =
+            await userResponse.json();
+
+
+          if (
+            userData &&
+            userData.user &&
+            userData.user.id
+          ) {
+
+            const currentUserId =
+              String(
+                userData.user.id
+              );
+
+
+            const currentPlayer =
+              data.leaderboard.find(
+                player =>
+                  String(
+                    player.id
+                  ) === currentUserId
+              );
+
+
+            if (
+              currentPlayer &&
+              currentPlayer.rank
+            ) {
+
+              userRank.textContent =
+                "#" +
+                currentPlayer.rank;
+
+            }
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Failed to determine user rank:",
+          error
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Failed to load leaderboard:",
+        error
+      );
+
+
+      leaderboard.innerHTML = `
+        <div class="leaderboard-error">
+          Unable to load leaderboard.
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  /* ==========================================
+     HTML ESCAPE
+  ========================================== */
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
 
   }
 
@@ -2060,24 +2485,6 @@
   ========================================== */
 
   function showLoggedOutState() {
-
-    const profileName =
-      document.getElementById(
-        "profileName"
-      );
-
-
-    const userBalance =
-      document.getElementById(
-        "userBalance"
-      );
-
-
-    const userRank =
-      document.getElementById(
-        "userRank"
-      );
-
 
     profileName.textContent =
       "Login";
@@ -2091,17 +2498,26 @@
       "—";
 
 
-    /* ==========================================
-       LOGIN WITH DISCORD
-    ========================================== */
+    profileAvatar.innerHTML = `
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle
+          cx="12"
+          cy="8"
+          r="3.5"
+        ></circle>
 
-    profileButton.onclick =
-      function () {
-
-        window.location.href =
-          "https://api.memplace.xyz/api/auth/login";
-
-      };
+        <path
+          d="M5 21c.7-4 3-6 7-6s6.3 2 7 6"
+        ></path>
+      </svg>
+    `;
 
   }
 
@@ -2110,7 +2526,17 @@
      INITIALIZE
   ========================================== */
 
-  loadCurrentUser();
+  async function initializePage() {
+
+    await Promise.all([
+      loadCurrentUser(),
+      loadLeaderboard()
+    ]);
+
+  }
+
+
+  initializePage();
 
 </script>
 
