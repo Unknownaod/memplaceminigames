@@ -150,6 +150,63 @@ body.theme-hello-kitty {
 
 }
 
+  /* ==========================================
+   SWORD THEME VARIABLES
+   ========================================== */
+
+html.theme-sword,
+body.theme-sword {
+
+  /* Base page */
+  --black: #050505;
+  --black-2: rgba(8, 8, 8, 0.45);
+  --black-3: rgba(15, 15, 15, 0.55);
+
+  /* Transparent glass surfaces */
+  --surface: rgba(8, 8, 8, 0.38);
+  --surface-2: rgba(15, 15, 15, 0.48);
+  --surface-3: rgba(25, 25, 25, 0.58);
+
+  /* Subtle white/silver borders */
+  --border:
+    rgba(255, 255, 255, 0.12);
+
+  --border-hover:
+    rgba(255, 255, 255, 0.28);
+
+  /* Typography */
+  --text: #ffffff;
+
+  --text-2:
+    rgba(255, 255, 255, 0.72);
+
+  --text-3:
+    rgba(255, 255, 255, 0.48);
+
+  /* Silver accent */
+  --accent: #e8e8e8;
+
+  --accent-soft:
+    rgba(255, 255, 255, 0.10);
+
+  /* Status */
+  --success: #8fd3a8;
+
+  --danger: #e57373;
+
+  /* Video/background glow */
+  --page-glow:
+    rgba(255, 255, 255, 0.08);
+
+  /* Transparent header */
+  --header-bg:
+    rgba(0, 0, 0, 0.42);
+
+  /* Buttons */
+  --button-text:
+    #050505;
+
+}
     
     /* ==========================================
        GLOBAL
@@ -2820,6 +2877,137 @@ body.theme-hello-kitty .footer-links a:hover {
 
 }
 
+    /* ==========================================
+   SWORD THEME — GLASS UI
+========================================== */
+
+body.theme-sword {
+  background: #000;
+  color: var(--text);
+}
+
+/* Main cards */
+body.theme-sword .profile-card,
+body.theme-sword .stat-card,
+body.theme-sword .financial-card,
+body.theme-sword .chess-card,
+body.theme-sword .discord-card,
+body.theme-sword .section-card {
+
+  background:
+    rgba(5, 5, 5, 0.38);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Smaller cards */
+body.theme-sword .item-card,
+body.theme-sword .balance-card,
+body.theme-sword .action-card {
+
+  background:
+    rgba(8, 8, 8, 0.32);
+
+  border-color:
+    rgba(255, 255, 255, 0.10);
+
+  backdrop-filter:
+    blur(8px);
+
+  -webkit-backdrop-filter:
+    blur(8px);
+}
+
+/* Header */
+body.theme-sword .header {
+
+  background:
+    rgba(0, 0, 0, 0.42);
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Buttons */
+body.theme-sword button,
+body.theme-sword .button {
+
+  border-color:
+    rgba(255, 255, 255, 0.16);
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    #ffffff;
+
+  backdrop-filter:
+    blur(8px);
+
+  -webkit-backdrop-filter:
+    blur(8px);
+}
+
+body.theme-sword button:hover,
+body.theme-sword .button:hover {
+
+  background:
+    rgba(255, 255, 255, 0.14);
+
+  border-color:
+    rgba(255, 255, 255, 0.30);
+
+  box-shadow:
+    0 0 25px rgba(255, 255, 255, 0.08);
+}
+
+/* Inputs */
+body.theme-sword input,
+body.theme-sword textarea,
+body.theme-sword select {
+
+  background:
+    rgba(0, 0, 0, 0.38);
+
+  border-color:
+    rgba(255, 255, 255, 0.12);
+
+  color:
+    #ffffff;
+
+  backdrop-filter:
+    blur(8px);
+
+  -webkit-backdrop-filter:
+    blur(8px);
+}
+
+/* Dividers */
+body.theme-sword hr {
+  border-color:
+    rgba(255, 255, 255, 0.10);
+}
+
   </style>
 
 </head>
@@ -3143,13 +3331,15 @@ function applyPageTheme(
 
   html.classList.remove(
     "theme-mixing-after-dark",
-    "theme-hello-kitty"
+    "theme-hello-kitty",
+    "theme-sword"
   );
 
 
   body.classList.remove(
     "theme-mixing-after-dark",
-    "theme-hello-kitty"
+    "theme-hello-kitty",
+    "theme-sword"
   );
 
 
@@ -3180,6 +3370,23 @@ function applyPageTheme(
 
     body.classList.add(
       "theme-hello-kitty"
+    );
+
+  }
+
+}
+
+   if (
+    equippedTheme ===
+    "sword-theme"
+  ) {
+
+    html.classList.add(
+      "theme-sword"
+    );
+
+    body.classList.add(
+      "theme-sword"
     );
 
   }
