@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dice — Middle Eastern Mixing</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191611;
+
+      --surface: #191611;
+      --surface-2: #211d17;
+      --surface-3: #29231b;
+
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.14);
+
+      --text: #f5f1e8;
+      --muted: #9b9487;
+      --muted-2: #6f695f;
+
+      --accent: #d8a84e;
+      --accent-hover: #e4b75e;
+
+      --green: #57c77a;
+      --red: #e36565;
+
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(216,168,78,0.08),
+          transparent 35%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    header {
+      width: 100%;
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+
+      border-bottom: 1px solid var(--border);
+
+      background: rgba(11,10,8,0.88);
+
+      backdrop-filter: blur(18px);
+
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      color: var(--text);
+      text-decoration: none;
+
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+
+      border-radius: 9px;
+
+      object-fit: cover;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav a {
+      color: var(--muted);
+
+      text-decoration: none;
+
+      padding: 9px 12px;
+
+      border-radius: 9px;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      transition:
+        background 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .nav a:hover {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .nav a.active {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .balance-pill {
+      display: none;
+      align-items: center;
+      gap: 7px;
+
+      padding: 8px 12px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 999px;
+
+      background: var(--surface);
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .balance-icon {
+      color: var(--accent);
+    }
+
+    .login-button,
+    .profile-button {
+      border: 1px solid var(--border);
+
+      background: var(--surface);
+
+      color: var(--text);
+
+      padding: 9px 14px;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .login-button:hover,
+    .profile-button:hover {
+      border-color: var(--border-hover);
+      background: var(--surface-2);
+    }
+
+    .profile-button {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-button img {
+      width: 24px;
+      height: 24px;
+
+      border-radius: 50%;
+    }
+
+
+    /* ==========================================
+       MAIN
+    ========================================== */
+
+    main {
+      width: min(1000px, calc(100% - 32px));
+      margin: 0 auto;
+
+      padding: 54px 0 80px;
+    }
+
+    .page-heading {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .game-icon {
+      width: 64px;
+      height: 64px;
+
+      margin: 0 auto 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(216,168,78,0.22);
+
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(216,168,78,0.13),
+          rgba(216,168,78,0.03)
+        );
+
+      font-size: 30px;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size: clamp(30px, 5vw, 44px);
+
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+
+      color: var(--muted);
+
+      font-size: 15px;
+    }
+
+
+    /* ==========================================
+       GAME
+    ========================================== */
+
+    .game-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        340px;
+
+      gap: 18px;
+
+      align-items: stretch;
+    }
+
+    .card {
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      box-shadow:
+        0 18px 60px rgba(0,0,0,0.22);
+    }
+
+
+    /* ==========================================
+       ROLL DISPLAY
+    ========================================== */
+
+    .roll-card {
+      min-height: 520px;
+
+      padding: 30px;
+
+      display: flex;
+      flex-direction: column;
+
+      justify-content: center;
+      align-items: center;
+    }
+
+    .roll-label {
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+
+      margin-bottom: 16px;
+    }
+
+    .roll-number {
+      width: 220px;
+      height: 220px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 32px;
+
+      border: 1px solid rgba(216,168,78,0.22);
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(216,168,78,0.10),
+          rgba(216,168,78,0.02) 65%,
+          transparent
+        );
+
+      color: var(--accent);
+
+      font-size: 76px;
+      font-weight: 900;
+
+      letter-spacing: -0.06em;
+
+      box-shadow:
+        inset 0 0 60px rgba(216,168,78,0.025),
+        0 25px 70px rgba(0,0,0,0.25);
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .roll-number.rolling {
+      animation: rollPulse 0.13s linear infinite;
+    }
+
+    @keyframes rollPulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.035);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .result {
+      min-height: 28px;
+
+      margin-top: 24px;
+
+      font-size: 18px;
+      font-weight: 800;
+
+      text-align: center;
+    }
+
+    .result.win {
+      color: var(--green);
+    }
+
+    .result.loss {
+      color: var(--red);
+    }
+
+    .result.neutral {
+      color: var(--muted);
+    }
+
+    .payout {
+      min-height: 22px;
+
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    /* ==========================================
+       CONTROLS
+    ========================================== */
+
+    .controls-card {
+      padding: 22px;
+    }
+
+    .section-title {
+      margin-bottom: 17px;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 8px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .field-label strong {
+      color: var(--text);
+    }
+
+    .input-wrap {
+      display: flex;
+      align-items: center;
+
+      border: 1px solid var(--border);
+
+      border-radius: 10px;
+
+      background: var(--black-2);
+
+      overflow: hidden;
+    }
+
+    .currency {
+      padding-left: 12px;
+
+      color: var(--accent);
+
+      font-weight: 800;
+    }
+
+    input[type="number"] {
+      width: 100%;
+
+      border: 0;
+      outline: 0;
+
+      background: transparent;
+
+      color: var(--text);
+
+      padding: 12px;
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      opacity: 0.4;
+    }
+
+    .quick-bets {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 6px;
+
+      margin-top: 7px;
+    }
+
+    .quick-bet {
+      border: 1px solid var(--border);
+
+      background: var(--surface-2);
+
+      color: var(--muted);
+
+      border-radius: 8px;
+
+      padding: 8px 4px;
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .quick-bet:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+
+
+    /* ==========================================
+       DIRECTION
+    ========================================== */
+
+    .direction-buttons {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 8px;
+    }
+
+    .direction-button {
+      border: 1px solid var(--border);
+
+      background: var(--surface-2);
+
+      color: var(--muted);
+
+      padding: 12px 8px;
+
+      border-radius: 9px;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      transition: 0.15s ease;
+    }
+
+    .direction-button:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+
+    .direction-button.active {
+      color: var(--text);
+
+      border-color: rgba(216,168,78,0.4);
+
+      background:
+        rgba(216,168,78,0.10);
+    }
+
+
+    /* ==========================================
+       TARGET
+    ========================================== */
+
+    .target-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .target-control input {
+      flex: 1;
+    }
+
+    .target-value {
+      min-width: 44px;
+
+      text-align: center;
+
+      padding: 9px 8px;
+
+      border-radius: 8px;
+
+      background: var(--surface-3);
+
+      color: var(--accent);
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    input[type="range"] {
+      width: 100%;
+
+      accent-color: var(--accent);
+
+      cursor: pointer;
+    }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    .stats {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 8px;
+
+      margin: 22px 0;
+    }
+
+    .stat {
+      padding: 12px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 9px;
+
+      background: var(--black-2);
+    }
+
+    .stat-label {
+      color: var(--muted-2);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .stat-value {
+      margin-top: 5px;
+
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+
+    /* ==========================================
+       ROLL BUTTON
+    ========================================== */
+
+    .roll-button {
+      width: 100%;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background: var(--accent);
+
+      color: #17120a;
+
+      padding: 14px;
+
+      font-size: 14px;
+      font-weight: 900;
+
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .roll-button:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .roll-button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .login-note {
+      margin-top: 12px;
+
+      color: var(--muted);
+
+      text-align: center;
+
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+
+    /* ==========================================
+       LOGIN MODAL
+    ========================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(0,0,0,0.72);
+
+      backdrop-filter: blur(10px);
+
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(390px, 100%);
+
+      padding: 28px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 16px;
+
+      background: var(--surface);
+
+      text-align: center;
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,0.5);
+    }
+
+    .modal-icon {
+      font-size: 38px;
+
+      margin-bottom: 12px;
+    }
+
+    .modal-card h2 {
+      margin: 0;
+
+      font-size: 23px;
+    }
+
+    .modal-card p {
+      margin: 10px 0 22px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .discord-login {
+      display: block;
+
+      width: 100%;
+
+      padding: 13px;
+
+      border-radius: 9px;
+
+      background: var(--accent);
+
+      color: #17120a;
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .close-modal {
+      width: 100%;
+
+      margin-top: 8px;
+
+      border: 1px solid var(--border);
+
+      background: transparent;
+
+      color: var(--muted);
+
+      padding: 11px;
+
+      border-radius: 9px;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 800px) {
+
+      .nav {
+        display: none;
+      }
+
+      .game-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .roll-card {
+        min-height: 430px;
+      }
+
+    }
+
+    @media (max-width: 500px) {
+
+      .header-inner {
+        width: min(100% - 24px, 1180px);
+      }
+
+      main {
+        width: min(100% - 20px, 1000px);
+        padding-top: 35px;
+      }
+
+      .roll-number {
+        width: 180px;
+        height: 180px;
+
+        font-size: 62px;
+      }
+
+      .roll-card {
+        padding: 20px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+
+  <!-- ==========================================
+       HEADER
+  ========================================== -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <a
+        class="brand"
+        href="/"
+      >
+
+        <img
+          src="/logo.gif"
+          alt=""
+        >
+
+        <span>
+          Middle Eastern Mixing
+        </span>
+
+      </a>
+
+
+      <nav class="nav">
+
+        <a
+          href="/games"
+          class="active"
+        >
+          Games
+        </a>
+
+        <a href="/leaderboard">
+          Leaderboard
+        </a>
+
+        <a href="/shop">
+          Shop
+        </a>
+
+      </nav>
+
+
+      <div class="header-right">
+
+        <div
+          id="balancePill"
+          class="balance-pill"
+        >
+
+          <span class="balance-icon">
+            ◈
+          </span>
+
+          <span id="headerBalance">
+            0
+          </span>
+
+        </div>
+
+
+        <button
+          id="loginButton"
+          class="login-button"
+          type="button"
+        >
+          Login
+        </button>
+
+
+        <button
+          id="profileButton"
+          class="profile-button"
+          type="button"
+        >
+
+          <img
+            id="profileAvatar"
+            src=""
+            alt=""
+          >
+
+          <span id="profileName">
+            Profile
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ==========================================
+       MAIN
+  ========================================== -->
+
+  <main>
+
+
+    <div class="page-heading">
+
+      <div class="game-icon">
+        🎲
+      </div>
+
+      <h1>
+        Dice
+      </h1>
+
+      <p class="subtitle">
+        Pick your odds. Roll the dice. Beat the house.
+      </p>
+
+    </div>
+
+
+    <div class="game-layout">
+
+
+      <!-- ========================================
+           ROLL DISPLAY
+      ======================================== -->
+
+      <section class="card roll-card">
+
+        <div class="roll-label">
+          Your Roll
+        </div>
+
+        <div
+          id="rollNumber"
+          class="roll-number"
+        >
+          —
+        </div>
+
+        <div
+          id="result"
+          class="result neutral"
+        >
+          Choose your odds and roll
+        </div>
+
+        <div
+          id="payout"
+          class="payout"
+        >
+          &nbsp;
+        </div>
+
+      </section>
+
+
+      <!-- ========================================
+           CONTROLS
+      ======================================== -->
+
+      <section class="card controls-card">
+
+        <div class="section-title">
+          Place your bet
+        </div>
+
+
+        <!-- WAGER -->
+
+        <div class="field">
+
+          <div class="field-label">
+
+            <span>
+              Wager
+            </span>
+
+            <strong>
+              Balance:
+              <span id="controlBalance">
+                —
+              </span>
+            </strong>
+
+          </div>
+
+
+          <div class="input-wrap">
+
+            <span class="currency">
+              $
+            </span>
+
+            <input
+              id="wager"
+              type="number"
+              min="10"
+              max="10000"
+              step="1"
+              value="10"
+            >
+
+          </div>
+
+
+          <div class="quick-bets">
+
+            <button
+              class="quick-bet"
+              data-bet="10"
+              type="button"
+            >
+              $10
+            </button>
+
+            <button
+              class="quick-bet"
+              data-bet="25"
+              type="button"
+            >
+              $25
+            </button>
+
+            <button
+              class="quick-bet"
+              data-bet="50"
+              type="button"
+            >
+              $50
+            </button>
+
+            <button
+              class="quick-bet"
+              data-bet="100"
+              type="button"
+            >
+              $100
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- DIRECTION -->
+
+        <div class="field">
+
+          <div class="field-label">
+            <span>
+              Bet type
+            </span>
+          </div>
+
+
+          <div class="direction-buttons">
+
+            <button
+              id="underButton"
+              class="direction-button active"
+              type="button"
+            >
+              Under
+            </button>
+
+            <button
+              id="overButton"
+              class="direction-button"
+              type="button"
+            >
+              Over
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- TARGET -->
+
+        <div class="field">
+
+          <div class="field-label">
+
+            <span>
+              Target
+            </span>
+
+            <strong>
+              <span id="targetLabel">
+                50
+              </span>
+            </strong>
+
+          </div>
+
+
+          <div class="target-control">
+
+            <input
+              id="target"
+              type="range"
+              min="2"
+              max="98"
+              value="50"
+            >
+
+            <div
+              id="targetValue"
+              class="target-value"
+            >
+              50
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+          <div class="stat">
+
+            <div class="stat-label">
+              Win chance
+            </div>
+
+            <div
+              id="winChance"
+              class="stat-value"
+            >
+              49%
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-label">
+              Multiplier
+            </div>
+
+            <div
+              id="multiplier"
+              class="stat-value"
+            >
+              2.02x
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ROLL -->
+
+        <button
+          id="rollButton"
+          class="roll-button"
+          type="button"
+        >
+          Roll Dice
+        </button>
+
+
+        <div
+          id="loginNote"
+          class="login-note"
+        >
+          Login with Discord to play.
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       LOGIN MODAL
+  ========================================== -->
+
+  <div
+    id="loginModal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-icon">
+        🎲
+      </div>
+
+      <h2>
+        Login to play
+      </h2>
+
+      <p>
+        Sign in with Discord to use your balance
+        and play Dice.
+      </p>
+
+      <a
+        class="discord-login"
+        href="https://api.memplace.xyz/api/auth/login"
+      >
+        Login with Discord
+      </a>
+
+      <button
+        id="closeModal"
+        class="close-modal"
+        type="button"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* ==========================================
+       CONFIG
+    ========================================== */
+
+    const API =
+      "https://api.memplace.xyz";
+
+
+    /* ==========================================
+       STATE
+    ========================================== */
+
+    let authenticated = false;
+
+    let balance = 0;
+
+    let direction = "under";
+
+    let rolling = false;
+
+
+    /* ==========================================
+       ELEMENTS
+    ========================================== */
+
+    const wagerInput =
+      document.getElementById("wager");
+
+    const targetInput =
+      document.getElementById("target");
+
+    const targetValue =
+      document.getElementById("targetValue");
+
+    const targetLabel =
+      document.getElementById("targetLabel");
+
+    const winChance =
+      document.getElementById("winChance");
+
+    const multiplier =
+      document.getElementById("multiplier");
+
+    const rollButton =
+      document.getElementById("rollButton");
+
+    const rollNumber =
+      document.getElementById("rollNumber");
+
+    const result =
+      document.getElementById("result");
+
+    const payout =
+      document.getElementById("payout");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const profileButton =
+      document.getElementById("profileButton");
+
+    const balancePill =
+      document.getElementById("balancePill");
+
+    const headerBalance =
+      document.getElementById("headerBalance");
+
+    const controlBalance =
+      document.getElementById("controlBalance");
+
+    const profileAvatar =
+      document.getElementById("profileAvatar");
+
+    const profileName =
+      document.getElementById("profileName");
+
+    const loginNote =
+      document.getElementById("loginNote");
+
+    const loginModal =
+      document.getElementById("loginModal");
+
+    const closeModal =
+      document.getElementById("closeModal");
+
+    const underButton =
+      document.getElementById("underButton");
+
+    const overButton =
+      document.getElementById("overButton");
+
+
+    /* ==========================================
+       FORMAT MONEY
+    ========================================== */
+
+    function formatMoney(value) {
+
+      return Number(value || 0)
+        .toLocaleString("en-US");
+
+    }
+
+
+    /* ==========================================
+       UPDATE BALANCE UI
+    ========================================== */
+
+    function updateBalance(value) {
+
+      balance =
+        Number(value || 0);
+
+      headerBalance.textContent =
+        formatMoney(balance);
+
+      controlBalance.textContent =
+        "$" + formatMoney(balance);
+
+    }
+
+
+    /* ==========================================
+       CALCULATE ODDS
+    ========================================== */
+
+    function updateOdds() {
+
+      const target =
+        Number(targetInput.value);
+
+
+      let winningNumbers;
+
+
+      if (direction === "under") {
+
+        winningNumbers =
+          target - 1;
+
+      } else {
+
+        winningNumbers =
+          100 - target;
+
+      }
+
+
+      const chance =
+        winningNumbers / 100;
+
+
+      const HOUSE_EDGE =
+        0.01;
+
+
+      const calculatedMultiplier =
+        (1 / chance) *
+        (1 - HOUSE_EDGE);
+
+
+      winChance.textContent =
+        (chance * 100)
+          .toFixed(0) + "%";
+
+
+      multiplier.textContent =
+        calculatedMultiplier
+          .toFixed(2) + "x";
+
+
+      targetValue.textContent =
+        target;
+
+      targetLabel.textContent =
+        target;
+
+    }
+
+
+    /* ==========================================
+       DIRECTION
+    ========================================== */
+
+    underButton.addEventListener(
+      "click",
+      () => {
+
+        direction = "under";
+
+        underButton.classList.add(
+          "active"
+        );
+
+        overButton.classList.remove(
+          "active"
+        );
+
+        updateOdds();
+
+      }
+    );
+
+
+    overButton.addEventListener(
+      "click",
+      () => {
+
+        direction = "over";
+
+        overButton.classList.add(
+          "active"
+        );
+
+        underButton.classList.remove(
+          "active"
+        );
+
+        updateOdds();
+
+      }
+    );
+
+
+    /* ==========================================
+       TARGET
+    ========================================== */
+
+    targetInput.addEventListener(
+      "input",
+      updateOdds
+    );
+
+
+    /* ==========================================
+       QUICK BETS
+    ========================================== */
+
+    document
+      .querySelectorAll(".quick-bet")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            wagerInput.value =
+              button.dataset.bet;
+
+          }
+        );
+
+      });
+
+
+    /* ==========================================
+       LOAD CURRENT USER
+    ========================================== */
+
+    async function loadCurrentUser() {
+
+      try {
+
+        const response =
+          await fetch(
+            API + "/api/user/me",
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.authenticated ||
+          !data.user
+        ) {
+
+          authenticated = false;
+
+          loginButton.style.display =
+            "block";
+
+          profileButton.style.display =
+            "none";
+
+          balancePill.style.display =
+            "none";
+
+          loginNote.textContent =
+            "Login with Discord to play.";
+
+          rollButton.disabled =
+            false;
+
+          return;
+
+        }
+
+
+        authenticated = true;
+
+
+        updateBalance(
+          data.user.balance
+        );
+
+
+        loginButton.style.display =
+          "none";
+
+        profileButton.style.display =
+          "flex";
+
+        balancePill.style.display =
+          "flex";
+
+        loginNote.textContent =
+          "Your roll is generated securely by the server.";
+
+
+        profileName.textContent =
+          data.user.username ||
+          data.user.discordUsername ||
+          "Profile";
+
+
+        if (
+          data.user.avatar &&
+          data.user.id
+        ) {
+
+          profileAvatar.src =
+            "https://cdn.discordapp.com/avatars/" +
+            data.user.id +
+            "/" +
+            data.user.avatar +
+            ".png?size=64";
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "LOAD USER ERROR:",
+          error
+        );
+
+        authenticated = false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       ROLL ANIMATION
+    ========================================== */
+
+    function animateRoll() {
+
+      rollNumber.classList.add(
+        "rolling"
+      );
+
+
+      let ticks = 0;
+
+
+      const interval =
+        setInterval(
+          () => {
+
+            rollNumber.textContent =
+              Math.floor(
+                Math.random() * 100
+              ) + 1;
+
+            ticks++;
+
+            if (ticks >= 16) {
+
+              clearInterval(
+                interval
+              );
+
+            }
+
+          },
+          70
+        );
+
+
+      return interval;
+
+    }
+
+
+    /* ==========================================
+       ROLL DICE
+    ========================================== */
+
+    async function rollDice() {
+
+      if (rolling) {
+        return;
+      }
+
+
+      if (!authenticated) {
+
+        loginModal.classList.add(
+          "show"
+        );
+
+        return;
+
+      }
+
+
+      const wager =
+        Number(wagerInput.value);
+
+
+      const target =
+        Number(targetInput.value);
+
+
+      if (
+        !Number.isInteger(wager) ||
+        wager <= 0
+      ) {
+
+        result.className =
+          "result loss";
+
+        result.textContent =
+          "Enter a valid wager.";
+
+        return;
+
+      }
+
+
+      if (
+        wager < 10
+      ) {
+
+        result.className =
+          "result loss";
+
+        result.textContent =
+          "Minimum wager is $10.";
+
+        return;
+
+      }
+
+
+      if (
+        wager > balance
+      ) {
+
+        result.className =
+          "result loss";
+
+        result.textContent =
+          "Insufficient balance.";
+
+        return;
+
+      }
+
+
+      rolling = true;
+
+      rollButton.disabled =
+        true;
+
+      wagerInput.disabled =
+        true;
+
+      targetInput.disabled =
+        true;
+
+      underButton.disabled =
+        true;
+
+      overButton.disabled =
+        true;
+
+
+      result.className =
+        "result neutral";
+
+      result.textContent =
+        "Rolling...";
+
+      payout.innerHTML =
+        "&nbsp;";
+
+
+      const animation =
+        animateRoll();
+
+
+      try {
+
+        const response =
+          await fetch(
+            API + "/api/games/dice",
+            {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+              body:
+                JSON.stringify({
+                  wager,
+                  target,
+                  direction
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        clearInterval(
+          animation
+        );
+
+
+        rollNumber.classList.remove(
+          "rolling"
+        );
+
+
+        if (!response.ok) {
+
+          result.className =
+            "result loss";
+
+          result.textContent =
+            data.error ||
+            "Unable to roll the dice.";
+
+          return;
+
+        }
+
+
+        /* ====================================
+           SERVER RESULT
+        ==================================== */
+
+        rollNumber.textContent =
+          data.roll;
+
+
+        updateBalance(
+          data.balance
+        );
+
+
+        multiplier.textContent =
+          Number(data.multiplier)
+            .toFixed(2) + "x";
+
+
+        if (data.won) {
+
+          result.className =
+            "result win";
+
+          result.textContent =
+            "You won!";
+
+          payout.textContent =
+            "Payout: $" +
+            formatMoney(data.payout);
+
+        } else {
+
+          result.className =
+            "result loss";
+
+          result.textContent =
+            "You lost.";
+
+          payout.textContent =
+            "Lost: $" +
+            formatMoney(wager);
+
+        }
+
+
+      } catch (error) {
+
+        clearInterval(
+          animation
+        );
+
+        rollNumber.classList.remove(
+          "rolling"
+        );
+
+        console.error(
+          "DICE ERROR:",
+          error
+        );
+
+
+        result.className =
+          "result loss";
+
+        result.textContent =
+          "Something went wrong.";
+
+      } finally {
+
+        rolling = false;
+
+        rollButton.disabled =
+          false;
+
+        wagerInput.disabled =
+          false;
+
+        targetInput.disabled =
+          false;
+
+        underButton.disabled =
+          false;
+
+        overButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       LOGIN
+    ========================================== */
+
+    loginButton.addEventListener(
+      "click",
+      () => {
+
+        loginModal.classList.add(
+          "show"
+        );
+
+      }
+    );
+
+
+    closeModal.addEventListener(
+      "click",
+      () => {
+
+        loginModal.classList.remove(
+          "show"
+        );
+
+      }
+    );
+
+
+    loginModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          loginModal
+        ) {
+
+          loginModal.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       PROFILE
+    ========================================== */
+
+    profileButton.addEventListener(
+      "click",
+      () => {
+
+        window.location.href =
+          "/profile";
+
+      }
+    );
+
+
+    /* ==========================================
+       ROLL BUTTON
+    ========================================== */
+
+    rollButton.addEventListener(
+      "click",
+      rollDice
+    );
+
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
+    updateOdds();
+
+    loadCurrentUser();
+
+  </script>
+
+</body>
+</html>
