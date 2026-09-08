@@ -150,63 +150,7 @@ body.theme-hello-kitty {
 
 }
 
-  /* ==========================================
-   SWORD THEME VARIABLES
-   ========================================== */
 
-html.theme-sword,
-body.theme-sword {
-
-  /* Base page */
-  --black: #050505;
-  --black-2: rgba(8, 8, 8, 0.45);
-  --black-3: rgba(15, 15, 15, 0.55);
-
-  /* Transparent glass surfaces */
-  --surface: rgba(8, 8, 8, 0.38);
-  --surface-2: rgba(15, 15, 15, 0.48);
-  --surface-3: rgba(25, 25, 25, 0.58);
-
-  /* Subtle white/silver borders */
-  --border:
-    rgba(255, 255, 255, 0.12);
-
-  --border-hover:
-    rgba(255, 255, 255, 0.28);
-
-  /* Typography */
-  --text: #ffffff;
-
-  --text-2:
-    rgba(255, 255, 255, 0.72);
-
-  --text-3:
-    rgba(255, 255, 255, 0.48);
-
-  /* Silver accent */
-  --accent: #e8e8e8;
-
-  --accent-soft:
-    rgba(255, 255, 255, 0.10);
-
-  /* Status */
-  --success: #8fd3a8;
-
-  --danger: #e57373;
-
-  /* Video/background glow */
-  --page-glow:
-    rgba(255, 255, 255, 0.08);
-
-  /* Transparent header */
-  --header-bg:
-    rgba(0, 0, 0, 0.42);
-
-  /* Buttons */
-  --button-text:
-    #050505;
-
-}
     
     /* ==========================================
        GLOBAL
@@ -2877,139 +2821,720 @@ body.theme-hello-kitty .footer-links a:hover {
 
 }
 
-    /* ==========================================
-   SWORD THEME — GLASS UI
+/* ==========================================
+   SWORD THEME VARIABLES
+========================================== */
+
+html.theme-sword,
+body.theme-sword {
+
+  --black: #020202;
+  --black-2: rgba(3,3,3,0.40);
+  --black-3: rgba(8,8,8,0.52);
+
+  --surface: rgba(5,5,5,0.34);
+  --surface-2: rgba(10,10,10,0.42);
+  --surface-3: rgba(18,18,18,0.52);
+
+  --border:
+    rgba(255,255,255,0.12);
+
+  --border-hover:
+    rgba(255,255,255,0.28);
+
+  --text:
+    #ffffff;
+
+  --text-2:
+    rgba(255,255,255,0.72);
+
+  --text-3:
+    rgba(255,255,255,0.45);
+
+  --accent:
+    #f1f1f1;
+
+  --accent-soft:
+    rgba(255,255,255,0.09);
+
+  --success:
+    #8bd6a5;
+
+  --danger:
+    #e87878;
+
+  --page-glow:
+    rgba(255,255,255,0.05);
+
+  --header-bg:
+    rgba(0,0,0,0.42);
+
+  --button-text:
+    #050505;
+}
+
+
+/* ==========================================
+   SWORD VIDEO BACKGROUND
+========================================== */
+
+.sword-theme-background {
+
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  background: #000;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transition:
+    opacity .5s ease;
+
+}
+
+
+/* VIDEO */
+
+.sword-theme-background video {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  object-position: center;
+
+  display: block;
+
+}
+
+
+/* DARK GLASS OVERLAY */
+
+.sword-theme-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,0.34) 0%,
+      rgba(0,0,0,0.16) 35%,
+      rgba(0,0,0,0.34) 100%
+    );
+
+}
+
+
+/* ENABLE VIDEO */
+
+body.theme-sword
+.sword-theme-background {
+
+  opacity: 1;
+
+}
+
+
+/* ==========================================
+   SWORD PAGE
 ========================================== */
 
 body.theme-sword {
-  background: #000;
-  color: var(--text);
-}
-
-/* Main cards */
-body.theme-sword .profile-card,
-body.theme-sword .stat-card,
-body.theme-sword .financial-card,
-body.theme-sword .chess-card,
-body.theme-sword .discord-card,
-body.theme-sword .section-card {
 
   background:
-    rgba(5, 5, 5, 0.38);
+    #000;
 
-  border:
-    1px solid rgba(255, 255, 255, 0.12);
+  color:
+    var(--text);
 
-  backdrop-filter:
-    blur(10px);
-
-  -webkit-backdrop-filter:
-    blur(10px);
-
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* Smaller cards */
-body.theme-sword .item-card,
-body.theme-sword .balance-card,
-body.theme-sword .action-card {
 
-  background:
-    rgba(8, 8, 8, 0.32);
+/* ==========================================
+   CONTENT ABOVE VIDEO
+========================================== */
 
-  border-color:
-    rgba(255, 255, 255, 0.10);
+body.theme-sword .header,
+body.theme-sword .page,
+body.theme-sword .footer {
 
-  backdrop-filter:
-    blur(8px);
+  position: relative;
 
-  -webkit-backdrop-filter:
-    blur(8px);
+  z-index: 2;
+
 }
 
-/* Header */
+
+/* ==========================================
+   HEADER
+========================================== */
+
 body.theme-sword .header {
 
   background:
-    rgba(0, 0, 0, 0.42);
+    rgba(0,0,0,0.38);
 
   border-bottom:
-    1px solid rgba(255, 255, 255, 0.10);
+    1px solid
+    rgba(255,255,255,0.10);
 
   backdrop-filter:
-    blur(14px);
+    blur(16px);
 
   -webkit-backdrop-filter:
-    blur(14px);
+    blur(16px);
 
   box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.35);
+    0 10px 40px
+    rgba(0,0,0,0.35);
+
 }
 
-/* Buttons */
-body.theme-sword button,
-body.theme-sword .button {
 
-  border-color:
-    rgba(255, 255, 255, 0.16);
+/* ==========================================
+   BRAND
+========================================== */
+
+body.theme-sword .brand img {
+
+  box-shadow:
+
+    0 0 0 1px
+    rgba(255,255,255,0.14),
+
+    0 0 25px
+    rgba(255,255,255,0.08);
+
+}
+
+
+/* ==========================================
+   NAV
+========================================== */
+
+body.theme-sword .nav-link:hover {
 
   background:
-    rgba(255, 255, 255, 0.08);
+    rgba(255,255,255,0.07);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(255,255,255,0.06);
+
+}
+
+
+body.theme-sword .nav-link.active {
 
   color:
     #ffffff;
 
-  backdrop-filter:
-    blur(8px);
-
-  -webkit-backdrop-filter:
-    blur(8px);
-}
-
-body.theme-sword button:hover,
-body.theme-sword .button:hover {
-
   background:
-    rgba(255, 255, 255, 0.14);
-
-  border-color:
-    rgba(255, 255, 255, 0.30);
+    rgba(255,255,255,0.10);
 
   box-shadow:
-    0 0 25px rgba(255, 255, 255, 0.08);
+    inset 0 0 0 1px
+    rgba(255,255,255,0.12);
+
 }
 
-/* Inputs */
-body.theme-sword input,
-body.theme-sword textarea,
-body.theme-sword select {
+
+/* ==========================================
+   ACCOUNT
+========================================== */
+
+body.theme-sword .balance,
+body.theme-sword .user-button {
 
   background:
-    rgba(0, 0, 0, 0.38);
+    rgba(0,0,0,0.38);
 
   border-color:
-    rgba(255, 255, 255, 0.12);
+    rgba(255,255,255,0.12);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+    0 8px 25px
+    rgba(0,0,0,0.28);
+
+}
+
+
+/* ==========================================
+   PROFILE CARD
+========================================== */
+
+body.theme-sword .profile-card {
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.045),
+      rgba(0,0,0,0.34)
+    );
+
+  border-color:
+    rgba(255,255,255,0.15);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+
+    inset 0 1px 0
+    rgba(255,255,255,0.07),
+
+    0 20px 70px
+    rgba(0,0,0,0.45);
+
+}
+
+
+/* ==========================================
+   PROFILE CARD DECORATION
+========================================== */
+
+body.theme-sword
+.profile-card::before {
+
+  content:
+    "SWORD";
+
+  position:
+    absolute;
+
+  right:
+    -15px;
+
+  bottom:
+    -30px;
+
+  color:
+    rgba(255,255,255,0.025);
+
+  font-size:
+    100px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    -0.08em;
+
+  transform:
+    rotate(-8deg);
+
+  pointer-events:
+    none;
+
+}
+
+
+body.theme-sword
+.profile-card::after {
+
+  content:
+    "✦  ·  ─  ·  ✦";
+
+  position:
+    absolute;
+
+  right:
+    28px;
+
+  top:
+    15px;
+
+  color:
+    rgba(255,255,255,0.12);
+
+  font-size:
+    12px;
+
+  letter-spacing:
+    8px;
+
+  pointer-events:
+    none;
+
+}
+
+
+/* ==========================================
+   AVATAR
+========================================== */
+
+body.theme-sword
+.profile-avatar {
+
+  border-color:
+    rgba(255,255,255,0.18);
+
+  box-shadow:
+
+    0 0 0 4px
+    rgba(255,255,255,0.035),
+
+    0 0 30px
+    rgba(255,255,255,0.08);
+
+}
+
+
+/* ==========================================
+   PROFILE NAME
+========================================== */
+
+body.theme-sword
+.profile-name:not(.gold):not(.royal):not(.diamond) {
 
   color:
     #ffffff;
 
+  text-shadow:
+    0 0 25px
+    rgba(255,255,255,0.10);
+
+}
+
+
+/* ==========================================
+   PROFILE TITLE
+========================================== */
+
+body.theme-sword
+.profile-title {
+
+  color:
+    #ffffff;
+
+  text-shadow:
+
+    0 0 7px
+    rgba(255,255,255,0.55),
+
+    0 0 18px
+    rgba(255,255,255,0.22);
+
+}
+
+
+body.theme-sword
+.profile-title-icon {
+
+  color:
+    #ffffff;
+
+  text-shadow:
+
+    0 0 8px
+    rgba(255,255,255,0.75),
+
+    0 0 18px
+    rgba(255,255,255,0.35);
+
+}
+
+
+/* ==========================================
+   EQUIPPED ITEMS
+========================================== */
+
+body.theme-sword
+.equipped-item {
+
+  background:
+    rgba(255,255,255,0.045);
+
+  border-color:
+    rgba(255,255,255,0.12);
+
   backdrop-filter:
     blur(8px);
 
   -webkit-backdrop-filter:
     blur(8px);
+
 }
 
-/* Dividers */
-body.theme-sword hr {
+
+body.theme-sword
+.equipped-item-icon {
+
+  color:
+    #ffffff;
+
+}
+
+
+/* ==========================================
+   BALANCE
+========================================== */
+
+body.theme-sword
+.balance-card {
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.055),
+      rgba(0,0,0,0.38)
+    );
+
   border-color:
-    rgba(255, 255, 255, 0.10);
+    rgba(255,255,255,0.13);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+    0 15px 45px
+    rgba(0,0,0,0.35);
+
 }
 
-  </style>
 
+/* ==========================================
+   STAT CARDS
+========================================== */
+
+body.theme-sword
+.stat-card,
+body.theme-sword
+.financial-card {
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.045),
+      rgba(0,0,0,0.36)
+    );
+
+  border-color:
+    rgba(255,255,255,0.11);
+
+  backdrop-filter:
+    blur(9px);
+
+  -webkit-backdrop-filter:
+    blur(9px);
+
+  box-shadow:
+    0 15px 45px
+    rgba(0,0,0,0.30);
+
+}
+
+
+body.theme-sword
+.stat-card:hover,
+body.theme-sword
+.financial-card:hover {
+
+  border-color:
+    rgba(255,255,255,0.24);
+
+  box-shadow:
+
+    0 18px 50px
+    rgba(0,0,0,0.40),
+
+    0 0 25px
+    rgba(255,255,255,0.04);
+
+}
+
+
+/* ==========================================
+   CHESS CARD
+========================================== */
+
+body.theme-sword
+.chess-card {
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.05),
+      rgba(0,0,0,0.40)
+    );
+
+  border-color:
+    rgba(255,255,255,0.13);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  box-shadow:
+    0 15px 50px
+    rgba(0,0,0,0.35);
+
+}
+
+
+body.theme-sword
+.chess-icon {
+
+  background:
+    rgba(255,255,255,0.055);
+
+  border-color:
+    rgba(255,255,255,0.12);
+
+  box-shadow:
+    inset 0 0 20px
+    rgba(255,255,255,0.04);
+
+}
+
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+body.theme-sword
+.action-button {
+
+  background:
+    rgba(0,0,0,0.34);
+
+  border-color:
+    rgba(255,255,255,0.13);
+
+  backdrop-filter:
+    blur(8px);
+
+  -webkit-backdrop-filter:
+    blur(8px);
+
+}
+
+
+body.theme-sword
+.action-button:hover {
+
+  background:
+    rgba(255,255,255,0.08);
+
+  border-color:
+    rgba(255,255,255,0.25);
+
+  box-shadow:
+    0 8px 28px
+    rgba(0,0,0,0.35);
+
+}
+
+
+body.theme-sword
+.action-button.primary {
+
+  background:
+    #ffffff;
+
+  color:
+    #050505;
+
+  border-color:
+    #ffffff;
+
+  box-shadow:
+    0 8px 30px
+    rgba(255,255,255,0.12);
+
+}
+
+
+body.theme-sword
+.action-button.primary:hover {
+
+  background:
+    #eeeeee;
+
+}
+
+
+/* ==========================================
+   LOADING / ERROR
+========================================== */
+
+body.theme-sword
+.loading,
+body.theme-sword
+.login-required {
+
+  color:
+    rgba(255,255,255,0.70);
+
+}
+
+
+body.theme-sword
+.error {
+
+  color:
+    #ff8585;
+
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+body.theme-sword
+.footer {
+
+  border-top-color:
+    rgba(255,255,255,0.10);
+
+}
+
+
+body.theme-sword
+.footer-links a:hover {
+
+  color:
+    #ffffff;
+
+}
+    
 </head>
 
 
