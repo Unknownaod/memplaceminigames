@@ -1655,305 +1655,1282 @@
   ></div>
 
 
-  <script>
+<script>
 
-    /* ==========================================
-       API
-    ========================================== */
+  /* ==========================================
+     API
+  ========================================== */
 
-    const API =
-      "https://api.memplace.xyz";
-
-
-    /* ==========================================
-       STATE
-    ========================================== */
-
-    let inventory = [];
-
-    let currentUser = null;
-
-    let equipment = {
-
-      equippedNameplate:
-        null,
-
-      equippedTitle:
-        null,
-
-      equippedBadge:
-        null,
-
-      equippedTheme:
-        null
-
-    };
+  const API =
+    "https://api.memplace.xyz";
 
 
-    /* ==========================================
-       HELPERS
-    ========================================== */
+  /* ==========================================
+     STATE
+  ========================================== */
 
-    function escapeHtml(value) {
+  let inventory = [];
 
-      return String(
-        value ?? ""
+  let currentUser = null;
+
+  let equipment = {
+
+    equippedNameplate:
+      null,
+
+    equippedTitle:
+      null,
+
+    equippedBadge:
+      null,
+
+    equippedTheme:
+      null
+
+  };
+
+
+  /* ==========================================
+     HELPERS
+  ========================================== */
+
+  function escapeHtml(value) {
+
+    return String(
+      value ?? ""
+    )
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  }
+
+
+  /* ==========================================
+     PROFILE TITLE ITEMS
+  ==========================================
+
+     These are legacy items that may have been
+     created as profile_cosmetic.
+
+     New items should use:
+       type: "profile_title"
+
+  ========================================== */
+
+  const PROFILE_TITLE_ITEMS =
+    new Set([
+      "legendary-title"
+    ]);
+
+
+  /* ==========================================
+     IS PROFILE TITLE
+  ========================================== */
+
+  function isProfileTitle(
+    type,
+    itemId = null
+  ) {
+
+    /* ------------------------------------------
+       Correct/new item type
+    ------------------------------------------ */
+
+    if (
+      type === "profile_title"
+    ) {
+
+      return true;
+
+    }
+
+
+    /* ------------------------------------------
+       Legacy title item
+    ------------------------------------------ */
+
+    if (
+      type === "profile_cosmetic" &&
+      itemId &&
+      PROFILE_TITLE_ITEMS.has(
+        String(itemId)
       )
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    ) {
+
+      return true;
 
     }
 
 
-    /* ==========================================
-       PROFILE TITLE ITEMS
-    ========================================== */
+    return false;
 
-    const PROFILE_TITLE_ITEMS =
-      new Set([
-        "legendary-title"
-      ]);
+  }
 
 
-    /* ==========================================
-       GET ITEM TYPE LABEL
-    ========================================== */
+  /* ==========================================
+     GET ITEM TYPE LABEL
+  ========================================== */
 
-    function getItemTypeLabel(
-      type,
-      itemId = null
+  function getItemTypeLabel(
+    type,
+    itemId = null
+  ) {
+
+    /* ------------------------------------------
+       PROFILE TITLE
+    ------------------------------------------ */
+
+    if (
+      isProfileTitle(
+        type,
+        itemId
+      )
     ) {
 
-      /*
-       * profile_cosmetic normally means
-       * nameplate, except title cosmetics.
-       */
-
-      if (
-        type === "profile_cosmetic" &&
-        itemId &&
-        PROFILE_TITLE_ITEMS.has(
-          itemId
-        )
-      ) {
-
-        return "Profile Title";
-
-      }
-
-
-      if (
-        type === "profile_cosmetic"
-      ) {
-
-        return "Nameplate";
-
-      }
-
-
-      if (
-        type === "profile_badge"
-      ) {
-
-        return "Profile Badge";
-
-      }
-
-
-      if (
-        type === "profile_theme"
-      ) {
-
-        return "Profile Theme";
-
-      }
-
-
-      return type
-        ? String(type)
-            .replaceAll("_", " ")
-        : "Item";
+      return "Profile Title";
 
     }
 
 
-    /* ==========================================
-       GET EQUIPMENT FIELD
-    ========================================== */
+    /* ------------------------------------------
+       NAMEPLATE
+    ------------------------------------------ */
 
-    function getEquipmentField(
-      type,
-      itemId = null
+    if (
+      type === "profile_cosmetic"
     ) {
 
-      /*
-       * Legendary Title is stored as
-       * profile_cosmetic but has its own
-       * equipment slot.
-       */
-
-      if (
-        type === "profile_cosmetic" &&
-        itemId &&
-        PROFILE_TITLE_ITEMS.has(
-          itemId
-        )
-      ) {
-
-        return "equippedTitle";
-
-      }
-
-
-      if (
-        type === "profile_cosmetic"
-      ) {
-
-        return "equippedNameplate";
-
-      }
-
-
-      if (
-        type === "profile_badge"
-      ) {
-
-        return "equippedBadge";
-
-      }
-
-
-      if (
-        type === "profile_theme"
-      ) {
-
-        return "equippedTheme";
-
-      }
-
-
-      return null;
+      return "Nameplate";
 
     }
 
 
-    /* ==========================================
-       GET THEME CLASS
-    ========================================== */
+    /* ------------------------------------------
+       BADGE
+    ------------------------------------------ */
 
-    function getThemeClass(
-      itemId
+    if (
+      type === "profile_badge"
     ) {
 
-      if (
-        itemId === "mixing-after-dark"
-      ) {
-
-        return "theme-mixing-after-dark";
-
-      }
-
-
-      return "";
+      return "Profile Badge";
 
     }
 
 
-    /* ==========================================
-       GET TITLE CLASS
-    ========================================== */
+    /* ------------------------------------------
+       PROFILE THEME
+    ------------------------------------------ */
 
-    function getTitleClass(
-      itemId
+    if (
+      type === "profile_theme"
     ) {
 
-      if (
-        PROFILE_TITLE_ITEMS.has(
-          itemId
-        )
-      ) {
-
-        return "title-item";
-
-      }
-
-
-      return "";
+      return "Profile Theme";
 
     }
 
 
-    /* ==========================================
-       SHOW TOAST
-    ========================================== */
+    return type
+      ? String(type)
+          .replaceAll("_", " ")
+      : "Item";
 
-    function showToast(
-      message,
-      type = "success"
+  }
+
+
+  /* ==========================================
+     GET EQUIPMENT FIELD
+  ========================================== */
+
+  function getEquipmentField(
+    type,
+    itemId = null
+  ) {
+
+    /* ------------------------------------------
+       PROFILE TITLE
+
+       This MUST come before
+       profile_cosmetic.
+
+       Correct:
+         profile_title
+           ↓
+         equippedTitle
+
+       Legacy:
+         profile_cosmetic +
+         legendary-title
+           ↓
+         equippedTitle
+    ------------------------------------------ */
+
+    if (
+      type === "profile_title"
     ) {
 
-      const container =
-        document.getElementById(
-          "toastContainer"
-        );
+      return "equippedTitle";
+
+    }
 
 
-      const toast =
-        document.createElement("div");
+    if (
+      type === "profile_cosmetic" &&
+      itemId &&
+      PROFILE_TITLE_ITEMS.has(
+        String(itemId)
+      )
+    ) {
+
+      return "equippedTitle";
+
+    }
 
 
-      toast.className =
-        `toast ${type}`;
+    /* ------------------------------------------
+       PROFILE NAMEPLATE
+    ------------------------------------------ */
+
+    if (
+      type === "profile_cosmetic"
+    ) {
+
+      return "equippedNameplate";
+
+    }
 
 
-      toast.textContent =
-        message;
+    /* ------------------------------------------
+       PROFILE BADGE
+    ------------------------------------------ */
+
+    if (
+      type === "profile_badge"
+    ) {
+
+      return "equippedBadge";
+
+    }
 
 
-      container.appendChild(
-        toast
+    /* ------------------------------------------
+       PROFILE THEME
+    ------------------------------------------ */
+
+    if (
+      type === "profile_theme"
+    ) {
+
+      return "equippedTheme";
+
+    }
+
+
+    return null;
+
+  }
+
+
+  /* ==========================================
+     GET THEME CLASS
+  ========================================== */
+
+  function getThemeClass(
+    itemId
+  ) {
+
+    if (
+      itemId === "mixing-after-dark"
+    ) {
+
+      return "theme-mixing-after-dark";
+
+    }
+
+
+    return "";
+
+  }
+
+
+  /* ==========================================
+     GET TITLE CLASS
+  ========================================== */
+
+  function getTitleClass(
+    itemId,
+    type
+  ) {
+
+    if (
+      isProfileTitle(
+        type,
+        itemId
+      )
+    ) {
+
+      return "title-item";
+
+    }
+
+
+    return "";
+
+  }
+
+
+  /* ==========================================
+     SHOW TOAST
+  ========================================== */
+
+  function showToast(
+    message,
+    type = "success"
+  ) {
+
+    const container =
+      document.getElementById(
+        "toastContainer"
       );
+
+
+    const toast =
+      document.createElement(
+        "div"
+      );
+
+
+    toast.className =
+      `toast ${type}`;
+
+
+    toast.textContent =
+      message;
+
+
+    container.appendChild(
+      toast
+    );
+
+
+    setTimeout(() => {
+
+      toast.style.opacity =
+        "0";
+
+      toast.style.transform =
+        "translateY(8px)";
+
+      toast.style.transition =
+        "opacity 0.2s ease, transform 0.2s ease";
 
 
       setTimeout(() => {
 
-        toast.style.opacity =
-          "0";
+        toast.remove();
 
-        toast.style.transform =
-          "translateY(8px)";
+      }, 220);
 
-        toast.style.transition =
-          "opacity 0.2s ease, transform 0.2s ease";
+    }, 2800);
+
+  }
 
 
-        setTimeout(() => {
+  /* ==========================================
+     LOAD USER
+  ========================================== */
 
-          toast.remove();
+  async function loadUser() {
 
-        }, 220);
+    const response =
+      await fetch(
+        `${API}/api/user/me`,
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store"
+        }
+      );
 
-      }, 2800);
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.success ||
+      !data.authenticated
+    ) {
+
+      throw new Error(
+        "You must be signed in to view your inventory."
+      );
 
     }
 
 
-    /* ==========================================
-       LOAD USER
-    ========================================== */
+    currentUser =
+      data.user;
 
-    async function loadUser() {
+
+    equipment = {
+
+      equippedNameplate:
+        data.user.equippedNameplate ||
+        null,
+
+      equippedTitle:
+        data.user.equippedTitle ||
+        null,
+
+      equippedBadge:
+        data.user.equippedBadge ||
+        null,
+
+      equippedTheme:
+        data.user.equippedTheme ||
+        null
+
+    };
+
+  }
+
+
+  /* ==========================================
+     LOAD INVENTORY
+  ========================================== */
+
+  async function loadInventory() {
+
+    const response =
+      await fetch(
+        `${API}/api/shop/inventory`,
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store"
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok
+    ) {
+
+      throw new Error(
+        data.error ||
+        "Failed to load inventory."
+      );
+
+    }
+
+
+    if (
+      Array.isArray(data)
+    ) {
+
+      inventory =
+        data;
+
+    } else if (
+      Array.isArray(
+        data.inventory
+      )
+    ) {
+
+      inventory =
+        data.inventory;
+
+    } else if (
+      Array.isArray(
+        data.items
+      )
+    ) {
+
+      inventory =
+        data.items;
+
+    } else {
+
+      inventory =
+        [];
+
+    }
+
+  }
+
+
+  /* ==========================================
+     FIND OWNED ITEM
+  ========================================== */
+
+  function findInventoryItem(
+    itemId
+  ) {
+
+    if (!itemId) {
+      return null;
+    }
+
+
+    return inventory.find(
+      item =>
+        String(
+          item.itemId ??
+          item.id
+        ) === String(itemId)
+    ) || null;
+
+  }
+
+
+  /* ==========================================
+     GET ITEM DETAILS
+  ========================================== */
+
+  function getInventoryItemDetails(
+    inventoryItem
+  ) {
+
+    return {
+
+      id:
+        inventoryItem.itemId ||
+        inventoryItem.id,
+
+      name:
+        inventoryItem.name ||
+        "Unknown Item",
+
+      description:
+        inventoryItem.description ||
+        "",
+
+      type:
+        inventoryItem.type ||
+        "cosmetic",
+
+      icon:
+        inventoryItem.icon ||
+        "✦",
+
+      quantity:
+        Number(
+          inventoryItem.quantity ||
+          1
+        )
+
+    };
+
+  }
+
+
+  /* ==========================================
+     RENDER EQUIPMENT
+  ========================================== */
+
+  function renderEquipment() {
+
+    const grid =
+      document.getElementById(
+        "equipmentGrid"
+      );
+
+
+    const nameplateItem =
+      findInventoryItem(
+        equipment.equippedNameplate
+      );
+
+
+    const titleItem =
+      findInventoryItem(
+        equipment.equippedTitle
+      );
+
+
+    const badgeItem =
+      findInventoryItem(
+        equipment.equippedBadge
+      );
+
+
+    const themeItem =
+      findInventoryItem(
+        equipment.equippedTheme
+      );
+
+
+    const nameplate =
+      nameplateItem
+        ? getInventoryItemDetails(
+            nameplateItem
+          )
+        : null;
+
+
+    const title =
+      titleItem
+        ? getInventoryItemDetails(
+            titleItem
+          )
+        : null;
+
+
+    const badge =
+      badgeItem
+        ? getInventoryItemDetails(
+            badgeItem
+          )
+        : null;
+
+
+    const theme =
+      themeItem
+        ? getInventoryItemDetails(
+            themeItem
+          )
+        : null;
+
+
+    const equippedCount =
+      Number(!!nameplate) +
+      Number(!!title) +
+      Number(!!badge) +
+      Number(!!theme);
+
+
+    document.getElementById(
+      "equipmentCount"
+    ).textContent =
+      `${equippedCount} / 4 equipped`;
+
+
+    grid.innerHTML = `
+
+      <!-- NAMEPLATE -->
+
+      <div class="equipment-card">
+
+        <div class="equipment-card-inner">
+
+          <div class="equipment-icon">
+
+            ${
+              nameplate
+                ? escapeHtml(
+                    nameplate.icon
+                  )
+                : "✦"
+            }
+
+          </div>
+
+
+          <div class="equipment-info">
+
+            <div class="equipment-slot">
+              Nameplate
+            </div>
+
+
+            ${
+              nameplate
+
+                ? `
+
+                  <div class="equipment-name">
+                    ${escapeHtml(
+                      nameplate.name
+                    )}
+                  </div>
+
+                  <div
+                    class="equipped-pill"
+                    style="margin-top:7px;"
+                  >
+                    Equipped
+                  </div>
+
+                `
+
+                : `
+
+                  <div class="equipment-empty">
+                    No nameplate equipped
+                  </div>
+
+                `
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PROFILE TITLE -->
+
+      <div
+        class="
+          equipment-card
+          title-equipment
+        "
+      >
+
+        <div class="equipment-card-inner">
+
+          <div class="equipment-icon">
+
+            ${
+              title
+                ? escapeHtml(
+                    title.icon
+                  )
+                : "✦"
+            }
+
+          </div>
+
+
+          <div class="equipment-info">
+
+            <div class="equipment-slot">
+              Profile Title
+            </div>
+
+
+            ${
+              title
+
+                ? `
+
+                  <div class="equipment-name">
+                    ${escapeHtml(
+                      title.name
+                    )}
+                  </div>
+
+                  <div
+                    class="equipped-pill"
+                    style="margin-top:7px;"
+                  >
+                    Equipped
+                  </div>
+
+                `
+
+                : `
+
+                  <div class="equipment-empty">
+                    No profile title equipped
+                  </div>
+
+                `
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- BADGE -->
+
+      <div class="equipment-card">
+
+        <div class="equipment-card-inner">
+
+          <div class="equipment-icon">
+
+            ${
+              badge
+                ? escapeHtml(
+                    badge.icon
+                  )
+                : "♛"
+            }
+
+          </div>
+
+
+          <div class="equipment-info">
+
+            <div class="equipment-slot">
+              Badge
+            </div>
+
+
+            ${
+              badge
+
+                ? `
+
+                  <div class="equipment-name">
+                    ${escapeHtml(
+                      badge.name
+                    )}
+                  </div>
+
+                  <div
+                    class="equipped-pill"
+                    style="margin-top:7px;"
+                  >
+                    Equipped
+                  </div>
+
+                `
+
+                : `
+
+                  <div class="equipment-empty">
+                    No badge equipped
+                  </div>
+
+                `
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PROFILE THEME -->
+
+      <div
+        class="
+          equipment-card
+          ${
+            theme
+              ? "theme-equipment"
+              : ""
+          }
+        "
+      >
+
+        <div class="equipment-card-inner">
+
+          <div class="equipment-icon">
+
+            ${
+              theme
+                ? escapeHtml(
+                    theme.icon
+                  )
+                : "☾"
+            }
+
+          </div>
+
+
+          <div class="equipment-info">
+
+            <div class="equipment-slot">
+              Profile Theme
+            </div>
+
+
+            ${
+              theme
+
+                ? `
+
+                  <div class="equipment-name">
+                    ${escapeHtml(
+                      theme.name
+                    )}
+                  </div>
+
+                  <div
+                    class="equipped-pill"
+                    style="margin-top:7px;"
+                  >
+                    Equipped
+                  </div>
+
+                `
+
+                : `
+
+                  <div class="equipment-empty">
+                    No profile theme equipped
+                  </div>
+
+                `
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* ==========================================
+     RENDER INVENTORY
+  ========================================== */
+
+  function renderInventory() {
+
+    const container =
+      document.getElementById(
+        "inventoryContent"
+      );
+
+
+    document.getElementById(
+      "inventoryCount"
+    ).textContent =
+      `${inventory.length} ${
+        inventory.length === 1
+          ? "item"
+          : "items"
+      }`;
+
+
+    if (
+      inventory.length === 0
+    ) {
+
+      container.innerHTML = `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ✦
+          </div>
+
+          <h3 class="empty-title">
+            Your inventory is empty
+          </h3>
+
+          <p class="empty-text">
+            Items you purchase from the shop
+            will appear here. You can equip
+            profile cosmetics, titles, badges,
+            and profile themes from your inventory.
+          </p>
+
+          <a
+            href="/shop"
+            class="button button-primary"
+          >
+            Browse Shop
+          </a>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML = `
+
+      <div class="inventory-grid">
+
+        ${inventory.map(
+          item => {
+
+            const details =
+              getInventoryItemDetails(
+                item
+              );
+
+
+            /*
+             * IMPORTANT:
+             *
+             * This determines the slot.
+             *
+             * profile_title
+             *      ↓
+             * equippedTitle
+             *
+             * legendary-title stored as
+             * profile_cosmetic
+             *      ↓
+             * equippedTitle
+             */
+
+            const slot =
+              getEquipmentField(
+                details.type,
+                details.id
+              );
+
+
+            const isEquipped =
+              slot &&
+              equipment[slot] ===
+                details.id;
+
+
+            const themeClass =
+              getThemeClass(
+                details.id
+              );
+
+
+            const titleClass =
+              getTitleClass(
+                details.id,
+                details.type
+              );
+
+
+            return `
+
+              <article
+                class="
+                  item-card
+                  ${themeClass}
+                  ${titleClass}
+                  ${
+                    isEquipped
+                      ? "equipped"
+                      : ""
+                  }
+                "
+              >
+
+                ${
+                  isEquipped
+
+                    ? `
+
+                      <div class="equipped-label">
+                        Equipped
+                      </div>
+
+                    `
+
+                    : ""
+                }
+
+
+                <div class="item-icon">
+
+                  ${escapeHtml(
+                    details.icon
+                  )}
+
+                </div>
+
+
+                <div class="item-type">
+
+                  ${escapeHtml(
+                    getItemTypeLabel(
+                      details.type,
+                      details.id
+                    )
+                  )}
+
+                </div>
+
+
+                <h3 class="item-name">
+
+                  ${escapeHtml(
+                    details.name
+                  )}
+
+                </h3>
+
+
+                <p class="item-description">
+
+                  ${escapeHtml(
+                    details.description
+                  )}
+
+                </p>
+
+
+                <div class="item-footer">
+
+                  <span class="quantity">
+
+                    Quantity:
+                    ${details.quantity}
+
+                  </span>
+
+
+                  ${
+                    slot
+
+                      ? `
+
+                        <button
+                          class="
+                            item-button
+                            ${
+                              isEquipped
+                                ? "unequip"
+                                : ""
+                            }
+                          "
+                          data-item-id="${escapeHtml(
+                            details.id
+                          )}"
+                          data-action="${
+                            isEquipped
+                              ? "unequip"
+                              : "equip"
+                          }"
+                        >
+
+                          ${
+                            isEquipped
+                              ? "Unequip"
+                              : "Equip"
+                          }
+
+                        </button>
+
+                      `
+
+                      : `
+
+                        <span class="quantity">
+                          Cosmetic
+                        </span>
+
+                      `
+                  }
+
+                </div>
+
+              </article>
+
+            `;
+
+          }
+        ).join("")}
+
+      </div>
+
+    `;
+
+
+    bindItemButtons();
+
+  }
+
+
+  /* ==========================================
+     BUTTON EVENTS
+  ========================================== */
+
+  function bindItemButtons() {
+
+    document
+      .querySelectorAll(
+        "[data-item-id]"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            const itemId =
+              button.dataset.itemId;
+
+
+            const action =
+              button.dataset.action;
+
+
+            await changeEquipment(
+              itemId,
+              action,
+              button
+            );
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /* ==========================================
+     EQUIP / UNEQUIP
+  ========================================== */
+
+  async function changeEquipment(
+    itemId,
+    action,
+    button
+  ) {
+
+    if (
+      button.disabled
+    ) {
+
+      return;
+
+    }
+
+
+    button.disabled =
+      true;
+
+
+    const originalText =
+      button.textContent;
+
+
+    button.textContent =
+      action === "equip"
+        ? "Equipping..."
+        : "Removing...";
+
+
+    try {
 
       const response =
         await fetch(
-          `${API}/api/user/me`,
+          `${API}/api/shop/equip`,
           {
-            method: "GET",
-            credentials: "include",
-            cache: "no-store"
+            method: "POST",
+
+            credentials:
+              "include",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+                itemId,
+                action
+              })
           }
         );
 
@@ -1964,1108 +2941,239 @@
 
       if (
         !response.ok ||
-        !data.success ||
-        !data.authenticated
-      ) {
-
-        throw new Error(
-          "You must be signed in to view your inventory."
-        );
-
-      }
-
-
-      currentUser =
-        data.user;
-
-
-      equipment = {
-
-        equippedNameplate:
-          data.user.equippedNameplate ||
-          null,
-
-        equippedTitle:
-          data.user.equippedTitle ||
-          null,
-
-        equippedBadge:
-          data.user.equippedBadge ||
-          null,
-
-        equippedTheme:
-          data.user.equippedTheme ||
-          null
-
-      };
-
-    }
-
-
-    /* ==========================================
-       LOAD INVENTORY
-    ========================================== */
-
-    async function loadInventory() {
-
-      const response =
-        await fetch(
-          `${API}/api/shop/inventory`,
-          {
-            method: "GET",
-            credentials: "include",
-            cache: "no-store"
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if (
-        !response.ok
+        !data.success
       ) {
 
         throw new Error(
           data.error ||
-          "Failed to load inventory."
+          "Failed to update equipment."
         );
 
       }
 
 
-      /*
-       * Support the different response
-       * structures used by the API.
-       */
+      /* ==========================================
+         UPDATE EQUIPMENT
+      ========================================== */
 
       if (
-        Array.isArray(data)
+        data.equipment
       ) {
 
-        inventory =
-          data;
+        if (
+          Object.prototype.hasOwnProperty.call(
+            data.equipment,
+            "equippedNameplate"
+          )
+        ) {
 
-      } else if (
-        Array.isArray(
-          data.inventory
-        )
-      ) {
+          equipment.equippedNameplate =
+            data.equipment.equippedNameplate;
 
-        inventory =
-          data.inventory;
+        }
 
-      } else if (
-        Array.isArray(
-          data.items
-        )
-      ) {
 
-        inventory =
-          data.items;
+        if (
+          Object.prototype.hasOwnProperty.call(
+            data.equipment,
+            "equippedTitle"
+          )
+        ) {
+
+          equipment.equippedTitle =
+            data.equipment.equippedTitle;
+
+        }
+
+
+        if (
+          Object.prototype.hasOwnProperty.call(
+            data.equipment,
+            "equippedBadge"
+          )
+        ) {
+
+          equipment.equippedBadge =
+            data.equipment.equippedBadge;
+
+        }
+
+
+        if (
+          Object.prototype.hasOwnProperty.call(
+            data.equipment,
+            "equippedTheme"
+          )
+        ) {
+
+          equipment.equippedTheme =
+            data.equipment.equippedTheme;
+
+        }
 
       } else {
 
-        inventory =
-          [];
-
-      }
-
-    }
-
-
-    /* ==========================================
-       FIND OWNED ITEM
-    ========================================== */
-
-    function findInventoryItem(
-      itemId
-    ) {
-
-      if (!itemId) {
-        return null;
-      }
-
-
-      return inventory.find(
-        item =>
-          String(
-            item.itemId ??
-            item.id
-          ) === String(itemId)
-      ) || null;
-
-    }
-
-
-    /* ==========================================
-       GET ITEM DETAILS
-    ========================================== */
-
-    function getInventoryItemDetails(
-      inventoryItem
-    ) {
-
-      return {
-
-        id:
-          inventoryItem.itemId ||
-          inventoryItem.id,
-
-        name:
-          inventoryItem.name ||
-          "Unknown Item",
-
-        description:
-          inventoryItem.description ||
-          "",
-
-        type:
-          inventoryItem.type ||
-          "cosmetic",
-
-        icon:
-          inventoryItem.icon ||
-          "✦",
-
-        quantity:
-          Number(
-            inventoryItem.quantity ||
-            1
-          )
-
-      };
-
-    }
-
-
-    /* ==========================================
-       RENDER EQUIPMENT
-    ========================================== */
-
-    function renderEquipment() {
-
-      const grid =
-        document.getElementById(
-          "equipmentGrid"
-        );
-
-
-      const nameplateItem =
-        findInventoryItem(
-          equipment.equippedNameplate
-        );
-
-
-      const titleItem =
-        findInventoryItem(
-          equipment.equippedTitle
-        );
-
-
-      const badgeItem =
-        findInventoryItem(
-          equipment.equippedBadge
-        );
-
-
-      const themeItem =
-        findInventoryItem(
-          equipment.equippedTheme
-        );
-
-
-      const nameplate =
-        nameplateItem
-          ? getInventoryItemDetails(
-              nameplateItem
-            )
-          : null;
-
-
-      const title =
-        titleItem
-          ? getInventoryItemDetails(
-              titleItem
-            )
-          : null;
-
-
-      const badge =
-        badgeItem
-          ? getInventoryItemDetails(
-              badgeItem
-            )
-          : null;
-
-
-      const theme =
-        themeItem
-          ? getInventoryItemDetails(
-              themeItem
-            )
-          : null;
-
-
-      const equippedCount =
-        Number(!!nameplate) +
-        Number(!!title) +
-        Number(!!badge) +
-        Number(!!theme);
-
-
-      document.getElementById(
-        "equipmentCount"
-      ).textContent =
-        `${equippedCount} / 4 equipped`;
-
-
-      grid.innerHTML = `
-
-        <!-- NAMEPLATE -->
-
-        <div class="equipment-card">
-
-          <div class="equipment-card-inner">
-
-            <div class="equipment-icon">
-
-              ${
-                nameplate
-                  ? escapeHtml(
-                      nameplate.icon
-                    )
-                  : "✦"
-              }
-
-            </div>
-
-
-            <div class="equipment-info">
-
-              <div class="equipment-slot">
-                Nameplate
-              </div>
-
-
-              ${
-                nameplate
-
-                  ? `
-
-                    <div class="equipment-name">
-                      ${escapeHtml(
-                        nameplate.name
-                      )}
-                    </div>
-
-                    <div
-                      class="equipped-pill"
-                      style="margin-top:7px;"
-                    >
-                      Equipped
-                    </div>
-
-                  `
-
-                  : `
-
-                    <div class="equipment-empty">
-                      No nameplate equipped
-                    </div>
-
-                  `
-              }
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- PROFILE TITLE -->
-
-        <div
-          class="
-            equipment-card
-            title-equipment
-          "
-        >
-
-          <div class="equipment-card-inner">
-
-            <div class="equipment-icon">
-
-              ${
-                title
-                  ? escapeHtml(
-                      title.icon
-                    )
-                  : "♛"
-              }
-
-            </div>
-
-
-            <div class="equipment-info">
-
-              <div class="equipment-slot">
-                Profile Title
-              </div>
-
-
-              ${
-                title
-
-                  ? `
-
-                    <div class="equipment-name">
-                      ${escapeHtml(
-                        title.name
-                      )}
-                    </div>
-
-                    <div
-                      class="equipped-pill"
-                      style="margin-top:7px;"
-                    >
-                      Equipped
-                    </div>
-
-                  `
-
-                  : `
-
-                    <div class="equipment-empty">
-                      No profile title equipped
-                    </div>
-
-                  `
-              }
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- BADGE -->
-
-        <div class="equipment-card">
-
-          <div class="equipment-card-inner">
-
-            <div class="equipment-icon">
-
-              ${
-                badge
-                  ? escapeHtml(
-                      badge.icon
-                    )
-                  : "♛"
-              }
-
-            </div>
-
-
-            <div class="equipment-info">
-
-              <div class="equipment-slot">
-                Badge
-              </div>
-
-
-              ${
-                badge
-
-                  ? `
-
-                    <div class="equipment-name">
-                      ${escapeHtml(
-                        badge.name
-                      )}
-                    </div>
-
-                    <div
-                      class="equipped-pill"
-                      style="margin-top:7px;"
-                    >
-                      Equipped
-                    </div>
-
-                  `
-
-                  : `
-
-                    <div class="equipment-empty">
-                      No badge equipped
-                    </div>
-
-                  `
-              }
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- PROFILE THEME -->
-
-        <div
-          class="
-            equipment-card
-            ${
-              theme
-                ? "theme-equipment"
-                : ""
-            }
-          "
-        >
-
-          <div class="equipment-card-inner">
-
-            <div class="equipment-icon">
-
-              ${
-                theme
-                  ? escapeHtml(
-                      theme.icon
-                    )
-                  : "☾"
-              }
-
-            </div>
-
-
-            <div class="equipment-info">
-
-              <div class="equipment-slot">
-                Profile Theme
-              </div>
-
-
-              ${
-                theme
-
-                  ? `
-
-                    <div class="equipment-name">
-                      ${escapeHtml(
-                        theme.name
-                      )}
-                    </div>
-
-                    <div
-                      class="equipped-pill"
-                      style="margin-top:7px;"
-                    >
-                      Equipped
-                    </div>
-
-                  `
-
-                  : `
-
-                    <div class="equipment-empty">
-                      No profile theme equipped
-                    </div>
-
-                  `
-              }
-
-            </div>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-
-    /* ==========================================
-       RENDER INVENTORY
-    ========================================== */
-
-    function renderInventory() {
-
-      const container =
-        document.getElementById(
-          "inventoryContent"
-        );
-
-
-      document.getElementById(
-        "inventoryCount"
-      ).textContent =
-        `${inventory.length} ${
-          inventory.length === 1
-            ? "item"
-            : "items"
-        }`;
-
-
-      if (
-        inventory.length === 0
-      ) {
-
-        container.innerHTML = `
-
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              ✦
-            </div>
-
-            <h3 class="empty-title">
-              Your inventory is empty
-            </h3>
-
-            <p class="empty-text">
-              Items you purchase from the shop
-              will appear here. You can equip
-              profile cosmetics, titles, badges,
-              and profile themes from your inventory.
-            </p>
-
-            <a
-              href="/shop"
-              class="button button-primary"
-            >
-              Browse Shop
-            </a>
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      container.innerHTML = `
-
-        <div class="inventory-grid">
-
-          ${inventory.map(
-            item => {
-
-              const details =
-                getInventoryItemDetails(
-                  item
-                );
-
-
-              const slot =
-                getEquipmentField(
-                  details.type,
-                  details.id
-                );
-
-
-              const isEquipped =
-                slot &&
-                equipment[slot] ===
-                  details.id;
-
-
-              const themeClass =
-                getThemeClass(
-                  details.id
-                );
-
-
-              const titleClass =
-                getTitleClass(
-                  details.id
-                );
-
-
-              return `
-
-                <article
-                  class="
-                    item-card
-                    ${themeClass}
-                    ${titleClass}
-                    ${
-                      isEquipped
-                        ? "equipped"
-                        : ""
-                    }
-                  "
-                >
-
-                  ${
-                    isEquipped
-
-                      ? `
-
-                        <div class="equipped-label">
-                          Equipped
-                        </div>
-
-                      `
-
-                      : ""
-                  }
-
-
-                  <div class="item-icon">
-
-                    ${escapeHtml(
-                      details.icon
-                    )}
-
-                  </div>
-
-
-                  <div class="item-type">
-
-                    ${escapeHtml(
-                      getItemTypeLabel(
-                        details.type,
-                        details.id
-                      )
-                    )}
-
-                  </div>
-
-
-                  <h3 class="item-name">
-
-                    ${escapeHtml(
-                      details.name
-                    )}
-
-                  </h3>
-
-
-                  <p class="item-description">
-
-                    ${escapeHtml(
-                      details.description
-                    )}
-
-                  </p>
-
-
-                  <div class="item-footer">
-
-                    <span class="quantity">
-
-                      Quantity:
-                      ${details.quantity}
-
-                    </span>
-
-
-                    ${
-                      slot
-
-                        ? `
-
-                          <button
-                            class="
-                              item-button
-                              ${
-                                isEquipped
-                                  ? "unequip"
-                                  : ""
-                              }
-                            "
-                            data-item-id="${escapeHtml(
-                              details.id
-                            )}"
-                            data-action="${
-                              isEquipped
-                                ? "unequip"
-                                : "equip"
-                            }"
-                          >
-
-                            ${
-                              isEquipped
-                                ? "Unequip"
-                                : "Equip"
-                            }
-
-                          </button>
-
-                        `
-
-                        : `
-
-                          <span class="quantity">
-                            Cosmetic
-                          </span>
-
-                        `
-                    }
-
-                  </div>
-
-                </article>
-
-              `;
-
-            }
-          ).join("")}
-
-        </div>
-
-      `;
-
-
-      bindItemButtons();
-
-    }
-
-
-    /* ==========================================
-       BUTTON EVENTS
-    ========================================== */
-
-    function bindItemButtons() {
-
-      document
-        .querySelectorAll(
-          "[data-item-id]"
-        )
-        .forEach(button => {
-
-          button.addEventListener(
-            "click",
-            async () => {
-
-              const itemId =
-                button.dataset.itemId;
-
-
-              const action =
-                button.dataset.action;
-
-
-              await changeEquipment(
-                itemId,
-                action,
-                button
-              );
-
-            }
-          );
-
-        });
-
-    }
-
-
-    /* ==========================================
-       EQUIP / UNEQUIP
-    ========================================== */
-
-    async function changeEquipment(
-      itemId,
-      action,
-      button
-    ) {
-
-      if (
-        button.disabled
-      ) {
-
-        return;
-
-      }
-
-
-      button.disabled =
-        true;
-
-
-      const originalText =
-        button.textContent;
-
-
-      button.textContent =
-        action === "equip"
-          ? "Equipping..."
-          : "Removing...";
-
-
-      try {
-
-        const response =
-          await fetch(
-            `${API}/api/shop/equip`,
-            {
-              method: "POST",
-
-              credentials:
-                "include",
-
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-                  itemId,
-                  action
-                })
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (
-          !response.ok ||
-          !data.success
-        ) {
-
-          throw new Error(
-            data.error ||
-            "Failed to update equipment."
-          );
-
-        }
-
-
         /* ==========================================
-           UPDATE EQUIPMENT
+           FALLBACK EQUIPMENT UPDATE
         ========================================== */
 
-        if (
-          data.equipment
-        ) {
+        const item =
+          findInventoryItem(
+            itemId
+          );
 
 
-          if (
-            Object.prototype.hasOwnProperty.call(
-              data.equipment,
-              "equippedNameplate"
-            )
-          ) {
+        if (item) {
 
-            equipment.equippedNameplate =
-              data.equipment.equippedNameplate;
-
-          }
-
-
-          if (
-            Object.prototype.hasOwnProperty.call(
-              data.equipment,
-              "equippedTitle"
-            )
-          ) {
-
-            equipment.equippedTitle =
-              data.equipment.equippedTitle;
-
-          }
-
-
-          if (
-            Object.prototype.hasOwnProperty.call(
-              data.equipment,
-              "equippedBadge"
-            )
-          ) {
-
-            equipment.equippedBadge =
-              data.equipment.equippedBadge;
-
-          }
-
-
-          if (
-            Object.prototype.hasOwnProperty.call(
-              data.equipment,
-              "equippedTheme"
-            )
-          ) {
-
-            equipment.equippedTheme =
-              data.equipment.equippedTheme;
-
-          }
-
-        } else {
-
-
-          /* ==========================================
-             FALLBACK EQUIPMENT UPDATE
-          ========================================== */
-
-          const item =
-            findInventoryItem(
-              itemId
+          const details =
+            getInventoryItemDetails(
+              item
             );
 
 
-          if (item) {
-
-            const details =
-              getInventoryItemDetails(
-                item
-              );
-
-
-            const slot =
-              getEquipmentField(
-                details.type,
-                details.id
-              );
+          const slot =
+            getEquipmentField(
+              details.type,
+              details.id
+            );
 
 
-            if (slot) {
+          if (slot) {
 
-              equipment[slot] =
-                action === "equip"
-                  ? itemId
-                  : null;
-
-            }
+            equipment[slot] =
+              action === "equip"
+                ? itemId
+                : null;
 
           }
 
         }
 
-
-        /* ==========================================
-           UPDATE CURRENT USER STATE
-        ========================================== */
-
-        if (
-          currentUser
-        ) {
-
-          currentUser.equippedNameplate =
-            equipment.equippedNameplate;
-
-          currentUser.equippedTitle =
-            equipment.equippedTitle;
-
-          currentUser.equippedBadge =
-            equipment.equippedBadge;
-
-          currentUser.equippedTheme =
-            equipment.equippedTheme;
-
-        }
+      }
 
 
-        renderEquipment();
+      /* ==========================================
+         UPDATE CURRENT USER STATE
+      ========================================== */
 
-        renderInventory();
+      if (
+        currentUser
+      ) {
 
+        currentUser.equippedNameplate =
+          equipment.equippedNameplate;
 
-        showToast(
-          action === "equip"
-            ? "Item equipped."
-            : "Item unequipped.",
-          "success"
-        );
+        currentUser.equippedTitle =
+          equipment.equippedTitle;
 
+        currentUser.equippedBadge =
+          equipment.equippedBadge;
 
-      } catch (error) {
-
-        console.error(
-          "EQUIPMENT ERROR:",
-          error
-        );
-
-
-        button.disabled =
-          false;
-
-
-        button.textContent =
-          originalText;
-
-
-        showToast(
-          error.message ||
-          "Something went wrong.",
-          "error"
-        );
+        currentUser.equippedTheme =
+          equipment.equippedTheme;
 
       }
 
-    }
+
+      renderEquipment();
+
+      renderInventory();
 
 
-    /* ==========================================
-       INITIALIZE
-    ========================================== */
-
-    async function initialize() {
-
-      try {
-
-        await loadUser();
-
-        await loadInventory();
+      showToast(
+        action === "equip"
+          ? "Item equipped."
+          : "Item unequipped.",
+        "success"
+      );
 
 
-        renderEquipment();
+    } catch (error) {
 
-        renderInventory();
-
-      } catch (error) {
-
-        console.error(
-          "INVENTORY LOAD ERROR:",
-          error
-        );
+      console.error(
+        "EQUIPMENT ERROR:",
+        error
+      );
 
 
-        document.getElementById(
-          "inventoryContent"
-        ).innerHTML = `
-
-          <div class="error-state">
-
-            ${escapeHtml(
-              error.message ||
-              "Unable to load your inventory."
-            )}
-
-          </div>
-
-        `;
+      button.disabled =
+        false;
 
 
-        document.getElementById(
-          "equipmentGrid"
-        ).innerHTML = `
+      button.textContent =
+        originalText;
 
-          <div class="error-state">
-            Unable to load your equipment.
-          </div>
 
-        `;
-
-      }
+      showToast(
+        error.message ||
+        "Something went wrong.",
+        "error"
+      );
 
     }
 
+  }
 
-    initialize();
 
-  </script>
+  /* ==========================================
+     INITIALIZE
+  ========================================== */
+
+  async function initialize() {
+
+    try {
+
+      await loadUser();
+
+      await loadInventory();
+
+
+      renderEquipment();
+
+      renderInventory();
+
+    } catch (error) {
+
+      console.error(
+        "INVENTORY LOAD ERROR:",
+        error
+      );
+
+
+      document.getElementById(
+        "inventoryContent"
+      ).innerHTML = `
+
+        <div class="error-state">
+
+          ${escapeHtml(
+            error.message ||
+            "Unable to load your inventory."
+          )}
+
+        </div>
+
+      `;
+
+
+      document.getElementById(
+        "equipmentGrid"
+      ).innerHTML = `
+
+        <div class="error-state">
+          Unable to load your equipment.
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  initialize();
+
+</script>
 
 </body>
 </html>
