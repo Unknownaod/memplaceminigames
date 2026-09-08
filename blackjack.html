@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Blackjack • Middle Eastern Mixing</title>
+
+  <style>
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191611;
+
+      --surface: #191611;
+      --surface-2: #211d17;
+      --surface-3: #29231c;
+
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.14);
+
+      --text: #f4efe7;
+      --muted: #9b9388;
+
+      --gold: #d6a84f;
+      --gold-2: #f0c76b;
+
+      --green: #53c58b;
+      --red: #df6868;
+
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--black);
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at top center,
+          rgba(214,168,79,0.06),
+          transparent 38%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      width: 100%;
+
+      background: rgba(11,10,8,0.92);
+      backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      width: min(1180px, calc(100% - 40px));
+      height: 72px;
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: var(--text);
+      text-decoration: none;
+
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 11px;
+
+      object-fit: cover;
+
+      border: 1px solid var(--border-strong);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-size: 14px;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 9px 11px;
+
+      border-radius: 10px;
+
+      color: var(--muted);
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      transition:
+        color .15s ease,
+        background .15s ease;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .nav svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .balance-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 8px 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 999px;
+
+      background: var(--surface);
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .coin {
+      width: 18px;
+      height: 18px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: var(--gold);
+      color: #241a08;
+
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .login-button,
+    .profile-button {
+      border: 1px solid var(--border);
+      background: var(--surface);
+
+      color: var(--text);
+
+      padding: 9px 13px;
+      border-radius: 10px;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      text-decoration: none;
+    }
+
+    .profile-button {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-button img {
+      width: 25px;
+      height: 25px;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+    }
+
+    /* ==========================================
+       MAIN
+    ========================================== */
+
+    main {
+      width: min(1000px, calc(100% - 40px));
+
+      margin: 0 auto;
+
+      padding: 44px 0 70px;
+    }
+
+    .page-heading {
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-top: 7px;
+
+      font-size: clamp(28px, 4vw, 42px);
+
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .page-description {
+      max-width: 600px;
+
+      margin-top: 10px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* ==========================================
+       GAME
+    ========================================== */
+
+    .game-card {
+      overflow: hidden;
+
+      border: 1px solid var(--border);
+      border-radius: 20px;
+
+      background: var(--surface);
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.22);
+    }
+
+    .game-topbar {
+      min-height: 62px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 16px;
+
+      padding: 14px 18px;
+
+      border-bottom: 1px solid var(--border);
+
+      background: var(--black-2);
+    }
+
+    .game-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .game-icon {
+      width: 32px;
+      height: 32px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+
+      background: var(--surface-3);
+
+      font-size: 17px;
+    }
+
+    .game-status {
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,0.05);
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .game-status.playing {
+      color: var(--gold-2);
+      background: rgba(214,168,79,0.09);
+    }
+
+    .game-status.win {
+      color: var(--green);
+      background: rgba(83,197,139,0.09);
+    }
+
+    .game-status.loss {
+      color: var(--red);
+      background: rgba(223,104,104,0.09);
+    }
+
+    /* ==========================================
+       TABLE
+    ========================================== */
+
+    .table {
+      padding: 30px;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(214,168,79,0.035),
+          transparent 55%
+        );
+    }
+
+    .hand-section {
+      padding: 4px 0 24px;
+    }
+
+    .hand-section + .hand-section {
+      padding-top: 26px;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .hand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 15px;
+    }
+
+    .hand-name {
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .hand-total {
+      min-width: 38px;
+      height: 28px;
+
+      display: grid;
+      place-items: center;
+
+      padding: 0 9px;
+
+      border-radius: 8px;
+
+      background: var(--surface-3);
+
+      color: var(--text);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .cards {
+      min-height: 150px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      overflow-x: auto;
+
+      padding: 4px;
+    }
+
+    /* ==========================================
+       PLAYING CARDS
+    ========================================== */
+
+    .playing-card {
+      position: relative;
+
+      flex: 0 0 92px;
+      width: 92px;
+      height: 132px;
+
+      border-radius: 12px;
+
+      border: 1px solid rgba(255,255,255,0.13);
+
+      background: #f5f1e8;
+
+      color: #15120e;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.25);
+
+      overflow: hidden;
+
+      animation: cardIn .2s ease;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .card-rank {
+      position: absolute;
+      top: 8px;
+      left: 9px;
+
+      font-size: 20px;
+      font-weight: 900;
+
+      line-height: 1;
+    }
+
+    .card-suit {
+      position: absolute;
+      top: 30px;
+      left: 10px;
+
+      font-size: 14px;
+    }
+
+    .card-center {
+      position: absolute;
+      inset: 0;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 42px;
+    }
+
+    .card-bottom {
+      position: absolute;
+      bottom: 8px;
+      right: 9px;
+
+      transform: rotate(180deg);
+
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .card-bottom-suit {
+      position: absolute;
+      bottom: 30px;
+      right: 10px;
+
+      transform: rotate(180deg);
+
+      font-size: 14px;
+    }
+
+    .red-card {
+      color: #c73838;
+    }
+
+    .hidden-card {
+      background:
+        repeating-linear-gradient(
+          45deg,
+          #29231c 0,
+          #29231c 7px,
+          #342d24 7px,
+          #342d24 14px
+        );
+
+      border-color: rgba(214,168,79,0.22);
+    }
+
+    .hidden-card::after {
+      content: "♠";
+
+      position: absolute;
+      inset: 0;
+
+      display: grid;
+      place-items: center;
+
+      color: rgba(214,168,79,0.7);
+
+      font-size: 30px;
+    }
+
+    /* ==========================================
+       WAGER
+    ========================================== */
+
+    .controls {
+      padding: 22px 30px 30px;
+
+      border-top: 1px solid var(--border);
+
+      background: var(--black-2);
+    }
+
+    .wager-row {
+      display: flex;
+      align-items: end;
+      gap: 12px;
+    }
+
+    .field {
+      flex: 1;
+    }
+
+    .field-label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .wager-input-wrap {
+      position: relative;
+    }
+
+    .wager-symbol {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: var(--gold);
+
+      font-weight: 900;
+    }
+
+    #wager {
+      width: 100%;
+      height: 44px;
+
+      padding: 0 13px 0 29px;
+
+      outline: none;
+
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+
+      background: var(--surface);
+
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #wager:focus {
+      border-color: rgba(214,168,79,0.5);
+
+      box-shadow:
+        0 0 0 3px rgba(214,168,79,0.07);
+    }
+
+    .quick-wagers {
+      display: flex;
+      gap: 6px;
+
+      margin-top: 8px;
+    }
+
+    .quick-wager {
+      height: 29px;
+
+      padding: 0 9px;
+
+      border: 1px solid var(--border);
+      border-radius: 7px;
+
+      background: var(--surface);
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .quick-wager:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .actions {
+      display: flex;
+      gap: 9px;
+    }
+
+    .action-button {
+      height: 44px;
+
+      padding: 0 22px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border-strong);
+
+      background: var(--surface-3);
+
+      color: var(--text);
+
+      font-size: 13px;
+      font-weight: 800;
+
+      transition:
+        transform .12s ease,
+        opacity .12s ease,
+        border-color .12s ease;
+    }
+
+    .action-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .action-button:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    .action-button.primary {
+      border-color: rgba(214,168,79,0.4);
+
+      background: var(--gold);
+
+      color: #211805;
+    }
+
+    .action-button.primary:hover:not(:disabled) {
+      border-color: rgba(240,199,107,0.7);
+    }
+
+    /* ==========================================
+       MESSAGE
+    ========================================== */
+
+    .message {
+      display: none;
+
+      margin-top: 14px;
+
+      padding: 12px 14px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+
+      background: var(--surface);
+
+      color: var(--muted);
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .message.visible {
+      display: block;
+    }
+
+    .message.error {
+      border-color: rgba(223,104,104,0.2);
+      color: #e89a9a;
+    }
+
+    .message.success {
+      border-color: rgba(83,197,139,0.2);
+      color: #8cddb4;
+    }
+
+    /* ==========================================
+       LOGIN
+    ========================================== */
+
+    .login-overlay {
+      display: none;
+
+      position: fixed;
+      inset: 0;
+
+      z-index: 100;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(8px);
+    }
+
+    .login-overlay.visible {
+      display: flex;
+    }
+
+    .login-modal {
+      width: min(420px, 100%);
+
+      padding: 28px;
+
+      border: 1px solid var(--border-strong);
+      border-radius: 18px;
+
+      background: var(--surface);
+
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.4);
+
+      text-align: center;
+    }
+
+    .login-modal-icon {
+      width: 54px;
+      height: 54px;
+
+      margin: 0 auto 15px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 15px;
+
+      background: var(--surface-3);
+
+      font-size: 25px;
+    }
+
+    .login-modal h2 {
+      font-size: 21px;
+    }
+
+    .login-modal p {
+      margin-top: 8px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .login-modal a {
+      display: block;
+
+      margin-top: 20px;
+
+      padding: 12px;
+
+      border-radius: 10px;
+
+      background: var(--gold);
+
+      color: #211805;
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+
+    footer {
+      width: min(1000px, calc(100% - 40px));
+
+      margin: 0 auto;
+
+      padding: 24px 0 40px;
+
+      border-top: 1px solid var(--border);
+
+      color: var(--muted);
+
+      font-size: 11px;
+      text-align: center;
+    }
+
+    /* ==========================================
+       MOBILE
+    ========================================== */
+
+    @media (max-width: 760px) {
+      .header-inner {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      main {
+        width: min(100% - 24px, 1000px);
+
+        padding-top: 30px;
+      }
+
+      .table {
+        padding: 20px 16px;
+      }
+
+      .controls {
+        padding: 18px 16px 20px;
+      }
+
+      .wager-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .action-button {
+        flex: 1;
+      }
+
+      .playing-card {
+        flex-basis: 76px;
+        width: 76px;
+        height: 110px;
+      }
+
+      .cards {
+        min-height: 125px;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================
+       HEADER
+  ========================================== -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a href="/" class="brand">
+
+        <img
+          src="/logo.gif"
+          class="brand-logo"
+          alt="Middle Eastern Mixing"
+        >
+
+        <div class="brand-text">
+          <span class="brand-name">
+            Middle Eastern Mixing
+          </span>
+
+          <span class="brand-subtitle">
+            Minigames
+          </span>
+        </div>
+
+      </a>
+
+      <nav class="nav">
+
+        <a href="/games" class="active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          Games
+        </a>
+
+        <a href="/leaderboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 21h8"/>
+            <path d="M12 17v4"/>
+            <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/>
+            <path d="M7 7H4v1a4 4 0 0 0 4 4"/>
+            <path d="M17 7h3v1a4 4 0 0 1-4 4"/>
+          </svg>
+          Leaderboard
+        </a>
+
+        <a href="/shop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 8h12l1 13H5L6 8Z"/>
+            <path d="M9 8a3 3 0 0 1 6 0"/>
+          </svg>
+          Shop
+        </a>
+
+      </nav>
+
+      <div class="account">
+
+        <div class="balance-pill">
+
+          <span class="coin">
+            $
+          </span>
+
+          <span id="headerBalance">
+            —
+          </span>
+
+        </div>
+
+        <a
+          href="https://api.memplace.xyz/api/auth/login"
+          class="login-button"
+          id="loginButton"
+        >
+          Login
+        </a>
+
+        <a
+          href="/profile"
+          class="profile-button"
+          id="profileButton"
+        >
+
+          <img
+            id="profileAvatar"
+            src=""
+            alt=""
+          >
+
+          <span id="profileName">
+            Profile
+          </span>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ==========================================
+       MAIN
+  ========================================== -->
+
+  <main>
+
+    <section class="page-heading">
+
+      <div class="eyebrow">
+        Casino
+      </div>
+
+      <h1>
+        Blackjack
+      </h1>
+
+      <p class="page-description">
+        Beat the dealer without going over 21.
+        All cards, wagers, results, and payouts are
+        handled server-side.
+      </p>
+
+    </section>
+
+
+    <!-- ==========================================
+         GAME CARD
+    ========================================== -->
+
+    <section class="game-card">
+
+      <div class="game-topbar">
+
+        <div class="game-title">
+
+          <div class="game-icon">
+            ♠
+          </div>
+
+          Blackjack
+
+        </div>
+
+        <div
+          class="game-status"
+          id="gameStatus"
+        >
+          Ready
+        </div>
+
+      </div>
+
+
+      <!-- ========================================
+           TABLE
+      ======================================== -->
+
+      <div class="table">
+
+        <!-- DEALER -->
+
+        <section class="hand-section">
+
+          <div class="hand-header">
+
+            <span class="hand-name">
+              Dealer
+            </span>
+
+            <span
+              class="hand-total"
+              id="dealerTotal"
+            >
+              —
+            </span>
+
+          </div>
+
+          <div
+            class="cards"
+            id="dealerCards"
+          >
+            <div class="playing-card hidden-card"></div>
+            <div class="playing-card hidden-card"></div>
+          </div>
+
+        </section>
+
+
+        <!-- PLAYER -->
+
+        <section class="hand-section">
+
+          <div class="hand-header">
+
+            <span class="hand-name">
+              You
+            </span>
+
+            <span
+              class="hand-total"
+              id="playerTotal"
+            >
+              —
+            </span>
+
+          </div>
+
+          <div
+            class="cards"
+            id="playerCards"
+          >
+            <div class="playing-card hidden-card"></div>
+            <div class="playing-card hidden-card"></div>
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- ========================================
+           CONTROLS
+      ======================================== -->
+
+      <div class="controls">
+
+        <div class="wager-row">
+
+          <div class="field">
+
+            <label
+              class="field-label"
+              for="wager"
+            >
+              Wager
+            </label>
+
+            <div class="wager-input-wrap">
+
+              <span class="wager-symbol">
+                $
+              </span>
+
+              <input
+                id="wager"
+                type="number"
+                min="10"
+                max="10000"
+                step="1"
+                value="100"
+                inputmode="numeric"
+                autocomplete="off"
+              >
+
+            </div>
+
+            <div class="quick-wagers">
+
+              <button
+                class="quick-wager"
+                type="button"
+                data-wager="10"
+              >
+                $10
+              </button>
+
+              <button
+                class="quick-wager"
+                type="button"
+                data-wager="25"
+              >
+                $25
+              </button>
+
+              <button
+                class="quick-wager"
+                type="button"
+                data-wager="50"
+              >
+                $50
+              </button>
+
+              <button
+                class="quick-wager"
+                type="button"
+                data-wager="100"
+              >
+                $100
+              </button>
+
+              <button
+                class="quick-wager"
+                type="button"
+                data-wager="500"
+              >
+                $500
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="actions">
+
+            <button
+              class="action-button primary"
+              id="dealButton"
+              type="button"
+            >
+              Deal
+            </button>
+
+            <button
+              class="action-button"
+              id="hitButton"
+              type="button"
+              disabled
+            >
+              Hit
+            </button>
+
+            <button
+              class="action-button"
+              id="standButton"
+              type="button"
+              disabled
+            >
+              Stand
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="message"
+          id="message"
+        ></div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    Middle Eastern Mixing • Minigames
+  </footer>
+
+
+  <!-- ==========================================
+       LOGIN OVERLAY
+  ========================================== -->
+
+  <div
+    class="login-overlay"
+    id="loginOverlay"
+  >
+
+    <div class="login-modal">
+
+      <div class="login-modal-icon">
+        ♠
+      </div>
+
+      <h2>
+        Login required
+      </h2>
+
+      <p>
+        You need to sign in with Discord before
+        you can play Blackjack.
+      </p>
+
+      <a
+        href="https://api.memplace.xyz/api/auth/login"
+      >
+        Continue with Discord
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* ==========================================
+       CONFIG
+    ========================================== */
+
+    const API_BASE =
+      "https://api.memplace.xyz";
+
+
+    /* ==========================================
+       STATE
+    ========================================== */
+
+    let currentUser = null;
+    let currentGameId = null;
+    let gameActive = false;
+
+
+    /* ==========================================
+       ELEMENTS
+    ========================================== */
+
+    const headerBalance =
+      document.getElementById("headerBalance");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const profileButton =
+      document.getElementById("profileButton");
+
+    const profileAvatar =
+      document.getElementById("profileAvatar");
+
+    const profileName =
+      document.getElementById("profileName");
+
+    const loginOverlay =
+      document.getElementById("loginOverlay");
+
+    const gameStatus =
+      document.getElementById("gameStatus");
+
+    const dealerCards =
+      document.getElementById("dealerCards");
+
+    const playerCards =
+      document.getElementById("playerCards");
+
+    const dealerTotal =
+      document.getElementById("dealerTotal");
+
+    const playerTotal =
+      document.getElementById("playerTotal");
+
+    const wagerInput =
+      document.getElementById("wager");
+
+    const dealButton =
+      document.getElementById("dealButton");
+
+    const hitButton =
+      document.getElementById("hitButton");
+
+    const standButton =
+      document.getElementById("standButton");
+
+    const message =
+      document.getElementById("message");
+
+
+    /* ==========================================
+       API REQUEST
+    ========================================== */
+
+    async function apiRequest(
+      endpoint,
+      options = {}
+    ) {
+
+      const response =
+        await fetch(
+          API_BASE + endpoint,
+          {
+            ...options,
+            credentials: "include",
+            headers: {
+              "Content-Type":
+                "application/json",
+              ...(options.headers || {})
+            }
+          }
+        );
+
+      let data = null;
+
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+
+      return {
+        response,
+        data
+      };
+    }
+
+
+    /* ==========================================
+       LOAD CURRENT USER
+    ========================================== */
+
+    async function loadCurrentUser() {
+
+      try {
+
+        const {
+          response,
+          data
+        } = await apiRequest(
+          "/api/user/me",
+          {
+            method: "GET"
+          }
+        );
+
+        if (
+          response.ok &&
+          data.authenticated &&
+          data.user
+        ) {
+
+          currentUser =
+            data.user;
+
+          updateUserUI();
+
+          return true;
+        }
+
+        currentUser = null;
+
+        updateUserUI();
+
+        return false;
+
+      } catch (error) {
+
+        console.error(
+          "LOAD USER ERROR:",
+          error
+        );
+
+        currentUser = null;
+
+        updateUserUI();
+
+        return false;
+      }
+    }
+
+
+    /* ==========================================
+       UPDATE USER UI
+    ========================================== */
+
+    function updateUserUI() {
+
+      if (!currentUser) {
+
+        headerBalance.textContent =
+          "—";
+
+        loginButton.style.display =
+          "block";
+
+        profileButton.style.display =
+          "none";
+
+        return;
+      }
+
+      headerBalance.textContent =
+        Number(
+          currentUser.balance || 0
+        ).toLocaleString();
+
+      loginButton.style.display =
+        "none";
+
+      profileButton.style.display =
+        "flex";
+
+      profileName.textContent =
+        currentUser.username ||
+        currentUser.discordUsername ||
+        "Profile";
+
+      if (
+        currentUser.avatar &&
+        currentUser.id
+      ) {
+
+        profileAvatar.src =
+          `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png?size=64`;
+
+      } else {
+
+        profileAvatar.src =
+          "/logo.gif";
+      }
+    }
+
+
+    /* ==========================================
+       MESSAGE
+    ========================================== */
+
+    function showMessage(
+      text,
+      type = ""
+    ) {
+
+      message.textContent =
+        text;
+
+      message.className =
+        "message visible " +
+        type;
+    }
+
+
+    function hideMessage() {
+
+      message.textContent =
+        "";
+
+      message.className =
+        "message";
+    }
+
+
+    /* ==========================================
+       STATUS
+    ========================================== */
+
+    function setStatus(
+      text,
+      type = ""
+    ) {
+
+      gameStatus.textContent =
+        text;
+
+      gameStatus.className =
+        "game-status";
+
+      if (type) {
+        gameStatus.classList.add(type);
+      }
+    }
+
+
+    /* ==========================================
+       CARD DISPLAY
+    ========================================== */
+
+    function getSuitSymbol(
+      suit
+    ) {
+
+      switch (suit) {
+
+        case "hearts":
+          return "♥";
+
+        case "diamonds":
+          return "♦";
+
+        case "clubs":
+          return "♣";
+
+        case "spades":
+          return "♠";
+
+        default:
+          return "";
+      }
+    }
+
+
+    function renderCard(
+      card
+    ) {
+
+      if (
+        !card ||
+        card.hidden
+      ) {
+
+        const hidden =
+          document.createElement(
+            "div"
+          );
+
+        hidden.className =
+          "playing-card hidden-card";
+
+        return hidden;
+      }
+
+      const element =
+        document.createElement(
+          "div"
+        );
+
+      const isRed =
+        card.suit === "hearts" ||
+        card.suit === "diamonds";
+
+      element.className =
+        "playing-card" +
+        (isRed
+          ? " red-card"
+          : "");
+
+      const suit =
+        getSuitSymbol(
+          card.suit
+        );
+
+      element.innerHTML = `
+        <span class="card-rank">
+          ${card.rank}
+        </span>
+
+        <span class="card-suit">
+          ${suit}
+        </span>
+
+        <span class="card-center">
+          ${suit}
+        </span>
+
+        <span class="card-bottom">
+          ${card.rank}
+        </span>
+
+        <span class="card-bottom-suit">
+          ${suit}
+        </span>
+      `;
+
+      return element;
+    }
+
+
+    function renderCards(
+      container,
+      cards
+    ) {
+
+      container.innerHTML =
+        "";
+
+      if (
+        !Array.isArray(cards) ||
+        cards.length === 0
+      ) {
+        return;
+      }
+
+      for (
+        const card of cards
+      ) {
+
+        container.appendChild(
+          renderCard(card)
+        );
+      }
+    }
+
+
+    /* ==========================================
+       RENDER GAME
+    ========================================== */
+
+    function renderGame(
+      data
+    ) {
+
+      if (
+        !data ||
+        !data.player ||
+        !data.dealer
+      ) {
+        return;
+      }
+
+      renderCards(
+        playerCards,
+        data.player.cards
+      );
+
+      renderCards(
+        dealerCards,
+        data.dealer.cards
+      );
+
+      playerTotal.textContent =
+        data.player.total ??
+        "—";
+
+      dealerTotal.textContent =
+        data.dealer.total ??
+        "—";
+
+      if (
+        typeof data.balance !==
+        "undefined"
+      ) {
+
+        headerBalance.textContent =
+          Number(
+            data.balance
+          ).toLocaleString();
+
+        if (currentUser) {
+          currentUser.balance =
+            data.balance;
+        }
+      }
+
+      if (
+        data.status ===
+        "active"
+      ) {
+
+        gameActive = true;
+
+        setStatus(
+          "Playing",
+          "playing"
+        );
+
+        hitButton.disabled =
+          false;
+
+        standButton.disabled =
+          false;
+
+        dealButton.disabled =
+          true;
+
+        wagerInput.disabled =
+          true;
+
+        return;
+      }
+
+      gameActive = false;
+
+      hitButton.disabled =
+        true;
+
+      standButton.disabled =
+        true;
+
+      dealButton.disabled =
+        false;
+
+      wagerInput.disabled =
+        false;
+
+      if (
+        data.result ===
+        "win"
+      ) {
+
+        setStatus(
+          "You won",
+          "win"
+        );
+
+        showMessage(
+          `You won ${Number(data.payout || 0).toLocaleString()} coins.`,
+          "success"
+        );
+
+      } else if (
+        data.result ===
+        "blackjack"
+      ) {
+
+        setStatus(
+          "Blackjack",
+          "win"
+        );
+
+        showMessage(
+          `Blackjack! You received ${Number(data.payout || 0).toLocaleString()} coins.`,
+          "success"
+        );
+
+      } else if (
+        data.result ===
+        "push"
+      ) {
+
+        setStatus(
+          "Push"
+        );
+
+        showMessage(
+          "Push — your wager was returned."
+        );
+
+      } else if (
+        data.result ===
+        "loss"
+      ) {
+
+        setStatus(
+          "You lost",
+          "loss"
+        );
+
+        showMessage(
+          "The hand is over. Better luck next time.",
+          "error"
+        );
+
+      } else {
+
+        setStatus(
+          "Finished"
+        );
+      }
+    }
+
+
+    /* ==========================================
+       RESET TABLE
+    ========================================== */
+
+    function resetTable() {
+
+      currentGameId =
+        null;
+
+      gameActive =
+        false;
+
+      playerCards.innerHTML =
+        `
+          <div class="playing-card hidden-card"></div>
+          <div class="playing-card hidden-card"></div>
+        `;
+
+      dealerCards.innerHTML =
+        `
+          <div class="playing-card hidden-card"></div>
+          <div class="playing-card hidden-card"></div>
+        `;
+
+      playerTotal.textContent =
+        "—";
+
+      dealerTotal.textContent =
+        "—";
+
+      setStatus(
+        "Ready"
+      );
+
+      hitButton.disabled =
+        true;
+
+      standButton.disabled =
+        true;
+
+      dealButton.disabled =
+        false;
+
+      wagerInput.disabled =
+        false;
+
+      hideMessage();
+    }
+
+
+    /* ==========================================
+       DEAL
+    ========================================== */
+
+    async function dealGame() {
+
+      if (!currentUser) {
+
+        loginOverlay.classList.add(
+          "visible"
+        );
+
+        return;
+      }
+
+      const wager =
+        Number(
+          wagerInput.value
+        );
+
+      if (
+        !Number.isInteger(wager) ||
+        wager <= 0
+      ) {
+
+        showMessage(
+          "Enter a valid whole-number wager.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (
+        wager < 10
+      ) {
+
+        showMessage(
+          "Minimum wager is $10.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (
+        wager > 10000
+      ) {
+
+        showMessage(
+          "Maximum wager is $10,000.",
+          "error"
+        );
+
+        return;
+      }
+
+      hideMessage();
+
+      dealButton.disabled =
+        true;
+
+      setStatus(
+        "Dealing...",
+        "playing"
+      );
+
+      try {
+
+        const {
+          response,
+          data
+        } = await apiRequest(
+          "/api/games/blackjack/create",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              wager
+            })
+          }
+        );
+
+        if (
+          response.status ===
+          401
+        ) {
+
+          currentUser = null;
+
+          updateUserUI();
+
+          loginOverlay.classList.add(
+            "visible"
+          );
+
+          resetTable();
+
+          return;
+        }
+
+        if (!response.ok) {
+
+          setStatus(
+            "Ready"
+          );
+
+          dealButton.disabled =
+            false;
+
+          showMessage(
+            data.error ||
+            "Unable to start the game.",
+            "error"
+          );
+
+          return;
+        }
+
+        currentGameId =
+          data.gameId;
+
+        renderGame(data);
+
+      } catch (error) {
+
+        console.error(
+          "DEAL ERROR:",
+          error
+        );
+
+        dealButton.disabled =
+          false;
+
+        setStatus(
+          "Ready"
+        );
+
+        showMessage(
+          "Unable to connect to the game server.",
+          "error"
+        );
+      }
+    }
+
+
+    /* ==========================================
+       GAME ACTION
+    ========================================== */
+
+    async function performAction(
+      action
+    ) {
+
+      if (
+        !currentGameId ||
+        !gameActive
+      ) {
+        return;
+      }
+
+      hitButton.disabled =
+        true;
+
+      standButton.disabled =
+        true;
+
+      setStatus(
+        "Processing...",
+        "playing"
+      );
+
+      hideMessage();
+
+      try {
+
+        const {
+          response,
+          data
+        } = await apiRequest(
+          "/api/games/blackjack/action",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              gameId:
+                currentGameId,
+              action
+            })
+          }
+        );
+
+        if (
+          response.status ===
+          401
+        ) {
+
+          currentUser = null;
+
+          updateUserUI();
+
+          loginOverlay.classList.add(
+            "visible"
+          );
+
+          return;
+        }
+
+        if (!response.ok) {
+
+          showMessage(
+            data.error ||
+            "Unable to process that action.",
+            "error"
+          );
+
+          if (gameActive) {
+
+            hitButton.disabled =
+              false;
+
+            standButton.disabled =
+              false;
+
+            setStatus(
+              "Playing",
+              "playing"
+            );
+          }
+
+          return;
+        }
+
+        renderGame(data);
+
+      } catch (error) {
+
+        console.error(
+          "ACTION ERROR:",
+          error
+        );
+
+        showMessage(
+          "Unable to connect to the game server.",
+          "error"
+        );
+
+        if (gameActive) {
+
+          hitButton.disabled =
+            false;
+
+          standButton.disabled =
+            false;
+
+          setStatus(
+            "Playing",
+            "playing"
+          );
+        }
+      }
+    }
+
+
+    /* ==========================================
+       QUICK WAGERS
+    ========================================== */
+
+    document
+      .querySelectorAll(
+        ".quick-wager"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            wagerInput.value =
+              button.dataset.wager;
+          }
+        );
+      });
+
+
+    /* ==========================================
+       BUTTON EVENTS
+    ========================================== */
+
+    dealButton.addEventListener(
+      "click",
+      dealGame
+    );
+
+    hitButton.addEventListener(
+      "click",
+      () => {
+        performAction("hit");
+      }
+    );
+
+    standButton.addEventListener(
+      "click",
+      () => {
+        performAction("stand");
+      }
+    );
+
+
+    /* ==========================================
+       ENTER TO DEAL
+    ========================================== */
+
+    wagerInput.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter" &&
+          !dealButton.disabled
+        ) {
+
+          dealGame();
+        }
+      }
+    );
+
+
+    /* ==========================================
+       LOGIN OVERLAY
+    ========================================== */
+
+    loginOverlay.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          loginOverlay
+        ) {
+
+          loginOverlay.classList.remove(
+            "visible"
+          );
+        }
+      }
+    );
+
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
+    async function initialize() {
+
+      resetTable();
+
+      await loadCurrentUser();
+    }
+
+    initialize();
+
+  </script>
+
+</body>
+</html>
