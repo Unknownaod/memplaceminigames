@@ -2904,38 +2904,51 @@
     }
 
 
-    /* ==========================================
-       GET PROFILE TITLE
-    ========================================== */
+/* ==========================================
+   GET PROFILE TITLE
+========================================== */
 
-    function getProfileTitle(
-      equippedTitle
-    ) {
+function getProfileTitle(
+  equippedTitle
+) {
 
-      switch (
-        equippedTitle
-      ) {
+  switch (
+    equippedTitle
+  ) {
 
-        case "legendary-title":
+    case "the-mixing-legend":
 
-          return {
+      return {
 
-            label:
-              "Legendary",
+        label:
+          "The Mixing Legend",
 
-            icon:
-              "✦"
+        icon:
+          "✦"
 
-          };
+      };
 
 
-        default:
+    case "legendary-title":
 
-          return null;
+      return {
 
-      }
+        label:
+          "Legendary",
 
-    }
+        icon:
+          "✦"
+
+      };
+
+
+    default:
+
+      return null;
+
+  }
+
+}
 
 
     /* ==========================================
