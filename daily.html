@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Daily Reward — Middle Eastern Mixing</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --surface: #191611;
+      --surface-2: #211d17;
+
+      --border: rgba(255,255,255,.08);
+
+      --text: #f4eee5;
+      --muted: #9d958b;
+
+      --accent: #d5b36a;
+      --success: #76c893;
+      --danger: #d96b6b;
+
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(213,179,106,.08),
+          transparent 38%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    header {
+      height: 72px;
+
+      position: sticky;
+      top: 0;
+      z-index: 20;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        rgba(11,10,8,.88);
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+
+      height: 100%;
+
+      margin: 0 auto;
+
+      padding: 0 24px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      font-weight: 700;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 10px;
+
+      object-fit: cover;
+    }
+
+    .brand-text {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 14px;
+    }
+
+    .brand-subtitle {
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+    nav {
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+    }
+
+    nav a {
+      padding: 9px 12px;
+
+      border-radius: 10px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--text);
+
+      background:
+        rgba(255,255,255,.05);
+    }
+
+    .account {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .balance {
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      padding: 8px 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.03);
+
+      font-size: 13px;
+
+      font-weight: 600;
+    }
+
+    .coin {
+      color: var(--accent);
+    }
+
+    .login-btn,
+    .profile-btn {
+      padding: 9px 13px;
+
+      border-radius: 10px;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
+      color: var(--text);
+
+      cursor: pointer;
+
+      font-size: 13px;
+    }
+
+    .profile-btn {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+    }
+
+    .profile-btn img {
+      width: 24px;
+      height: 24px;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+    }
+
+    /* ==========================================
+       MAIN
+    ========================================== */
+
+    main {
+      max-width: 1000px;
+
+      margin: 0 auto;
+
+      padding: 60px 24px 90px;
+    }
+
+    .heading {
+      text-align: center;
+
+      margin-bottom: 38px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: .14em;
+
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size:
+        clamp(34px, 6vw, 52px);
+
+      letter-spacing: -.04em;
+    }
+
+    .heading p {
+      margin: 12px auto 0;
+
+      max-width: 600px;
+
+      color: var(--muted);
+
+      line-height: 1.6;
+
+      font-size: 15px;
+    }
+
+    /* ==========================================
+       REWARD CARD
+    ========================================== */
+
+    .reward-card {
+      max-width: 650px;
+
+      margin: 0 auto;
+
+      padding: 38px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.045),
+          rgba(255,255,255,.015)
+        );
+
+      text-align: center;
+
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.25);
+    }
+
+    .reward-icon {
+      width: 78px;
+      height: 78px;
+
+      margin: 0 auto 22px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 22px;
+
+      background:
+        rgba(213,179,106,.1);
+
+      border:
+        1px solid
+        rgba(213,179,106,.18);
+
+      color: var(--accent);
+
+      font-size: 34px;
+    }
+
+    .reward-label {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .12em;
+    }
+
+    .reward-amount {
+      margin-top: 5px;
+
+      color: var(--accent);
+
+      font-size: 38px;
+
+      font-weight: 800;
+
+      letter-spacing: -.03em;
+    }
+
+    .claim-btn {
+      width: 100%;
+
+      max-width: 360px;
+
+      margin-top: 28px;
+
+      padding: 14px 20px;
+
+      border: 0;
+
+      border-radius: 12px;
+
+      background:
+        var(--accent);
+
+      color: #17130d;
+
+      font-size: 15px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition: .2s;
+    }
+
+    .claim-btn:hover:not(:disabled) {
+      transform:
+        translateY(-2px);
+
+      background:
+        #e1c27d;
+    }
+
+    .claim-btn:disabled {
+      opacity: .55;
+
+      cursor: not-allowed;
+    }
+
+    .status {
+      min-height: 20px;
+
+      margin-top: 15px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    .stats {
+      max-width: 650px;
+
+      margin: 18px auto 0;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 20px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+    .stat-label {
+      color: var(--muted);
+
+      font-size: 11px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .1em;
+    }
+
+    .stat-value {
+      margin-top: 7px;
+
+      font-size: 24px;
+
+      font-weight: 800;
+    }
+
+    /* ==========================================
+       LOGIN
+    ========================================== */
+
+    .login-state {
+      max-width: 650px;
+
+      margin: 0 auto;
+
+      padding: 50px 30px;
+
+      text-align: center;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 20px;
+
+      background:
+        var(--surface);
+    }
+
+    .login-state h2 {
+      margin: 0;
+    }
+
+    .login-state p {
+      color: var(--muted);
+
+      line-height: 1.6;
+    }
+
+    .login-state a {
+      display: inline-block;
+
+      margin-top: 12px;
+
+      padding: 12px 18px;
+
+      border-radius: 10px;
+
+      background:
+        var(--accent);
+
+      color: #17130d;
+
+      font-weight: 700;
+    }
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 900px) {
+
+      nav {
+        display: none;
+      }
+
+    }
+
+    @media (max-width: 560px) {
+
+      .header-inner {
+        padding: 0 15px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .balance {
+        display: none;
+      }
+
+      main {
+        padding:
+          42px 15px 70px;
+      }
+
+      .reward-card {
+        padding: 28px 20px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+  <div class="header-inner">
+
+    <a
+      href="/"
+      class="brand"
+    >
+
+      <img
+        src="/logo.gif"
+        alt=""
+      >
+
+      <div class="brand-text">
+
+        <div class="brand-title">
+          Middle Eastern Mixing
+        </div>
+
+        <div class="brand-subtitle">
+          Minigames
+        </div>
+
+      </div>
+
+    </a>
+
+
+    <nav>
+
+      <a href="/games">
+        Games
+      </a>
+
+      <a href="/leaderboard">
+        Leaderboard
+      </a>
+
+      <a href="/shop">
+        Shop
+      </a>
+
+      <a
+        href="/daily"
+        class="active"
+      >
+        Daily
+      </a>
+
+    </nav>
+
+
+    <div
+      class="account"
+      id="account"
+    >
+
+      <a
+        class="login-btn"
+        href="https://api.memplace.xyz/api/auth/login"
+      >
+        Login
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <section class="heading">
+
+    <div class="eyebrow">
+      Daily Reward
+    </div>
+
+    <h1>
+      Come back every day.
+    </h1>
+
+    <p>
+      Claim your daily coins and build your
+      streak by returning every 24 hours.
+    </p>
+
+  </section>
+
+
+  <div id="content"></div>
+
+</main>
+
+
+<script>
+
+const API =
+  "https://api.memplace.xyz";
+
+let currentUser = null;
+
+let dailyData = null;
+
+let cooldownTimer = null;
+
+
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const account =
+  document.getElementById(
+    "account"
+  );
+
+const content =
+  document.getElementById(
+    "content"
+  );
+
+
+/* ==========================================
+   ESCAPE
+========================================== */
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* ==========================================
+   USER
+========================================== */
+
+async function loadCurrentUser() {
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/api/user/me`,
+        {
+          credentials: "include",
+          cache: "no-store"
+        }
+      );
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const data =
+      await response.json();
+
+    if (
+      !data.success ||
+      !data.authenticated ||
+      !data.user
+    ) {
+      return false;
+    }
+
+    currentUser =
+      data.user;
+
+    renderAccount();
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "USER ERROR:",
+      error
+    );
+
+    return false;
+
+  }
+
+}
+
+
+function renderAccount() {
+
+  const avatar =
+    currentUser.avatar
+      ? `https://cdn.discordapp.com/avatars/${encodeURIComponent(currentUser.id)}/${encodeURIComponent(currentUser.avatar)}.png?size=64`
+      : "/logo.gif";
+
+  account.innerHTML = `
+
+    <div class="balance">
+
+      <span class="coin">
+        ◆
+      </span>
+
+      <span id="headerBalance">
+        ${Number(
+          currentUser.balance || 0
+        ).toLocaleString()}
+      </span>
+
+    </div>
+
+    <a
+      class="profile-btn"
+      href="/profile"
+    >
+
+      <img
+        src="${avatar}"
+        alt=""
+      >
+
+      <span>
+        ${escapeHtml(
+          currentUser.username ||
+          currentUser.discordUsername ||
+          "Profile"
+        )}
+      </span>
+
+    </a>
+
+  `;
+
+}
+
+
+/* ==========================================
+   LOGIN STATE
+========================================== */
+
+function renderLoginState() {
+
+  content.innerHTML = `
+
+    <div class="login-state">
+
+      <h2>
+        Sign in to claim your reward
+      </h2>
+
+      <p>
+        Your daily reward and streak are tied
+        to your Memplace account.
+      </p>
+
+      <a
+        href="${API}/api/auth/login"
+      >
+        Login with Discord
+      </a>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================
+   DAILY STATUS
+========================================== */
+
+async function loadDaily() {
+
+  const response =
+    await fetch(
+      `${API}/api/daily`,
+      {
+        credentials: "include",
+        cache: "no-store"
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if (!response.ok) {
+
+    throw new Error(
+      data.error ||
+      "Unable to load daily reward."
+    );
+
+  }
+
+  dailyData =
+    data;
+
+}
+
+
+/* ==========================================
+   FORMAT TIME
+========================================== */
+
+function formatCooldown(ms) {
+
+  const totalSeconds =
+    Math.max(
+      0,
+      Math.ceil(ms / 1000)
+    );
+
+  const hours =
+    Math.floor(
+      totalSeconds / 3600
+    );
+
+  const minutes =
+    Math.floor(
+      (totalSeconds % 3600) / 60
+    );
+
+  const seconds =
+    totalSeconds % 60;
+
+  return [
+    String(hours).padStart(2, "0"),
+    String(minutes).padStart(2, "0"),
+    String(seconds).padStart(2, "0")
+  ].join(":");
+
+}
+
+
+/* ==========================================
+   RENDER DAILY
+========================================== */
+
+function renderDaily() {
+
+  content.innerHTML = `
+
+    <div class="reward-card">
+
+      <div class="reward-icon">
+        ◆
+      </div>
+
+      <div class="reward-label">
+        Today's reward
+      </div>
+
+      <div class="reward-amount">
+        +${Number(
+          dailyData.reward || 0
+        ).toLocaleString()}
+        coins
+      </div>
+
+      <button
+        class="claim-btn"
+        id="claimButton"
+        ${
+          dailyData.canClaim
+            ? ""
+            : "disabled"
+        }
+      >
+        ${
+          dailyData.canClaim
+            ? "Claim Daily Reward"
+            : "Available Again Soon"
+        }
+      </button>
+
+      <div
+        class="status"
+        id="dailyStatus"
+      >
+        ${
+          dailyData.canClaim
+            ? "Your reward is ready."
+            : "Next reward in " +
+              formatCooldown(
+                dailyData.cooldown
+              )
+        }
+      </div>
+
+    </div>
+
+
+    <div class="stats">
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Current Streak
+        </div>
+
+        <div class="stat-value">
+          ${Number(
+            dailyData.streak || 0
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Reward
+        </div>
+
+        <div class="stat-value">
+          ◆ ${Number(
+            dailyData.reward || 0
+          ).toLocaleString()}
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  const claimButton =
+    document.getElementById(
+      "claimButton"
+    );
+
+  if (claimButton) {
+
+    claimButton.addEventListener(
+      "click",
+      claimDailyReward
+    );
+
+  }
+
+  startCooldownTimer();
+
+}
+
+
+/* ==========================================
+   COOLDOWN
+========================================== */
+
+function startCooldownTimer() {
+
+  if (cooldownTimer) {
+
+    clearInterval(
+      cooldownTimer
+    );
+
+  }
+
+  if (
+    !dailyData ||
+    dailyData.canClaim
+  ) {
+    return;
+  }
+
+  cooldownTimer =
+    setInterval(
+      () => {
+
+        dailyData.cooldown -= 1000;
+
+        if (
+          dailyData.cooldown <= 0
+        ) {
+
+          dailyData.canClaim =
+            true;
+
+          dailyData.cooldown =
+            0;
+
+          clearInterval(
+            cooldownTimer
+          );
+
+          renderDaily();
+
+          return;
+        }
+
+        const status =
+          document.getElementById(
+            "dailyStatus"
+          );
+
+        if (status) {
+
+          status.textContent =
+            "Next reward in " +
+            formatCooldown(
+              dailyData.cooldown
+            );
+
+        }
+
+      },
+      1000
+    );
+
+}
+
+
+/* ==========================================
+   CLAIM
+========================================== */
+
+async function claimDailyReward() {
+
+  const button =
+    document.getElementById(
+      "claimButton"
+    );
+
+  const status =
+    document.getElementById(
+      "dailyStatus"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Claiming...";
+
+  if (status) {
+
+    status.className =
+      "status";
+
+    status.textContent =
+      "Processing your reward...";
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/api/daily`,
+        {
+          method: "POST",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: "{}"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Unable to claim reward."
+      );
+
+    }
+
+    if (!data.success) {
+
+      throw new Error(
+        data.error ||
+        "Unable to claim reward."
+      );
+
+    }
+
+
+    currentUser.balance =
+      Number(
+        data.balance || 0
+      );
+
+    renderAccount();
+
+
+    dailyData.canClaim =
+      false;
+
+    dailyData.cooldown =
+      24 * 60 * 60 * 1000;
+
+    dailyData.streak =
+      Number(
+        data.streak || 1
+      );
+
+    dailyData.reward =
+      Number(
+        data.reward ||
+        dailyData.reward
+      );
+
+
+    renderDaily();
+
+
+    const newStatus =
+      document.getElementById(
+        "dailyStatus"
+      );
+
+    if (newStatus) {
+
+      newStatus.className =
+        "status success";
+
+      newStatus.textContent =
+        `Claimed +${Number(
+          data.reward || 0
+        ).toLocaleString()} coins!`;
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "DAILY CLAIM ERROR:",
+      error
+    );
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Claim Daily Reward";
+
+    if (status) {
+
+      status.className =
+        "status error";
+
+      status.textContent =
+        error.message ||
+        "Unable to claim reward.";
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+
+async function init() {
+
+  const authenticated =
+    await loadCurrentUser();
+
+  if (!authenticated) {
+
+    renderLoginState();
+
+    return;
+
+  }
+
+  try {
+
+    await loadDaily();
+
+    renderDaily();
+
+  } catch (error) {
+
+    console.error(
+      "DAILY LOAD ERROR:",
+      error
+    );
+
+    content.innerHTML = `
+
+      <div class="login-state">
+
+        <h2>
+          Unable to load daily reward
+        </h2>
+
+        <p>
+          Please refresh the page and try again.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+init();
+
+</script>
+
+</body>
+
+</html>
