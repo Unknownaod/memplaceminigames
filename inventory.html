@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Inventory — Middle Eastern Mixing</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191611;
+
+      --surface: #191511;
+      --surface-2: #211c16;
+      --surface-3: #29221a;
+
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(214,168,92,0.25);
+
+      --text: #f3eee5;
+      --text-2: #aaa297;
+      --text-3: #756e65;
+
+      --accent: #d6a85c;
+      --accent-hover: #e2b96e;
+
+      --danger: #d96c6c;
+      --success: #72c48b;
+
+      --radius: 14px;
+
+      --max-width: 1180px;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(214,168,92,0.055),
+          transparent 34%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+
+    button,
+    a {
+      font: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      width: 100%;
+
+      background:
+        rgba(11,10,8,0.88);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .header-inner {
+      width: min(
+        calc(100% - 32px),
+        var(--max-width)
+      );
+
+      min-height: 68px;
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      min-width: 0;
+    }
+
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+
+      border-radius: 9px;
+
+      object-fit: cover;
+
+      flex: 0 0 auto;
+    }
+
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+
+      min-width: 0;
+    }
+
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+
+    .brand-subtitle {
+      color: var(--text-3);
+
+      font-size: 11px;
+
+      white-space: nowrap;
+    }
+
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+
+    .header-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    .nav-link {
+      padding: 8px 11px;
+
+      border-radius: 8px;
+
+      color: var(--text-2);
+
+      font-size: 13px;
+      font-weight: 600;
+
+      white-space: nowrap;
+
+      transition:
+        background 0.15s ease,
+        color 0.15s ease;
+    }
+
+
+    .nav-link:hover {
+      color: var(--text);
+
+      background:
+        rgba(255,255,255,0.045);
+    }
+
+
+    .nav-link.active {
+      color: var(--accent);
+
+      background:
+        rgba(214,168,92,0.09);
+    }
+
+
+    /* ==========================================
+       MAIN
+    ========================================== */
+
+    main {
+      width: min(
+        calc(100% - 32px),
+        var(--max-width)
+      );
+
+      margin: 0 auto;
+
+      padding:
+        48px 0 80px;
+    }
+
+
+    /* ==========================================
+       PAGE HEADER
+    ========================================== */
+
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+
+      gap: 24px;
+
+      margin-bottom: 28px;
+    }
+
+
+    .page-header-left {
+      min-width: 0;
+    }
+
+
+    .eyebrow {
+      margin-bottom: 8px;
+
+      color: var(--accent);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 0.14em;
+
+      text-transform: uppercase;
+    }
+
+
+    h1 {
+      margin: 0;
+
+      font-size:
+        clamp(28px, 5vw, 38px);
+
+      line-height: 1.1;
+
+      letter-spacing: -0.025em;
+    }
+
+
+    .page-description {
+      max-width: 650px;
+
+      margin:
+        10px 0 0;
+
+      color: var(--text-2);
+
+      font-size: 14px;
+
+      line-height: 1.65;
+    }
+
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
+      flex: 0 0 auto;
+    }
+
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 40px;
+
+      padding:
+        0 15px;
+
+      border-radius: 9px;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
+      color: var(--text);
+
+      font-size: 13px;
+      font-weight: 700;
+
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+
+    .button:hover {
+      background:
+        var(--surface-2);
+
+      border-color:
+        rgba(255,255,255,0.12);
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    .button-primary {
+      border-color:
+        rgba(214,168,92,0.3);
+
+      background:
+        rgba(214,168,92,0.12);
+
+      color:
+        var(--accent);
+    }
+
+
+    .button-primary:hover {
+      background:
+        rgba(214,168,92,0.18);
+
+      border-color:
+        rgba(214,168,92,0.42);
+    }
+
+
+    /* ==========================================
+       CURRENT EQUIPMENT
+    ========================================== */
+
+    .equipment-section {
+      margin-bottom: 34px;
+    }
+
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 16px;
+
+      margin-bottom: 13px;
+    }
+
+
+    .section-title {
+      margin: 0;
+
+      font-size: 16px;
+      font-weight: 750;
+    }
+
+
+    .section-count {
+      color: var(--text-3);
+
+      font-size: 12px;
+    }
+
+
+    .equipment-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+
+    .equipment-card {
+      min-width: 0;
+
+      padding: 18px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.025),
+          rgba(255,255,255,0.01)
+        );
+    }
+
+
+    .equipment-card-inner {
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+    }
+
+
+    .equipment-icon {
+      width: 52px;
+      height: 52px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex: 0 0 auto;
+
+      border-radius: 12px;
+
+      border:
+        1px solid rgba(214,168,92,0.18);
+
+      background:
+        rgba(214,168,92,0.08);
+
+      color:
+        var(--accent);
+
+      font-size: 24px;
+    }
+
+
+    .equipment-info {
+      min-width: 0;
+
+      flex: 1;
+    }
+
+
+    .equipment-slot {
+      margin-bottom: 4px;
+
+      color: var(--text-3);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 0.1em;
+
+      text-transform: uppercase;
+    }
+
+
+    .equipment-name {
+      font-size: 14px;
+      font-weight: 750;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+    .equipment-empty {
+      color: var(--text-3);
+
+      font-size: 13px;
+    }
+
+
+    .equipped-pill {
+      display: inline-flex;
+      align-items: center;
+
+      min-height: 27px;
+
+      padding:
+        0 9px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(114,196,139,0.1);
+
+      border:
+        1px solid rgba(114,196,139,0.18);
+
+      color:
+        var(--success);
+
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+
+    /* ==========================================
+       INVENTORY
+    ========================================== */
+
+    .inventory-section {
+      margin-top: 8px;
+    }
+
+
+    .inventory-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+
+    .item-card {
+      position: relative;
+
+      min-width: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      min-height: 285px;
+
+      padding: 18px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        var(--surface);
+
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+    }
+
+
+    .item-card:hover {
+      transform:
+        translateY(-2px);
+
+      border-color:
+        rgba(214,168,92,0.18);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .item-card.equipped {
+      border-color:
+        rgba(214,168,92,0.4);
+
+      box-shadow:
+        0 0 0 1px
+        rgba(214,168,92,0.05);
+    }
+
+
+    .equipped-label {
+      position: absolute;
+
+      top: 12px;
+      right: 12px;
+
+      padding:
+        5px 8px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(114,196,139,0.1);
+
+      border:
+        1px solid rgba(114,196,139,0.18);
+
+      color:
+        var(--success);
+
+      font-size: 9px;
+      font-weight: 800;
+
+      letter-spacing: 0.05em;
+
+      text-transform: uppercase;
+    }
+
+
+    .item-icon {
+      width: 62px;
+      height: 62px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 17px;
+
+      border-radius: 14px;
+
+      background:
+        rgba(214,168,92,0.08);
+
+      border:
+        1px solid rgba(214,168,92,0.15);
+
+      color:
+        var(--accent);
+
+      font-size: 29px;
+    }
+
+
+    .item-type {
+      margin-bottom: 6px;
+
+      color: var(--text-3);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 0.09em;
+
+      text-transform: uppercase;
+    }
+
+
+    .item-name {
+      margin: 0;
+
+      font-size: 15px;
+      font-weight: 750;
+
+      line-height: 1.3;
+    }
+
+
+    .item-description {
+      margin:
+        8px 0 0;
+
+      color:
+        var(--text-2);
+
+      font-size: 12px;
+
+      line-height: 1.55;
+
+      flex: 1;
+    }
+
+
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-top: 18px;
+    }
+
+
+    .quantity {
+      color:
+        var(--text-3);
+
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+
+    .item-button {
+      min-height: 34px;
+
+      padding:
+        0 12px;
+
+      border-radius: 8px;
+
+      border:
+        1px solid rgba(214,168,92,0.22);
+
+      background:
+        rgba(214,168,92,0.09);
+
+      color:
+        var(--accent);
+
+      font-size: 11px;
+      font-weight: 750;
+
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+
+    .item-button:hover {
+      background:
+        rgba(214,168,92,0.16);
+
+      border-color:
+        rgba(214,168,92,0.35);
+    }
+
+
+    .item-button.unequip {
+      border-color:
+        rgba(255,255,255,0.08);
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color:
+        var(--text-2);
+    }
+
+
+    .item-button.unequip:hover {
+      background:
+        rgba(255,255,255,0.08);
+
+      color:
+        var(--text);
+    }
+
+
+    .item-button:disabled {
+      opacity: 0.55;
+
+      cursor: not-allowed;
+
+      transform: none;
+    }
+
+
+    /* ==========================================
+       EMPTY STATE
+    ========================================== */
+
+    .empty-state {
+      padding:
+        55px 24px;
+
+      border:
+        1px dashed rgba(255,255,255,0.1);
+
+      border-radius:
+        var(--radius);
+
+      text-align: center;
+
+      background:
+        rgba(255,255,255,0.012);
+    }
+
+
+    .empty-icon {
+      width: 54px;
+      height: 54px;
+
+      margin:
+        0 auto 15px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 14px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--text-3);
+
+      font-size: 23px;
+    }
+
+
+    .empty-title {
+      margin: 0;
+
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+
+    .empty-text {
+      max-width: 440px;
+
+      margin:
+        8px auto 18px;
+
+      color:
+        var(--text-2);
+
+      font-size: 13px;
+
+      line-height: 1.6;
+    }
+
+
+    /* ==========================================
+       LOADING
+    ========================================== */
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 280px;
+
+      color:
+        var(--text-3);
+
+      font-size: 13px;
+    }
+
+
+    .spinner {
+      width: 17px;
+      height: 17px;
+
+      margin-right: 9px;
+
+      border:
+        2px solid rgba(255,255,255,0.08);
+
+      border-top-color:
+        var(--accent);
+
+      border-radius: 50%;
+
+      animation:
+        spin 0.7s linear infinite;
+    }
+
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    /* ==========================================
+       ERROR
+    ========================================== */
+
+    .error-state {
+      padding:
+        20px;
+
+      border:
+        1px solid rgba(217,108,108,0.18);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        rgba(217,108,108,0.06);
+
+      color:
+        var(--danger);
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    .toast-container {
+      position: fixed;
+
+      right: 20px;
+      bottom: 20px;
+
+      z-index: 500;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 9px;
+
+      pointer-events: none;
+    }
+
+
+    .toast {
+      min-width: 240px;
+      max-width: 360px;
+
+      padding:
+        13px 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        #18140f;
+
+      box-shadow:
+        0 14px 40px rgba(0,0,0,0.35);
+
+      color:
+        var(--text);
+
+      font-size: 12px;
+      font-weight: 650;
+
+      animation:
+        toast-in 0.2s ease;
+    }
+
+
+    .toast.success {
+      border-color:
+        rgba(114,196,139,0.22);
+    }
+
+
+    .toast.error {
+      border-color:
+        rgba(217,108,108,0.22);
+    }
+
+
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform:
+          translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform:
+          translateY(0);
+      }
+    }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 1000px) {
+
+      .inventory-grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+
+    }
+
+
+    @media (max-width: 760px) {
+
+      .header-inner {
+        min-height: 60px;
+      }
+
+
+      .brand-subtitle {
+        display: none;
+      }
+
+
+      main {
+        padding-top: 34px;
+      }
+
+
+      .page-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+
+      .header-actions {
+        width: 100%;
+      }
+
+
+      .header-actions .button {
+        flex: 1;
+      }
+
+
+      .equipment-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .inventory-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+      main {
+        width:
+          min(
+            calc(100% - 22px),
+            var(--max-width)
+          );
+      }
+
+
+      .header-inner {
+        width:
+          min(
+            calc(100% - 22px),
+            var(--max-width)
+          );
+      }
+
+
+      .brand-title {
+        font-size: 13px;
+      }
+
+
+      .header-nav {
+        display: none;
+      }
+
+
+      .inventory-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .item-card {
+        min-height: 245px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+  <!-- ==========================================
+       HEADER
+  ========================================== -->
+
+  <header class="site-header">
+
+    <div class="header-inner">
+
+      <a
+        href="/"
+        class="brand"
+      >
+
+        <img
+          src="/logo.gif"
+          alt=""
+          class="brand-logo"
+        >
+
+        <div class="brand-text">
+
+          <div class="brand-title">
+            Middle Eastern Mixing
+          </div>
+
+          <div class="brand-subtitle">
+            Minigames
+          </div>
+
+        </div>
+
+      </a>
+
+
+      <nav class="header-nav">
+
+        <a
+          href="/games"
+          class="nav-link"
+        >
+          Games
+        </a>
+
+        <a
+          href="/leaderboard"
+          class="nav-link"
+        >
+          Leaderboard
+        </a>
+
+        <a
+          href="/shop"
+          class="nav-link"
+        >
+          Shop
+        </a>
+
+        <a
+          href="/inventory"
+          class="nav-link active"
+        >
+          Inventory
+        </a>
+
+        <a
+          href="/profile"
+          class="nav-link"
+        >
+          Profile
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ==========================================
+       MAIN
+  ========================================== -->
+
+  <main>
+
+
+    <!-- ==========================================
+         PAGE HEADER
+    ========================================== -->
+
+    <section class="page-header">
+
+      <div class="page-header-left">
+
+        <div class="eyebrow">
+          Your collection
+        </div>
+
+        <h1>
+          Inventory
+        </h1>
+
+        <p class="page-description">
+          Manage the items you've purchased and
+          customize your profile with your owned
+          cosmetics and badges.
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          href="/shop"
+          class="button button-primary"
+        >
+          Visit Shop
+        </a>
+
+        <a
+          href="/profile"
+          class="button"
+        >
+          View Profile
+        </a>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         CURRENT EQUIPMENT
+    ========================================== -->
+
+    <section class="equipment-section">
+
+      <div class="section-heading">
+
+        <h2 class="section-title">
+          Currently Equipped
+        </h2>
+
+        <span
+          class="section-count"
+          id="equipmentCount"
+        >
+          Loading...
+        </span>
+
+      </div>
+
+
+      <div
+        class="equipment-grid"
+        id="equipmentGrid"
+      >
+
+        <div class="equipment-card">
+
+          <div class="equipment-card-inner">
+
+            <div class="equipment-icon">
+              ✦
+            </div>
+
+            <div class="equipment-info">
+
+              <div class="equipment-slot">
+                Nameplate
+              </div>
+
+              <div class="equipment-empty">
+                Loading...
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="equipment-card">
+
+          <div class="equipment-card-inner">
+
+            <div class="equipment-icon">
+              ♛
+            </div>
+
+            <div class="equipment-info">
+
+              <div class="equipment-slot">
+                Badge
+              </div>
+
+              <div class="equipment-empty">
+                Loading...
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         INVENTORY
+    ========================================== -->
+
+    <section class="inventory-section">
+
+      <div class="section-heading">
+
+        <h2 class="section-title">
+          Owned Items
+        </h2>
+
+        <span
+          class="section-count"
+          id="inventoryCount"
+        >
+          Loading...
+        </span>
+
+      </div>
+
+
+      <div id="inventoryContent">
+
+        <div class="loading">
+
+          <div class="spinner"></div>
+
+          Loading inventory...
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- ==========================================
+       TOASTS
+  ========================================== -->
+
+  <div
+    class="toast-container"
+    id="toastContainer"
+  ></div>
+
+
+
+  <script>
+
+    /* ==========================================
+       API
+    ========================================== */
+
+    const API =
+      "https://api.memplace.xyz";
+
+
+    /* ==========================================
+       STATE
+    ========================================== */
+
+    let inventory = [];
+
+    let currentUser = null;
+
+    let equipment = {
+      equippedNameplate: null,
+      equippedBadge: null
+    };
+
+
+    /* ==========================================
+       HELPERS
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(
+        value ?? ""
+      )
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function getItemTypeLabel(type) {
+
+      if (
+        type === "profile_cosmetic"
+      ) {
+
+        return "Nameplate";
+
+      }
+
+
+      if (
+        type === "profile_badge"
+      ) {
+
+        return "Profile Badge";
+
+      }
+
+
+      return type
+        ? String(type)
+            .replaceAll("_", " ")
+        : "Item";
+
+    }
+
+
+    function getEquipmentField(type) {
+
+      if (
+        type === "profile_cosmetic"
+      ) {
+
+        return "equippedNameplate";
+
+      }
+
+
+      if (
+        type === "profile_badge"
+      ) {
+
+        return "equippedBadge";
+
+      }
+
+
+      return null;
+
+    }
+
+
+    function showToast(
+      message,
+      type = "success"
+    ) {
+
+      const container =
+        document.getElementById(
+          "toastContainer"
+        );
+
+
+      const toast =
+        document.createElement("div");
+
+
+      toast.className =
+        `toast ${type}`;
+
+
+      toast.textContent =
+        message;
+
+
+      container.appendChild(
+        toast
+      );
+
+
+      setTimeout(() => {
+
+        toast.style.opacity =
+          "0";
+
+        toast.style.transform =
+          "translateY(8px)";
+
+        toast.style.transition =
+          "opacity 0.2s ease, transform 0.2s ease";
+
+
+        setTimeout(() => {
+
+          toast.remove();
+
+        }, 220);
+
+      }, 2800);
+
+    }
+
+
+    /* ==========================================
+       LOAD USER
+    ========================================== */
+
+    async function loadUser() {
+
+      const response =
+        await fetch(
+          `${API}/api/me`,
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.authenticated
+      ) {
+
+        throw new Error(
+          "You must be signed in to view your inventory."
+        );
+
+      }
+
+
+      currentUser =
+        data.user;
+
+
+      equipment = {
+
+        equippedNameplate:
+          data.user.equippedNameplate ||
+          null,
+
+        equippedBadge:
+          data.user.equippedBadge ||
+          null
+
+      };
+
+    }
+
+
+    /* ==========================================
+       LOAD INVENTORY
+    ========================================== */
+
+    async function loadInventory() {
+
+      const response =
+        await fetch(
+          `${API}/api/inventory`,
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Failed to load inventory."
+        );
+
+      }
+
+
+      /*
+       * Your inventory endpoint may return
+       * either the array directly or inside
+       * data.inventory.
+       */
+
+      if (
+        Array.isArray(data)
+      ) {
+
+        inventory =
+          data;
+
+      } else if (
+        Array.isArray(data.inventory)
+      ) {
+
+        inventory =
+          data.inventory;
+
+      } else if (
+        Array.isArray(data.items)
+      ) {
+
+        inventory =
+          data.items;
+
+      } else {
+
+        inventory =
+          [];
+
+      }
+
+    }
+
+
+    /* ==========================================
+       FIND OWNED ITEM
+    ========================================== */
+
+    function findInventoryItem(
+      itemId
+    ) {
+
+      return inventory.find(
+        item =>
+          String(
+            item.itemId ??
+            item.id
+          ) === String(itemId)
+      ) || null;
+
+    }
+
+
+    /* ==========================================
+       GET ITEM DETAILS
+    ========================================== */
+
+    function getInventoryItemDetails(
+      inventoryItem
+    ) {
+
+      return {
+
+        id:
+          inventoryItem.itemId ||
+          inventoryItem.id,
+
+        name:
+          inventoryItem.name ||
+          "Unknown Item",
+
+        description:
+          inventoryItem.description ||
+          "",
+
+        type:
+          inventoryItem.type ||
+          "cosmetic",
+
+        icon:
+          inventoryItem.icon ||
+          "✦",
+
+        quantity:
+          Number(
+            inventoryItem.quantity ||
+            1
+          )
+
+      };
+
+    }
+
+
+    /* ==========================================
+       RENDER EQUIPMENT
+    ========================================== */
+
+    function renderEquipment() {
+
+      const grid =
+        document.getElementById(
+          "equipmentGrid"
+        );
+
+
+      const nameplateItem =
+        findInventoryItem(
+          equipment.equippedNameplate
+        );
+
+
+      const badgeItem =
+        findInventoryItem(
+          equipment.equippedBadge
+        );
+
+
+      const nameplate =
+        nameplateItem
+          ? getInventoryItemDetails(
+              nameplateItem
+            )
+          : null;
+
+
+      const badge =
+        badgeItem
+          ? getInventoryItemDetails(
+              badgeItem
+            )
+          : null;
+
+
+      const equippedCount =
+        Number(!!nameplate) +
+        Number(!!badge);
+
+
+      document.getElementById(
+        "equipmentCount"
+      ).textContent =
+        `${equippedCount} / 2 equipped`;
+
+
+      grid.innerHTML = `
+
+        <div class="equipment-card">
+
+          <div class="equipment-card-inner">
+
+            <div class="equipment-icon">
+              ${
+                nameplate
+                  ? escapeHtml(
+                      nameplate.icon
+                    )
+                  : "✦"
+              }
+            </div>
+
+            <div class="equipment-info">
+
+              <div class="equipment-slot">
+                Nameplate
+              </div>
+
+              ${
+                nameplate
+
+                  ? `
+
+                    <div class="equipment-name">
+                      ${escapeHtml(
+                        nameplate.name
+                      )}
+                    </div>
+
+                    <div
+                      class="equipped-pill"
+                      style="margin-top:7px;"
+                    >
+                      Equipped
+                    </div>
+
+                  `
+
+                  : `
+
+                    <div class="equipment-empty">
+                      No nameplate equipped
+                    </div>
+
+                  `
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="equipment-card">
+
+          <div class="equipment-card-inner">
+
+            <div class="equipment-icon">
+              ${
+                badge
+                  ? escapeHtml(
+                      badge.icon
+                    )
+                  : "♛"
+              }
+            </div>
+
+            <div class="equipment-info">
+
+              <div class="equipment-slot">
+                Badge
+              </div>
+
+              ${
+                badge
+
+                  ? `
+
+                    <div class="equipment-name">
+                      ${escapeHtml(
+                        badge.name
+                      )}
+                    </div>
+
+                    <div
+                      class="equipped-pill"
+                      style="margin-top:7px;"
+                    >
+                      Equipped
+                    </div>
+
+                  `
+
+                  : `
+
+                    <div class="equipment-empty">
+                      No badge equipped
+                    </div>
+
+                  `
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+
+    /* ==========================================
+       RENDER INVENTORY
+    ========================================== */
+
+    function renderInventory() {
+
+      const container =
+        document.getElementById(
+          "inventoryContent"
+        );
+
+
+      document.getElementById(
+        "inventoryCount"
+      ).textContent =
+        `${inventory.length} ${
+          inventory.length === 1
+            ? "item"
+            : "items"
+        }`;
+
+
+      if (
+        inventory.length === 0
+      ) {
+
+        container.innerHTML = `
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              ✦
+            </div>
+
+            <h3 class="empty-title">
+              Your inventory is empty
+            </h3>
+
+            <p class="empty-text">
+              Items you purchase from the shop
+              will appear here. You can equip
+              profile cosmetics and badges from
+              your inventory.
+            </p>
+
+            <a
+              href="/shop"
+              class="button button-primary"
+            >
+              Browse Shop
+            </a>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      container.innerHTML = `
+
+        <div class="inventory-grid">
+
+          ${inventory.map(
+            item => {
+
+              const details =
+                getInventoryItemDetails(
+                  item
+                );
+
+
+              const slot =
+                getEquipmentField(
+                  details.type
+                );
+
+
+              const isEquipped =
+                slot &&
+                equipment[slot] ===
+                  details.id;
+
+
+              return `
+
+                <article
+                  class="
+                    item-card
+                    ${
+                      isEquipped
+                        ? "equipped"
+                        : ""
+                    }
+                  "
+                >
+
+                  ${
+                    isEquipped
+
+                      ? `
+
+                        <div class="equipped-label">
+                          Equipped
+                        </div>
+
+                      `
+
+                      : ""
+                  }
+
+
+                  <div class="item-icon">
+                    ${escapeHtml(
+                      details.icon
+                    )}
+                  </div>
+
+
+                  <div class="item-type">
+                    ${escapeHtml(
+                      getItemTypeLabel(
+                        details.type
+                      )
+                    )}
+                  </div>
+
+
+                  <h3 class="item-name">
+                    ${escapeHtml(
+                      details.name
+                    )}
+                  </h3>
+
+
+                  <p class="item-description">
+                    ${escapeHtml(
+                      details.description
+                    )}
+                  </p>
+
+
+                  <div class="item-footer">
+
+                    <span class="quantity">
+                      Quantity:
+                      ${details.quantity}
+                    </span>
+
+
+                    ${
+                      slot
+
+                        ? `
+
+                          <button
+                            class="
+                              item-button
+                              ${
+                                isEquipped
+                                  ? "unequip"
+                                  : ""
+                              }
+                            "
+                            data-item-id="${escapeHtml(
+                              details.id
+                            )}"
+                            data-action="${
+                              isEquipped
+                                ? "unequip"
+                                : "equip"
+                            }"
+                          >
+                            ${
+                              isEquipped
+                                ? "Unequip"
+                                : "Equip"
+                            }
+                          </button>
+
+                        `
+
+                        : `
+
+                          <span class="quantity">
+                            Cosmetic
+                          </span>
+
+                        `
+                    }
+
+                  </div>
+
+                </article>
+
+              `;
+
+            }
+          ).join("")}
+
+        </div>
+
+      `;
+
+
+      bindItemButtons();
+
+    }
+
+
+    /* ==========================================
+       BUTTON EVENTS
+    ========================================== */
+
+    function bindItemButtons() {
+
+      document
+        .querySelectorAll(
+          "[data-item-id]"
+        )
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              const itemId =
+                button.dataset.itemId;
+
+
+              const action =
+                button.dataset.action;
+
+
+              await changeEquipment(
+                itemId,
+                action,
+                button
+              );
+
+            }
+          );
+
+        });
+
+    }
+
+
+    /* ==========================================
+       EQUIP / UNEQUIP
+    ========================================== */
+
+    async function changeEquipment(
+      itemId,
+      action,
+      button
+    ) {
+
+      if (
+        button.disabled
+      ) {
+
+        return;
+
+      }
+
+
+      button.disabled =
+        true;
+
+
+      const originalText =
+        button.textContent;
+
+
+      button.textContent =
+        action === "equip"
+          ? "Equipping..."
+          : "Removing...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API}/api/shop/equip`,
+            {
+              method: "POST",
+
+              credentials:
+                "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  itemId,
+                  action
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.error ||
+            "Failed to update equipment."
+          );
+
+        }
+
+
+        /*
+         * The endpoint returns the
+         * updated slot. Update our
+         * local state immediately.
+         */
+
+        if (
+          data.equipment
+        ) {
+
+          if (
+            Object.prototype.hasOwnProperty.call(
+              data.equipment,
+              "equippedNameplate"
+            )
+          ) {
+
+            equipment.equippedNameplate =
+              data.equipment.equippedNameplate;
+
+          }
+
+
+          if (
+            Object.prototype.hasOwnProperty.call(
+              data.equipment,
+              "equippedBadge"
+            )
+          ) {
+
+            equipment.equippedBadge =
+              data.equipment.equippedBadge;
+
+          }
+
+        } else {
+
+          const item =
+            findInventoryItem(
+              itemId
+            );
+
+
+          if (item) {
+
+            const details =
+              getInventoryItemDetails(
+                item
+              );
+
+
+            const slot =
+              getEquipmentField(
+                details.type
+              );
+
+
+            if (slot) {
+
+              equipment[slot] =
+                action === "equip"
+                  ? itemId
+                  : null;
+
+            }
+
+          }
+
+        }
+
+
+        renderEquipment();
+
+        renderInventory();
+
+
+        showToast(
+          action === "equip"
+            ? "Item equipped."
+            : "Item unequipped.",
+          "success"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "EQUIPMENT ERROR:",
+          error
+        );
+
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          originalText;
+
+
+        showToast(
+          error.message ||
+          "Something went wrong.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
+    async function initialize() {
+
+      try {
+
+        await loadUser();
+
+        await loadInventory();
+
+
+        renderEquipment();
+
+        renderInventory();
+
+      } catch (error) {
+
+        console.error(
+          "INVENTORY LOAD ERROR:",
+          error
+        );
+
+
+        document.getElementById(
+          "inventoryContent"
+        ).innerHTML = `
+
+          <div class="error-state">
+            ${escapeHtml(
+              error.message ||
+              "Unable to load your inventory."
+            )}
+          </div>
+
+        `;
+
+
+        document.getElementById(
+          "equipmentGrid"
+        ).innerHTML = `
+
+          <div class="error-state">
+            Unable to load your equipment.
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    initialize();
+
+  </script>
+
+</body>
+</html>
