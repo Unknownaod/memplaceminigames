@@ -19,6 +19,8 @@
       --black-2: #12100d;
       --surface: #191511;
       --surface-2: #211c16;
+      --surface-3: #29231b;
+
       --border: rgba(214, 168, 92, 0.13);
       --border-strong: rgba(214, 168, 92, 0.24);
 
@@ -29,21 +31,30 @@
       --accent-soft: rgba(214, 168, 92, 0.10);
 
       --danger: #d96b6b;
+      --success: #7fc98a;
 
       --radius: 14px;
     }
+
 
     * {
       box-sizing: border-box;
     }
 
+
     html,
     body {
       margin: 0;
       padding: 0;
+
       min-height: 100%;
-      background: var(--black);
-      color: var(--text);
+
+      background:
+        var(--black);
+
+      color:
+        var(--text);
+
       font-family:
         Inter,
         ui-sans-serif,
@@ -54,9 +65,11 @@
         sans-serif;
     }
 
+
     body {
       padding-bottom: 60px;
     }
+
 
     button,
     input,
@@ -65,13 +78,21 @@
       font: inherit;
     }
 
+
     button {
       cursor: pointer;
     }
 
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
     .header {
       position: sticky;
+
       top: 0;
+
       z-index: 20;
 
       height: 72px;
@@ -89,29 +110,41 @@
         blur(18px);
     }
 
-    .header-inner {
-      width: min(
-        1180px,
-        calc(100% - 40px)
-      );
 
-      margin: 0 auto;
+    .header-inner {
+      width:
+        min(
+          1180px,
+          calc(100% - 40px)
+        );
+
+      margin:
+        0 auto;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       gap: 20px;
     }
 
+
     .brand {
       display: flex;
+
       align-items: center;
+
       gap: 12px;
 
-      color: var(--text);
-      text-decoration: none;
+      color:
+        var(--text);
+
+      text-decoration:
+        none;
     }
+
 
     .brand img {
       width: 38px;
@@ -122,14 +155,20 @@
       object-fit: cover;
     }
 
+
     .brand-text {
       font-weight: 700;
-      letter-spacing: -0.02em;
+
+      letter-spacing:
+        -0.02em;
     }
+
 
     .back-btn {
       display: inline-flex;
+
       align-items: center;
+
       gap: 8px;
 
       border:
@@ -138,109 +177,179 @@
       background:
         var(--surface);
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
       padding:
         9px 13px;
 
-      border-radius: 10px;
+      border-radius:
+        10px;
 
-      text-decoration: none;
+      text-decoration:
+        none;
 
       transition:
         0.18s ease;
     }
 
+
     .back-btn:hover {
-      color: var(--text);
-      border-color: var(--border-strong);
-      background: var(--surface-2);
+      color:
+        var(--text);
+
+      border-color:
+        var(--border-strong);
+
+      background:
+        var(--surface-2);
     }
+
+
+    /* ==========================================
+       CONTAINER
+    ========================================== */
 
     .container {
-      width: min(
-        1180px,
-        calc(100% - 40px)
-      );
+      width:
+        min(
+          1180px,
+          calc(100% - 40px)
+        );
 
-      margin: 0 auto;
-      padding-top: 38px;
+      margin:
+        0 auto;
+
+      padding-top:
+        38px;
     }
+
 
     .page-header {
-      margin-bottom: 26px;
+      margin-bottom:
+        26px;
     }
+
 
     .eyebrow {
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      margin: 0;
+      color:
+        var(--accent);
 
       font-size:
-        clamp(28px, 4vw, 38px);
+        12px;
 
-      letter-spacing: -0.035em;
+      font-weight:
+        700;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.12em;
+
+      margin-bottom:
+        8px;
     }
+
+
+    h1 {
+      margin:
+        0;
+
+      font-size:
+        clamp(
+          28px,
+          4vw,
+          38px
+        );
+
+      letter-spacing:
+        -0.035em;
+    }
+
 
     .subtitle {
-      margin: 8px 0 0;
+      margin:
+        8px 0 0;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 14px;
+      font-size:
+        14px;
     }
+
+
+    /* ==========================================
+       TOOLBAR
+    ========================================== */
 
     .toolbar {
-      display: flex;
-      align-items: center;
+      display:
+        flex;
 
-      gap: 12px;
+      align-items:
+        center;
 
-      margin-bottom: 20px;
+      gap:
+        12px;
+
+      margin-bottom:
+        12px;
     }
+
 
     .search-wrap {
-      position: relative;
-      flex: 1;
+      position:
+        relative;
+
+      flex:
+        1;
     }
 
-    .search-icon {
-      position: absolute;
 
-      left: 14px;
-      top: 50%;
+    .search-icon {
+      position:
+        absolute;
+
+      left:
+        14px;
+
+      top:
+        50%;
 
       transform:
         translateY(-50%);
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 15px;
-      pointer-events: none;
+      font-size:
+        15px;
+
+      pointer-events:
+        none;
     }
 
+
     .search {
-      width: 100%;
+      width:
+        100%;
 
       border:
         1px solid var(--border);
 
-      outline: none;
+      outline:
+        none;
 
       background:
         var(--surface);
 
-      color: var(--text);
+      color:
+        var(--text);
 
-      border-radius: 11px;
+      border-radius:
+        11px;
 
       padding:
         12px 14px 12px 40px;
@@ -248,6 +357,13 @@
       transition:
         0.18s ease;
     }
+
+
+    .search::placeholder {
+      color:
+        #6f695f;
+    }
+
 
     .search:focus {
       border-color:
@@ -258,6 +374,7 @@
         var(--accent-soft);
     }
 
+
     .refresh-btn {
       border:
         1px solid var(--border);
@@ -265,16 +382,19 @@
       background:
         var(--surface);
 
-      color: var(--text);
+      color:
+        var(--text);
 
       padding:
         12px 15px;
 
-      border-radius: 11px;
+      border-radius:
+        11px;
 
       transition:
         0.18s ease;
     }
+
 
     .refresh-btn:hover {
       border-color:
@@ -284,18 +404,29 @@
         var(--surface-2);
     }
 
+
     .status {
-      min-height: 20px;
+      min-height:
+        20px;
 
-      margin-bottom: 12px;
+      margin-bottom:
+        12px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 13px;
+      font-size:
+        13px;
     }
 
+
+    /* ==========================================
+       USERS CARD
+    ========================================== */
+
     .users-card {
-      overflow: hidden;
+      overflow:
+        hidden;
 
       border:
         1px solid var(--border);
@@ -307,17 +438,21 @@
         var(--radius);
     }
 
+
     .users-header {
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
-        minmax(220px, 1.5fr)
+        minmax(260px, 1.7fr)
         minmax(160px, 1fr)
-        minmax(120px, 0.7fr)
-        minmax(130px, 0.8fr)
+        110px
+        110px
+        110px
         100px;
 
-      gap: 18px;
+      gap:
+        18px;
 
       padding:
         14px 18px;
@@ -325,28 +460,40 @@
       border-bottom:
         1px solid var(--border);
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 11px;
-      font-weight: 700;
+      font-size:
+        11px;
 
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-weight:
+        700;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.08em;
     }
 
+
     .user-row {
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
-        minmax(220px, 1.5fr)
+        minmax(260px, 1.7fr)
         minmax(160px, 1fr)
-        minmax(120px, 0.7fr)
-        minmax(130px, 0.8fr)
+        110px
+        110px
+        110px
         100px;
 
-      gap: 18px;
+      gap:
+        18px;
 
-      align-items: center;
+      align-items:
+        center;
 
       padding:
         17px 18px;
@@ -358,35 +505,67 @@
         background 0.15s ease;
     }
 
+
     .user-row:last-child {
-      border-bottom: 0;
+      border-bottom:
+        0;
     }
+
 
     .user-row:hover {
       background:
-        rgba(214, 168, 92, 0.035);
+        rgba(
+          214,
+          168,
+          92,
+          0.035
+        );
     }
+
+
+    /* ==========================================
+       USER
+    ========================================== */
 
     .user-main {
-      min-width: 0;
+      min-width:
+        0;
 
-      display: flex;
-      align-items: center;
+      display:
+        flex;
 
-      gap: 12px;
+      align-items:
+        center;
+
+      gap:
+        12px;
     }
 
+
     .avatar {
-      width: 38px;
-      height: 38px;
+      width:
+        42px;
 
-      flex: 0 0 38px;
+      height:
+        42px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      flex:
+        0 0 42px;
 
-      border-radius: 11px;
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      overflow:
+        hidden;
+
+      border-radius:
+        12px;
 
       background:
         var(--surface-2);
@@ -394,33 +573,72 @@
       border:
         1px solid var(--border);
 
-      color: var(--accent);
+      color:
+        var(--accent);
 
-      font-weight: 800;
-      font-size: 13px;
+      font-weight:
+        800;
+
+      font-size:
+        13px;
     }
+
+
+    .user-avatar-image {
+      width:
+        100%;
+
+      height:
+        100%;
+
+      display:
+        block;
+
+      object-fit:
+        cover;
+
+      border-radius:
+        inherit;
+    }
+
 
     .user-name {
-      overflow: hidden;
+      overflow:
+        hidden;
 
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      white-space:
+        nowrap;
 
-      font-weight: 650;
+      text-overflow:
+        ellipsis;
+
+      font-weight:
+        650;
     }
+
 
     .user-discord {
-      margin-top: 3px;
+      margin-top:
+        3px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 12px;
+      font-size:
+        12px;
     }
 
-    .id-cell {
-      overflow: hidden;
 
-      color: var(--muted);
+    /* ==========================================
+       ID
+    ========================================== */
+
+    .id-cell {
+      overflow:
+        hidden;
+
+      color:
+        var(--muted);
 
       font-family:
         ui-monospace,
@@ -430,22 +648,63 @@
         Consolas,
         monospace;
 
-      font-size: 12px;
+      font-size:
+        11px;
 
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
     }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    .stat-cell {
+      font-size:
+        13px;
+
+      font-weight:
+        650;
+    }
+
 
     .balance {
-      font-weight: 700;
+      color:
+        var(--accent);
 
-      color: var(--accent);
+      font-weight:
+        750;
     }
+
+
+    .wins {
+      color:
+        var(--success);
+    }
+
+
+    .losses {
+      color:
+        var(--danger);
+    }
+
 
     .date {
-      color: var(--muted);
-      font-size: 13px;
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
     }
+
+
+    /* ==========================================
+       BUTTON
+    ========================================== */
 
     .view-btn {
       border:
@@ -454,9 +713,11 @@
       background:
         var(--surface-2);
 
-      color: var(--text);
+      color:
+        var(--text);
 
-      border-radius: 9px;
+      border-radius:
+        9px;
 
       padding:
         8px 11px;
@@ -465,76 +726,115 @@
         0.18s ease;
     }
 
+
     .view-btn:hover {
       border-color:
         var(--border-strong);
 
-      color: var(--accent);
+      color:
+        var(--accent);
     }
+
+
+    /* ==========================================
+       EMPTY / LOADING
+    ========================================== */
 
     .empty {
-      padding: 60px 20px;
+      padding:
+        60px 20px;
 
-      text-align: center;
+      text-align:
+        center;
 
-      color: var(--muted);
+      color:
+        var(--muted);
     }
+
 
     .empty-title {
-      color: var(--text);
+      color:
+        var(--text);
 
-      font-weight: 700;
+      font-weight:
+        700;
 
-      margin-bottom: 6px;
+      margin-bottom:
+        6px;
     }
+
 
     .loading {
-      padding: 60px 20px;
+      padding:
+        60px 20px;
 
-      text-align: center;
+      text-align:
+        center;
 
-      color: var(--muted);
+      color:
+        var(--muted);
     }
+
 
     /* ==========================================
        MODAL
     ========================================== */
 
     .modal-backdrop {
-      position: fixed;
+      position:
+        fixed;
 
-      inset: 0;
+      inset:
+        0;
 
-      z-index: 100;
+      z-index:
+        100;
 
-      display: none;
+      display:
+        none;
 
-      align-items: center;
-      justify-content: center;
+      align-items:
+        center;
 
-      padding: 20px;
+      justify-content:
+        center;
+
+      padding:
+        20px;
 
       background:
-        rgba(0, 0, 0, 0.68);
+        rgba(
+          0,
+          0,
+          0,
+          0.72
+        );
 
       backdrop-filter:
         blur(8px);
     }
 
+
     .modal-backdrop.open {
-      display: flex;
+      display:
+        flex;
     }
 
+
     .modal {
-      width: min(
-        560px,
-        100%
-      );
+      width:
+        min(
+          720px,
+          100%
+        );
 
       max-height:
-        calc(100vh - 40px);
+        calc(
+          100vh - 40px
+        );
 
-      overflow-y: auto;
+      overflow-y:
+        auto;
 
       border:
         1px solid var(--border-strong);
@@ -547,14 +847,24 @@
 
       box-shadow:
         0 30px 90px
-        rgba(0, 0, 0, 0.5);
+        rgba(
+          0,
+          0,
+          0,
+          0.5
+        );
     }
 
-    .modal-header {
-      display: flex;
 
-      align-items: center;
-      justify-content: space-between;
+    .modal-header {
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
 
       padding:
         20px;
@@ -563,14 +873,22 @@
         1px solid var(--border);
     }
 
+
     .modal-title {
-      font-size: 18px;
-      font-weight: 750;
+      font-size:
+        18px;
+
+      font-weight:
+        750;
     }
 
+
     .close-btn {
-      width: 34px;
-      height: 34px;
+      width:
+        34px;
+
+      height:
+        34px;
 
       border:
         1px solid var(--border);
@@ -578,57 +896,214 @@
       background:
         var(--surface-2);
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      border-radius: 9px;
+      border-radius:
+        9px;
+
+      font-size:
+        18px;
     }
+
 
     .close-btn:hover {
-      color: var(--text);
+      color:
+        var(--text);
     }
+
 
     .modal-body {
-      padding: 20px;
+      padding:
+        20px;
     }
+
+
+    /* ==========================================
+       PROFILE HEADER
+    ========================================== */
 
     .profile {
-      display: flex;
-      align-items: center;
+      display:
+        flex;
 
-      gap: 14px;
+      align-items:
+        center;
 
-      margin-bottom: 22px;
+      gap:
+        15px;
+
+      margin-bottom:
+        22px;
     }
+
 
     .profile .avatar {
-      width: 50px;
-      height: 50px;
+      width:
+        58px;
 
-      flex-basis: 50px;
+      height:
+        58px;
 
-      font-size: 16px;
+      flex-basis:
+        58px;
+
+      border-radius:
+        15px;
+
+      font-size:
+        17px;
     }
+
 
     .profile-name {
-      font-size: 17px;
-      font-weight: 750;
+      font-size:
+        19px;
+
+      font-weight:
+        750;
     }
+
 
     .profile-discord {
-      margin-top: 4px;
+      margin-top:
+        4px;
 
-      color: var(--muted);
-      font-size: 13px;
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
     }
 
-    .details {
-      display: grid;
+
+    /* ==========================================
+       STAT SUMMARY
+    ========================================== */
+
+    .summary-grid {
+      display:
+        grid;
 
       grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+        repeat(
+          4,
+          minmax(
+            0,
+            1fr
+          )
+        );
 
-      gap: 10px;
+      gap:
+        10px;
+
+      margin-bottom:
+        20px;
     }
+
+
+    .summary-card {
+      padding:
+        14px;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface-2);
+
+      border-radius:
+        11px;
+    }
+
+
+    .summary-label {
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.07em;
+
+      margin-bottom:
+        6px;
+    }
+
+
+    .summary-value {
+      font-size:
+        19px;
+
+      font-weight:
+        750;
+    }
+
+
+    .summary-value.accent {
+      color:
+        var(--accent);
+    }
+
+
+    .summary-value.success {
+      color:
+        var(--success);
+    }
+
+
+    .summary-value.danger {
+      color:
+        var(--danger);
+    }
+
+
+    /* ==========================================
+       DETAIL GRID
+    ========================================== */
+
+    .details-section {
+      margin-top:
+        20px;
+    }
+
+
+    .section-title {
+      margin-bottom:
+        12px;
+
+      font-size:
+        14px;
+
+      font-weight:
+        750;
+    }
+
+
+    .details {
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        10px;
+    }
+
 
     .detail {
       padding:
@@ -640,86 +1115,138 @@
       background:
         var(--surface-2);
 
-      border-radius: 11px;
+      border-radius:
+        11px;
     }
+
 
     .detail-label {
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 11px;
-      font-weight: 700;
+      font-size:
+        10px;
 
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      font-weight:
+        700;
 
-      margin-bottom: 5px;
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.06em;
+
+      margin-bottom:
+        5px;
     }
+
 
     .detail-value {
-      overflow-wrap: anywhere;
+      overflow-wrap:
+        anywhere;
 
-      font-size: 14px;
-      font-weight: 650;
+      font-size:
+        14px;
+
+      font-weight:
+        650;
     }
 
-    .economy {
-      margin-top: 20px;
 
-      padding-top: 20px;
+    .detail-value.accent {
+      color:
+        var(--accent);
+    }
+
+
+    .detail-value.success {
+      color:
+        var(--success);
+    }
+
+
+    .detail-value.danger {
+      color:
+        var(--danger);
+    }
+
+
+    /* ==========================================
+       ECONOMY
+    ========================================== */
+
+    .economy {
+      margin-top:
+        22px;
+
+      padding-top:
+        22px;
 
       border-top:
         1px solid var(--border);
     }
 
-    .section-title {
-      margin-bottom: 12px;
-
-      font-size: 14px;
-      font-weight: 750;
-    }
 
     .economy-note {
-      margin-bottom: 14px;
+      margin-bottom:
+        14px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 12px;
-      line-height: 1.5;
+      font-size:
+        12px;
+
+      line-height:
+        1.5;
     }
 
+
     .form-grid {
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
         1fr 1fr;
 
-      gap: 10px;
+      gap:
+        10px;
     }
+
 
     .field {
-      display: flex;
-      flex-direction: column;
+      display:
+        flex;
 
-      gap: 6px;
+      flex-direction:
+        column;
+
+      gap:
+        6px;
     }
 
-    .field.full {
-      grid-column:
-        1 / -1;
-    }
 
     .field label {
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 11px;
-      font-weight: 700;
+      font-size:
+        10px;
 
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      font-weight:
+        700;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.06em;
     }
 
+
     .field input {
-      width: 100%;
+      width:
+        100%;
 
       padding:
         11px 12px;
@@ -727,32 +1254,45 @@
       border:
         1px solid var(--border);
 
-      outline: none;
+      outline:
+        none;
 
       background:
         var(--black-2);
 
-      color: var(--text);
+      color:
+        var(--text);
 
-      border-radius: 9px;
+      border-radius:
+        9px;
     }
+
 
     .field input:focus {
       border-color:
         var(--border-strong);
+
+      box-shadow:
+        0 0 0 3px
+        var(--accent-soft);
     }
 
-    .adjust-btn {
-      width: 100%;
 
-      margin-top: 12px;
+    .adjust-btn {
+      width:
+        100%;
+
+      margin-top:
+        12px;
 
       padding:
         11px 14px;
 
-      border: 0;
+      border:
+        0;
 
-      border-radius: 9px;
+      border-radius:
+        9px;
 
       background:
         var(--accent);
@@ -760,91 +1300,191 @@
       color:
         #17120b;
 
-      font-weight: 800;
+      font-weight:
+        800;
     }
+
 
     .adjust-btn:hover {
-      filter: brightness(1.07);
+      filter:
+        brightness(
+          1.07
+        );
     }
+
 
     .adjust-btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
+      opacity:
+        0.55;
+
+      cursor:
+        not-allowed;
     }
+
 
     .form-message {
-      min-height: 18px;
+      min-height:
+        18px;
 
-      margin-top: 9px;
+      margin-top:
+        9px;
 
-      font-size: 12px;
+      font-size:
+        12px;
     }
+
 
     .form-message.error {
-      color: var(--danger);
+      color:
+        var(--danger);
     }
 
+
     .form-message.success {
-      color: var(--accent);
+      color:
+        var(--success);
     }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 1050px) {
+
+      .users-header,
+      .user-row {
+        grid-template-columns:
+          minmax(
+            250px,
+            1.5fr
+          )
+          150px
+          100px
+          100px
+          100px;
+      }
+
+      .users-header > div:nth-child(4),
+      .user-row > div:nth-child(4) {
+        display:
+          none;
+      }
+
+    }
+
 
     @media (max-width: 850px) {
 
       .users-header {
-        display: none;
+        display:
+          none;
       }
+
 
       .user-row {
         grid-template-columns:
           1fr auto;
 
-        gap: 12px;
+        gap:
+          12px;
+
+        padding:
+          15px;
       }
+
 
       .user-row > div:nth-child(2),
       .user-row > div:nth-child(3),
-      .user-row > div:nth-child(4) {
-        display: none;
+      .user-row > div:nth-child(4),
+      .user-row > div:nth-child(5) {
+        display:
+          none;
       }
 
+
       .view-btn {
-        grid-column: 2;
-        grid-row: 1;
+        grid-column:
+          2;
+
+        grid-row:
+          1;
       }
+
+
+      .summary-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+      }
+
     }
+
 
     @media (max-width: 560px) {
 
       .container,
       .header-inner {
         width:
-          calc(100% - 24px);
+          calc(
+            100% - 24px
+          );
       }
 
+
       .toolbar {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction:
+          column;
+
+        align-items:
+          stretch;
       }
+
 
       .details,
       .form-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
 
-      .field.full {
-        grid-column: auto;
+
+      .summary-grid {
+        grid-template-columns:
+          1fr 1fr;
       }
+
 
       .modal-backdrop {
-        padding: 10px;
+        padding:
+          10px;
       }
+
+
+      .modal {
+        max-height:
+          calc(
+            100vh - 20px
+          );
+      }
+
     }
 
   </style>
 
 </head>
 
+
 <body>
+
+
+  <!-- ==========================================
+       HEADER
+  ========================================== -->
 
   <header class="header">
 
@@ -854,6 +1494,7 @@
         href="/admin"
         class="brand"
       >
+
         <img
           src="/logo.gif"
           alt=""
@@ -862,7 +1503,9 @@
         <span class="brand-text">
           Middle Eastern Mixing
         </span>
+
       </a>
+
 
       <a
         href="/admin"
@@ -875,7 +1518,13 @@
 
   </header>
 
+
+  <!-- ==========================================
+       MAIN
+  ========================================== -->
+
   <main class="container">
+
 
     <div class="page-header">
 
@@ -888,10 +1537,15 @@
       </h1>
 
       <p class="subtitle">
-        Search and manage registered users.
+        View registered users, balances, game statistics, and account information.
       </p>
 
     </div>
+
+
+    <!-- ==========================================
+         TOOLBAR
+    ========================================== -->
 
     <div class="toolbar">
 
@@ -911,6 +1565,7 @@
 
       </div>
 
+
       <button
         id="refreshBtn"
         class="refresh-btn"
@@ -921,22 +1576,48 @@
 
     </div>
 
+
     <div
       id="status"
       class="status"
     ></div>
 
+
+    <!-- ==========================================
+         USERS TABLE
+    ========================================== -->
+
     <section class="users-card">
+
 
       <div class="users-header">
 
-        <div>User</div>
-        <div>Discord ID</div>
-        <div>Balance</div>
-        <div>Created</div>
-        <div></div>
+        <div>
+          User
+        </div>
+
+        <div>
+          Discord ID
+        </div>
+
+        <div>
+          Balance
+        </div>
+
+        <div>
+          Played
+        </div>
+
+        <div>
+          Wins
+        </div>
+
+        <div>
+          Actions
+        </div>
 
       </div>
+
 
       <div id="usersList">
 
@@ -946,7 +1627,9 @@
 
       </div>
 
+
     </section>
+
 
   </main>
 
@@ -960,7 +1643,9 @@
     class="modal-backdrop"
   >
 
+
     <div class="modal">
+
 
       <div class="modal-header">
 
@@ -968,17 +1653,23 @@
           User Details
         </div>
 
+
         <button
           id="closeModal"
           class="close-btn"
           type="button"
+          aria-label="Close"
         >
           ×
         </button>
 
       </div>
 
+
       <div class="modal-body">
+
+
+        <!-- PROFILE -->
 
         <div class="profile">
 
@@ -989,6 +1680,7 @@
             ?
           </div>
 
+
           <div>
 
             <div
@@ -997,6 +1689,7 @@
             >
               —
             </div>
+
 
             <div
               id="modalDiscord"
@@ -1009,10 +1702,322 @@
 
         </div>
 
-        <div
-          id="details"
-          class="details"
-        ></div>
+
+        <!-- SUMMARY -->
+
+        <div class="summary-grid">
+
+
+          <div class="summary-card">
+
+            <div class="summary-label">
+              Balance
+            </div>
+
+            <div
+              id="summaryBalance"
+              class="summary-value accent"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <div class="summary-label">
+              Games Played
+            </div>
+
+            <div
+              id="summaryPlayed"
+              class="summary-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <div class="summary-label">
+              Games Won
+            </div>
+
+            <div
+              id="summaryWins"
+              class="summary-value success"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <div class="summary-label">
+              Games Lost
+            </div>
+
+            <div
+              id="summaryLosses"
+              class="summary-value danger"
+            >
+              —
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="details-section">
+
+          <div class="section-title">
+            Account
+          </div>
+
+
+          <div class="details">
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Discord ID
+              </div>
+
+              <div
+                id="detailId"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Username
+              </div>
+
+              <div
+                id="detailUsername"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Discord Username
+              </div>
+
+              <div
+                id="detailDiscordUsername"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Account Created
+              </div>
+
+              <div
+                id="detailCreated"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Last Updated
+              </div>
+
+              <div
+                id="detailUpdated"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Avatar
+              </div>
+
+              <div
+                id="detailAvatar"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+        <!-- GAME STATS -->
+
+        <div class="details-section">
+
+          <div class="section-title">
+            Game Statistics
+          </div>
+
+
+          <div class="details">
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Games Played
+              </div>
+
+              <div
+                id="detailGamesPlayed"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Games Won
+              </div>
+
+              <div
+                id="detailGamesWon"
+                class="detail-value success"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Games Lost
+              </div>
+
+              <div
+                id="detailGamesLost"
+                class="detail-value danger"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Chess Rating
+              </div>
+
+              <div
+                id="detailChessRating"
+                class="detail-value accent"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Total Wagered
+              </div>
+
+              <div
+                id="detailTotalWagered"
+                class="detail-value"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Total Won
+              </div>
+
+              <div
+                id="detailTotalWon"
+                class="detail-value success"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="detail">
+
+              <div class="detail-label">
+                Total Lost
+              </div>
+
+              <div
+                id="detailTotalLost"
+                class="detail-value danger"
+              >
+                —
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+        <!-- ECONOMY -->
 
         <div
           id="economySection"
@@ -1021,14 +2026,17 @@
         >
 
           <div class="section-title">
-            Economy
+            Economy Management
           </div>
+
 
           <div class="economy-note">
-            Use a positive amount to add currency or a negative amount to remove currency. All balance changes are recorded in the staff audit log.
+            Use a positive amount to add currency or a negative amount to remove currency. Balance changes are recorded in the staff audit log.
           </div>
 
+
           <div class="form-grid">
+
 
             <div class="field">
 
@@ -1045,6 +2053,7 @@
 
             </div>
 
+
             <div class="field">
 
               <label for="reason">
@@ -1060,7 +2069,9 @@
 
             </div>
 
+
           </div>
+
 
           <button
             id="adjustBtn"
@@ -1070,12 +2081,14 @@
             Adjust Balance
           </button>
 
+
           <div
             id="formMessage"
             class="form-message"
           ></div>
 
         </div>
+
 
       </div>
 
@@ -1089,10 +2102,15 @@
     const API =
       "https://api.memplace.xyz";
 
-    let currentStaff = null;
-    let currentUser = null;
 
-    let searchTimer = null;
+    let currentStaff =
+      null;
+
+    let currentUser =
+      null;
+
+    let searchTimer =
+      null;
 
 
     /* ==========================================
@@ -1104,11 +2122,27 @@
       return String(
         value ?? ""
       )
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
+
     }
 
 
@@ -1118,8 +2152,10 @@
         return "—";
       }
 
+
       const date =
         new Date(value);
+
 
       if (
         Number.isNaN(
@@ -1129,26 +2165,56 @@
         return "—";
       }
 
-      return date.toLocaleDateString(
+
+      return date.toLocaleString(
         undefined,
         {
-          year: "numeric",
-          month: "short",
-          day: "numeric"
+          year:
+            "numeric",
+
+          month:
+            "short",
+
+          day:
+            "numeric",
+
+          hour:
+            "numeric",
+
+          minute:
+            "2-digit"
         }
       );
+
+    }
+
+
+    function formatNumber(value) {
+
+      if (
+        typeof value !==
+        "number"
+      ) {
+        return "0";
+      }
+
+
+      return value.toLocaleString();
     }
 
 
     function formatBalance(value) {
 
       if (
-        typeof value !== "number"
+        typeof value !==
+        "number"
       ) {
-        return "—";
+        return "0";
       }
 
+
       return value.toLocaleString();
+
     }
 
 
@@ -1159,26 +2225,77 @@
         user.discordUsername ||
         "?";
 
+
       const parts =
         String(value)
           .trim()
           .split(/\s+/)
           .filter(Boolean);
 
+
       if (!parts.length) {
         return "?";
       }
 
-      if (parts.length === 1) {
+
+      if (
+        parts.length === 1
+      ) {
+
         return parts[0]
-          .slice(0, 2)
+          .slice(
+            0,
+            2
+          )
           .toUpperCase();
+
       }
+
 
       return (
         parts[0][0] +
         parts[1][0]
       ).toUpperCase();
+
+    }
+
+
+    function createAvatarHtml(
+      user,
+      className = "avatar"
+    ) {
+
+      if (
+        user.avatar
+      ) {
+
+        return `
+          <div class="${className}">
+            <img
+              src="${escapeHtml(
+                user.avatar
+              )}"
+              alt=""
+              class="user-avatar-image"
+              loading="lazy"
+              onerror="this.style.display='none'; this.parentElement.textContent='${escapeHtml(
+                getInitials(user)
+              )}'"
+            >
+          </div>
+        `;
+
+      }
+
+
+      return `
+        <div class="${className}">
+          ${escapeHtml(
+            getInitials(user)
+          )}
+        </div>
+      `;
+
     }
 
 
@@ -1192,31 +2309,44 @@
         await fetch(
           `${API}/api/admin/me`,
           {
-            method: "GET",
-            credentials: "include",
-            cache: "no-store"
+            method:
+              "GET",
+
+            credentials:
+              "include",
+
+            cache:
+              "no-store"
           }
         );
 
+
       if (!response.ok) {
+
         window.location.href =
           "/admin";
 
         return null;
+
       }
+
 
       const data =
         await response.json();
+
 
       if (
         !data.success ||
         !data.staff
       ) {
+
         window.location.href =
           "/admin";
 
         return null;
+
       }
+
 
       if (
         !Array.isArray(
@@ -1226,15 +2356,21 @@
           "users"
         )
       ) {
+
         window.location.href =
           "/admin";
 
         return null;
+
       }
 
-      currentStaff = data;
+
+      currentStaff =
+        data;
+
 
       return data;
+
     }
 
 
@@ -1246,17 +2382,26 @@
 
       const search =
         document
-          .getElementById("search")
+          .getElementById(
+            "search"
+          )
           .value
           .trim();
 
+
       const list =
         document
-          .getElementById("usersList");
+          .getElementById(
+            "usersList"
+          );
+
 
       const status =
         document
-          .getElementById("status");
+          .getElementById(
+            "status"
+          );
+
 
       list.innerHTML = `
         <div class="loading">
@@ -1264,56 +2409,90 @@
         </div>
       `;
 
+
       status.textContent =
         "";
+
 
       try {
 
         const params =
           new URLSearchParams();
 
+
         if (search) {
+
           params.set(
             "search",
             search
           );
+
         }
+
 
         params.set(
           "limit",
           "100"
         );
 
+
         const response =
           await fetch(
             `${API}/api/admin/users?${params.toString()}`,
             {
-              method: "GET",
-              credentials: "include",
-              cache: "no-store"
+              method:
+                "GET",
+
+              credentials:
+                "include",
+
+              cache:
+                "no-store"
             }
           );
+
 
         const data =
           await response.json();
 
+
         if (!response.ok) {
+
           throw new Error(
             data.error ||
             "Failed to load users."
           );
+
         }
 
+
+        const users =
+          Array.isArray(
+            data.users
+          )
+            ? data.users
+            : [];
+
+
         renderUsers(
-          data.users || []
+          users
         );
 
+
         status.textContent =
-          `${data.count || 0} user${data.count === 1 ? "" : "s"} found.`;
+          `${users.length.toLocaleString()} user${
+            users.length === 1
+              ? ""
+              : "s"
+          } found.`;
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "LOAD USERS ERROR:",
+          error
+        );
+
 
         list.innerHTML = `
           <div class="empty">
@@ -1331,20 +2510,26 @@
           </div>
         `;
 
+        status.textContent =
+          "";
+
       }
 
     }
 
 
     /* ==========================================
-       RENDER
+       RENDER USERS
     ========================================== */
 
     function renderUsers(users) {
 
       const list =
         document
-          .getElementById("usersList");
+          .getElementById(
+            "usersList"
+          );
+
 
       if (!users.length) {
 
@@ -1363,118 +2548,149 @@
         `;
 
         return;
+
       }
 
+
       list.innerHTML =
-        users.map(user => {
+        users
+          .map(
+            user => {
 
-          const username =
-            user.username ||
-            user.discordUsername ||
-            "Unknown User";
+              const username =
+                user.username ||
+                user.discordUsername ||
+                "Unknown User";
 
-          return `
-            <div
-              class="user-row"
-              data-user-id="${escapeHtml(
-                user.id
-              )}"
-            >
 
-              <div class="user-main">
+              return `
 
-                <div class="avatar">
-                  ${escapeHtml(
-                    getInitials(user)
-                  )}
-                </div>
-
-                <div>
-
-                  <div class="user-name">
-                    ${escapeHtml(
-                      username
-                    )}
-                  </div>
-
-                  <div class="user-discord">
-                    ${escapeHtml(
-                      user.discordUsername ||
-                      "No Discord username"
-                    )}
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="id-cell">
-                ${escapeHtml(
-                  user.id
-                )}
-              </div>
-
-              <div class="balance">
-                ${
-                  typeof user.balance === "number"
-                    ? formatBalance(
-                        user.balance
-                      )
-                    : "—"
-                }
-              </div>
-
-              <div class="date">
-                ${formatDate(
-                  user.createdAt
-                )}
-              </div>
-
-              <div>
-                <button
-                  class="view-btn"
-                  type="button"
-                  data-view-user="${escapeHtml(
+                <div
+                  class="user-row"
+                  data-user-id="${escapeHtml(
                     user.id
                   )}"
                 >
-                  View
-                </button>
-              </div>
 
-            </div>
-          `;
 
-        }).join("");
+                  <div class="user-main">
+
+                    ${createAvatarHtml(
+                      user
+                    )}
+
+
+                    <div>
+
+                      <div class="user-name">
+                        ${escapeHtml(
+                          username
+                        )}
+                      </div>
+
+
+                      <div class="user-discord">
+                        ${escapeHtml(
+                          user.discordUsername ||
+                          "No Discord username"
+                        )}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="id-cell">
+                    ${escapeHtml(
+                      user.id
+                    )}
+                  </div>
+
+
+                  <div class="stat-cell balance">
+                    ${formatBalance(
+                      user.balance
+                    )}
+                  </div>
+
+
+                  <div class="stat-cell">
+                    ${formatNumber(
+                      user.gamesPlayed
+                    )}
+                  </div>
+
+
+                  <div class="stat-cell wins">
+                    ${formatNumber(
+                      user.gamesWon
+                    )}
+                  </div>
+
+
+                  <div>
+
+                    <button
+                      class="view-btn"
+                      type="button"
+                      data-view-user="${escapeHtml(
+                        user.id
+                      )}"
+                    >
+                      View
+                    </button>
+
+                  </div>
+
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join("");
+
 
       document
         .querySelectorAll(
           "[data-view-user]"
         )
-        .forEach(button => {
+        .forEach(
+          button => {
 
-          button.addEventListener(
-            "click",
-            () => {
+            button.addEventListener(
+              "click",
+              () => {
 
-              const id =
-                button.dataset.viewUser;
+                const id =
+                  button.dataset.viewUser;
 
-              const user =
-                users.find(
-                  item =>
-                    String(item.id) ===
-                    String(id)
-                );
 
-              if (user) {
-                openUserModal(user);
+                const user =
+                  users.find(
+                    item =>
+                      String(
+                        item.id
+                      ) ===
+                      String(id)
+                  );
+
+
+                if (user) {
+
+                  openUserModal(
+                    user
+                  );
+
+                }
+
               }
+            );
 
-            }
-          );
-
-        });
+          }
+        );
 
     }
 
@@ -1488,121 +2704,248 @@
       currentUser =
         user;
 
-      document
-        .getElementById("modalAvatar")
-        .textContent =
-        getInitials(user);
+
+      const modalAvatar =
+        document
+          .getElementById(
+            "modalAvatar"
+          );
+
+
+      if (
+        user.avatar
+      ) {
+
+        modalAvatar.innerHTML = `
+          <img
+            src="${escapeHtml(
+              user.avatar
+            )}"
+            alt=""
+            class="user-avatar-image"
+            onerror="this.style.display='none'; this.parentElement.textContent='${escapeHtml(
+              getInitials(user)
+            )}'"
+          >
+        `;
+
+      } else {
+
+        modalAvatar.textContent =
+          getInitials(
+            user
+          );
+
+      }
+
 
       document
-        .getElementById("modalName")
+        .getElementById(
+          "modalName"
+        )
         .textContent =
         user.username ||
         "Unknown User";
 
+
       document
-        .getElementById("modalDiscord")
+        .getElementById(
+          "modalDiscord"
+        )
         .textContent =
         user.discordUsername ||
         "No Discord username";
 
-      const details =
-        document
-          .getElementById("details");
 
-      const balance =
-        typeof user.balance === "number"
-          ? formatBalance(
-              user.balance
-            )
+      /* ==========================================
+         SUMMARY
+      ========================================== */
+
+      document
+        .getElementById(
+          "summaryBalance"
+        )
+        .textContent =
+        formatBalance(
+          user.balance
+        );
+
+
+      document
+        .getElementById(
+          "summaryPlayed"
+        )
+        .textContent =
+        formatNumber(
+          user.gamesPlayed
+        );
+
+
+      document
+        .getElementById(
+          "summaryWins"
+        )
+        .textContent =
+        formatNumber(
+          user.gamesWon
+        );
+
+
+      document
+        .getElementById(
+          "summaryLosses"
+        )
+        .textContent =
+        formatNumber(
+          user.gamesLost
+        );
+
+
+      /* ==========================================
+         ACCOUNT DETAILS
+      ========================================== */
+
+      document
+        .getElementById(
+          "detailId"
+        )
+        .textContent =
+        user.id ||
+        "—";
+
+
+      document
+        .getElementById(
+          "detailUsername"
+        )
+        .textContent =
+        user.username ||
+        "—";
+
+
+      document
+        .getElementById(
+          "detailDiscordUsername"
+        )
+        .textContent =
+        user.discordUsername ||
+        "—";
+
+
+      document
+        .getElementById(
+          "detailCreated"
+        )
+        .textContent =
+        formatDate(
+          user.createdAt
+        );
+
+
+      document
+        .getElementById(
+          "detailUpdated"
+        )
+        .textContent =
+        formatDate(
+          user.updatedAt
+        );
+
+
+      document
+        .getElementById(
+          "detailAvatar"
+        )
+        .textContent =
+        user.avatar
+          ? "Available"
           : "Not available";
 
-      details.innerHTML = `
 
-        <div class="detail">
+      /* ==========================================
+         GAME DETAILS
+      ========================================== */
 
-          <div class="detail-label">
-            Discord ID
-          </div>
+      document
+        .getElementById(
+          "detailGamesPlayed"
+        )
+        .textContent =
+        formatNumber(
+          user.gamesPlayed
+        );
 
-          <div class="detail-value">
-            ${escapeHtml(
-              user.id
-            )}
-          </div>
 
-        </div>
+      document
+        .getElementById(
+          "detailGamesWon"
+        )
+        .textContent =
+        formatNumber(
+          user.gamesWon
+        );
 
-        <div class="detail">
 
-          <div class="detail-label">
-            Balance
-          </div>
+      document
+        .getElementById(
+          "detailGamesLost"
+        )
+        .textContent =
+        formatNumber(
+          user.gamesLost
+        );
 
-          <div class="detail-value">
-            ${escapeHtml(
-              balance
-            )}
-          </div>
 
-        </div>
+      document
+        .getElementById(
+          "detailChessRating"
+        )
+        .textContent =
+        formatNumber(
+          user.chessRating
+        );
 
-        <div class="detail">
 
-          <div class="detail-label">
-            Account Created
-          </div>
+      document
+        .getElementById(
+          "detailTotalWagered"
+        )
+        .textContent =
+        formatBalance(
+          user.totalWagered
+        );
 
-          <div class="detail-value">
-            ${escapeHtml(
-              formatDate(
-                user.createdAt
-              )
-            )}
-          </div>
 
-        </div>
+      document
+        .getElementById(
+          "detailTotalWon"
+        )
+        .textContent =
+        formatBalance(
+          user.totalWon
+        );
 
-        <div class="detail">
 
-          <div class="detail-label">
-            Daily Streak
-          </div>
+      document
+        .getElementById(
+          "detailTotalLost"
+        )
+        .textContent =
+        formatBalance(
+          user.totalLost
+        );
 
-          <div class="detail-value">
-            ${
-              typeof user.dailyStreak === "number"
-                ? escapeHtml(
-                    user.dailyStreak
-                  )
-                : "Not available"
-            }
-          </div>
 
-        </div>
-
-        <div class="detail">
-
-          <div class="detail-label">
-            Last Daily Claim
-          </div>
-
-          <div class="detail-value">
-            ${escapeHtml(
-              formatDate(
-                user.dailyLastClaim
-              )
-            )}
-          </div>
-
-        </div>
-
-      `;
+      /* ==========================================
+         ECONOMY PERMISSION
+      ========================================== */
 
       const economy =
         document
           .getElementById(
             "economySection"
           );
+
 
       const canEconomy =
         currentStaff &&
@@ -1613,31 +2956,43 @@
             "owner"
         );
 
+
       economy.style.display =
         canEconomy
           ? "block"
           : "none";
 
-      document
-        .getElementById("amount")
-        .value = "";
-
-      document
-        .getElementById("reason")
-        .value = "";
 
       document
         .getElementById(
-          "formMessage"
+          "amount"
         )
-        .textContent = "";
+        .value =
+        "";
+
 
       document
         .getElementById(
-          "formMessage"
+          "reason"
         )
-        .className =
+        .value =
+        "";
+
+
+      const message =
+        document
+          .getElementById(
+            "formMessage"
+          );
+
+
+      message.textContent =
+        "";
+
+
+      message.className =
         "form-message";
+
 
       document
         .getElementById(
@@ -1650,6 +3005,10 @@
     }
 
 
+    /* ==========================================
+       CLOSE MODAL
+    ========================================== */
+
     function closeUserModal() {
 
       document
@@ -1659,6 +3018,7 @@
         .classList.remove(
           "open"
         );
+
 
       currentUser =
         null;
@@ -1676,11 +3036,13 @@
         return;
       }
 
+
       const amountInput =
         document
           .getElementById(
             "amount"
           );
+
 
       const reasonInput =
         document
@@ -1688,11 +3050,13 @@
             "reason"
           );
 
+
       const button =
         document
           .getElementById(
             "adjustBtn"
           );
+
 
       const message =
         document
@@ -1700,36 +3064,48 @@
             "formMessage"
           );
 
+
       const amount =
         Number(
           amountInput.value
         );
 
+
       const reason =
         reasonInput.value.trim();
 
+
       if (
-        !Number.isFinite(amount) ||
+        !Number.isFinite(
+          amount
+        ) ||
         amount === 0
       ) {
 
         message.textContent =
           "Enter a non-zero amount.";
 
+
         message.className =
           "form-message error";
 
+
         return;
+
       }
+
 
       button.disabled =
         true;
 
+
       message.textContent =
         "Updating balance...";
 
+
       message.className =
         "form-message";
+
 
       try {
 
@@ -1737,70 +3113,98 @@
           await fetch(
             `${API}/api/admin/users`,
             {
-              method: "PATCH",
 
-              credentials: "include",
+              method:
+                "PATCH",
+
+              credentials:
+                "include",
 
               headers: {
+
                 "Content-Type":
                   "application/json"
+
               },
 
               body:
                 JSON.stringify({
+
                   discordId:
                     currentUser.id,
 
                   amount,
 
                   reason
+
                 })
+
             }
           );
+
 
         const data =
           await response.json();
 
+
         if (!response.ok) {
+
           throw new Error(
             data.error ||
             "Failed to update balance."
           );
+
         }
+
 
         currentUser.balance =
           data.user.balance;
+
 
         message.textContent =
           `Balance updated to ${formatBalance(
             data.user.balance
           )}.`;
 
+
         message.className =
           "form-message success";
 
+
         /*
-         * Refresh the table so the
-         * real MongoDB value is shown.
+         * Update visible summary immediately.
+         */
+        document
+          .getElementById(
+            "summaryBalance"
+          )
+          .textContent =
+          formatBalance(
+            data.user.balance
+          );
+
+
+        /*
+         * Refresh table from MongoDB.
          */
         await loadUsers();
 
-        /*
-         * Refresh the modal details too.
-         */
-        openUserModal(
-          currentUser
-        );
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "ADJUST BALANCE ERROR:",
+          error
+        );
+
 
         message.textContent =
           error.message;
 
+
         message.className =
           "form-message error";
+
 
       } finally {
 
@@ -1838,6 +3242,7 @@
             searchTimer
           );
 
+
           searchTimer =
             setTimeout(
               loadUsers,
@@ -1870,7 +3275,9 @@
             event.target ===
             event.currentTarget
           ) {
+
             closeUserModal();
+
           }
 
         }
@@ -1893,9 +3300,12 @@
         event => {
 
           if (
-            event.key === "Escape"
+            event.key ===
+            "Escape"
           ) {
+
             closeUserModal();
+
           }
 
         }
@@ -1911,9 +3321,11 @@
       const staff =
         await checkStaff();
 
+
       if (!staff) {
         return;
       }
+
 
       await loadUsers();
 
