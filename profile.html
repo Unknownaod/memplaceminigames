@@ -4119,10 +4119,6 @@ body.theme-sword
   </footer>
 
 
-  <!-- ==========================================
-       SCRIPT
-  ========================================== -->
-
 <script>
 
   const API_URL =
@@ -4131,15 +4127,10 @@ body.theme-sword
 
   let currentUser = null;
 
-  /*
-   * Determines whether this is:
-   *
-   * /profile
-   *
-   * or:
-   *
-   * /profile/username
-   */
+
+  /* ==========================================
+     PUBLIC PROFILE DETECTION
+  ========================================== */
 
   function getPublicProfileUsername() {
 
@@ -4147,6 +4138,7 @@ body.theme-sword
       window.location.pathname
         .split("/")
         .filter(Boolean);
+
 
     if (
       parts.length >= 2 &&
@@ -4159,6 +4151,7 @@ body.theme-sword
 
     }
 
+
     return null;
 
   }
@@ -4170,6 +4163,74 @@ body.theme-sword
 
   const isPublicProfile =
     !!publicProfileUsername;
+
+
+  /* ==========================================
+     DISCORD AVATAR
+  ========================================== */
+
+  function getDiscordAvatarUrl(user) {
+
+    if (!user) {
+      return null;
+    }
+
+
+    /*
+     * Already a complete URL.
+     */
+    if (
+      typeof user.avatar === "string" &&
+      (
+        user.avatar.startsWith("https://") ||
+        user.avatar.startsWith("http://")
+      )
+    ) {
+
+      return user.avatar;
+
+    }
+
+
+    /*
+     * Direct avatarUrl from database.
+     */
+    if (
+      typeof user.avatarUrl === "string" &&
+      user.avatarUrl
+    ) {
+
+      return user.avatarUrl;
+
+    }
+
+
+    /*
+     * Discord avatar hash + Discord user ID.
+     */
+    if (
+      user.id &&
+      user.avatar
+    ) {
+
+      return (
+        "https://cdn.discordapp.com/avatars/" +
+        encodeURIComponent(
+          String(user.id)
+        ) +
+        "/" +
+        encodeURIComponent(
+          String(user.avatar)
+        ) +
+        ".png?size=256"
+      );
+
+    }
+
+
+    return null;
+
+  }
 
 
   /* ==========================================
@@ -4246,6 +4307,27 @@ body.theme-sword
         "theme-sword"
       );
 
+
+      if (
+        typeof showSwordSoundPrompt ===
+        "function"
+      ) {
+
+        showSwordSoundPrompt();
+
+      }
+
+    } else {
+
+      if (
+        typeof hideSwordSoundPrompt ===
+        "function"
+      ) {
+
+        hideSwordSoundPrompt();
+
+      }
+
     }
 
   }
@@ -4258,10 +4340,9 @@ body.theme-sword
   async function loadStaffStatus() {
 
     /*
-     * Public profiles should not need
-     * staff authentication.
+     * Public profiles receive staff information
+     * directly from /api/profile.
      */
-
     if (isPublicProfile) {
       return null;
     }
@@ -4309,6 +4390,7 @@ body.theme-sword
 
       };
 
+
     } catch (error) {
 
       console.error(
@@ -4335,16 +4417,19 @@ body.theme-sword
       );
 
 
+    if (!content) {
+      return;
+    }
+
+
     try {
 
       let response;
 
 
-      /*
-       * PUBLIC PROFILE
-       *
-       * /profile/username
-       */
+      /* ========================================
+         PUBLIC PROFILE
+      ======================================== */
 
       if (isPublicProfile) {
 
@@ -4365,11 +4450,9 @@ body.theme-sword
       }
 
 
-      /*
-       * OWN PROFILE
-       *
-       * /profile
-       */
+      /* ========================================
+         OWN PROFILE
+      ======================================== */
 
       else {
 
@@ -4422,7 +4505,9 @@ body.theme-sword
 
           `;
 
+
           applyPageTheme(null);
+
 
           return;
 
@@ -4434,17 +4519,23 @@ body.theme-sword
 
 
         /*
-         * Public profiles do not expose
-         * Discord IDs or staff information.
+         * IMPORTANT:
+         *
+         * Do NOT erase the public user's
+         * Discord ID or staff information.
          */
 
         currentUser.id =
+          data.profile.id ||
           null;
 
+
         currentUser.isStaff =
-          false;
+          !!data.profile.staff;
+
 
         currentUser.staffRole =
+          data.profile.staff?.role ||
           null;
 
 
@@ -4452,11 +4543,6 @@ body.theme-sword
           currentUser.equippedTheme
         );
 
-
-        /*
-         * Hide account controls when viewing
-         * somebody else's profile.
-         */
 
         updatePublicHeader(
           currentUser
@@ -4571,6 +4657,7 @@ body.theme-sword
         "loginButton"
       );
 
+
     const userButton =
       document.getElementById(
         "userButton"
@@ -4625,18 +4712,13 @@ body.theme-sword
     }
 
 
-    if (
-      user.id &&
-      user.avatar
-    ) {
+    const avatar =
+      getDiscordAvatarUrl(
+        user
+      );
 
-      const avatar =
-        "https://cdn.discordapp.com/avatars/" +
-        encodeURIComponent(user.id) +
-        "/" +
-        encodeURIComponent(user.avatar) +
-        ".png?size=64";
 
+    if (avatar) {
 
       const headerAvatar =
         document.getElementById(
@@ -4667,16 +4749,12 @@ body.theme-sword
         "loginButton"
       );
 
+
     const userButton =
       document.getElementById(
         "userButton"
       );
 
-
-    /*
-     * Keep the normal login button visible
-     * because visitors may not be logged in.
-     */
 
     if (loginButton) {
 
@@ -4721,6 +4799,13 @@ body.theme-sword
         "—";
 
     }
+
+
+    /*
+     * We intentionally don't put the
+     * public user's avatar into the
+     * logged-in header.
+     */
 
   }
 
@@ -4947,16 +5032,9 @@ body.theme-sword
 
   function getStaffBadge(user) {
 
-    /*
-     * Never display staff status on a public
-     * profile unless you explicitly decide
-     * to expose it publicly later.
-     */
-
     if (
       !user ||
-      !user.isStaff ||
-      isPublicProfile
+      !user.isStaff
     ) {
 
       return null;
@@ -5149,38 +5227,55 @@ body.theme-sword
        AVATAR
     ========================================== */
 
+    const avatarUrl =
+      getDiscordAvatarUrl(
+        user
+      );
+
+
     let avatar = "";
 
 
-    /*
-     * Public API currently returns an avatar hash
-     * but not the Discord user ID.
-     *
-     * Therefore don't try to construct a Discord
-     * CDN URL here for public profiles.
-     */
-
-    if (
-      !publicProfile &&
-      user.id &&
-      user.avatar
-    ) {
+    if (avatarUrl) {
 
       avatar = `
 
         <img
           id="profileAvatar"
           class="profile-avatar"
-          src="https://cdn.discordapp.com/avatars/${encodeURIComponent(user.id)}/${encodeURIComponent(user.avatar)}.png?size=256"
+          src="${escapeHtml(avatarUrl)}"
           alt="${username}"
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='grid';
+          "
         >
+
+
+        <div
+          class="profile-avatar"
+          style="
+            display:none;
+            place-items:center;
+            font-size:28px;
+            font-weight:800;
+          "
+        >
+
+          ${escapeHtml(
+            (
+              user.username ||
+              "?"
+            )
+              .charAt(0)
+              .toUpperCase()
+          )}
+
+        </div>
 
       `;
 
-    }
-
-
-    if (!avatar) {
+    } else {
 
       avatar = `
 
@@ -5196,7 +5291,10 @@ body.theme-sword
         >
 
           ${escapeHtml(
-            username
+            (
+              user.username ||
+              "?"
+            )
               .charAt(0)
               .toUpperCase()
           )}
@@ -5225,7 +5323,9 @@ body.theme-sword
           >
 
             <img
-              src="/staffbadge.png"
+              src="${escapeHtml(
+                staffBadge.image
+              )}"
               alt="Staff"
             >
 
@@ -5551,7 +5651,10 @@ body.theme-sword
         </div>
 
         <h1>
-          ${publicProfile ? "Public Profile" : "Profile"}
+          ${publicProfile
+            ? "Public Profile"
+            : "Profile"
+          }
         </h1>
 
         ${pageDescription}
@@ -5879,23 +5982,6 @@ body.theme-sword
 
 
   /* ==========================================
-     INIT
-  ========================================== */
-
-  loadProfile();
-
-
-  /* ==========================================
-     REFRESH PROFILE
-  ========================================== */
-
-  setInterval(
-    loadProfile,
-    10000
-  );
-
-
-  /* ==========================================
      SWORD THEME SOUND
   ========================================== */
 
@@ -5999,7 +6085,24 @@ body.theme-sword
 
   }
 
-</script>
 
+  /* ==========================================
+     INIT
+  ========================================== */
+
+  loadProfile();
+
+
+  /* ==========================================
+     REFRESH PROFILE
+  ========================================== */
+
+  setInterval(
+    loadProfile,
+    10000
+  );
+
+</script>
+  
 </body>
 </html>
