@@ -3535,6 +3535,190 @@ body.theme-sword
 
 }
 
+/* ==========================================
+   SWORD SOUND PROMPT
+========================================== */
+
+.sword-sound-prompt {
+  position: fixed;
+
+  right: 24px;
+  bottom: 24px;
+
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-width: 300px;
+  max-width: 420px;
+
+  padding: 14px 16px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(8, 8, 8, 0.72);
+
+  border:
+    1px solid rgba(255,255,255,0.16);
+
+  border-radius: 14px;
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 16px 45px rgba(0,0,0,0.35);
+
+  color: #ffffff;
+
+  animation:
+    swordSoundPromptIn
+    0.35s
+    ease
+    both;
+}
+
+
+.sword-sound-prompt-icon {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size: 18px;
+}
+
+
+.sword-sound-prompt-content {
+  min-width: 0;
+  flex: 1;
+}
+
+
+.sword-sound-prompt-title {
+  font-size: 14px;
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  margin-bottom: 3px;
+}
+
+
+.sword-sound-prompt-text {
+  font-size: 12px;
+
+  color:
+    rgba(255,255,255,0.58);
+
+  line-height: 1.4;
+}
+
+
+.sword-sound-prompt-button {
+  border: 0;
+
+  padding: 9px 12px;
+
+  border-radius: 9px;
+
+  background:
+    #ffffff;
+
+  color:
+    #050505;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+
+.sword-sound-prompt-button:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+
+.sword-sound-prompt-close {
+  width: 24px;
+  height: 24px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    rgba(255,255,255,0.45);
+
+  font-size: 20px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+
+.sword-sound-prompt-close:hover {
+  color: #ffffff;
+}
+
+
+@keyframes swordSoundPromptIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .sword-sound-prompt {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+
+    min-width: 0;
+    width: auto;
+  }
+
+}
+
     </style>
   
 </head>
@@ -3569,6 +3753,83 @@ body.theme-sword
   <div
     class="sword-theme-overlay"
   ></div>
+
+</div>
+
+  <!-- ==========================================
+     SWORD THEME VIDEO
+========================================== -->
+
+<div
+  class="sword-theme-background"
+  aria-hidden="true"
+>
+
+  <video
+    id="swordThemeVideo"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
+
+    <source
+      src="/optimized_swordbackground.mp4"
+      type="video/mp4"
+    >
+
+  </video>
+
+  <div
+    class="sword-theme-overlay"
+  ></div>
+
+</div>
+
+
+<!-- ==========================================
+     SWORD THEME SOUND PROMPT
+========================================== -->
+
+<div
+  id="swordSoundPrompt"
+  class="sword-sound-prompt"
+  hidden
+>
+
+  <div class="sword-sound-prompt-icon">
+    ⚔️
+  </div>
+
+  <div class="sword-sound-prompt-content">
+
+    <div class="sword-sound-prompt-title">
+      Sword Theme
+    </div>
+
+    <div class="sword-sound-prompt-text">
+      This theme includes audio.
+    </div>
+
+  </div>
+
+  <button
+    id="swordSoundButton"
+    type="button"
+    class="sword-sound-prompt-button"
+  >
+    🔊 Enable Sound
+  </button>
+
+  <button
+    id="swordSoundClose"
+    type="button"
+    class="sword-sound-prompt-close"
+    aria-label="Close"
+  >
+    ×
+  </button>
 
 </div>
 
@@ -5247,6 +5508,99 @@ function getProfileTitle(
       10000
     );
 
+    /* ==========================================
+   SWORD THEME SOUND
+========================================== */
+
+const swordVideo =
+  document.getElementById(
+    "swordThemeVideo"
+  );
+
+const swordSoundPrompt =
+  document.getElementById(
+    "swordSoundPrompt"
+  );
+
+const swordSoundButton =
+  document.getElementById(
+    "swordSoundButton"
+  );
+
+const swordSoundClose =
+  document.getElementById(
+    "swordSoundClose"
+  );
+
+
+function showSwordSoundPrompt() {
+
+  if (!swordSoundPrompt) {
+    return;
+  }
+
+  swordSoundPrompt.hidden = false;
+
+}
+
+
+function hideSwordSoundPrompt() {
+
+  if (!swordSoundPrompt) {
+    return;
+  }
+
+  swordSoundPrompt.hidden = true;
+
+}
+
+
+if (
+  swordSoundButton &&
+  swordVideo
+) {
+
+  swordSoundButton.addEventListener(
+    "click",
+    async () => {
+
+      try {
+
+        swordVideo.muted = false;
+
+        await swordVideo.play();
+
+        swordSoundButton.textContent =
+          "🔊 Sound On";
+
+        setTimeout(() => {
+          hideSwordSoundPrompt();
+        }, 800);
+
+      } catch (error) {
+
+        console.error(
+          "Sword theme audio error:",
+          error
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+if (swordSoundClose) {
+
+  swordSoundClose.addEventListener(
+    "click",
+    hideSwordSoundPrompt
+  );
+
+}
+    
   </script>
 
 </body>
