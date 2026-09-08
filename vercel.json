@@ -91,11 +91,11 @@
   {
   "source": "/admin/games",
   "destination": "/admin-games.html"
-  }
+  },
   {
   "source": "/admin/shop",
   "destination": "/admin-shop.html"
-  }
+  },
   {
   "source": "/admin/leaderboard",
   "destination": "/admin-leaderboard.html"
