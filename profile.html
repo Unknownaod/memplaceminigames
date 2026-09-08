@@ -1020,6 +1020,62 @@
 
 
     /* ==========================================
+       PROFILE TITLE
+    ========================================== */
+
+    .profile-title {
+
+      margin-top: 6px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      color:
+        var(--accent);
+
+      font-size: 11px;
+
+      font-weight: 850;
+
+      letter-spacing:
+        .08em;
+
+      text-transform:
+        uppercase;
+
+      text-shadow:
+        0 0 16px
+        rgba(215,168,79,0.18);
+
+    }
+
+
+    .profile-title-icon {
+
+      font-size: 12px;
+
+      line-height: 1;
+
+    }
+
+
+    body.theme-mixing-after-dark
+    .profile-title {
+
+      color:
+        #e4c477;
+
+      text-shadow:
+        0 0 18px
+        rgba(215,168,79,0.28);
+
+    }
+
+
+    /* ==========================================
        NAMEPLATE TEXT
     ========================================== */
 
@@ -2109,6 +2165,13 @@
       }
 
 
+      .profile-title {
+
+        font-size: 10px;
+
+      }
+
+
       .profile-badges {
 
         gap: 5px;
@@ -2842,6 +2905,40 @@
 
 
     /* ==========================================
+       GET PROFILE TITLE
+    ========================================== */
+
+    function getProfileTitle(
+      equippedTitle
+    ) {
+
+      switch (
+        equippedTitle
+      ) {
+
+        case "legendary-title":
+
+          return {
+
+            label:
+              "Legendary",
+
+            icon:
+              "✦"
+
+          };
+
+
+        default:
+
+          return null;
+
+      }
+
+    }
+
+
+    /* ==========================================
        GET PROFILE THEME
     ========================================== */
 
@@ -3021,6 +3118,12 @@
       const nameplate =
         getNameplate(
           user.equippedNameplate
+        );
+
+
+      const title =
+        getProfileTitle(
+          user.equippedTitle
         );
 
 
@@ -3232,6 +3335,29 @@
       let equippedHtml = "";
 
 
+      if (title) {
+
+        equippedHtml += `
+
+          <div class="equipped-item">
+
+            <span class="equipped-item-icon">
+              ${escapeHtml(
+                title.icon
+              )}
+            </span>
+
+            ${escapeHtml(
+              title.label
+            )}
+
+          </div>
+
+        `;
+
+      }
+
+
       if (theme) {
 
         equippedHtml += `
@@ -3335,6 +3461,34 @@
 
 
       /* ==========================================
+         PROFILE TITLE DISPLAY
+      ========================================== */
+
+      const profileTitleHtml =
+        title
+
+          ? `
+
+            <div class="profile-title">
+
+              <span class="profile-title-icon">
+                ${escapeHtml(
+                  title.icon
+                )}
+              </span>
+
+              ${escapeHtml(
+                title.label
+              )}
+
+            </div>
+
+          `
+
+          : "";
+
+
+      /* ==========================================
          HTML
       ========================================== */
 
@@ -3376,6 +3530,9 @@
             >
               ${username}
             </h2>
+
+
+            ${profileTitleHtml}
 
 
             <div class="profile-discord">
