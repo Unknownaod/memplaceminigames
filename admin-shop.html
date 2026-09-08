@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Shop Management — Admin</title>
+
+  <style>
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --surface: #191511;
+      --surface-2: #211c16;
+      --surface-3: #282119;
+
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(214,168,92,0.28);
+
+      --text: #f3eee6;
+      --muted: #a59d91;
+      --muted-2: #756e65;
+
+      --accent: #d6a85c;
+      --accent-light: #e7c47e;
+
+      --success: #72c78b;
+      --danger: #d96c6c;
+
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--black);
+      color: var(--text);
+    }
+
+    body {
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1220px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 70px;
+    }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      border-bottom: 1px solid var(--border);
+
+      background: rgba(11,10,8,0.88);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      width: min(1220px, calc(100% - 32px));
+      min-height: 68px;
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .back-button {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface);
+
+      color: var(--muted);
+
+      transition: 0.15s ease;
+    }
+
+    .back-button:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+      background: var(--surface-2);
+    }
+
+    .page-title {
+      min-width: 0;
+    }
+
+    .page-title strong {
+      display: block;
+
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .page-title span {
+      display: block;
+
+      margin-top: 2px;
+
+      color: var(--muted-2);
+
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .staff-badge {
+      padding: 7px 10px;
+
+      border: 1px solid rgba(214,168,92,0.18);
+      border-radius: 999px;
+
+      background: rgba(214,168,92,0.07);
+
+      color: var(--accent-light);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* ==========================================
+       HERO
+    ========================================== */
+
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+
+      padding: 6px 10px;
+
+      border: 1px solid rgba(214,168,92,0.18);
+      border-radius: 999px;
+
+      background: rgba(214,168,92,0.07);
+
+      color: var(--accent-light);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 13px 0 7px;
+
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.05;
+
+      letter-spacing: -0.035em;
+    }
+
+    .hero p {
+      max-width: 720px;
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    .stats {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 14px;
+
+      margin-bottom: 26px;
+    }
+
+    .stat {
+      min-width: 0;
+
+      padding: 19px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      background: var(--surface);
+    }
+
+    .stat-label {
+      color: var(--muted-2);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .stat-value {
+      margin-top: 9px;
+
+      font-size: 25px;
+      font-weight: 850;
+
+      letter-spacing: -0.025em;
+    }
+
+    /* ==========================================
+       TOOLBAR
+    ========================================== */
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 14px;
+
+      margin-bottom: 14px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
+      min-width: 0;
+      flex: 1;
+    }
+
+    .search {
+      width: min(360px, 100%);
+
+      height: 42px;
+
+      padding: 0 13px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      outline: none;
+
+      background: var(--surface);
+
+      color: var(--text);
+
+      transition: 0.15s ease;
+    }
+
+    .search::placeholder {
+      color: var(--muted-2);
+    }
+
+    .search:focus {
+      border-color: var(--border-hover);
+    }
+
+    .filter {
+      height: 42px;
+
+      padding: 0 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      outline: none;
+
+      background: var(--surface);
+
+      color: var(--muted);
+    }
+
+    .filter:focus {
+      border-color: var(--border-hover);
+    }
+
+    .primary-button {
+      height: 42px;
+
+      padding: 0 15px;
+
+      border: 1px solid rgba(214,168,92,0.35);
+      border-radius: 10px;
+
+      background: rgba(214,168,92,0.12);
+
+      color: var(--accent-light);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      white-space: nowrap;
+
+      transition: 0.15s ease;
+    }
+
+    .primary-button:hover {
+      background: rgba(214,168,92,0.18);
+      border-color: rgba(214,168,92,0.5);
+    }
+
+    /* ==========================================
+       TABLE
+    ========================================== */
+
+    .table-card {
+      overflow: hidden;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      background: var(--surface);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 850px;
+
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 13px 16px;
+
+      border-bottom: 1px solid var(--border);
+
+      color: var(--muted-2);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    td {
+      padding: 15px 16px;
+
+      border-bottom: 1px solid var(--border);
+
+      color: var(--text);
+
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,0.018);
+    }
+
+    .item-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .item-icon {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+      place-items: center;
+
+      flex: 0 0 auto;
+
+      overflow: hidden;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface-2);
+
+      font-size: 19px;
+    }
+
+    .item-icon img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .item-name {
+      font-weight: 800;
+    }
+
+    .item-description {
+      max-width: 340px;
+
+      margin-top: 3px;
+
+      overflow: hidden;
+
+      color: var(--muted-2);
+
+      font-size: 11px;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .price {
+      color: var(--accent-light);
+      font-weight: 800;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      padding: 5px 8px;
+
+      border-radius: 999px;
+
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .status::before {
+      content: "";
+
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: currentColor;
+    }
+
+    .status.active {
+      color: var(--success);
+      background: rgba(114,199,139,0.08);
+    }
+
+    .status.inactive {
+      color: var(--danger);
+      background: rgba(217,108,108,0.08);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+
+    .action-button {
+      height: 32px;
+
+      padding: 0 10px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: var(--surface-2);
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 750;
+
+      transition: 0.15s ease;
+    }
+
+    .action-button:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+
+    .action-button.danger:hover {
+      color: var(--danger);
+      border-color: rgba(217,108,108,0.3);
+    }
+
+    /* ==========================================
+       EMPTY / LOADING
+    ========================================== */
+
+    .state {
+      padding: 65px 20px;
+
+      text-align: center;
+    }
+
+    .state-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .state-text {
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+
+      margin: 0 auto 12px;
+
+      border: 2px solid rgba(255,255,255,0.08);
+      border-top-color: var(--accent);
+
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ==========================================
+       MODAL
+    ========================================== */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+
+      z-index: 100;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(0,0,0,0.7);
+
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(520px, 100%);
+      max-height: calc(100vh - 40px);
+
+      overflow-y: auto;
+
+      border: 1px solid var(--border);
+      border-radius: 16px;
+
+      background: var(--surface);
+
+      box-shadow:
+        0 25px 80px rgba(0,0,0,0.55);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 19px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .close-button {
+      width: 32px;
+      height: 32px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: var(--surface-2);
+
+      color: var(--muted);
+    }
+
+    .close-button:hover {
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 19px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 15px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field label {
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+
+      padding: 11px 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      outline: none;
+
+      background: var(--surface-2);
+
+      color: var(--text);
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--border-hover);
+    }
+
+    .field textarea {
+      min-height: 95px;
+
+      resize: vertical;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 12px;
+    }
+
+    .checkbox-field {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      padding: 11px 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      background: var(--surface-2);
+    }
+
+    .checkbox-field input {
+      width: 16px;
+      height: 16px;
+    }
+
+    .checkbox-field span {
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+
+      gap: 8px;
+
+      padding: 15px 19px;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .secondary-button {
+      height: 40px;
+
+      padding: 0 14px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      background: var(--surface-2);
+
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .secondary-button:hover {
+      color: var(--text);
+    }
+
+    .save-button {
+      height: 40px;
+
+      padding: 0 15px;
+
+      border: 1px solid rgba(214,168,92,0.35);
+      border-radius: 9px;
+
+      background: rgba(214,168,92,0.12);
+
+      color: var(--accent-light);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .save-button:disabled,
+    .primary-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    .toast-container {
+      position: fixed;
+
+      right: 18px;
+      bottom: 18px;
+
+      z-index: 200;
+
+      display: grid;
+      gap: 8px;
+    }
+
+    .toast {
+      min-width: 260px;
+      max-width: 380px;
+
+      padding: 13px 15px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface-2);
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,0.35);
+
+      color: var(--text);
+
+      font-size: 12px;
+      font-weight: 650;
+
+      animation: toastIn 0.18s ease;
+    }
+
+    .toast.success {
+      border-color: rgba(114,199,139,0.22);
+    }
+
+    .toast.error {
+      border-color: rgba(217,108,108,0.25);
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 850px) {
+      .stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .toolbar-left {
+        width: 100%;
+      }
+
+      .search {
+        flex: 1;
+        width: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page,
+      .topbar-inner {
+        width: min(100% - 22px, 1220px);
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+
+      .stat {
+        padding: 14px;
+      }
+
+      .stat-value {
+        font-size: 20px;
+      }
+
+      .staff-badge {
+        display: none;
+      }
+
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+
+      <div class="topbar-left">
+
+        <a
+          href="/admin"
+          class="back-button"
+          aria-label="Back to admin"
+        >
+          ←
+        </a>
+
+        <div class="page-title">
+          <strong>Shop Management</strong>
+          <span>Manage the minigame shop</span>
+        </div>
+
+      </div>
+
+      <div
+        class="staff-badge"
+        id="staffRole"
+      >
+        Loading
+      </div>
+
+    </div>
+  </header>
+
+
+  <main class="page">
+
+    <section class="hero">
+
+      <div class="eyebrow">
+        Admin Panel
+      </div>
+
+      <h1>Shop</h1>
+
+      <p>
+        Manage the items available to players in the
+        Middle Eastern Mixing minigame shop.
+      </p>
+
+    </section>
+
+
+    <section class="stats">
+
+      <div class="stat">
+        <div class="stat-label">
+          Total Items
+        </div>
+
+        <div
+          class="stat-value"
+          id="totalItems"
+        >
+          —
+        </div>
+      </div>
+
+
+      <div class="stat">
+        <div class="stat-label">
+          Active Items
+        </div>
+
+        <div
+          class="stat-value"
+          id="activeItems"
+        >
+          —
+        </div>
+      </div>
+
+
+      <div class="stat">
+        <div class="stat-label">
+          Inactive Items
+        </div>
+
+        <div
+          class="stat-value"
+          id="inactiveItems"
+        >
+          —
+        </div>
+      </div>
+
+
+      <div class="stat">
+        <div class="stat-label">
+          Highest Price
+        </div>
+
+        <div
+          class="stat-value"
+          id="highestPrice"
+        >
+          —
+        </div>
+      </div>
+
+    </section>
+
+
+    <section>
+
+      <div class="toolbar">
+
+        <div class="toolbar-left">
+
+          <input
+            id="searchInput"
+            class="search"
+            type="search"
+            placeholder="Search shop items..."
+            autocomplete="off"
+          >
+
+          <select
+            id="statusFilter"
+            class="filter"
+          >
+            <option value="all">
+              All
+            </option>
+
+            <option value="active">
+              Active
+            </option>
+
+            <option value="inactive">
+              Inactive
+            </option>
+          </select>
+
+        </div>
+
+
+        <button
+          class="primary-button"
+          id="addItemButton"
+          type="button"
+        >
+          + Add Item
+        </button>
+
+      </div>
+
+
+      <div class="table-card">
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th style="text-align:right;">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+
+            <tbody id="itemsBody">
+
+              <tr>
+                <td colspan="5">
+
+                  <div class="state">
+
+                    <div class="spinner"></div>
+
+                    <div class="state-title">
+                      Loading shop...
+                    </div>
+
+                    <div class="state-text">
+                      Fetching real shop data.
+                    </div>
+
+                  </div>
+
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==========================================
+       ITEM MODAL
+  ========================================== -->
+
+  <div
+    class="modal-backdrop"
+    id="itemModal"
+  >
+
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+
+      <div class="modal-header">
+
+        <div
+          class="modal-title"
+          id="modalTitle"
+        >
+          Add Shop Item
+        </div>
+
+        <button
+          class="close-button"
+          id="closeModal"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form id="itemForm">
+
+        <div class="modal-body">
+
+          <div class="form-grid">
+
+            <div class="field">
+
+              <label for="itemName">
+                Item Name
+              </label>
+
+              <input
+                id="itemName"
+                name="name"
+                type="text"
+                maxlength="100"
+                required
+                placeholder="Example: Lucky Token"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="itemDescription">
+                Description
+              </label>
+
+              <textarea
+                id="itemDescription"
+                name="description"
+                maxlength="500"
+                placeholder="Describe what this item does..."
+              ></textarea>
+
+            </div>
+
+
+            <div class="field-row">
+
+              <div class="field">
+
+                <label for="itemPrice">
+                  Price
+                </label>
+
+                <input
+                  id="itemPrice"
+                  name="price"
+                  type="number"
+                  min="0"
+                  step="1"
+                  required
+                  placeholder="100"
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="itemIcon">
+                  Icon
+                </label>
+
+                <input
+                  id="itemIcon"
+                  name="icon"
+                  type="text"
+                  maxlength="20"
+                  placeholder="🎁"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="itemImage">
+                Image URL
+              </label>
+
+              <input
+                id="itemImage"
+                name="image"
+                type="url"
+                placeholder="https://..."
+              >
+
+            </div>
+
+
+            <label class="checkbox-field">
+
+              <input
+                id="itemActive"
+                name="active"
+                type="checkbox"
+                checked
+              >
+
+              <span>
+                Item is available for purchase
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            class="secondary-button"
+            id="cancelModal"
+            type="button"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="save-button"
+            id="saveItem"
+            type="submit"
+          >
+            Save Item
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="toast-container"
+    id="toastContainer"
+  ></div>
+
+
+  <script>
+    const API_BASE =
+      "https://api.memplace.xyz";
+
+
+    let staff = null;
+    let items = [];
+    let editingId = null;
+
+
+    /* ==========================================
+       HELPERS
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function formatNumber(value) {
+
+      return new Intl.NumberFormat(
+        "en-US"
+      ).format(
+        Number(value) || 0
+      );
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "—";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "—";
+      }
+
+      return date.toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        }
+      );
+
+    }
+
+
+    function showToast(
+      message,
+      type = "success"
+    ) {
+
+      const container =
+        document.getElementById(
+          "toastContainer"
+        );
+
+      const toast =
+        document.createElement("div");
+
+      toast.className =
+        `toast ${type}`;
+
+      toast.textContent =
+        message;
+
+      container.appendChild(
+        toast
+      );
+
+      setTimeout(() => {
+
+        toast.remove();
+
+      }, 3500);
+
+    }
+
+
+    /* ==========================================
+       STAFF AUTH
+    ========================================== */
+
+    async function loadStaff() {
+
+      const response =
+        await fetch(
+          `${API_BASE}/api/admin/me`,
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+      if (!response.ok) {
+        throw new Error(
+          "Staff access required."
+        );
+      }
+
+      const data =
+        await response.json();
+
+      if (
+        !data.success ||
+        !data.staff
+      ) {
+        throw new Error(
+          "Staff access required."
+        );
+      }
+
+      staff = data;
+
+      document.getElementById(
+        "staffRole"
+      ).textContent =
+        data.role || "Staff";
+
+      /*
+       * Shop management requires the
+       * shop permission.
+       */
+      if (
+        !Array.isArray(
+          data.permissions
+        ) ||
+        !data.permissions.includes(
+          "shop"
+        )
+      ) {
+        throw new Error(
+          "You do not have permission to manage the shop."
+        );
+      }
+
+    }
+
+
+    /* ==========================================
+       LOAD SHOP
+    ========================================== */
+
+    async function loadShop() {
+
+      const response =
+        await fetch(
+          `${API_BASE}/api/admin/shop`,
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Failed to load shop."
+        );
+
+      }
+
+      items =
+        Array.isArray(data.items)
+          ? data.items
+          : [];
+
+      updateStats();
+
+      renderItems();
+
+    }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    function updateStats() {
+
+      const active =
+        items.filter(
+          item =>
+            item.active !== false
+        );
+
+      const inactive =
+        items.length -
+        active.length;
+
+      const prices =
+        items
+          .map(
+            item =>
+              Number(item.price)
+          )
+          .filter(
+            price =>
+              Number.isFinite(price)
+          );
+
+      const highest =
+        prices.length
+          ? Math.max(...prices)
+          : 0;
+
+      document.getElementById(
+        "totalItems"
+      ).textContent =
+        formatNumber(
+          items.length
+        );
+
+      document.getElementById(
+        "activeItems"
+      ).textContent =
+        formatNumber(
+          active.length
+        );
+
+      document.getElementById(
+        "inactiveItems"
+      ).textContent =
+        formatNumber(
+          inactive
+        );
+
+      document.getElementById(
+        "highestPrice"
+      ).textContent =
+        `${formatNumber(highest)} coins`;
+
+    }
+
+
+    /* ==========================================
+       RENDER
+    ========================================== */
+
+    function renderItems() {
+
+      const body =
+        document.getElementById(
+          "itemsBody"
+        );
+
+      const search =
+        document.getElementById(
+          "searchInput"
+        ).value
+          .trim()
+          .toLowerCase();
+
+      const status =
+        document.getElementById(
+          "statusFilter"
+        ).value;
+
+      const filtered =
+        items.filter(item => {
+
+          const name =
+            String(
+              item.name || ""
+            ).toLowerCase();
+
+          const description =
+            String(
+              item.description || ""
+            ).toLowerCase();
+
+          const matchesSearch =
+            !search ||
+            name.includes(search) ||
+            description.includes(search);
+
+          const isActive =
+            item.active !== false;
+
+          const matchesStatus =
+            status === "all" ||
+            (
+              status === "active" &&
+              isActive
+            ) ||
+            (
+              status === "inactive" &&
+              !isActive
+            );
+
+          return (
+            matchesSearch &&
+            matchesStatus
+          );
+
+        });
+
+
+      if (!filtered.length) {
+
+        body.innerHTML = `
+          <tr>
+            <td colspan="5">
+              <div class="state">
+                <div class="state-title">
+                  No shop items found
+                </div>
+
+                <div class="state-text">
+                  There are no items matching your filters.
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+
+        return;
+
+      }
+
+
+      body.innerHTML =
+        filtered
+          .map(item => {
+
+            const active =
+              item.active !== false;
+
+            const icon =
+              item.image
+                ? `
+                  <img
+                    src="${escapeHtml(item.image)}"
+                    alt=""
+                    onerror="this.style.display='none'"
+                  >
+                `
+                : escapeHtml(
+                    item.icon || "🛍️"
+                  );
+
+            return `
+              <tr>
+
+                <td>
+
+                  <div class="item-cell">
+
+                    <div class="item-icon">
+                      ${icon}
+                    </div>
+
+                    <div>
+                      <div class="item-name">
+                        ${escapeHtml(
+                          item.name ||
+                          "Unnamed Item"
+                        )}
+                      </div>
+
+                      <div class="item-description">
+                        ${escapeHtml(
+                          item.description ||
+                          "No description"
+                        )}
+                      </div>
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+                  <span class="price">
+                    ${formatNumber(
+                      item.price
+                    )} coins
+                  </span>
+                </td>
+
+
+                <td>
+
+                  <span
+                    class="status ${
+                      active
+                        ? "active"
+                        : "inactive"
+                    }"
+                  >
+                    ${
+                      active
+                        ? "Active"
+                        : "Inactive"
+                    }
+                  </span>
+
+                </td>
+
+
+                <td>
+                  ${formatDate(
+                    item.createdAt
+                  )}
+                </td>
+
+
+                <td>
+
+                  <div class="actions">
+
+                    <button
+                      class="action-button"
+                      type="button"
+                      onclick="editItem('${escapeHtml(
+                        item._id ||
+                        item.id
+                      )}')"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      class="action-button danger"
+                      type="button"
+                      onclick="deleteItem('${escapeHtml(
+                        item._id ||
+                        item.id
+                      )}')"
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+            `;
+
+          })
+          .join("");
+
+    }
+
+
+    /* ==========================================
+       MODAL
+    ========================================== */
+
+    function openAddModal() {
+
+      editingId = null;
+
+      document.getElementById(
+        "modalTitle"
+      ).textContent =
+        "Add Shop Item";
+
+      document.getElementById(
+        "itemForm"
+      ).reset();
+
+      document.getElementById(
+        "itemActive"
+      ).checked = true;
+
+      document.getElementById(
+        "itemModal"
+      ).classList.add("open");
+
+      setTimeout(() => {
+
+        document.getElementById(
+          "itemName"
+        ).focus();
+
+      }, 50);
+
+    }
+
+
+    function openEditModal(item) {
+
+      editingId =
+        item._id ||
+        item.id;
+
+      document.getElementById(
+        "modalTitle"
+      ).textContent =
+        "Edit Shop Item";
+
+      document.getElementById(
+        "itemName"
+      ).value =
+        item.name || "";
+
+      document.getElementById(
+        "itemDescription"
+      ).value =
+        item.description || "";
+
+      document.getElementById(
+        "itemPrice"
+      ).value =
+        Number(item.price) || 0;
+
+      document.getElementById(
+        "itemIcon"
+      ).value =
+        item.icon || "";
+
+      document.getElementById(
+        "itemImage"
+      ).value =
+        item.image || "";
+
+      document.getElementById(
+        "itemActive"
+      ).checked =
+        item.active !== false;
+
+      document.getElementById(
+        "itemModal"
+      ).classList.add("open");
+
+    }
+
+
+    function closeModal() {
+
+      document.getElementById(
+        "itemModal"
+      ).classList.remove("open");
+
+      editingId = null;
+
+    }
+
+
+    function editItem(id) {
+
+      const item =
+        items.find(
+          item =>
+            String(
+              item._id ||
+              item.id
+            ) === String(id)
+        );
+
+      if (!item) {
+        showToast(
+          "Shop item could not be found.",
+          "error"
+        );
+
+        return;
+      }
+
+      openEditModal(item);
+
+    }
+
+
+    /* ==========================================
+       SAVE ITEM
+    ========================================== */
+
+    async function saveItem(event) {
+
+      event.preventDefault();
+
+      const button =
+        document.getElementById(
+          "saveItem"
+        );
+
+      const name =
+        document.getElementById(
+          "itemName"
+        ).value.trim();
+
+      const description =
+        document.getElementById(
+          "itemDescription"
+        ).value.trim();
+
+      const price =
+        Number(
+          document.getElementById(
+            "itemPrice"
+          ).value
+        );
+
+      const icon =
+        document.getElementById(
+          "itemIcon"
+        ).value.trim();
+
+      const image =
+        document.getElementById(
+          "itemImage"
+        ).value.trim();
+
+      const active =
+        document.getElementById(
+          "itemActive"
+        ).checked;
+
+
+      if (!name) {
+
+        showToast(
+          "Item name is required.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !Number.isInteger(price) ||
+        price < 0
+      ) {
+
+        showToast(
+          "Price must be a whole number.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      button.disabled = true;
+      button.textContent = "Saving...";
+
+
+      try {
+
+        const payload = {
+          name,
+          description,
+          price,
+          icon,
+          image: image || null,
+          active
+        };
+
+
+        const method =
+          editingId
+            ? "PATCH"
+            : "POST";
+
+
+        const url =
+          editingId
+            ? `${API_BASE}/api/admin/shop/${encodeURIComponent(
+                editingId
+              )}`
+            : `${API_BASE}/api/admin/shop`;
+
+
+        const response =
+          await fetch(
+            url,
+            {
+              method,
+              credentials: "include",
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+              body:
+                JSON.stringify(
+                  payload
+                )
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Failed to save shop item."
+          );
+
+        }
+
+
+        showToast(
+          editingId
+            ? "Shop item updated."
+            : "Shop item created."
+        );
+
+        closeModal();
+
+        await loadShop();
+
+      } catch (error) {
+
+        console.error(
+          "SAVE SHOP ITEM:",
+          error
+        );
+
+        showToast(
+          error.message ||
+          "Failed to save item.",
+          "error"
+        );
+
+      } finally {
+
+        button.disabled = false;
+        button.textContent =
+          "Save Item";
+
+      }
+
+    }
+
+
+    /* ==========================================
+       DELETE
+    ========================================== */
+
+    async function deleteItem(id) {
+
+      const item =
+        items.find(
+          item =>
+            String(
+              item._id ||
+              item.id
+            ) === String(id)
+        );
+
+      if (!item) {
+        return;
+      }
+
+
+      const confirmed =
+        confirm(
+          `Delete "${item.name || "this item"}"?\n\nThis cannot be undone.`
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/shop/${encodeURIComponent(
+              id
+            )}`,
+            {
+              method: "DELETE",
+              credentials: "include"
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Failed to delete item."
+          );
+
+        }
+
+
+        showToast(
+          "Shop item deleted."
+        );
+
+        await loadShop();
+
+      } catch (error) {
+
+        console.error(
+          "DELETE SHOP ITEM:",
+          error
+        );
+
+        showToast(
+          error.message ||
+          "Failed to delete item.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       EVENTS
+    ========================================== */
+
+    document
+      .getElementById(
+        "addItemButton"
+      )
+      .addEventListener(
+        "click",
+        openAddModal
+      );
+
+
+    document
+      .getElementById(
+        "closeModal"
+      )
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+
+    document
+      .getElementById(
+        "cancelModal"
+      )
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+
+    document
+      .getElementById(
+        "itemForm"
+      )
+      .addEventListener(
+        "submit",
+        saveItem
+      );
+
+
+    document
+      .getElementById(
+        "searchInput"
+      )
+      .addEventListener(
+        "input",
+        renderItems
+      );
+
+
+    document
+      .getElementById(
+        "statusFilter"
+      )
+      .addEventListener(
+        "change",
+        renderItems
+      );
+
+
+    document
+      .getElementById(
+        "itemModal"
+      )
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target ===
+            event.currentTarget
+          ) {
+            closeModal();
+          }
+
+        }
+      );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape"
+        ) {
+          closeModal();
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
+    async function initialize() {
+
+      try {
+
+        await loadStaff();
+
+        await loadShop();
+
+      } catch (error) {
+
+        console.error(
+          "ADMIN SHOP:",
+          error
+        );
+
+        showToast(
+          error.message ||
+          "Unable to load Shop.",
+          "error"
+        );
+
+        setTimeout(() => {
+
+          window.location.href =
+            "/admin";
+
+        }, 1800);
+
+      }
+
+    }
+
+
+    initialize();
+  </script>
+
+</body>
+</html>
