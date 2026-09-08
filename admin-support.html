@@ -1,0 +1,3795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Support • Admin</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191611;
+
+      --surface: #191611;
+      --surface-2: #211c16;
+      --surface-3: #282118;
+
+      --border: rgba(255,255,255,0.07);
+
+      --text: #f1ece4;
+      --muted: #958d82;
+
+      --accent: #d6a85c;
+      --accent-hover: #e2b86e;
+
+      --green: #6fcf97;
+      --yellow: #e5bd62;
+      --red: #e27777;
+      --blue: #75a9e6;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,0.35);
+
+      --radius: 14px;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+
+      min-height: 100%;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #211b14 0,
+          var(--black) 42%,
+          var(--black) 100%
+        );
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+
+    body {
+      min-height: 100vh;
+    }
+
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        rgba(11,10,8,0.88);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+    }
+
+
+    .topbar-inner {
+      width: min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .brand {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      color: var(--text);
+
+      text-decoration: none;
+    }
+
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 10px;
+
+      object-fit: cover;
+
+      border:
+        1px solid var(--border);
+    }
+
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+
+      gap: 2px;
+    }
+
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    .brand-subtitle {
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      min-height: 38px;
+
+      padding:
+        0 14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,0.035);
+
+      color: var(--text);
+
+      text-decoration: none;
+
+      transition:
+        0.18s ease;
+    }
+
+
+    .back-button:hover {
+      background:
+        rgba(255,255,255,0.07);
+
+      border-color:
+        rgba(255,255,255,0.12);
+    }
+
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    .page {
+      width: min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+      margin:
+        0 auto;
+
+      padding:
+        34px 0 60px;
+    }
+
+
+    .page-heading {
+      margin-bottom: 24px;
+    }
+
+
+    .page-heading h1 {
+      margin: 0;
+
+      font-size:
+        clamp(25px, 3vw, 34px);
+
+      letter-spacing:
+        -0.025em;
+    }
+
+
+    .page-heading p {
+      margin:
+        8px 0 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    .stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 14px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .stat {
+      min-width: 0;
+
+      padding: 18px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.035),
+          rgba(255,255,255,0.015)
+        );
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,0.14);
+    }
+
+
+    .stat-label {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      margin-bottom: 8px;
+    }
+
+
+    .stat-value {
+      font-size: 25px;
+
+      font-weight: 750;
+
+      line-height: 1;
+    }
+
+
+    /* ==========================================
+       TOOLBAR
+    ========================================== */
+
+    .toolbar {
+      display: grid;
+
+      grid-template-columns:
+        minmax(220px, 1fr)
+        170px
+        170px
+        auto;
+
+      gap: 10px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+
+      color: var(--text);
+
+      background:
+        var(--surface-2);
+
+      border:
+        1px solid var(--border);
+
+      outline: none;
+
+      border-radius: 10px;
+
+      transition:
+        border-color 0.18s ease,
+        background 0.18s ease;
+    }
+
+
+    .input,
+    .select {
+      height: 42px;
+
+      padding:
+        0 13px;
+    }
+
+
+    .textarea {
+      min-height: 110px;
+
+      padding:
+        12px 13px;
+
+      resize: vertical;
+    }
+
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color:
+        rgba(214,168,92,0.55);
+
+      background:
+        var(--surface-3);
+    }
+
+
+    .select {
+      appearance: auto;
+    }
+
+
+    .refresh-button,
+    .primary-button,
+    .secondary-button,
+    .danger-button {
+      min-height: 42px;
+
+      border-radius: 10px;
+
+      padding:
+        0 15px;
+
+      border:
+        1px solid var(--border);
+
+      transition:
+        0.18s ease;
+    }
+
+
+    .refresh-button,
+    .secondary-button {
+      background:
+        rgba(255,255,255,0.035);
+
+      color: var(--text);
+    }
+
+
+    .refresh-button:hover,
+    .secondary-button:hover {
+      background:
+        rgba(255,255,255,0.07);
+    }
+
+
+    .primary-button {
+      background:
+        var(--accent);
+
+      color:
+        #17120b;
+
+      border-color:
+        transparent;
+
+      font-weight:
+        700;
+    }
+
+
+    .primary-button:hover {
+      background:
+        var(--accent-hover);
+    }
+
+
+    .danger-button {
+      background:
+        rgba(226,119,119,0.08);
+
+      color:
+        var(--red);
+
+      border-color:
+        rgba(226,119,119,0.18);
+    }
+
+
+    .danger-button:hover {
+      background:
+        rgba(226,119,119,0.14);
+    }
+
+
+    button:disabled {
+      opacity: 0.55;
+
+      cursor:
+        not-allowed;
+    }
+
+
+    /* ==========================================
+       LAYOUT
+    ========================================== */
+
+    .support-layout {
+      display: grid;
+
+      grid-template-columns:
+        390px
+        minmax(0, 1fr);
+
+      gap: 16px;
+
+      min-height: 650px;
+    }
+
+
+    .panel {
+      min-width: 0;
+
+      background:
+        rgba(25,22,17,0.92);
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      overflow: hidden;
+
+      box-shadow:
+        var(--shadow);
+    }
+
+
+    /* ==========================================
+       TICKET LIST
+    ========================================== */
+
+    .ticket-list-header {
+      height: 54px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding:
+        0 16px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .ticket-list-title {
+      font-size: 13px;
+
+      font-weight:
+        700;
+    }
+
+
+    .ticket-count {
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+
+    .ticket-list {
+      max-height:
+        596px;
+
+      overflow-y:
+        auto;
+    }
+
+
+    .ticket-item {
+      width: 100%;
+
+      display: block;
+
+      padding:
+        15px 16px;
+
+      text-align: left;
+
+      border: 0;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        transparent;
+
+      color: var(--text);
+
+      transition:
+        background 0.15s ease;
+    }
+
+
+    .ticket-item:hover {
+      background:
+        rgba(255,255,255,0.035);
+    }
+
+
+    .ticket-item.active {
+      background:
+        rgba(214,168,92,0.08);
+
+      box-shadow:
+        inset 3px 0 0 var(--accent);
+    }
+
+
+    .ticket-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-bottom: 7px;
+    }
+
+
+    .ticket-subject {
+      min-width: 0;
+
+      overflow: hidden;
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      font-size: 13px;
+
+      font-weight:
+        700;
+    }
+
+
+    .ticket-preview {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height:
+        1.45;
+
+      display:
+        -webkit-box;
+
+      -webkit-line-clamp: 2;
+
+      -webkit-box-orient:
+        vertical;
+
+      overflow:
+        hidden;
+
+      margin-bottom: 9px;
+    }
+
+
+    .ticket-meta {
+      display: flex;
+      align-items: center;
+
+      gap: 7px;
+
+      flex-wrap: wrap;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+
+    /* ==========================================
+       BADGES
+    ========================================== */
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+
+      min-height: 23px;
+
+      padding:
+        0 8px;
+
+      border-radius:
+        999px;
+
+      font-size:
+        10px;
+
+      font-weight:
+        750;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.04em;
+    }
+
+
+    .badge-open {
+      color:
+        var(--blue);
+
+      background:
+        rgba(117,169,230,0.10);
+
+      border:
+        1px solid rgba(117,169,230,0.18);
+    }
+
+
+    .badge-pending {
+      color:
+        var(--yellow);
+
+      background:
+        rgba(229,189,98,0.10);
+
+      border:
+        1px solid rgba(229,189,98,0.18);
+    }
+
+
+    .badge-resolved {
+      color:
+        var(--green);
+
+      background:
+        rgba(111,207,151,0.10);
+
+      border:
+        1px solid rgba(111,207,151,0.18);
+    }
+
+
+    .badge-closed {
+      color:
+        var(--muted);
+
+      background:
+        rgba(255,255,255,0.05);
+
+      border:
+        1px solid var(--border);
+    }
+
+
+    .badge-category {
+      color:
+        var(--accent);
+
+      background:
+        rgba(214,168,92,0.08);
+
+      border:
+        1px solid rgba(214,168,92,0.15);
+    }
+
+
+    /* ==========================================
+       DETAIL
+    ========================================== */
+
+    .detail-empty {
+      min-height:
+        650px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      padding:
+        30px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+    }
+
+
+    .detail-empty-icon {
+      font-size:
+        38px;
+
+      margin-bottom:
+        12px;
+    }
+
+
+    .detail-empty-title {
+      color:
+        var(--text);
+
+      font-size:
+        16px;
+
+      font-weight:
+        700;
+
+      margin-bottom:
+        5px;
+    }
+
+
+    .detail-empty-text {
+      font-size:
+        13px;
+    }
+
+
+    .detail {
+      display:
+        none;
+
+      height:
+        100%;
+    }
+
+
+    .detail.visible {
+      display:
+        flex;
+
+      flex-direction:
+        column;
+    }
+
+
+    .detail-header {
+      padding:
+        18px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+
+    .detail-title-row {
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      justify-content:
+        space-between;
+
+      gap:
+        15px;
+    }
+
+
+    .detail-title {
+      margin:
+        0;
+
+      font-size:
+        18px;
+
+      line-height:
+        1.35;
+    }
+
+
+    .detail-id {
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      margin-top:
+        6px;
+
+      word-break:
+        break-all;
+    }
+
+
+    .detail-badges {
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
+
+      flex-shrink:
+        0;
+    }
+
+
+    .detail-info {
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap:
+        10px;
+
+      margin-top:
+        15px;
+    }
+
+
+    .info-box {
+      padding:
+        11px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(255,255,255,0.02);
+    }
+
+
+    .info-label {
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.06em;
+
+      margin-bottom:
+        5px;
+    }
+
+
+    .info-value {
+      font-size:
+        12px;
+
+      word-break:
+        break-word;
+    }
+
+
+    /* ==========================================
+       CONVERSATION
+    ========================================== */
+
+    .conversation {
+      flex:
+        1;
+
+      min-height:
+        280px;
+
+      max-height:
+        390px;
+
+      overflow-y:
+        auto;
+
+      padding:
+        18px;
+    }
+
+
+    .message {
+      display:
+        flex;
+
+      gap:
+        11px;
+
+      margin-bottom:
+        18px;
+    }
+
+
+    .message-avatar {
+      width:
+        34px;
+
+      height:
+        34px;
+
+      flex:
+        0 0 34px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
+
+      background:
+        var(--surface-3);
+
+      border:
+        1px solid var(--border);
+
+      font-size:
+        14px;
+
+      overflow:
+        hidden;
+    }
+
+
+    .message-avatar img {
+      width:
+        100%;
+
+      height:
+        100%;
+
+      object-fit:
+        cover;
+    }
+
+
+    .message-content {
+      min-width:
+        0;
+
+      flex:
+        1;
+    }
+
+
+    .message-header {
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
+
+      margin-bottom:
+        5px;
+    }
+
+
+    .message-name {
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    .message-role {
+      color:
+        var(--accent);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+
+      text-transform:
+        uppercase;
+    }
+
+
+    .message-time {
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+    }
+
+
+    .message-body {
+      padding:
+        11px 13px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(255,255,255,0.025);
+
+      color:
+        #ddd5ca;
+
+      font-size:
+        13px;
+
+      line-height:
+        1.6;
+
+      white-space:
+        pre-wrap;
+
+      word-break:
+        break-word;
+    }
+
+
+    .message.staff .message-body {
+      background:
+        rgba(214,168,92,0.055);
+
+      border-color:
+        rgba(214,168,92,0.12);
+    }
+
+
+    .message.staff .message-avatar {
+      border-color:
+        rgba(214,168,92,0.2);
+    }
+
+
+    /* ==========================================
+       ACTION AREA
+    ========================================== */
+
+    .detail-actions {
+      padding:
+        15px 18px;
+
+      border-top:
+        1px solid var(--border);
+
+      background:
+        rgba(0,0,0,0.10);
+    }
+
+
+    .action-grid {
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        10px;
+
+      margin-bottom:
+        10px;
+    }
+
+
+    .action-group {
+      min-width:
+        0;
+    }
+
+
+    .action-label {
+      display:
+        block;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.06em;
+
+      margin-bottom:
+        6px;
+    }
+
+
+    .reply-row {
+      display:
+        grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+      gap:
+        10px;
+
+      align-items:
+        end;
+    }
+
+
+    .reply-textarea {
+      min-height:
+        76px;
+
+      max-height:
+        160px;
+    }
+
+
+    .notes-row {
+      display:
+        none;
+
+      margin-top:
+        10px;
+
+      padding-top:
+        10px;
+
+      border-top:
+        1px solid var(--border);
+    }
+
+
+    .notes-row.visible {
+      display:
+        block;
+    }
+
+
+    .internal-note {
+      padding:
+        10px 12px;
+
+      margin-bottom:
+        8px;
+
+      border:
+        1px solid rgba(214,168,92,0.12);
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(214,168,92,0.04);
+    }
+
+
+    .internal-note-header {
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      gap:
+        10px;
+
+      margin-bottom:
+        5px;
+
+      color:
+        var(--accent);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+    }
+
+
+    .internal-note-body {
+      color:
+        #cfc5b8;
+
+      font-size:
+        12px;
+
+      line-height:
+        1.5;
+
+      white-space:
+        pre-wrap;
+    }
+
+
+    /* ==========================================
+       LOADING / EMPTY / ERROR
+    ========================================== */
+
+    .center-message {
+      padding:
+        30px 18px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+    }
+
+
+    .error-message {
+      padding:
+        12px 14px;
+
+      margin-bottom:
+        15px;
+
+      border:
+        1px solid rgba(226,119,119,0.18);
+
+      background:
+        rgba(226,119,119,0.06);
+
+      color:
+        var(--red);
+
+      border-radius:
+        10px;
+
+      font-size:
+        12px;
+    }
+
+
+    .hidden {
+      display:
+        none !important;
+    }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 950px) {
+
+      .support-layout {
+        grid-template-columns:
+          320px
+          minmax(0, 1fr);
+      }
+
+      .toolbar {
+        grid-template-columns:
+          1fr 1fr;
+
+      }
+
+      .refresh-button {
+        width:
+          100%;
+      }
+
+    }
+
+
+    @media (max-width: 760px) {
+
+      .page {
+        width:
+          min(
+            100% - 20px,
+            1180px
+          );
+
+        padding-top:
+          24px;
+      }
+
+
+      .stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+
+      .support-layout {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .ticket-list {
+        max-height:
+          420px;
+      }
+
+
+      .detail-empty {
+        min-height:
+          300px;
+      }
+
+
+      .detail-info {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .action-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+
+    @media (max-width: 520px) {
+
+      .topbar {
+        height:
+          64px;
+      }
+
+
+      .brand-subtitle {
+        display:
+          none;
+      }
+
+
+      .stats {
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+
+      .toolbar {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .reply-row {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .reply-row .primary-button {
+        width:
+          100%;
+      }
+
+
+      .detail-title-row {
+        flex-direction:
+          column;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- ==========================================
+       HEADER
+  ========================================== -->
+
+  <header class="topbar">
+
+    <div class="topbar-inner">
+
+      <a
+        class="brand"
+        href="/admin"
+      >
+
+        <img
+          src="/logo.gif"
+          alt="Middle Eastern Mixing"
+        >
+
+        <div class="brand-text">
+
+          <div class="brand-title">
+            Middle Eastern Mixing
+          </div>
+
+          <div class="brand-subtitle">
+            Administration
+          </div>
+
+        </div>
+
+      </a>
+
+
+      <a
+        class="back-button"
+        href="/admin"
+      >
+        ← Admin Dashboard
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- ==========================================
+       PAGE
+  ========================================== -->
+
+  <main class="page">
+
+    <div class="page-heading">
+
+      <h1>
+        Support
+      </h1>
+
+      <p>
+        Manage user support tickets and respond to requests.
+      </p>
+
+    </div>
+
+
+    <!-- ==========================================
+         ERROR
+    ========================================== -->
+
+    <div
+      id="globalError"
+      class="error-message hidden"
+    ></div>
+
+
+    <!-- ==========================================
+         STATS
+    ========================================== -->
+
+    <section class="stats">
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Total Tickets
+        </div>
+
+        <div
+          id="statTotal"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Open
+        </div>
+
+        <div
+          id="statOpen"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Pending
+        </div>
+
+        <div
+          id="statPending"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Resolved
+        </div>
+
+        <div
+          id="statResolved"
+          class="stat-value"
+        >
+          —
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         TOOLBAR
+    ========================================== -->
+
+    <section class="toolbar">
+
+      <input
+        id="searchInput"
+        class="input"
+        type="search"
+        placeholder="Search tickets..."
+        autocomplete="off"
+      >
+
+
+      <select
+        id="statusFilter"
+        class="select"
+      >
+
+        <option value="">
+          All statuses
+        </option>
+
+        <option value="open">
+          Open
+        </option>
+
+        <option value="pending">
+          Pending
+        </option>
+
+        <option value="resolved">
+          Resolved
+        </option>
+
+        <option value="closed">
+          Closed
+        </option>
+
+      </select>
+
+
+      <select
+        id="categoryFilter"
+        class="select"
+      >
+
+        <option value="">
+          All categories
+        </option>
+
+        <option value="general">
+          General
+        </option>
+
+        <option value="account">
+          Account
+        </option>
+
+        <option value="games">
+          Games
+        </option>
+
+        <option value="payments">
+          Payments / Economy
+        </option>
+
+        <option value="bug">
+          Bug Report
+        </option>
+
+        <option value="other">
+          Other
+        </option>
+
+      </select>
+
+
+      <button
+        id="refreshButton"
+        class="refresh-button"
+        type="button"
+      >
+        ↻ Refresh
+      </button>
+
+    </section>
+
+
+    <!-- ==========================================
+         SUPPORT LAYOUT
+    ========================================== -->
+
+    <section class="support-layout">
+
+
+      <!-- ========================================
+           TICKET LIST
+      ======================================== -->
+
+      <div class="panel">
+
+        <div class="ticket-list-header">
+
+          <div class="ticket-list-title">
+            Tickets
+          </div>
+
+          <div
+            id="ticketCount"
+            class="ticket-count"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div
+          id="ticketList"
+          class="ticket-list"
+        >
+
+          <div class="center-message">
+            Loading tickets...
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ========================================
+           TICKET DETAIL
+      ======================================== -->
+
+      <div class="panel">
+
+
+        <div
+          id="detailEmpty"
+          class="detail-empty"
+        >
+
+          <div>
+
+            <div class="detail-empty-icon">
+              🎫
+            </div>
+
+            <div class="detail-empty-title">
+              Select a ticket
+            </div>
+
+            <div class="detail-empty-text">
+              Choose a support ticket to view the conversation.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="detail"
+          class="detail"
+        >
+
+
+          <!-- DETAIL HEADER -->
+
+          <div class="detail-header">
+
+            <div class="detail-title-row">
+
+              <div>
+
+                <h2
+                  id="detailSubject"
+                  class="detail-title"
+                ></h2>
+
+                <div
+                  id="detailId"
+                  class="detail-id"
+                ></div>
+
+              </div>
+
+
+              <div
+                id="detailBadges"
+                class="detail-badges"
+              ></div>
+
+            </div>
+
+
+            <div
+              id="detailInfo"
+              class="detail-info"
+            ></div>
+
+          </div>
+
+
+          <!-- CONVERSATION -->
+
+          <div
+            id="conversation"
+            class="conversation"
+          ></div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="detail-actions">
+
+
+            <div class="action-grid">
+
+
+              <div class="action-group">
+
+                <label
+                  class="action-label"
+                  for="statusSelect"
+                >
+                  Status
+                </label>
+
+                <select
+                  id="statusSelect"
+                  class="select"
+                >
+
+                  <option value="open">
+                    Open
+                  </option>
+
+                  <option value="pending">
+                    Pending
+                  </option>
+
+                  <option value="resolved">
+                    Resolved
+                  </option>
+
+                  <option value="closed">
+                    Closed
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div class="action-group">
+
+                <label
+                  class="action-label"
+                  for="assignSelect"
+                >
+                  Assigned Staff
+                </label>
+
+                <select
+                  id="assignSelect"
+                  class="select"
+                >
+
+                  <option value="">
+                    Unassigned
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <div class="reply-row">
+
+              <textarea
+                id="replyInput"
+                class="textarea reply-textarea"
+                maxlength="4000"
+                placeholder="Write a reply to the user..."
+              ></textarea>
+
+              <button
+                id="sendReplyButton"
+                class="primary-button"
+                type="button"
+              >
+                Send Reply
+              </button>
+
+            </div>
+
+
+            <div
+              id="notesRow"
+              class="notes-row"
+            >
+
+              <div
+                id="internalNotes"
+              ></div>
+
+              <textarea
+                id="noteInput"
+                class="textarea"
+                maxlength="4000"
+                placeholder="Add an internal staff note..."
+              ></textarea>
+
+              <button
+                id="saveNoteButton"
+                class="secondary-button"
+                type="button"
+                style="margin-top:8px;"
+              >
+                Add Internal Note
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    const API_BASE =
+      "https://api.memplace.xyz";
+
+
+    let currentStaff = null;
+
+    let tickets = [];
+
+    let selectedTicket = null;
+
+    let staffMembers = [];
+
+
+    /* ==========================================
+       ELEMENTS
+    ========================================== */
+
+    const globalError =
+      document.getElementById(
+        "globalError"
+      );
+
+    const ticketList =
+      document.getElementById(
+        "ticketList"
+      );
+
+    const ticketCount =
+      document.getElementById(
+        "ticketCount"
+      );
+
+    const detail =
+      document.getElementById(
+        "detail"
+      );
+
+    const detailEmpty =
+      document.getElementById(
+        "detailEmpty"
+      );
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+    const statusFilter =
+      document.getElementById(
+        "statusFilter"
+      );
+
+    const categoryFilter =
+      document.getElementById(
+        "categoryFilter"
+      );
+
+    const refreshButton =
+      document.getElementById(
+        "refreshButton"
+      );
+
+    const statusSelect =
+      document.getElementById(
+        "statusSelect"
+      );
+
+    const assignSelect =
+      document.getElementById(
+        "assignSelect"
+      );
+
+    const replyInput =
+      document.getElementById(
+        "replyInput"
+      );
+
+    const sendReplyButton =
+      document.getElementById(
+        "sendReplyButton"
+      );
+
+    const notesRow =
+      document.getElementById(
+        "notesRow"
+      );
+
+    const internalNotes =
+      document.getElementById(
+        "internalNotes"
+      );
+
+    const noteInput =
+      document.getElementById(
+        "noteInput"
+      );
+
+    const saveNoteButton =
+      document.getElementById(
+        "saveNoteButton"
+      );
+
+
+    /* ==========================================
+       HELPERS
+    ========================================== */
+
+    function showError(message) {
+
+      globalError.textContent =
+        message;
+
+      globalError.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    function clearError() {
+
+      globalError.textContent =
+        "";
+
+      globalError.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    function escapeHtml(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "Unknown";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "Unknown";
+      }
+
+      return date.toLocaleString(
+        undefined,
+        {
+          dateStyle:
+            "medium",
+          timeStyle:
+            "short"
+        }
+      );
+    }
+
+
+    function formatRelativeDate(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "";
+      }
+
+      const diff =
+        Date.now() -
+        date.getTime();
+
+      const seconds =
+        Math.floor(
+          diff / 1000
+        );
+
+      if (seconds < 60) {
+        return "Just now";
+      }
+
+      const minutes =
+        Math.floor(
+          seconds / 60
+        );
+
+      if (minutes < 60) {
+        return `${minutes}m ago`;
+      }
+
+      const hours =
+        Math.floor(
+          minutes / 60
+        );
+
+      if (hours < 24) {
+        return `${hours}h ago`;
+      }
+
+      const days =
+        Math.floor(
+          hours / 24
+        );
+
+      if (days < 30) {
+        return `${days}d ago`;
+      }
+
+      return date.toLocaleDateString();
+    }
+
+
+    function normalizeStatus(status) {
+
+      return String(
+        status ||
+        "open"
+      )
+        .toLowerCase()
+        .trim();
+    }
+
+
+    function statusBadge(status) {
+
+      const value =
+        normalizeStatus(
+          status
+        );
+
+      const label =
+        value.charAt(0).toUpperCase() +
+        value.slice(1);
+
+      return `
+        <span class="badge badge-${escapeHtml(value)}">
+          ${escapeHtml(label)}
+        </span>
+      `;
+    }
+
+
+    function categoryLabel(category) {
+
+      const labels = {
+        general:
+          "General",
+
+        account:
+          "Account",
+
+        games:
+          "Games",
+
+        payments:
+          "Payments / Economy",
+
+        bug:
+          "Bug Report",
+
+        other:
+          "Other"
+      };
+
+      return (
+        labels[
+          String(category || "")
+            .toLowerCase()
+        ] ||
+        category ||
+        "General"
+      );
+    }
+
+
+    function getTicketId(ticket) {
+
+      return String(
+        ticket?._id ||
+        ticket?.id ||
+        ""
+      );
+    }
+
+
+    function getMessages(ticket) {
+
+      if (
+        Array.isArray(
+          ticket?.messages
+        )
+      ) {
+        return ticket.messages;
+      }
+
+      /*
+      Compatibility with older support
+      documents that may store the original
+      message separately.
+      */
+
+      const messages = [];
+
+      if (
+        ticket?.message
+      ) {
+
+        messages.push({
+          id:
+            "initial",
+          type:
+            "user",
+          username:
+            ticket.username ||
+            "User",
+          message:
+            ticket.message,
+          createdAt:
+            ticket.createdAt
+        });
+
+      }
+
+      return messages;
+    }
+
+
+    /* ==========================================
+       AUTH
+    ========================================== */
+
+    async function loadStaff() {
+
+      const response =
+        await fetch(
+          `${API_BASE}/api/admin/me`,
+          {
+            method:
+              "GET",
+
+            credentials:
+              "include",
+
+            cache:
+              "no-store"
+          }
+        );
+
+
+      let data = null;
+
+      try {
+        data =
+          await response.json();
+      } catch {
+        data = null;
+      }
+
+
+      if (
+        !response.ok ||
+        !data?.success ||
+        !data?.staff
+      ) {
+
+        window.location.href =
+          "/";
+
+        return false;
+      }
+
+
+      currentStaff = data;
+
+      return true;
+    }
+
+
+    /* ==========================================
+       LOAD STAFF MEMBERS
+    ========================================== */
+
+    async function loadStaffMembers() {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/staff`,
+            {
+              method:
+                "GET",
+
+              credentials:
+                "include",
+
+              cache:
+                "no-store"
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data?.success
+        ) {
+          throw new Error(
+            data?.error ||
+            "Unable to load staff members."
+          );
+        }
+
+
+        staffMembers =
+          Array.isArray(
+            data.staff
+          )
+            ? data.staff
+            : [];
+
+
+        renderAssignmentOptions();
+
+      } catch (error) {
+
+        console.error(
+          "STAFF LOAD ERROR:",
+          error
+        );
+
+      }
+    }
+
+
+    /* ==========================================
+       ASSIGNMENT OPTIONS
+    ========================================== */
+
+    function renderAssignmentOptions() {
+
+      const currentAssignment =
+        selectedTicket?.assignedTo?.id ||
+        "";
+
+
+      assignSelect.innerHTML = `
+        <option value="">
+          Unassigned
+        </option>
+      `;
+
+
+      staffMembers.forEach(
+        member => {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            member.id;
+
+          option.textContent =
+            `${member.username || member.discordUsername || member.id} • ${String(member.role || "").toUpperCase()}`;
+
+          if (
+            String(member.id) ===
+            String(currentAssignment)
+          ) {
+            option.selected =
+              true;
+          }
+
+          assignSelect.appendChild(
+            option
+          );
+
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       LOAD TICKETS
+    ========================================== */
+
+    async function loadTickets(
+      preserveSelection = true
+    ) {
+
+      clearError();
+
+      refreshButton.disabled =
+        true;
+
+      ticketList.innerHTML = `
+        <div class="center-message">
+          Loading tickets...
+        </div>
+      `;
+
+
+      try {
+
+        const params =
+          new URLSearchParams();
+
+
+        const search =
+          searchInput.value.trim();
+
+        const status =
+          statusFilter.value;
+
+        const category =
+          categoryFilter.value;
+
+
+        if (search) {
+          params.set(
+            "search",
+            search
+          );
+        }
+
+
+        if (status) {
+          params.set(
+            "status",
+            status
+          );
+        }
+
+
+        if (category) {
+          params.set(
+            "category",
+            category
+          );
+        }
+
+
+        const query =
+          params.toString()
+            ? `?${params.toString()}`
+            : "";
+
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/support${query}`,
+            {
+              method:
+                "GET",
+
+              credentials:
+                "include",
+
+              cache:
+                "no-store"
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data?.success
+        ) {
+          throw new Error(
+            data?.error ||
+            "Unable to load support tickets."
+          );
+        }
+
+
+        tickets =
+          Array.isArray(
+            data.tickets
+          )
+            ? data.tickets
+            : [];
+
+
+        renderStats();
+
+        renderTicketList();
+
+
+        if (
+          preserveSelection &&
+          selectedTicket
+        ) {
+
+          const selectedId =
+            getTicketId(
+              selectedTicket
+            );
+
+          const refreshed =
+            tickets.find(
+              ticket =>
+                getTicketId(ticket) ===
+                selectedId
+            );
+
+
+          if (refreshed) {
+
+            selectedTicket =
+              refreshed;
+
+            renderDetail();
+
+          } else {
+
+            selectedTicket =
+              null;
+
+            showEmptyDetail();
+
+          }
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "TICKET LOAD ERROR:",
+          error
+        );
+
+        showError(
+          error.message ||
+          "Unable to load support tickets."
+        );
+
+        ticketList.innerHTML = `
+          <div class="center-message">
+            Unable to load tickets.
+          </div>
+        `;
+
+      } finally {
+
+        refreshButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    function renderStats() {
+
+      const total =
+        tickets.length;
+
+      const open =
+        tickets.filter(
+          ticket =>
+            normalizeStatus(
+              ticket.status
+            ) === "open"
+        ).length;
+
+      const pending =
+        tickets.filter(
+          ticket =>
+            normalizeStatus(
+              ticket.status
+            ) === "pending"
+        ).length;
+
+      const resolved =
+        tickets.filter(
+          ticket =>
+            normalizeStatus(
+              ticket.status
+            ) === "resolved"
+        ).length;
+
+
+      document.getElementById(
+        "statTotal"
+      ).textContent =
+        total;
+
+
+      document.getElementById(
+        "statOpen"
+      ).textContent =
+        open;
+
+
+      document.getElementById(
+        "statPending"
+      ).textContent =
+        pending;
+
+
+      document.getElementById(
+        "statResolved"
+      ).textContent =
+        resolved;
+
+    }
+
+
+    /* ==========================================
+       RENDER TICKET LIST
+    ========================================== */
+
+    function renderTicketList() {
+
+      ticketCount.textContent =
+        `${tickets.length}`;
+
+
+      if (!tickets.length) {
+
+        ticketList.innerHTML = `
+          <div class="center-message">
+            No support tickets found.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      ticketList.innerHTML =
+        tickets
+          .map(
+            ticket => {
+
+              const id =
+                getTicketId(
+                  ticket
+                );
+
+              const active =
+                selectedTicket &&
+                getTicketId(
+                  selectedTicket
+                ) === id;
+
+
+              const subject =
+                ticket.subject ||
+                "Untitled Ticket";
+
+
+              const messages =
+                getMessages(
+                  ticket
+                );
+
+
+              const latest =
+                messages.length
+                  ? messages[
+                      messages.length - 1
+                    ]
+                  : null;
+
+
+              const preview =
+                latest?.message ||
+                ticket.message ||
+                "No message";
+
+
+              const username =
+                ticket.username ||
+                ticket.discordUsername ||
+                ticket.userId ||
+                "Unknown user";
+
+
+              return `
+                <button
+                  class="ticket-item ${active ? "active" : ""}"
+                  type="button"
+                  data-ticket-id="${escapeHtml(id)}"
+                >
+
+                  <div class="ticket-item-top">
+
+                    <div class="ticket-subject">
+                      ${escapeHtml(subject)}
+                    </div>
+
+                    ${statusBadge(
+                      ticket.status
+                    )}
+
+                  </div>
+
+
+                  <div class="ticket-preview">
+                    ${escapeHtml(preview)}
+                  </div>
+
+
+                  <div class="ticket-meta">
+
+                    <span>
+                      ${escapeHtml(username)}
+                    </span>
+
+                    <span>•</span>
+
+                    <span>
+                      ${escapeHtml(
+                        categoryLabel(
+                          ticket.category
+                        )
+                      )}
+                    </span>
+
+                    <span>•</span>
+
+                    <span>
+                      ${escapeHtml(
+                        formatRelativeDate(
+                          ticket.updatedAt ||
+                          ticket.createdAt
+                        )
+                      )}
+                    </span>
+
+                  </div>
+
+                </button>
+              `;
+
+            }
+          )
+          .join("");
+
+
+      ticketList
+        .querySelectorAll(
+          ".ticket-item"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                const id =
+                  button.dataset.ticketId;
+
+                selectTicket(
+                  id
+                );
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    /* ==========================================
+       SELECT TICKET
+    ========================================== */
+
+    async function selectTicket(
+      ticketId
+    ) {
+
+      clearError();
+
+
+      const cached =
+        tickets.find(
+          ticket =>
+            getTicketId(ticket) ===
+            String(ticketId)
+        );
+
+
+      if (cached) {
+
+        selectedTicket =
+          cached;
+
+        renderTicketList();
+
+        renderDetail();
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/support?id=${encodeURIComponent(ticketId)}`,
+            {
+              method:
+                "GET",
+
+              credentials:
+                "include",
+
+              cache:
+                "no-store"
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data?.success
+        ) {
+          throw new Error(
+            data?.error ||
+            "Unable to load ticket."
+          );
+        }
+
+
+        selectedTicket =
+          data.ticket;
+
+
+        renderTicketList();
+
+        renderDetail();
+
+      } catch (error) {
+
+        console.error(
+          "TICKET DETAIL ERROR:",
+          error
+        );
+
+        showError(
+          error.message ||
+          "Unable to load ticket."
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       EMPTY DETAIL
+    ========================================== */
+
+    function showEmptyDetail() {
+
+      detail.classList.remove(
+        "visible"
+      );
+
+      detailEmpty.style.display =
+        "flex";
+
+    }
+
+
+    /* ==========================================
+       RENDER DETAIL
+    ========================================== */
+
+    function renderDetail() {
+
+      if (!selectedTicket) {
+
+        showEmptyDetail();
+
+        return;
+      }
+
+
+      detailEmpty.style.display =
+        "none";
+
+      detail.classList.add(
+        "visible"
+      );
+
+
+      const ticket =
+        selectedTicket;
+
+
+      const ticketId =
+        getTicketId(
+          ticket
+        );
+
+
+      document.getElementById(
+        "detailSubject"
+      ).textContent =
+        ticket.subject ||
+        "Untitled Ticket";
+
+
+      document.getElementById(
+        "detailId"
+      ).textContent =
+        `Ticket ID: ${ticketId}`;
+
+
+      document.getElementById(
+        "detailBadges"
+      ).innerHTML = `
+        ${statusBadge(
+          ticket.status
+        )}
+
+        <span class="badge badge-category">
+          ${escapeHtml(
+            categoryLabel(
+              ticket.category
+            )
+          )}
+        </span>
+      `;
+
+
+      document.getElementById(
+        "detailInfo"
+      ).innerHTML = `
+
+        <div class="info-box">
+
+          <div class="info-label">
+            User
+          </div>
+
+          <div class="info-value">
+            ${escapeHtml(
+              ticket.username ||
+              ticket.discordUsername ||
+              "Unknown"
+            )}
+          </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-label">
+            Discord ID
+          </div>
+
+          <div class="info-value">
+            ${escapeHtml(
+              ticket.userId ||
+              "Unknown"
+            )}
+          </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+          <div class="info-label">
+            Created
+          </div>
+
+          <div class="info-value">
+            ${escapeHtml(
+              formatDate(
+                ticket.createdAt
+              )
+            )}
+          </div>
+
+        </div>
+
+      `;
+
+
+      renderConversation();
+
+      renderControls();
+
+      renderInternalNotes();
+
+    }
+
+
+    /* ==========================================
+       CONVERSATION
+    ========================================== */
+
+    function renderConversation() {
+
+      const conversation =
+        document.getElementById(
+          "conversation"
+        );
+
+
+      const messages =
+        getMessages(
+          selectedTicket
+        );
+
+
+      if (!messages.length) {
+
+        conversation.innerHTML = `
+          <div class="center-message">
+            No messages in this ticket.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      conversation.innerHTML =
+        messages
+          .map(
+            message => {
+
+              const isStaff =
+                message.type ===
+                "staff";
+
+
+              const username =
+                message.username ||
+                message.discordUsername ||
+                (
+                  isStaff
+                    ? "Staff"
+                    : "User"
+                );
+
+
+              return `
+                <div class="message ${isStaff ? "staff" : ""}">
+
+                  <div class="message-avatar">
+                    ${isStaff ? "🛡️" : "👤"}
+                  </div>
+
+
+                  <div class="message-content">
+
+                    <div class="message-header">
+
+                      <span class="message-name">
+                        ${escapeHtml(
+                          username
+                        )}
+                      </span>
+
+                      ${
+                        isStaff
+                          ? `
+                            <span class="message-role">
+                              ${escapeHtml(
+                                message.role ||
+                                "STAFF"
+                              )}
+                            </span>
+                          `
+                          : ""
+                      }
+
+                      <span class="message-time">
+                        ${escapeHtml(
+                          formatDate(
+                            message.createdAt
+                          )
+                        )}
+                      </span>
+
+                    </div>
+
+
+                    <div class="message-body">
+                      ${escapeHtml(
+                        message.message ||
+                        ""
+                      )}
+                    </div>
+
+                  </div>
+
+                </div>
+              `;
+
+            }
+          )
+          .join("");
+
+
+      conversation.scrollTop =
+        conversation.scrollHeight;
+
+    }
+
+
+    /* ==========================================
+       CONTROLS
+    ========================================== */
+
+    function renderControls() {
+
+      statusSelect.value =
+        normalizeStatus(
+          selectedTicket.status
+        );
+
+
+      renderAssignmentOptions();
+
+
+      /*
+      Managers and owners can manage
+      assignments/statuses.
+
+      Moderators can still view/reply.
+      */
+
+      const canManage =
+        currentStaff &&
+        (
+          currentStaff.role ===
+            "manager" ||
+          currentStaff.role ===
+            "owner"
+        );
+
+
+      statusSelect.disabled =
+        !canManage;
+
+
+      assignSelect.disabled =
+        !canManage;
+
+
+      notesRow.classList.toggle(
+        "visible",
+        canManage
+      );
+
+
+      /*
+      Reply is available to all
+      staff roles with support access.
+      */
+
+      sendReplyButton.disabled =
+        false;
+
+    }
+
+
+    /* ==========================================
+       INTERNAL NOTES
+    ========================================== */
+
+    function renderInternalNotes() {
+
+      const notes =
+        Array.isArray(
+          selectedTicket?.internalNotes
+        )
+          ? selectedTicket.internalNotes
+          : [];
+
+
+      if (!notes.length) {
+
+        internalNotes.innerHTML = "";
+
+        return;
+      }
+
+
+      internalNotes.innerHTML =
+        notes
+          .map(
+            note => `
+              <div class="internal-note">
+
+                <div class="internal-note-header">
+
+                  <span>
+                    📝 ${escapeHtml(
+                      note.username ||
+                      note.staffId ||
+                      "Staff"
+                    )}
+                  </span>
+
+                  <span>
+                    ${escapeHtml(
+                      formatDate(
+                        note.createdAt
+                      )
+                    )}
+                  </span>
+
+                </div>
+
+                <div class="internal-note-body">
+                  ${escapeHtml(
+                    note.message ||
+                    ""
+                  )}
+                </div>
+
+              </div>
+            `
+          )
+          .join("");
+
+    }
+
+
+    /* ==========================================
+       UPDATE TICKET
+    ========================================== */
+
+    async function updateTicket(
+      changes
+    ) {
+
+      if (!selectedTicket) {
+        return;
+      }
+
+
+      const ticketId =
+        getTicketId(
+          selectedTicket
+        );
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/support`,
+            {
+              method:
+                "PATCH",
+
+              credentials:
+                "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  ticketId,
+                  ...changes
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data?.success
+        ) {
+          throw new Error(
+            data?.error ||
+            "Unable to update ticket."
+          );
+        }
+
+
+        selectedTicket =
+          data.ticket;
+
+
+        const index =
+          tickets.findIndex(
+            ticket =>
+              getTicketId(ticket) ===
+              ticketId
+          );
+
+
+        if (index !== -1) {
+          tickets[index] =
+            selectedTicket;
+        }
+
+
+        renderStats();
+
+        renderTicketList();
+
+        renderDetail();
+
+
+      } catch (error) {
+
+        console.error(
+          "TICKET UPDATE ERROR:",
+          error
+        );
+
+        showError(
+          error.message ||
+          "Unable to update ticket."
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       SEND REPLY
+    ========================================== */
+
+    async function sendReply() {
+
+      if (!selectedTicket) {
+        return;
+      }
+
+
+      const message =
+        replyInput.value.trim();
+
+
+      if (!message) {
+        return;
+      }
+
+
+      sendReplyButton.disabled =
+        true;
+
+
+      clearError();
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/support`,
+            {
+              method:
+                "POST",
+
+              credentials:
+                "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  ticketId:
+                    getTicketId(
+                      selectedTicket
+                    ),
+
+                  message
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data?.success
+        ) {
+          throw new Error(
+            data?.error ||
+            "Unable to send reply."
+          );
+        }
+
+
+        selectedTicket =
+          data.ticket;
+
+
+        replyInput.value =
+          "";
+
+
+        const index =
+          tickets.findIndex(
+            ticket =>
+              getTicketId(ticket) ===
+              getTicketId(
+                selectedTicket
+              )
+          );
+
+
+        if (index !== -1) {
+          tickets[index] =
+            selectedTicket;
+        }
+
+
+        renderStats();
+
+        renderTicketList();
+
+        renderDetail();
+
+
+      } catch (error) {
+
+        console.error(
+          "REPLY ERROR:",
+          error
+        );
+
+        showError(
+          error.message ||
+          "Unable to send reply."
+        );
+
+      } finally {
+
+        sendReplyButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       SAVE INTERNAL NOTE
+    ========================================== */
+
+    async function saveInternalNote() {
+
+      if (!selectedTicket) {
+        return;
+      }
+
+
+      const note =
+        noteInput.value.trim();
+
+
+      if (!note) {
+        return;
+      }
+
+
+      saveNoteButton.disabled =
+        true;
+
+
+      clearError();
+
+
+      try {
+
+        await updateTicket({
+          internalNote:
+            note
+        });
+
+
+        noteInput.value =
+          "";
+
+      } finally {
+
+        saveNoteButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       EVENT LISTENERS
+    ========================================== */
+
+    refreshButton.addEventListener(
+      "click",
+      () => {
+        loadTickets(true);
+      }
+    );
+
+
+    statusFilter.addEventListener(
+      "change",
+      () => {
+        selectedTicket =
+          null;
+
+        showEmptyDetail();
+
+        loadTickets(false);
+      }
+    );
+
+
+    categoryFilter.addEventListener(
+      "change",
+      () => {
+        selectedTicket =
+          null;
+
+        showEmptyDetail();
+
+        loadTickets(false);
+      }
+    );
+
+
+    let searchTimer = null;
+
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        clearTimeout(
+          searchTimer
+        );
+
+        searchTimer =
+          setTimeout(
+            () => {
+
+              loadTickets(
+                false
+              );
+
+            },
+            350
+          );
+
+      }
+    );
+
+
+    statusSelect.addEventListener(
+      "change",
+      () => {
+
+        updateTicket({
+          status:
+            statusSelect.value
+        });
+
+      }
+    );
+
+
+    assignSelect.addEventListener(
+      "change",
+      () => {
+
+        updateTicket({
+          assignedTo:
+            assignSelect.value ||
+            null
+        });
+
+      }
+    );
+
+
+    sendReplyButton.addEventListener(
+      "click",
+      sendReply
+    );
+
+
+    saveNoteButton.addEventListener(
+      "click",
+      saveInternalNote
+    );
+
+
+    replyInput.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter" &&
+          (event.ctrlKey ||
+            event.metaKey)
+        ) {
+
+          event.preventDefault();
+
+          sendReply();
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
+    async function initialize() {
+
+      const authorized =
+        await loadStaff();
+
+
+      if (!authorized) {
+        return;
+      }
+
+
+      await Promise.all([
+        loadStaffMembers(),
+        loadTickets(false)
+      ]);
+
+    }
+
+
+    initialize();
+
+  </script>
+
+</body>
+
+</html>
