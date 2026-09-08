@@ -1816,196 +1816,303 @@
   </main>
 
 
-  <!-- ==========================================
-       JAVASCRIPT
-  ========================================== -->
+<script>
 
-  <script>
+  /* ==========================================
+     PROFILE BUTTON
+  ========================================== */
 
-    /*
-     * ==========================================
-     * AUTHENTICATION / USER DATA
-     * ==========================================
-     *
-     * No mock data is used.
-     *
-     * These elements remain as "—" until the
-     * real API is connected.
-     *
-     * We can connect this to your Discord OAuth
-     * system later.
-     */
+  const profileButton =
+    document.getElementById("profileButton");
 
 
-    const profileButton =
-      document.getElementById("profileButton");
+  profileButton.addEventListener(
+    "click",
+    function () {
+
+      window.location.href =
+        "/profile";
+
+    }
+  );
 
 
-    profileButton.addEventListener(
-      "click",
-      function () {
+  /* ==========================================
+     LOAD MINIGAMES USER
+  ========================================== */
 
-        window.location.href =
-          "/profile";
+  async function loadCurrentUser() {
+
+    try {
+
+      const response =
+        await fetch(
+          "https://api.memplace.xyz/api/user/me",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+
+      /* ==========================================
+         NOT LOGGED IN
+      ========================================== */
+
+      if (response.status === 401) {
+
+        showLoggedOutState();
+
+        return;
 
       }
-    );
 
 
-    /*
-     * ==========================================
-     * REAL USER DATA
-     * ==========================================
-     *
-     * This function intentionally does NOT
-     * insert fake information.
-     *
-     * We will connect this to the actual API.
-     */
+      if (!response.ok) {
 
-    async function loadCurrentUser() {
-
-      try {
-
-        const response =
-          await fetch(
-            "/api/auth/me",
-            {
-              method: "GET",
-              credentials: "include",
-              cache: "no-store"
-            }
-          );
-
-
-        if (!response.ok) {
-
-          return;
-
-        }
-
-
-        const data =
-          await response.json();
-
-
-        /*
-         * Only update the interface when
-         * actual API data exists.
-         */
-
-        if (data && data.user) {
-
-          const user =
-            data.user;
-
-
-          const profileName =
-            document.getElementById(
-              "profileName"
-            );
-
-
-          const profileAvatar =
-            document.getElementById(
-              "profileAvatar"
-            );
-
-
-          const userBalance =
-            document.getElementById(
-              "userBalance"
-            );
-
-
-          const userRank =
-            document.getElementById(
-              "userRank"
-            );
-
-
-          if (user.username) {
-
-            profileName.textContent =
-              user.username;
-
-          }
-
-
-          if (user.avatar) {
-
-            profileAvatar.innerHTML =
-              `
-                <img
-                  src="${escapeHtmlAttribute(user.avatar)}"
-                  alt=""
-                >
-              `;
-
-          }
-
-
-          if (
-            typeof user.balance !==
-            "undefined"
-          ) {
-
-            userBalance.textContent =
-              Number(user.balance).toLocaleString();
-
-          }
-
-
-          if (
-            typeof user.rank !==
-            "undefined"
-          ) {
-
-            userRank.textContent =
-              "#" + user.rank;
-
-          }
-
-        }
-
-      } catch (error) {
-
-        console.debug(
-          "User information unavailable."
+        throw new Error(
+          "User request failed"
         );
 
       }
 
+
+      const data =
+        await response.json();
+
+
+      /* ==========================================
+         CHECK RESPONSE
+      ========================================== */
+
+      if (
+        !data ||
+        !data.user
+      ) {
+
+        showLoggedOutState();
+
+        return;
+
+      }
+
+
+      /* ==========================================
+         USER DATA
+      ========================================== */
+
+      const user =
+        data.user;
+
+
+      const profileName =
+        document.getElementById(
+          "profileName"
+        );
+
+
+      const profileAvatar =
+        document.getElementById(
+          "profileAvatar"
+        );
+
+
+      const userBalance =
+        document.getElementById(
+          "userBalance"
+        );
+
+
+      const userRank =
+        document.getElementById(
+          "userRank"
+        );
+
+
+      /* ==========================================
+         USERNAME
+      ========================================== */
+
+      if (user.username) {
+
+        profileName.textContent =
+          user.username;
+
+      }
+
+
+      /* ==========================================
+         DISCORD AVATAR
+      ========================================== */
+
+      if (
+        user.avatar &&
+        user.id
+      ) {
+
+        const avatarUrl =
+          `https://cdn.discordapp.com/avatars/${encodeURIComponent(user.id)}/${encodeURIComponent(user.avatar)}.png?size=64`;
+
+
+        profileAvatar.innerHTML =
+          "";
+
+
+        const avatarImage =
+          document.createElement("img");
+
+
+        avatarImage.src =
+          avatarUrl;
+
+
+        avatarImage.alt =
+          "";
+
+
+        avatarImage.width =
+          32;
+
+
+        avatarImage.height =
+          32;
+
+
+        avatarImage.style.width =
+          "100%";
+
+
+        avatarImage.style.height =
+          "100%";
+
+
+        avatarImage.style.display =
+          "block";
+
+
+        avatarImage.style.objectFit =
+          "cover";
+
+
+        profileAvatar.appendChild(
+          avatarImage
+        );
+
+      }
+
+
+      /* ==========================================
+         BALANCE
+      ========================================== */
+
+      if (
+        typeof user.balance ===
+        "number"
+      ) {
+
+        userBalance.textContent =
+          Number(
+            user.balance
+          ).toLocaleString();
+
+      }
+
+
+      /* ==========================================
+         RANK
+      ==========================================
+         
+         Rank will be provided by the
+         leaderboard system later.
+      ========================================== */
+
+      if (
+        typeof user.rank !==
+        "undefined"
+      ) {
+
+        userRank.textContent =
+          "#" +
+          user.rank;
+
+      } else {
+
+        userRank.textContent =
+          "—";
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Failed to load Minigames user:",
+        error
+      );
+
     }
 
-
-    /*
-     * ==========================================
-     * BASIC ATTRIBUTE ESCAPING
-     * ==========================================
-     */
-
-    function escapeHtmlAttribute(value) {
-
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-
-    }
+  }
 
 
-    /*
-     * ==========================================
-     * INITIALIZE
-     * ==========================================
-     */
+  /* ==========================================
+     LOGGED OUT STATE
+  ========================================== */
 
-    loadCurrentUser();
+  function showLoggedOutState() {
 
-  </script>
+    const profileName =
+      document.getElementById(
+        "profileName"
+      );
+
+
+    const userBalance =
+      document.getElementById(
+        "userBalance"
+      );
+
+
+    const userRank =
+      document.getElementById(
+        "userRank"
+      );
+
+
+    profileName.textContent =
+      "Login";
+
+
+    userBalance.textContent =
+      "—";
+
+
+    userRank.textContent =
+      "—";
+
+
+    /* ==========================================
+       LOGIN WITH DISCORD
+    ========================================== */
+
+    profileButton.onclick =
+      function () {
+
+        window.location.href =
+          "https://api.memplace.xyz/api/auth/login";
+
+      };
+
+  }
+
+
+  /* ==========================================
+     INITIALIZE
+  ========================================== */
+
+  loadCurrentUser();
+
+</script>
 
 </body>
 </html>
