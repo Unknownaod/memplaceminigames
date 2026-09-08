@@ -1763,973 +1763,1523 @@
   ></div>
 
 
-  <script>
-    const API_BASE =
-      "https://api.memplace.xyz";
+<script>
+const API_BASE = "https://api.memplace.xyz";
 
-    let currentUser = null;
-    let activeDuelId = null;
+let currentUser = null;
 
+let activeDuelId =
+  localStorage.getItem("activeDuelId") || null;
 
-    /* ==========================================
-       ELEMENTS
-    ========================================== */
-
-    const balanceElement =
-      document.getElementById("balance");
-
-    const loginButton =
-      document.getElementById("loginButton");
-
-    const profileButton =
-      document.getElementById("profileButton");
-
-    const profileAvatar =
-      document.getElementById("profileAvatar");
-
-    const loginNotice =
-      document.getElementById("loginNotice");
-
-    const loginModal =
-      document.getElementById("loginModal");
-
-    const modalLoginButton =
-      document.getElementById("modalLoginButton");
-
-    const modalCloseButton =
-      document.getElementById("modalCloseButton");
-
-    const createWager =
-      document.getElementById("createWager");
-
-    const createButton =
-      document.getElementById("createButton");
-
-    const joinGameId =
-      document.getElementById("joinGameId");
-
-    const joinButton =
-      document.getElementById("joinButton");
-
-    const activeDuel =
-      document.getElementById("activeDuel");
-
-    const activeGameId =
-      document.getElementById("activeGameId");
-
-    const copyButton =
-      document.getElementById("copyButton");
-
-    const cancelButton =
-      document.getElementById("cancelButton");
-
-    const result =
-      document.getElementById("result");
-
-    const resultTitle =
-      document.getElementById("resultTitle");
-
-    const yourRoll =
-      document.getElementById("yourRoll");
-
-    const opponentRoll =
-      document.getElementById("opponentRoll");
-
-    const resultWager =
-      document.getElementById("resultWager");
-
-    const resultPot =
-      document.getElementById("resultPot");
-
-    const newDuelButton =
-      document.getElementById("newDuelButton");
-
-    const toastContainer =
-      document.getElementById("toastContainer");
+let duelStatusInterval = null;
 
 
-    /* ==========================================
-       TOAST
-    ========================================== */
+/* ==========================================
+   ELEMENTS
+========================================== */
 
-    function showToast(message, type = "") {
+const balanceElement =
+  document.getElementById("balance");
 
-      const toast =
-        document.createElement("div");
+const loginButton =
+  document.getElementById("loginButton");
 
-      toast.className =
-        "toast " + type;
+const profileButton =
+  document.getElementById("profileButton");
 
-      toast.textContent =
-        message;
+const profileAvatar =
+  document.getElementById("profileAvatar");
 
-      toastContainer.appendChild(toast);
+const loginNotice =
+  document.getElementById("loginNotice");
 
-      setTimeout(() => {
-        toast.remove();
-      }, 3500);
-    }
+const loginModal =
+  document.getElementById("loginModal");
+
+const modalLoginButton =
+  document.getElementById("modalLoginButton");
+
+const modalCloseButton =
+  document.getElementById("modalCloseButton");
+
+const createWager =
+  document.getElementById("createWager");
+
+const createButton =
+  document.getElementById("createButton");
+
+const joinGameId =
+  document.getElementById("joinGameId");
+
+const joinButton =
+  document.getElementById("joinButton");
+
+const activeDuel =
+  document.getElementById("activeDuel");
+
+const activeGameId =
+  document.getElementById("activeGameId");
+
+const copyButton =
+  document.getElementById("copyButton");
+
+const cancelButton =
+  document.getElementById("cancelButton");
+
+const result =
+  document.getElementById("result");
+
+const resultTitle =
+  document.getElementById("resultTitle");
+
+const yourRoll =
+  document.getElementById("yourRoll");
+
+const opponentRoll =
+  document.getElementById("opponentRoll");
+
+const resultWager =
+  document.getElementById("resultWager");
+
+const resultPot =
+  document.getElementById("resultPot");
+
+const newDuelButton =
+  document.getElementById("newDuelButton");
+
+const toastContainer =
+  document.getElementById("toastContainer");
 
 
-    /* ==========================================
-       LOGIN
-    ========================================== */
+/* ==========================================
+   TOAST
+========================================== */
 
-    function requireLogin() {
+function showToast(
+  message,
+  type = ""
+) {
 
-      if (currentUser) {
-        return true;
-      }
+  const toast =
+    document.createElement("div");
+
+  toast.className =
+    "toast " + type;
+
+  toast.textContent =
+    message;
+
+  toastContainer.appendChild(
+    toast
+  );
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3500);
+}
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+function requireLogin() {
+
+  if (currentUser) {
+    return true;
+  }
+
+  loginModal.style.display =
+    "flex";
+
+  return false;
+}
+
+
+function login() {
+
+  window.location.href =
+    API_BASE +
+    "/api/auth/login";
+}
+
+
+loginButton.addEventListener(
+  "click",
+  login
+);
+
+
+modalLoginButton.addEventListener(
+  "click",
+  login
+);
+
+
+modalCloseButton.addEventListener(
+  "click",
+  () => {
+
+    loginModal.style.display =
+      "none";
+
+  }
+);
+
+
+loginModal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      loginModal
+    ) {
 
       loginModal.style.display =
-        "flex";
-
-      return false;
-    }
-
-
-    function login() {
-
-      window.location.href =
-        API_BASE + "/api/auth/login";
-    }
-
-
-    loginButton.addEventListener(
-      "click",
-      login
-    );
-
-    modalLoginButton.addEventListener(
-      "click",
-      login
-    );
-
-    modalCloseButton.addEventListener(
-      "click",
-      () => {
-        loginModal.style.display =
-          "none";
-      }
-    );
-
-    loginModal.addEventListener(
-      "click",
-      event => {
-        if (
-          event.target ===
-          loginModal
-        ) {
-          loginModal.style.display =
-            "none";
-        }
-      }
-    );
-
-
-    profileButton.addEventListener(
-      "click",
-      () => {
-        window.location.href =
-          "/profile";
-      }
-    );
-
-
-    /* ==========================================
-       LOAD USER
-    ========================================== */
-
-    async function loadCurrentUser() {
-
-      try {
-
-        const response =
-          await fetch(
-            API_BASE + "/api/user/me",
-            {
-              method: "GET",
-              credentials: "include",
-              cache: "no-store"
-            }
-          );
-
-        const data =
-          await response.json();
-
-        if (
-          !response.ok ||
-          !data.authenticated ||
-          !data.user
-        ) {
-
-          currentUser = null;
-
-          balanceElement.textContent =
-            "—";
-
-          loginButton.style.display =
-            "block";
-
-          profileButton.style.display =
-            "none";
-
-          loginNotice.style.display =
-            "block";
-
-          return;
-        }
-
-        currentUser =
-          data.user;
-
-        balanceElement.textContent =
-          Number(
-            currentUser.balance || 0
-          ).toLocaleString();
-
-        loginButton.style.display =
-          "none";
-
-        profileButton.style.display =
-          "block";
-
-        loginNotice.style.display =
-          "none";
-
-        if (
-          currentUser.avatar
-        ) {
-
-          profileAvatar.src =
-            "https://cdn.discordapp.com/avatars/" +
-            currentUser.id +
-            "/" +
-            currentUser.avatar +
-            ".png?size=64";
-
-        } else {
-
-          profileAvatar.src =
-            "https://cdn.discordapp.com/embed/avatars/0.png";
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "LOAD USER ERROR:",
-          error
-        );
-
-        currentUser = null;
-
-        balanceElement.textContent =
-          "—";
-
-        loginButton.style.display =
-          "block";
-
-        profileButton.style.display =
-          "none";
-
-        loginNotice.style.display =
-          "block";
-      }
-    }
-
-
-    /* ==========================================
-       REFRESH BALANCE
-    ========================================== */
-
-    async function refreshUser() {
-
-      try {
-
-        const response =
-          await fetch(
-            API_BASE + "/api/user/me?t=" +
-            Date.now(),
-            {
-              method: "GET",
-              credentials: "include",
-              cache: "no-store"
-            }
-          );
-
-        const data =
-          await response.json();
-
-        if (
-          response.ok &&
-          data.authenticated &&
-          data.user
-        ) {
-
-          currentUser =
-            data.user;
-
-          balanceElement.textContent =
-            Number(
-              data.user.balance || 0
-            ).toLocaleString();
-        }
-
-      } catch (error) {
-
-        console.error(
-          "REFRESH USER ERROR:",
-          error
-        );
-      }
-    }
-
-
-    /* ==========================================
-       QUICK BETS
-    ========================================== */
-
-    document
-      .querySelectorAll(".quick-bet")
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            const target =
-              document.getElementById(
-                button.dataset.target
-              );
-
-            target.value =
-              button.dataset.value;
-
-            target.focus();
-          }
-        );
-
-      });
-
-
-    /* ==========================================
-       BUTTON STATE
-    ========================================== */
-
-    function setButtonLoading(
-      button,
-      loadingText,
-      loading
-    ) {
-
-      if (loading) {
-
-        button.dataset.originalText =
-          button.textContent;
-
-        button.textContent =
-          loadingText;
-
-        button.disabled =
-          true;
-
-      } else {
-
-        button.textContent =
-          button.dataset.originalText ||
-          button.textContent;
-
-        button.disabled =
-          false;
-      }
-    }
-
-
-    /* ==========================================
-       CREATE DUEL
-    ========================================== */
-
-    async function createDuel() {
-
-      if (!requireLogin()) {
-        return;
-      }
-
-      const wager =
-        Number(createWager.value);
-
-      if (
-        !Number.isInteger(wager) ||
-        wager < 10 ||
-        wager > 10000
-      ) {
-
-        showToast(
-          "Wager must be a whole number between $10 and $10,000.",
-          "error"
-        );
-
-        return;
-      }
-
-      if (
-        Number(currentUser.balance || 0) <
-        wager
-      ) {
-
-        showToast(
-          "You don't have enough balance for that wager.",
-          "error"
-        );
-
-        return;
-      }
-
-      setButtonLoading(
-        createButton,
-        "Creating...",
-        true
-      );
-
-      try {
-
-        const response =
-          await fetch(
-            API_BASE +
-            "/api/games/duels/create",
-            {
-              method: "POST",
-              credentials: "include",
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-              body: JSON.stringify({
-                wager
-              })
-            }
-          );
-
-        const data =
-          await response.json();
-
-        if (!response.ok) {
-
-          showToast(
-            data.error ||
-            "Unable to create duel.",
-            "error"
-          );
-
-          return;
-        }
-
-        activeDuelId =
-          data.gameId;
-
-        activeGameId.textContent =
-          data.gameId;
-
-        activeDuel.style.display =
-          "block";
-
-        result.style.display =
-          "none";
-
-        balanceElement.textContent =
-          Number(
-            data.balance || 0
-          ).toLocaleString();
-
-        if (currentUser) {
-          currentUser.balance =
-            data.balance;
-        }
-
-        showToast(
-          "Duel created. Share the ID with your opponent.",
-          "success"
-        );
-
-        activeDuel.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-
-      } catch (error) {
-
-        console.error(
-          "CREATE DUEL ERROR:",
-          error
-        );
-
-        showToast(
-          "Network error while creating duel.",
-          "error"
-        );
-
-      } finally {
-
-        setButtonLoading(
-          createButton,
-          "Creating...",
-          false
-        );
-      }
-    }
-
-
-    /* ==========================================
-       JOIN DUEL
-    ========================================== */
-
-    async function joinDuel() {
-
-      if (!requireLogin()) {
-        return;
-      }
-
-      const gameId =
-        joinGameId.value.trim();
-
-      if (!gameId) {
-
-        showToast(
-          "Enter a duel ID.",
-          "error"
-        );
-
-        return;
-      }
-
-      setButtonLoading(
-        joinButton,
-        "Joining...",
-        true
-      );
-
-      try {
-
-        const response =
-          await fetch(
-            API_BASE +
-            "/api/games/duels/join",
-            {
-              method: "POST",
-              credentials: "include",
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-              body: JSON.stringify({
-                gameId
-              })
-            }
-          );
-
-        const data =
-          await response.json();
-
-        if (!response.ok) {
-
-          showToast(
-            data.error ||
-            "Unable to join duel.",
-            "error"
-          );
-
-          return;
-        }
-
-        displayDuelResult(
-          data
-        );
-
-        balanceElement.textContent =
-          Number(
-            data.balance || 0
-          ).toLocaleString();
-
-        if (currentUser) {
-          currentUser.balance =
-            data.balance;
-        }
-
-        joinGameId.value = "";
-
-        showToast(
-          "Duel complete.",
-          "success"
-        );
-
-      } catch (error) {
-
-        console.error(
-          "JOIN DUEL ERROR:",
-          error
-        );
-
-        showToast(
-          "Network error while joining duel.",
-          "error"
-        );
-
-      } finally {
-
-        setButtonLoading(
-          joinButton,
-          "Joining...",
-          false
-        );
-      }
-    }
-
-
-    /* ==========================================
-       DISPLAY RESULT
-    ========================================== */
-
-    function displayDuelResult(
-      data
-    ) {
-
-      const myId =
-        currentUser?.id;
-
-      const creator =
-        data.creator || {};
-
-      const opponent =
-        data.opponent || {};
-
-      let myRoll = null;
-      let theirRoll = null;
-
-      if (
-        creator.id === myId
-      ) {
-
-        myRoll =
-          creator.roll;
-
-        theirRoll =
-          opponent.roll;
-
-      } else {
-
-        myRoll =
-          opponent.roll;
-
-        theirRoll =
-          creator.roll;
-      }
-
-      yourRoll.textContent =
-        myRoll ?? "—";
-
-      opponentRoll.textContent =
-        theirRoll ?? "—";
-
-      resultWager.textContent =
-        "$" +
-        Number(
-          data.wager || 0
-        ).toLocaleString();
-
-      resultPot.textContent =
-        "$" +
-        Number(
-          data.pot || 0
-        ).toLocaleString();
-
-      resultTitle.className =
-        "result-title";
-
-      if (data.result === "tie") {
-
-        resultTitle.textContent =
-          "It's a Tie";
-
-        resultTitle.classList.add(
-          "tie"
-        );
-
-      } else if (
-        data.winnerId === myId
-      ) {
-
-        resultTitle.textContent =
-          "You Won";
-
-        resultTitle.classList.add(
-          "win"
-        );
-
-      } else {
-
-        resultTitle.textContent =
-          "You Lost";
-
-        resultTitle.classList.add(
-          "loss"
-        );
-      }
-
-      activeDuel.style.display =
         "none";
+    }
 
-      result.style.display =
+  }
+);
+
+
+profileButton.addEventListener(
+  "click",
+  () => {
+
+    window.location.href =
+      "/profile";
+
+  }
+);
+
+
+/* ==========================================
+   LOAD CURRENT USER
+========================================== */
+
+async function loadCurrentUser() {
+
+  try {
+
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/user/me",
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (
+      !response.ok ||
+      !data.authenticated ||
+      !data.user
+    ) {
+
+      currentUser = null;
+
+      balanceElement.textContent =
+        "—";
+
+      loginButton.style.display =
         "block";
 
-      result.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
+      profileButton.style.display =
+        "none";
+
+      loginNotice.style.display =
+        "block";
+
+      return;
     }
 
+    currentUser =
+      data.user;
 
-    /* ==========================================
-       CANCEL DUEL
-    ========================================== */
+    balanceElement.textContent =
+      Number(
+        currentUser.balance || 0
+      ).toLocaleString();
 
-    async function cancelDuel() {
+    loginButton.style.display =
+      "none";
 
-      if (!activeDuelId) {
-        return;
-      }
+    profileButton.style.display =
+      "block";
 
-      const confirmed =
-        window.confirm(
-          "Cancel this duel and refund your wager?"
-        );
+    loginNotice.style.display =
+      "none";
 
-      if (!confirmed) {
-        return;
-      }
+    if (
+      currentUser.avatar
+    ) {
 
-      setButtonLoading(
-        cancelButton,
-        "Cancelling...",
-        true
+      profileAvatar.src =
+        "https://cdn.discordapp.com/avatars/" +
+        currentUser.id +
+        "/" +
+        currentUser.avatar +
+        ".png?size=64";
+
+    } else {
+
+      profileAvatar.src =
+        "https://cdn.discordapp.com/embed/avatars/0.png";
+    }
+
+  } catch (error) {
+
+    console.error(
+      "LOAD USER ERROR:",
+      error
+    );
+
+    currentUser = null;
+
+    balanceElement.textContent =
+      "—";
+
+    loginButton.style.display =
+      "block";
+
+    profileButton.style.display =
+      "none";
+
+    loginNotice.style.display =
+      "block";
+  }
+}
+
+
+/* ==========================================
+   REFRESH USER / BALANCE
+========================================== */
+
+async function refreshUser() {
+
+  try {
+
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/user/me?t=" +
+        Date.now(),
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store"
+        }
       );
 
-      try {
+    const data =
+      await response.json();
 
-        const response =
-          await fetch(
-            API_BASE +
-            "/api/games/duels/cancel",
-            {
-              method: "POST",
-              credentials: "include",
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-              body: JSON.stringify({
-                gameId:
-                  activeDuelId
-              })
-            }
+    if (
+      response.ok &&
+      data.authenticated &&
+      data.user
+    ) {
+
+      currentUser =
+        data.user;
+
+      balanceElement.textContent =
+        Number(
+          data.user.balance || 0
+        ).toLocaleString();
+    }
+
+  } catch (error) {
+
+    console.error(
+      "REFRESH USER ERROR:",
+      error
+    );
+  }
+}
+
+
+/* ==========================================
+   QUICK BETS
+========================================== */
+
+document
+  .querySelectorAll(".quick-bet")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const target =
+          document.getElementById(
+            button.dataset.target
           );
 
-        const data =
-          await response.json();
-
-        if (!response.ok) {
-
-          showToast(
-            data.error ||
-            "Unable to cancel duel.",
-            "error"
-          );
-
+        if (!target) {
           return;
         }
 
-        balanceElement.textContent =
-          Number(
-            data.balance || 0
-          ).toLocaleString();
+        target.value =
+          button.dataset.value;
 
-        if (currentUser) {
-          currentUser.balance =
-            data.balance;
-        }
-
-        activeDuel.style.display =
-          "none";
-
-        activeDuelId =
-          null;
-
-        showToast(
-          "Duel cancelled and wager refunded.",
-          "success"
-        );
-
-      } catch (error) {
-
-        console.error(
-          "CANCEL DUEL ERROR:",
-          error
-        );
-
-        showToast(
-          "Network error while cancelling duel.",
-          "error"
-        );
-
-      } finally {
-
-        setButtonLoading(
-          cancelButton,
-          "Cancelling...",
-          false
-        );
+        target.focus();
       }
-    }
+    );
+
+  });
 
 
-    /* ==========================================
-       COPY GAME ID
-    ========================================== */
+/* ==========================================
+   BUTTON STATE
+========================================== */
 
-    async function copyGameId() {
+function setButtonLoading(
+  button,
+  loadingText,
+  loading
+) {
 
-      if (!activeDuelId) {
-        return;
-      }
+  if (!button) {
+    return;
+  }
 
-      try {
+  if (loading) {
 
-        await navigator.clipboard.writeText(
+    button.dataset.originalText =
+      button.textContent;
+
+    button.textContent =
+      loadingText;
+
+    button.disabled =
+      true;
+
+  } else {
+
+    button.textContent =
+      button.dataset.originalText ||
+      button.textContent;
+
+    button.disabled =
+      false;
+  }
+}
+
+
+/* ==========================================
+   ACTIVE DUEL UI
+========================================== */
+
+function showActiveDuel() {
+
+  if (!activeDuelId) {
+    return;
+  }
+
+  if (activeGameId) {
+
+    activeGameId.textContent =
+      activeDuelId;
+  }
+
+  if (activeDuel) {
+
+    activeDuel.style.display =
+      "block";
+  }
+
+  if (result) {
+
+    result.style.display =
+      "none";
+  }
+}
+
+
+function hideActiveDuel() {
+
+  if (activeDuel) {
+
+    activeDuel.style.display =
+      "none";
+  }
+}
+
+
+/* ==========================================
+   DUEL STATUS POLLING
+========================================== */
+
+function startDuelStatusPolling() {
+
+  stopDuelStatusPolling();
+
+  if (!activeDuelId) {
+    return;
+  }
+
+  showActiveDuel();
+
+  checkDuelStatus();
+
+  duelStatusInterval =
+    setInterval(
+      checkDuelStatus,
+      2000
+    );
+}
+
+
+function stopDuelStatusPolling() {
+
+  if (
+    duelStatusInterval !== null
+  ) {
+
+    clearInterval(
+      duelStatusInterval
+    );
+
+    duelStatusInterval =
+      null;
+  }
+}
+
+
+async function checkDuelStatus() {
+
+  if (!activeDuelId) {
+    return;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/games/duels/status?gameId=" +
+        encodeURIComponent(
           activeDuelId
-        );
+        ) +
+        "&t=" +
+        Date.now(),
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store"
+        }
+      );
 
-        copyButton.textContent =
-          "Copied";
+    const data =
+      await response.json();
 
-        showToast(
-          "Duel ID copied.",
-          "success"
-        );
-
-        setTimeout(() => {
-          copyButton.textContent =
-            "Copy";
-        }, 1500);
-
-      } catch (error) {
-
-        showToast(
-          "Unable to copy duel ID.",
-          "error"
-        );
-      }
-    }
+    console.log(
+      "DUEL STATUS:",
+      data
+    );
 
 
-    /* ==========================================
-       NEW DUEL
-    ========================================== */
+    /* ======================================
+       DUEL NOT FOUND
+    ====================================== */
 
-    function newDuel() {
+    if (
+      response.status ===
+      404
+    ) {
 
-      result.style.display =
-        "none";
+      stopDuelStatusPolling();
 
-      activeDuel.style.display =
-        "none";
+      localStorage.removeItem(
+        "activeDuelId"
+      );
 
       activeDuelId =
         null;
 
-      createWager.focus();
+      hideActiveDuel();
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      return;
     }
 
 
-    /* ==========================================
-       EVENTS
-    ========================================== */
+    /* ======================================
+       AUTH EXPIRED
+    ====================================== */
 
-    createButton.addEventListener(
-      "click",
-      createDuel
+    if (
+      response.status ===
+      401
+    ) {
+
+      stopDuelStatusPolling();
+
+      return;
+    }
+
+
+    /* ======================================
+       OTHER API ERROR
+    ====================================== */
+
+    if (!response.ok) {
+
+      console.error(
+        "DUEL STATUS REQUEST FAILED:",
+        data
+      );
+
+      return;
+    }
+
+
+    /* ======================================
+       STILL WAITING
+    ====================================== */
+
+    if (
+      data.status ===
+      "waiting"
+    ) {
+
+      showActiveDuel();
+
+      return;
+    }
+
+
+    /* ======================================
+       DUEL SETTLED
+    ====================================== */
+
+    if (
+      data.status ===
+      "settled"
+    ) {
+
+      stopDuelStatusPolling();
+
+      localStorage.removeItem(
+        "activeDuelId"
+      );
+
+      displayDuelResult(
+        data
+      );
+
+      activeDuelId =
+        null;
+
+      await refreshUser();
+
+      showToast(
+        "Duel complete.",
+        "success"
+      );
+
+      return;
+    }
+
+
+    /* ======================================
+       DUEL CANCELLED
+    ====================================== */
+
+    if (
+      data.status ===
+      "cancelled"
+    ) {
+
+      stopDuelStatusPolling();
+
+      localStorage.removeItem(
+        "activeDuelId"
+      );
+
+      activeDuelId =
+        null;
+
+      hideActiveDuel();
+
+      await refreshUser();
+
+      showToast(
+        "Duel cancelled.",
+        "success"
+      );
+
+      return;
+    }
+
+  } catch (error) {
+
+    console.error(
+      "DUEL STATUS ERROR:",
+      error
+    );
+  }
+}
+
+
+/* ==========================================
+   CREATE DUEL
+========================================== */
+
+async function createDuel() {
+
+  if (!requireLogin()) {
+    return;
+  }
+
+  /*
+    Prevent creating another duel
+    while one is already waiting.
+  */
+
+  if (activeDuelId) {
+
+    showToast(
+      "You already have a duel waiting for an opponent.",
+      "error"
     );
 
-    joinButton.addEventListener(
-      "click",
-      joinDuel
+    return;
+  }
+
+  const wager =
+    Number(
+      createWager.value
     );
 
-    cancelButton.addEventListener(
-      "click",
-      cancelDuel
+  if (
+    !Number.isInteger(wager) ||
+    wager < 10 ||
+    wager > 10000
+  ) {
+
+    showToast(
+      "Wager must be a whole number between $10 and $10,000.",
+      "error"
     );
 
-    copyButton.addEventListener(
-      "click",
-      copyGameId
+    return;
+  }
+
+  if (
+    Number(
+      currentUser.balance || 0
+    ) < wager
+  ) {
+
+    showToast(
+      "You don't have enough balance for that wager.",
+      "error"
     );
 
-    newDuelButton.addEventListener(
-      "click",
-      newDuel
-    );
+    return;
+  }
 
+  setButtonLoading(
+    createButton,
+    "Creating...",
+    true
+  );
 
-    createWager.addEventListener(
-      "keydown",
-      event => {
+  try {
 
-        if (
-          event.key === "Enter"
-        ) {
-          createDuel();
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/games/duels/create",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            wager
+          })
         }
+      );
 
-      }
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      showToast(
+        data.error ||
+        "Unable to create duel.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    /* ======================================
+       SAVE ACTIVE DUEL
+    ====================================== */
+
+    activeDuelId =
+      data.gameId;
+
+    localStorage.setItem(
+      "activeDuelId",
+      activeDuelId
     );
 
 
-    joinGameId.addEventListener(
-      "keydown",
-      event => {
+    /* ======================================
+       SHOW WAITING UI
+    ====================================== */
 
-        if (
-          event.key === "Enter"
-        ) {
-          joinDuel();
+    activeGameId.textContent =
+      activeDuelId;
+
+    activeDuel.style.display =
+      "block";
+
+    result.style.display =
+      "none";
+
+
+    /* ======================================
+       UPDATE BALANCE
+    ====================================== */
+
+    balanceElement.textContent =
+      Number(
+        data.balance || 0
+      ).toLocaleString();
+
+    if (currentUser) {
+
+      currentUser.balance =
+        data.balance;
+    }
+
+
+    /* ======================================
+       START POLLING
+    ====================================== */
+
+    startDuelStatusPolling();
+
+
+    showToast(
+      "Duel created. Share the ID with your opponent.",
+      "success"
+    );
+
+    activeDuel.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+  } catch (error) {
+
+    console.error(
+      "CREATE DUEL ERROR:",
+      error
+    );
+
+    showToast(
+      "Network error while creating duel.",
+      "error"
+    );
+
+  } finally {
+
+    setButtonLoading(
+      createButton,
+      "Creating...",
+      false
+    );
+  }
+}
+
+
+/* ==========================================
+   JOIN DUEL
+========================================== */
+
+async function joinDuel() {
+
+  if (!requireLogin()) {
+    return;
+  }
+
+  const gameId =
+    joinGameId.value.trim();
+
+  if (!gameId) {
+
+    showToast(
+      "Enter a duel ID.",
+      "error"
+    );
+
+    return;
+  }
+
+  setButtonLoading(
+    joinButton,
+    "Joining...",
+    true
+  );
+
+  try {
+
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/games/duels/join",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            gameId
+          })
         }
+      );
 
-      }
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      showToast(
+        data.error ||
+        "Unable to join duel.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    /* ======================================
+       IF THIS ACCOUNT HAD THIS DUEL SAVED,
+       REMOVE IT
+    ====================================== */
+
+    if (
+      activeDuelId ===
+      gameId
+    ) {
+
+      stopDuelStatusPolling();
+
+      localStorage.removeItem(
+        "activeDuelId"
+      );
+
+      activeDuelId =
+        null;
+    }
+
+
+    /* ======================================
+       DISPLAY RESULT
+    ====================================== */
+
+    displayDuelResult(
+      data
     );
 
 
-    /* ==========================================
-       INITIAL LOAD
-    ========================================== */
+    /* ======================================
+       UPDATE BALANCE
+    ====================================== */
 
-    loadCurrentUser();
+    if (
+      data.balance !==
+      undefined
+    ) {
 
+      balanceElement.textContent =
+        Number(
+          data.balance
+        ).toLocaleString();
+
+      if (currentUser) {
+
+        currentUser.balance =
+          data.balance;
+      }
+    }
+
+
+    joinGameId.value =
+      "";
+
+
+    showToast(
+      "Duel complete.",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "JOIN DUEL ERROR:",
+      error
+    );
+
+    showToast(
+      "Network error while joining duel.",
+      "error"
+    );
+
+  } finally {
+
+    setButtonLoading(
+      joinButton,
+      "Joining...",
+      false
+    );
+  }
+}
+
+
+/* ==========================================
+   DISPLAY RESULT
+========================================== */
+
+function displayDuelResult(
+  data
+) {
+
+  const myId =
+    currentUser?.id;
+
+  const creator =
+    data.creator || {};
+
+  const opponent =
+    data.opponent || {};
+
+
+  /*
+    Determine which side
+    the current user is on.
+  */
+
+  const isCreator =
+    creator.id === myId;
+
+
+  let myRoll = null;
+
+  let theirRoll = null;
+
+
+  if (isCreator) {
+
+    myRoll =
+      creator.roll;
+
+    theirRoll =
+      opponent.roll;
+
+  } else {
+
+    myRoll =
+      opponent.roll;
+
+    theirRoll =
+      creator.roll;
+  }
+
+
+  /* ======================================
+     ROLLS
+  ====================================== */
+
+  yourRoll.textContent =
+    myRoll ?? "—";
+
+  opponentRoll.textContent =
+    theirRoll ?? "—";
+
+
+  /* ======================================
+     WAGER
+  ====================================== */
+
+  const wager =
+    Number(
+      data.wager || 0
+    );
+
+  resultWager.textContent =
+    "$" +
+    wager.toLocaleString();
+
+
+  /* ======================================
+     POT
+  ====================================== */
+
+  const pot =
+    Number(
+      data.pot ||
+      wager * 2
+    );
+
+  resultPot.textContent =
+    "$" +
+    pot.toLocaleString();
+
+
+  /* ======================================
+     RESULT TITLE
+  ====================================== */
+
+  resultTitle.className =
+    "result-title";
+
+
+  if (
+    data.result ===
+    "tie"
+  ) {
+
+    resultTitle.textContent =
+      "It's a Tie";
+
+    resultTitle.classList.add(
+      "tie"
+    );
+
+  } else if (
+    data.winnerId ===
+    myId
+  ) {
+
+    resultTitle.textContent =
+      "You Won";
+
+    resultTitle.classList.add(
+      "win"
+    );
+
+  } else {
+
+    resultTitle.textContent =
+      "You Lost";
+
+    resultTitle.classList.add(
+      "loss"
+    );
+  }
+
+
+  /* ======================================
+     HIDE WAITING
+  ====================================== */
+
+  hideActiveDuel();
+
+
+  /* ======================================
+     SHOW RESULT
+  ====================================== */
+
+  result.style.display =
+    "block";
+
+
+  result.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
+
+
+/* ==========================================
+   CANCEL DUEL
+========================================== */
+
+async function cancelDuel() {
+
+  if (!activeDuelId) {
+    return;
+  }
+
+  const duelToCancel =
+    activeDuelId;
+
+  const confirmed =
+    window.confirm(
+      "Cancel this duel and refund your wager?"
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  setButtonLoading(
+    cancelButton,
+    "Cancelling...",
+    true
+  );
+
+  try {
+
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/games/duels/cancel",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            gameId:
+              duelToCancel
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+
+    /* ======================================
+       DUEL ALREADY ENDED
+    ====================================== */
+
+    if (
+      response.status ===
+      404
+    ) {
+
+      /*
+        The opponent may have joined
+        at the exact same time.
+
+        Stop showing the cancel UI
+        and check the final result.
+      */
+
+      stopDuelStatusPolling();
+
+      localStorage.removeItem(
+        "activeDuelId"
+      );
+
+      activeDuelId =
+        null;
+
+      hideActiveDuel();
+
+      showToast(
+        "This duel has already ended.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (!response.ok) {
+
+      showToast(
+        data.error ||
+        "Unable to cancel duel.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    /* ======================================
+       UPDATE BALANCE
+    ====================================== */
+
+    if (
+      data.balance !==
+      undefined
+    ) {
+
+      balanceElement.textContent =
+        Number(
+          data.balance
+        ).toLocaleString();
+
+      if (currentUser) {
+
+        currentUser.balance =
+          data.balance;
+      }
+    }
+
+
+    /* ======================================
+       CLEAR DUEL
+    ====================================== */
+
+    stopDuelStatusPolling();
+
+    localStorage.removeItem(
+      "activeDuelId"
+    );
+
+    activeDuelId =
+      null;
+
+    hideActiveDuel();
+
+
+    showToast(
+      "Duel cancelled and wager refunded.",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "CANCEL DUEL ERROR:",
+      error
+    );
+
+    showToast(
+      "Network error while cancelling duel.",
+      "error"
+    );
+
+  } finally {
+
+    setButtonLoading(
+      cancelButton,
+      "Cancelling...",
+      false
+    );
+  }
+}
+
+
+/* ==========================================
+   COPY GAME ID
+========================================== */
+
+async function copyGameId() {
+
+  if (!activeDuelId) {
+    return;
+  }
+
+  try {
+
+    await navigator.clipboard.writeText(
+      activeDuelId
+    );
+
+    copyButton.textContent =
+      "Copied";
+
+    showToast(
+      "Duel ID copied.",
+      "success"
+    );
+
+    setTimeout(() => {
+
+      copyButton.textContent =
+        "Copy";
+
+    }, 1500);
+
+  } catch (error) {
+
+    console.error(
+      "COPY ERROR:",
+      error
+    );
+
+    showToast(
+      "Unable to copy duel ID.",
+      "error"
+    );
+  }
+}
+
+
+/* ==========================================
+   NEW DUEL
+========================================== */
+
+function newDuel() {
+
+  stopDuelStatusPolling();
+
+  localStorage.removeItem(
+    "activeDuelId"
+  );
+
+  activeDuelId =
+    null;
+
+  result.style.display =
+    "none";
+
+  activeDuel.style.display =
+    "none";
+
+  createWager.focus();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* ==========================================
+   EVENTS
+========================================== */
+
+createButton.addEventListener(
+  "click",
+  createDuel
+);
+
+
+joinButton.addEventListener(
+  "click",
+  joinDuel
+);
+
+
+cancelButton.addEventListener(
+  "click",
+  cancelDuel
+);
+
+
+copyButton.addEventListener(
+  "click",
+  copyGameId
+);
+
+
+newDuelButton.addEventListener(
+  "click",
+  newDuel
+);
+
+
+createWager.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key ===
+      "Enter"
+    ) {
+
+      createDuel();
+    }
+
+  }
+);
+
+
+joinGameId.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key ===
+      "Enter"
+    ) {
+
+      joinDuel();
+    }
+
+  }
+);
+
+
+/* ==========================================
+   INITIAL LOAD
+========================================== */
+
+async function initializePage() {
+
+  await loadCurrentUser();
+
+
+  /*
+    If there is a saved duel from
+    before a refresh, restore it.
+  */
+
+  if (
+    currentUser &&
+    activeDuelId
+  ) {
+
+    activeGameId.textContent =
+      activeDuelId;
+
+    activeDuel.style.display =
+      "block";
+
+    result.style.display =
+      "none";
+
+    startDuelStatusPolling();
+
+  } else if (
+    !currentUser &&
+    activeDuelId
+  ) {
 
     /*
-      Refresh the displayed balance periodically.
-      This does NOT create or modify games.
+      Don't keep polling a duel
+      when the user isn't authenticated.
     */
 
-    setInterval(
-      refreshUser,
-      5000
-    );
-  </script>
+    stopDuelStatusPolling();
+
+  }
+}
+
+
+initializePage();
+
+
+/* ==========================================
+   BALANCE REFRESH
+========================================== */
+
+setInterval(
+  refreshUser,
+  5000
+);
+
+</script>
 
 </body>
 </html>
