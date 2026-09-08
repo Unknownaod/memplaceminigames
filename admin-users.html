@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Users — Middle Eastern Mixing</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --surface: #191511;
+      --surface-2: #211c16;
+      --border: rgba(214, 168, 92, 0.13);
+      --border-strong: rgba(214, 168, 92, 0.24);
+
+      --text: #f2eee6;
+      --muted: #968f84;
+
+      --accent: #d6a85c;
+      --accent-soft: rgba(214, 168, 92, 0.10);
+
+      --danger: #d96b6b;
+
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--black);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      padding-bottom: 60px;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        rgba(11, 10, 8, 0.88);
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+    .header-inner {
+      width: min(
+        1180px,
+        calc(100% - 40px)
+      );
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 10px;
+
+      object-fit: cover;
+    }
+
+    .brand-text {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
+      color: var(--muted);
+
+      padding:
+        9px 13px;
+
+      border-radius: 10px;
+
+      text-decoration: none;
+
+      transition:
+        0.18s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+      background: var(--surface-2);
+    }
+
+    .container {
+      width: min(
+        1180px,
+        calc(100% - 40px)
+      );
+
+      margin: 0 auto;
+      padding-top: 38px;
+    }
+
+    .page-header {
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size:
+        clamp(28px, 4vw, 38px);
+
+      letter-spacing: -0.035em;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 20px;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-icon {
+      position: absolute;
+
+      left: 14px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: var(--muted);
+
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .search {
+      width: 100%;
+
+      border:
+        1px solid var(--border);
+
+      outline: none;
+
+      background:
+        var(--surface);
+
+      color: var(--text);
+
+      border-radius: 11px;
+
+      padding:
+        12px 14px 12px 40px;
+
+      transition:
+        0.18s ease;
+    }
+
+    .search:focus {
+      border-color:
+        var(--border-strong);
+
+      box-shadow:
+        0 0 0 3px
+        var(--accent-soft);
+    }
+
+    .refresh-btn {
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
+      color: var(--text);
+
+      padding:
+        12px 15px;
+
+      border-radius: 11px;
+
+      transition:
+        0.18s ease;
+    }
+
+    .refresh-btn:hover {
+      border-color:
+        var(--border-strong);
+
+      background:
+        var(--surface-2);
+    }
+
+    .status {
+      min-height: 20px;
+
+      margin-bottom: 12px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+    .users-card {
+      overflow: hidden;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
+      border-radius:
+        var(--radius);
+    }
+
+    .users-header {
+      display: grid;
+
+      grid-template-columns:
+        minmax(220px, 1.5fr)
+        minmax(160px, 1fr)
+        minmax(120px, 0.7fr)
+        minmax(130px, 0.8fr)
+        100px;
+
+      gap: 18px;
+
+      padding:
+        14px 18px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .user-row {
+      display: grid;
+
+      grid-template-columns:
+        minmax(220px, 1.5fr)
+        minmax(160px, 1fr)
+        minmax(120px, 0.7fr)
+        minmax(130px, 0.8fr)
+        100px;
+
+      gap: 18px;
+
+      align-items: center;
+
+      padding:
+        17px 18px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      transition:
+        background 0.15s ease;
+    }
+
+    .user-row:last-child {
+      border-bottom: 0;
+    }
+
+    .user-row:hover {
+      background:
+        rgba(214, 168, 92, 0.035);
+    }
+
+    .user-main {
+      min-width: 0;
+
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+
+      flex: 0 0 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 11px;
+
+      background:
+        var(--surface-2);
+
+      border:
+        1px solid var(--border);
+
+      color: var(--accent);
+
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .user-name {
+      overflow: hidden;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      font-weight: 650;
+    }
+
+    .user-discord {
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .id-cell {
+      overflow: hidden;
+
+      color: var(--muted);
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+
+      font-size: 12px;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .balance {
+      font-weight: 700;
+
+      color: var(--accent);
+    }
+
+    .date {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .view-btn {
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface-2);
+
+      color: var(--text);
+
+      border-radius: 9px;
+
+      padding:
+        8px 11px;
+
+      transition:
+        0.18s ease;
+    }
+
+    .view-btn:hover {
+      border-color:
+        var(--border-strong);
+
+      color: var(--accent);
+    }
+
+    .empty {
+      padding: 60px 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+    }
+
+    .empty-title {
+      color: var(--text);
+
+      font-weight: 700;
+
+      margin-bottom: 6px;
+    }
+
+    .loading {
+      padding: 60px 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+    }
+
+    /* ==========================================
+       MODAL
+    ========================================== */
+
+    .modal-backdrop {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 100;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background:
+        rgba(0, 0, 0, 0.68);
+
+      backdrop-filter:
+        blur(8px);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(
+        560px,
+        100%
+      );
+
+      max-height:
+        calc(100vh - 40px);
+
+      overflow-y: auto;
+
+      border:
+        1px solid var(--border-strong);
+
+      background:
+        var(--surface);
+
+      border-radius:
+        16px;
+
+      box-shadow:
+        0 30px 90px
+        rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      padding:
+        20px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 750;
+    }
+
+    .close-btn {
+      width: 34px;
+      height: 34px;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface-2);
+
+      color: var(--muted);
+
+      border-radius: 9px;
+    }
+
+    .close-btn:hover {
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+
+      margin-bottom: 22px;
+    }
+
+    .profile .avatar {
+      width: 50px;
+      height: 50px;
+
+      flex-basis: 50px;
+
+      font-size: 16px;
+    }
+
+    .profile-name {
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .profile-discord {
+      margin-top: 4px;
+
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .details {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 10px;
+    }
+
+    .detail {
+      padding:
+        13px 14px;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface-2);
+
+      border-radius: 11px;
+    }
+
+    .detail-label {
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+
+      margin-bottom: 5px;
+    }
+
+    .detail-value {
+      overflow-wrap: anywhere;
+
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .economy {
+      margin-top: 20px;
+
+      padding-top: 20px;
+
+      border-top:
+        1px solid var(--border);
+    }
+
+    .section-title {
+      margin-bottom: 12px;
+
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .economy-note {
+      margin-bottom: 14px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column:
+        1 / -1;
+    }
+
+    .field label {
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .field input {
+      width: 100%;
+
+      padding:
+        11px 12px;
+
+      border:
+        1px solid var(--border);
+
+      outline: none;
+
+      background:
+        var(--black-2);
+
+      color: var(--text);
+
+      border-radius: 9px;
+    }
+
+    .field input:focus {
+      border-color:
+        var(--border-strong);
+    }
+
+    .adjust-btn {
+      width: 100%;
+
+      margin-top: 12px;
+
+      padding:
+        11px 14px;
+
+      border: 0;
+
+      border-radius: 9px;
+
+      background:
+        var(--accent);
+
+      color:
+        #17120b;
+
+      font-weight: 800;
+    }
+
+    .adjust-btn:hover {
+      filter: brightness(1.07);
+    }
+
+    .adjust-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .form-message {
+      min-height: 18px;
+
+      margin-top: 9px;
+
+      font-size: 12px;
+    }
+
+    .form-message.error {
+      color: var(--danger);
+    }
+
+    .form-message.success {
+      color: var(--accent);
+    }
+
+    @media (max-width: 850px) {
+
+      .users-header {
+        display: none;
+      }
+
+      .user-row {
+        grid-template-columns:
+          1fr auto;
+
+        gap: 12px;
+      }
+
+      .user-row > div:nth-child(2),
+      .user-row > div:nth-child(3),
+      .user-row > div:nth-child(4) {
+        display: none;
+      }
+
+      .view-btn {
+        grid-column: 2;
+        grid-row: 1;
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .container,
+      .header-inner {
+        width:
+          calc(100% - 24px);
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .details,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .modal-backdrop {
+        padding: 10px;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a
+        href="/admin"
+        class="brand"
+      >
+        <img
+          src="/logo.gif"
+          alt=""
+        >
+
+        <span class="brand-text">
+          Middle Eastern Mixing
+        </span>
+      </a>
+
+      <a
+        href="/admin"
+        class="back-btn"
+      >
+        ← Admin
+      </a>
+
+    </div>
+
+  </header>
+
+  <main class="container">
+
+    <div class="page-header">
+
+      <div class="eyebrow">
+        Administration
+      </div>
+
+      <h1>
+        Users
+      </h1>
+
+      <p class="subtitle">
+        Search and manage registered users.
+      </p>
+
+    </div>
+
+    <div class="toolbar">
+
+      <div class="search-wrap">
+
+        <span class="search-icon">
+          ⌕
+        </span>
+
+        <input
+          id="search"
+          class="search"
+          type="search"
+          placeholder="Search username, Discord username, or Discord ID..."
+          autocomplete="off"
+        >
+
+      </div>
+
+      <button
+        id="refreshBtn"
+        class="refresh-btn"
+        type="button"
+      >
+        Refresh
+      </button>
+
+    </div>
+
+    <div
+      id="status"
+      class="status"
+    ></div>
+
+    <section class="users-card">
+
+      <div class="users-header">
+
+        <div>User</div>
+        <div>Discord ID</div>
+        <div>Balance</div>
+        <div>Created</div>
+        <div></div>
+
+      </div>
+
+      <div id="usersList">
+
+        <div class="loading">
+          Loading users...
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==========================================
+       USER MODAL
+  ========================================== -->
+
+  <div
+    id="modalBackdrop"
+    class="modal-backdrop"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <div class="modal-title">
+          User Details
+        </div>
+
+        <button
+          id="closeModal"
+          class="close-btn"
+          type="button"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="profile">
+
+          <div
+            id="modalAvatar"
+            class="avatar"
+          >
+            ?
+          </div>
+
+          <div>
+
+            <div
+              id="modalName"
+              class="profile-name"
+            >
+              —
+            </div>
+
+            <div
+              id="modalDiscord"
+              class="profile-discord"
+            >
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+        <div
+          id="details"
+          class="details"
+        ></div>
+
+        <div
+          id="economySection"
+          class="economy"
+          style="display:none;"
+        >
+
+          <div class="section-title">
+            Economy
+          </div>
+
+          <div class="economy-note">
+            Use a positive amount to add currency or a negative amount to remove currency. All balance changes are recorded in the staff audit log.
+          </div>
+
+          <div class="form-grid">
+
+            <div class="field">
+
+              <label for="amount">
+                Amount
+              </label>
+
+              <input
+                id="amount"
+                type="number"
+                step="1"
+                placeholder="250"
+              >
+
+            </div>
+
+            <div class="field">
+
+              <label for="reason">
+                Reason
+              </label>
+
+              <input
+                id="reason"
+                type="text"
+                maxlength="250"
+                placeholder="Administrative adjustment"
+              >
+
+            </div>
+
+          </div>
+
+          <button
+            id="adjustBtn"
+            class="adjust-btn"
+            type="button"
+          >
+            Adjust Balance
+          </button>
+
+          <div
+            id="formMessage"
+            class="form-message"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const API =
+      "https://api.memplace.xyz";
+
+    let currentStaff = null;
+    let currentUser = null;
+
+    let searchTimer = null;
+
+
+    /* ==========================================
+       HELPERS
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(
+        value ?? ""
+      )
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "—";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "—";
+      }
+
+      return date.toLocaleDateString(
+        undefined,
+        {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        }
+      );
+    }
+
+
+    function formatBalance(value) {
+
+      if (
+        typeof value !== "number"
+      ) {
+        return "—";
+      }
+
+      return value.toLocaleString();
+    }
+
+
+    function getInitials(user) {
+
+      const value =
+        user.username ||
+        user.discordUsername ||
+        "?";
+
+      const parts =
+        String(value)
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean);
+
+      if (!parts.length) {
+        return "?";
+      }
+
+      if (parts.length === 1) {
+        return parts[0]
+          .slice(0, 2)
+          .toUpperCase();
+      }
+
+      return (
+        parts[0][0] +
+        parts[1][0]
+      ).toUpperCase();
+    }
+
+
+    /* ==========================================
+       AUTH
+    ========================================== */
+
+    async function checkStaff() {
+
+      const response =
+        await fetch(
+          `${API}/api/admin/me`,
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+      if (!response.ok) {
+        window.location.href =
+          "/admin";
+
+        return null;
+      }
+
+      const data =
+        await response.json();
+
+      if (
+        !data.success ||
+        !data.staff
+      ) {
+        window.location.href =
+          "/admin";
+
+        return null;
+      }
+
+      if (
+        !Array.isArray(
+          data.permissions
+        ) ||
+        !data.permissions.includes(
+          "users"
+        )
+      ) {
+        window.location.href =
+          "/admin";
+
+        return null;
+      }
+
+      currentStaff = data;
+
+      return data;
+    }
+
+
+    /* ==========================================
+       LOAD USERS
+    ========================================== */
+
+    async function loadUsers() {
+
+      const search =
+        document
+          .getElementById("search")
+          .value
+          .trim();
+
+      const list =
+        document
+          .getElementById("usersList");
+
+      const status =
+        document
+          .getElementById("status");
+
+      list.innerHTML = `
+        <div class="loading">
+          Loading users...
+        </div>
+      `;
+
+      status.textContent =
+        "";
+
+      try {
+
+        const params =
+          new URLSearchParams();
+
+        if (search) {
+          params.set(
+            "search",
+            search
+          );
+        }
+
+        params.set(
+          "limit",
+          "100"
+        );
+
+        const response =
+          await fetch(
+            `${API}/api/admin/users?${params.toString()}`,
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            "Failed to load users."
+          );
+        }
+
+        renderUsers(
+          data.users || []
+        );
+
+        status.textContent =
+          `${data.count || 0} user${data.count === 1 ? "" : "s"} found.`;
+
+      } catch (error) {
+
+        console.error(error);
+
+        list.innerHTML = `
+          <div class="empty">
+
+            <div class="empty-title">
+              Unable to load users
+            </div>
+
+            <div>
+              ${escapeHtml(
+                error.message
+              )}
+            </div>
+
+          </div>
+        `;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       RENDER
+    ========================================== */
+
+    function renderUsers(users) {
+
+      const list =
+        document
+          .getElementById("usersList");
+
+      if (!users.length) {
+
+        list.innerHTML = `
+          <div class="empty">
+
+            <div class="empty-title">
+              No users found
+            </div>
+
+            <div>
+              Try another search.
+            </div>
+
+          </div>
+        `;
+
+        return;
+      }
+
+      list.innerHTML =
+        users.map(user => {
+
+          const username =
+            user.username ||
+            user.discordUsername ||
+            "Unknown User";
+
+          return `
+            <div
+              class="user-row"
+              data-user-id="${escapeHtml(
+                user.id
+              )}"
+            >
+
+              <div class="user-main">
+
+                <div class="avatar">
+                  ${escapeHtml(
+                    getInitials(user)
+                  )}
+                </div>
+
+                <div>
+
+                  <div class="user-name">
+                    ${escapeHtml(
+                      username
+                    )}
+                  </div>
+
+                  <div class="user-discord">
+                    ${escapeHtml(
+                      user.discordUsername ||
+                      "No Discord username"
+                    )}
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="id-cell">
+                ${escapeHtml(
+                  user.id
+                )}
+              </div>
+
+              <div class="balance">
+                ${
+                  typeof user.balance === "number"
+                    ? formatBalance(
+                        user.balance
+                      )
+                    : "—"
+                }
+              </div>
+
+              <div class="date">
+                ${formatDate(
+                  user.createdAt
+                )}
+              </div>
+
+              <div>
+                <button
+                  class="view-btn"
+                  type="button"
+                  data-view-user="${escapeHtml(
+                    user.id
+                  )}"
+                >
+                  View
+                </button>
+              </div>
+
+            </div>
+          `;
+
+        }).join("");
+
+      document
+        .querySelectorAll(
+          "[data-view-user]"
+        )
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const id =
+                button.dataset.viewUser;
+
+              const user =
+                users.find(
+                  item =>
+                    String(item.id) ===
+                    String(id)
+                );
+
+              if (user) {
+                openUserModal(user);
+              }
+
+            }
+          );
+
+        });
+
+    }
+
+
+    /* ==========================================
+       USER MODAL
+    ========================================== */
+
+    function openUserModal(user) {
+
+      currentUser =
+        user;
+
+      document
+        .getElementById("modalAvatar")
+        .textContent =
+        getInitials(user);
+
+      document
+        .getElementById("modalName")
+        .textContent =
+        user.username ||
+        "Unknown User";
+
+      document
+        .getElementById("modalDiscord")
+        .textContent =
+        user.discordUsername ||
+        "No Discord username";
+
+      const details =
+        document
+          .getElementById("details");
+
+      const balance =
+        typeof user.balance === "number"
+          ? formatBalance(
+              user.balance
+            )
+          : "Not available";
+
+      details.innerHTML = `
+
+        <div class="detail">
+
+          <div class="detail-label">
+            Discord ID
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(
+              user.id
+            )}
+          </div>
+
+        </div>
+
+        <div class="detail">
+
+          <div class="detail-label">
+            Balance
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(
+              balance
+            )}
+          </div>
+
+        </div>
+
+        <div class="detail">
+
+          <div class="detail-label">
+            Account Created
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(
+              formatDate(
+                user.createdAt
+              )
+            )}
+          </div>
+
+        </div>
+
+        <div class="detail">
+
+          <div class="detail-label">
+            Daily Streak
+          </div>
+
+          <div class="detail-value">
+            ${
+              typeof user.dailyStreak === "number"
+                ? escapeHtml(
+                    user.dailyStreak
+                  )
+                : "Not available"
+            }
+          </div>
+
+        </div>
+
+        <div class="detail">
+
+          <div class="detail-label">
+            Last Daily Claim
+          </div>
+
+          <div class="detail-value">
+            ${escapeHtml(
+              formatDate(
+                user.dailyLastClaim
+              )
+            )}
+          </div>
+
+        </div>
+
+      `;
+
+      const economy =
+        document
+          .getElementById(
+            "economySection"
+          );
+
+      const canEconomy =
+        currentStaff &&
+        (
+          currentStaff.role ===
+            "manager" ||
+          currentStaff.role ===
+            "owner"
+        );
+
+      economy.style.display =
+        canEconomy
+          ? "block"
+          : "none";
+
+      document
+        .getElementById("amount")
+        .value = "";
+
+      document
+        .getElementById("reason")
+        .value = "";
+
+      document
+        .getElementById(
+          "formMessage"
+        )
+        .textContent = "";
+
+      document
+        .getElementById(
+          "formMessage"
+        )
+        .className =
+        "form-message";
+
+      document
+        .getElementById(
+          "modalBackdrop"
+        )
+        .classList.add(
+          "open"
+        );
+
+    }
+
+
+    function closeUserModal() {
+
+      document
+        .getElementById(
+          "modalBackdrop"
+        )
+        .classList.remove(
+          "open"
+        );
+
+      currentUser =
+        null;
+
+    }
+
+
+    /* ==========================================
+       ECONOMY
+    ========================================== */
+
+    async function adjustBalance() {
+
+      if (!currentUser) {
+        return;
+      }
+
+      const amountInput =
+        document
+          .getElementById(
+            "amount"
+          );
+
+      const reasonInput =
+        document
+          .getElementById(
+            "reason"
+          );
+
+      const button =
+        document
+          .getElementById(
+            "adjustBtn"
+          );
+
+      const message =
+        document
+          .getElementById(
+            "formMessage"
+          );
+
+      const amount =
+        Number(
+          amountInput.value
+        );
+
+      const reason =
+        reasonInput.value.trim();
+
+      if (
+        !Number.isFinite(amount) ||
+        amount === 0
+      ) {
+
+        message.textContent =
+          "Enter a non-zero amount.";
+
+        message.className =
+          "form-message error";
+
+        return;
+      }
+
+      button.disabled =
+        true;
+
+      message.textContent =
+        "Updating balance...";
+
+      message.className =
+        "form-message";
+
+      try {
+
+        const response =
+          await fetch(
+            `${API}/api/admin/users`,
+            {
+              method: "PATCH",
+
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  discordId:
+                    currentUser.id,
+
+                  amount,
+
+                  reason
+                })
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            "Failed to update balance."
+          );
+        }
+
+        currentUser.balance =
+          data.user.balance;
+
+        message.textContent =
+          `Balance updated to ${formatBalance(
+            data.user.balance
+          )}.`;
+
+        message.className =
+          "form-message success";
+
+        /*
+         * Refresh the table so the
+         * real MongoDB value is shown.
+         */
+        await loadUsers();
+
+        /*
+         * Refresh the modal details too.
+         */
+        openUserModal(
+          currentUser
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        message.textContent =
+          error.message;
+
+        message.className =
+          "form-message error";
+
+      } finally {
+
+        button.disabled =
+          false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       EVENTS
+    ========================================== */
+
+    document
+      .getElementById(
+        "refreshBtn"
+      )
+      .addEventListener(
+        "click",
+        loadUsers
+      );
+
+
+    document
+      .getElementById(
+        "search"
+      )
+      .addEventListener(
+        "input",
+        () => {
+
+          clearTimeout(
+            searchTimer
+          );
+
+          searchTimer =
+            setTimeout(
+              loadUsers,
+              300
+            );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "closeModal"
+      )
+      .addEventListener(
+        "click",
+        closeUserModal
+      );
+
+
+    document
+      .getElementById(
+        "modalBackdrop"
+      )
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target ===
+            event.currentTarget
+          ) {
+            closeUserModal();
+          }
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "adjustBtn"
+      )
+      .addEventListener(
+        "click",
+        adjustBalance
+      );
+
+
+    document
+      .addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Escape"
+          ) {
+            closeUserModal();
+          }
+
+        }
+      );
+
+
+    /* ==========================================
+       START
+    ========================================== */
+
+    (async () => {
+
+      const staff =
+        await checkStaff();
+
+      if (!staff) {
+        return;
+      }
+
+      await loadUsers();
+
+    })();
+
+  </script>
+
+</body>
+
+</html>
