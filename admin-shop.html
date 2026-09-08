@@ -382,7 +382,7 @@
 
     table {
       width: 100%;
-      min-width: 850px;
+      min-width: 1000px;
 
       border-collapse: collapse;
     }
@@ -509,6 +509,25 @@
     .status.inactive {
       color: var(--danger);
       background: rgba(217,108,108,0.08);
+    }
+
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 6px 9px;
+
+      border: 1px solid rgba(214,168,92,0.14);
+      border-radius: 999px;
+
+      background: rgba(214,168,92,0.06);
+
+      color: var(--accent-light);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      white-space: nowrap;
     }
 
     .actions {
@@ -705,6 +724,10 @@
     .field textarea:focus,
     .field select:focus {
       border-color: var(--border-hover);
+    }
+
+    .field select {
+      cursor: pointer;
     }
 
     .field textarea {
@@ -1076,9 +1099,11 @@
             <thead>
               <tr>
                 <th>Item</th>
+                <th>Type</th>
                 <th>Price</th>
                 <th>Status</th>
                 <th>Created</th>
+
                 <th style="text-align:right;">
                   Actions
                 </th>
@@ -1088,7 +1113,7 @@
             <tbody id="itemsBody">
 
               <tr>
-                <td colspan="5">
+                <td colspan="6">
 
                   <div class="state">
 
@@ -1174,7 +1199,7 @@
                 type="text"
                 maxlength="100"
                 required
-                placeholder="Example: Lucky Token"
+                placeholder="Example: The Mixing Legend"
               >
 
             </div>
@@ -1192,6 +1217,39 @@
                 maxlength="500"
                 placeholder="Describe what this item does..."
               ></textarea>
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="itemType">
+                Item Type
+              </label>
+
+              <select
+                id="itemType"
+                name="type"
+                required
+              >
+
+                <option value="profile_cosmetic">
+                  Profile Cosmetic
+                </option>
+
+                <option value="profile_title">
+                  Profile Title
+                </option>
+
+                <option value="profile_badge">
+                  Profile Badge
+                </option>
+
+                <option value="profile_theme">
+                  Profile Theme
+                </option>
+
+              </select>
 
             </div>
 
@@ -1371,6 +1429,32 @@
     }
 
 
+    function formatItemType(type) {
+
+      switch (type) {
+
+        case "profile_title":
+          return "Profile Title";
+
+        case "profile_badge":
+          return "Profile Badge";
+
+        case "profile_theme":
+          return "Profile Theme";
+
+        case "profile_cosmetic":
+          return "Profile Cosmetic";
+
+        default:
+          return type
+            ? String(type)
+            : "Profile Cosmetic";
+
+      }
+
+    }
+
+
     function showToast(
       message,
       type = "success"
@@ -1444,10 +1528,7 @@
       ).textContent =
         data.role || "Staff";
 
-      /*
-       * Shop management requires the
-       * shop permission.
-       */
+
       if (
         !Array.isArray(
           data.permissions
@@ -1536,12 +1617,14 @@
           ? Math.max(...prices)
           : 0;
 
+
       document.getElementById(
         "totalItems"
       ).textContent =
         formatNumber(
           items.length
         );
+
 
       document.getElementById(
         "activeItems"
@@ -1550,12 +1633,14 @@
           active.length
         );
 
+
       document.getElementById(
         "inactiveItems"
       ).textContent =
         formatNumber(
           inactive
         );
+
 
       document.getElementById(
         "highestPrice"
@@ -1576,6 +1661,7 @@
           "itemsBody"
         );
 
+
       const search =
         document.getElementById(
           "searchInput"
@@ -1583,10 +1669,12 @@
           .trim()
           .toLowerCase();
 
+
       const status =
         document.getElementById(
           "statusFilter"
         ).value;
+
 
       const filtered =
         items.filter(item => {
@@ -1601,13 +1689,22 @@
               item.description || ""
             ).toLowerCase();
 
+          const type =
+            formatItemType(
+              item.type
+            ).toLowerCase();
+
+
           const matchesSearch =
             !search ||
             name.includes(search) ||
-            description.includes(search);
+            description.includes(search) ||
+            type.includes(search);
+
 
           const isActive =
             item.active !== false;
+
 
           const matchesStatus =
             status === "all" ||
@@ -1619,6 +1716,7 @@
               status === "inactive" &&
               !isActive
             );
+
 
           return (
             matchesSearch &&
@@ -1632,8 +1730,10 @@
 
         body.innerHTML = `
           <tr>
-            <td colspan="5">
+            <td colspan="6">
+
               <div class="state">
+
                 <div class="state-title">
                   No shop items found
                 </div>
@@ -1641,7 +1741,9 @@
                 <div class="state-text">
                   There are no items matching your filters.
                 </div>
+
               </div>
+
             </td>
           </tr>
         `;
@@ -1658,6 +1760,7 @@
             const active =
               item.active !== false;
 
+
             const icon =
               item.image
                 ? `
@@ -1671,6 +1774,12 @@
                     item.icon || "🛍️"
                   );
 
+
+            const itemId =
+              item._id ||
+              item.id;
+
+
             return `
               <tr>
 
@@ -1683,6 +1792,7 @@
                     </div>
 
                     <div>
+
                       <div class="item-name">
                         ${escapeHtml(
                           item.name ||
@@ -1696,6 +1806,7 @@
                           "No description"
                         )}
                       </div>
+
                     </div>
 
                   </div>
@@ -1704,11 +1815,26 @@
 
 
                 <td>
+
+                  <span class="type-badge">
+                    ${escapeHtml(
+                      formatItemType(
+                        item.type
+                      )
+                    )}
+                  </span>
+
+                </td>
+
+
+                <td>
+
                   <span class="price">
                     ${formatNumber(
                       item.price
                     )} coins
                   </span>
+
                 </td>
 
 
@@ -1746,19 +1872,18 @@
                       class="action-button"
                       type="button"
                       onclick="editItem('${escapeHtml(
-                        item._id ||
-                        item.id
+                        itemId
                       )}')"
                     >
                       Edit
                     </button>
 
+
                     <button
                       class="action-button danger"
                       type="button"
                       onclick="deleteItem('${escapeHtml(
-                        item._id ||
-                        item.id
+                        itemId
                       )}')"
                     >
                       Delete
@@ -1785,22 +1910,33 @@
 
       editingId = null;
 
+
       document.getElementById(
         "modalTitle"
       ).textContent =
         "Add Shop Item";
 
+
       document.getElementById(
         "itemForm"
       ).reset();
+
+
+      document.getElementById(
+        "itemType"
+      ).value =
+        "profile_cosmetic";
+
 
       document.getElementById(
         "itemActive"
       ).checked = true;
 
+
       document.getElementById(
         "itemModal"
       ).classList.add("open");
+
 
       setTimeout(() => {
 
@@ -1819,40 +1955,55 @@
         item._id ||
         item.id;
 
+
       document.getElementById(
         "modalTitle"
       ).textContent =
         "Edit Shop Item";
+
 
       document.getElementById(
         "itemName"
       ).value =
         item.name || "";
 
+
       document.getElementById(
         "itemDescription"
       ).value =
         item.description || "";
+
+
+      document.getElementById(
+        "itemType"
+      ).value =
+        item.type ||
+        "profile_cosmetic";
+
 
       document.getElementById(
         "itemPrice"
       ).value =
         Number(item.price) || 0;
 
+
       document.getElementById(
         "itemIcon"
       ).value =
         item.icon || "";
+
 
       document.getElementById(
         "itemImage"
       ).value =
         item.image || "";
 
+
       document.getElementById(
         "itemActive"
       ).checked =
         item.active !== false;
+
 
       document.getElementById(
         "itemModal"
@@ -1883,14 +2034,18 @@
             ) === String(id)
         );
 
+
       if (!item) {
+
         showToast(
           "Shop item could not be found.",
           "error"
         );
 
         return;
+
       }
+
 
       openEditModal(item);
 
@@ -1905,20 +2060,30 @@
 
       event.preventDefault();
 
+
       const button =
         document.getElementById(
           "saveItem"
         );
+
 
       const name =
         document.getElementById(
           "itemName"
         ).value.trim();
 
+
       const description =
         document.getElementById(
           "itemDescription"
         ).value.trim();
+
+
+      const type =
+        document.getElementById(
+          "itemType"
+        ).value;
+
 
       const price =
         Number(
@@ -1927,15 +2092,18 @@
           ).value
         );
 
+
       const icon =
         document.getElementById(
           "itemIcon"
         ).value.trim();
 
+
       const image =
         document.getElementById(
           "itemImage"
         ).value.trim();
+
 
       const active =
         document.getElementById(
@@ -1943,10 +2111,32 @@
         ).checked;
 
 
+      const allowedTypes = [
+        "profile_cosmetic",
+        "profile_title",
+        "profile_badge",
+        "profile_theme"
+      ];
+
+
       if (!name) {
 
         showToast(
           "Item name is required.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !allowedTypes.includes(type)
+      ) {
+
+        showToast(
+          "Please select a valid item type.",
           "error"
         );
 
@@ -1971,18 +2161,30 @@
 
 
       button.disabled = true;
-      button.textContent = "Saving...";
+      button.textContent =
+        "Saving...";
 
 
       try {
 
         const payload = {
+
           name,
+
           description,
+
           price,
+
           icon,
-          image: image || null,
+
+          image:
+            image ||
+            null,
+
+          type,
+
           active
+
         };
 
 
@@ -2005,15 +2207,20 @@
             url,
             {
               method,
-              credentials: "include",
+
+              credentials:
+                "include",
+
               headers: {
                 "Content-Type":
                   "application/json"
               },
+
               body:
                 JSON.stringify(
                   payload
                 )
+
             }
           );
 
@@ -2038,9 +2245,12 @@
             : "Shop item created."
         );
 
+
         closeModal();
 
+
         await loadShop();
+
 
       } catch (error) {
 
@@ -2049,15 +2259,18 @@
           error
         );
 
+
         showToast(
           error.message ||
           "Failed to save item.",
           "error"
         );
 
+
       } finally {
 
         button.disabled = false;
+
         button.textContent =
           "Save Item";
 
@@ -2080,6 +2293,7 @@
               item.id
             ) === String(id)
         );
+
 
       if (!item) {
         return;
@@ -2129,7 +2343,9 @@
           "Shop item deleted."
         );
 
+
         await loadShop();
+
 
       } catch (error) {
 
@@ -2137,6 +2353,7 @@
           "DELETE SHOP ITEM:",
           error
         );
+
 
         showToast(
           error.message ||
@@ -2225,7 +2442,9 @@
             event.target ===
             event.currentTarget
           ) {
+
             closeModal();
+
           }
 
         }
@@ -2239,7 +2458,9 @@
         if (
           event.key === "Escape"
         ) {
+
           closeModal();
+
         }
 
       }
@@ -2265,11 +2486,13 @@
           error
         );
 
+
         showToast(
           error.message ||
           "Unable to load Shop.",
           "error"
         );
+
 
         setTimeout(() => {
 
@@ -2284,6 +2507,7 @@
 
 
     initialize();
+
   </script>
 
 </body>
