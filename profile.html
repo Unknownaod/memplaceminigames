@@ -415,6 +415,114 @@
     }
 
 
+    /* ==========================================
+       MIXING AFTER DARK THEME
+    ========================================== */
+
+    .profile-card.theme-mixing-after-dark {
+
+      background:
+
+        radial-gradient(
+          circle at 82% 18%,
+          rgba(143,55,92,0.18),
+          transparent 28%
+        ),
+
+        radial-gradient(
+          circle at 12% 85%,
+          rgba(215,168,79,0.08),
+          transparent 30%
+        ),
+
+        linear-gradient(
+          145deg,
+          rgba(70,25,48,0.65),
+          rgba(24,14,20,0.92) 45%,
+          #0e0b0d 100%
+        );
+
+      border-color:
+        rgba(215,168,79,0.28);
+
+      box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,0.025),
+
+        0 14px 45px
+        rgba(0,0,0,0.28);
+    }
+
+
+    .profile-card.theme-mixing-after-dark::before {
+
+      content:
+        "MIXING AFTER DARK";
+
+      position:
+        absolute;
+
+      right:
+        -20px;
+
+      bottom:
+        -22px;
+
+      color:
+        rgba(215,168,79,0.035);
+
+      font-size:
+        72px;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        -0.06em;
+
+      white-space:
+        nowrap;
+
+      pointer-events:
+        none;
+
+      transform:
+        rotate(-7deg);
+    }
+
+
+    .profile-card.theme-mixing-after-dark::after {
+
+      content:
+        "✦  ·  ✧  ·  ✦  ·  ✧";
+
+      position:
+        absolute;
+
+      top:
+        14px;
+
+      right:
+        28px;
+
+      color:
+        rgba(215,168,79,0.12);
+
+      font-size:
+        13px;
+
+      letter-spacing:
+        9px;
+
+      pointer-events:
+        none;
+    }
+
+
+    /* ==========================================
+       NAMEPLATE THEMES
+    ========================================== */
+
     .profile-card.nameplate-gold {
       background:
         linear-gradient(
@@ -457,6 +565,43 @@
     }
 
 
+    /*
+     * Theme wins over the old
+     * nameplate background.
+     */
+
+    .profile-card.theme-mixing-after-dark.nameplate-gold,
+    .profile-card.theme-mixing-after-dark.nameplate-royal,
+    .profile-card.theme-mixing-after-dark.nameplate-diamond {
+
+      background:
+
+        radial-gradient(
+          circle at 82% 18%,
+          rgba(143,55,92,0.18),
+          transparent 28%
+        ),
+
+        radial-gradient(
+          circle at 12% 85%,
+          rgba(215,168,79,0.08),
+          transparent 30%
+        ),
+
+        linear-gradient(
+          145deg,
+          rgba(70,25,48,0.65),
+          rgba(24,14,20,0.92) 45%,
+          #0e0b0d 100%
+        );
+
+    }
+
+
+    /* ==========================================
+       PROFILE AVATAR
+    ========================================== */
+
     .profile-avatar {
       width: 82px;
       height: 82px;
@@ -472,6 +617,25 @@
         1px solid var(--border);
 
       object-fit: cover;
+
+      position: relative;
+
+      z-index: 2;
+    }
+
+
+    .profile-card.theme-mixing-after-dark
+    .profile-avatar {
+
+      border-color:
+        rgba(215,168,79,0.28);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(215,168,79,0.035),
+
+        0 0 24px
+        rgba(143,55,92,0.18);
     }
 
 
@@ -533,6 +697,25 @@
       text-shadow:
         0 0 18px
         rgba(120,205,235,0.24);
+    }
+
+
+    /*
+     * Mixing After Dark name glow
+     * when no premium nameplate
+     * is equipped.
+     */
+
+    .profile-card.theme-mixing-after-dark
+    .profile-name:not(.gold):not(.royal):not(.diamond) {
+
+      color:
+        #e4c477;
+
+      text-shadow:
+        0 0 18px
+        rgba(215,168,79,0.20);
+
     }
 
 
@@ -666,6 +849,17 @@
     }
 
 
+    .theme-mixing-after-dark
+    .equipped-item {
+
+      border-color:
+        rgba(215,168,79,0.16);
+
+      background:
+        rgba(215,168,79,0.045);
+    }
+
+
     .equipped-item-icon {
       color:
         var(--accent);
@@ -692,6 +886,12 @@
 
       border-radius:
         var(--radius);
+    }
+
+
+    .theme-mixing-after-dark ~ .balance-card {
+      border-color:
+        rgba(215,168,79,0.12);
     }
 
 
@@ -1676,12 +1876,6 @@
           data.user;
 
 
-        /*
-         * Staff status is checked separately
-         * through the existing /api/admin/me
-         * endpoint.
-         */
-
         const staffStatus =
           await loadStaffStatus();
 
@@ -1801,7 +1995,8 @@
 
           return {
 
-            className: "gold",
+            className:
+              "gold",
 
             label:
               "Gold Nameplate",
@@ -1816,7 +2011,8 @@
 
           return {
 
-            className: "royal",
+            className:
+              "royal",
 
             label:
               "Royal Nameplate",
@@ -1831,13 +2027,51 @@
 
           return {
 
-            className: "diamond",
+            className:
+              "diamond",
 
             label:
               "Diamond Nameplate",
 
             icon:
               "◆"
+
+          };
+
+
+        default:
+
+          return null;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       GET PROFILE THEME
+    ========================================== */
+
+    function getProfileTheme(
+      equippedTheme
+    ) {
+
+      switch (
+        equippedTheme
+      ) {
+
+        case "mixing-after-dark":
+
+          return {
+
+            className:
+              "theme-mixing-after-dark",
+
+            label:
+              "Mixing After Dark",
+
+            icon:
+              "🌙"
 
           };
 
@@ -1997,6 +2231,12 @@
         );
 
 
+      const theme =
+        getProfileTheme(
+          user.equippedTheme
+        );
+
+
       const badge =
         getBadge(
           user.equippedBadge
@@ -2009,10 +2249,35 @@
         );
 
 
+      /* ==========================================
+         PROFILE CARD CLASSES
+      ========================================== */
+
+      const profileClasses = [
+        "profile-card"
+      ];
+
+
+      if (nameplate) {
+
+        profileClasses.push(
+          `nameplate-${nameplate.className}`
+        );
+
+      }
+
+
+      if (theme) {
+
+        profileClasses.push(
+          theme.className
+        );
+
+      }
+
+
       const profileCardClass =
-        nameplate
-          ? `profile-card nameplate-${nameplate.className}`
-          : "profile-card";
+        profileClasses.join(" ");
 
 
       const profileNameClass =
@@ -2172,6 +2437,29 @@
       ========================================== */
 
       let equippedHtml = "";
+
+
+      if (theme) {
+
+        equippedHtml += `
+
+          <div class="equipped-item">
+
+            <span class="equipped-item-icon">
+              ${escapeHtml(
+                theme.icon
+              )}
+            </span>
+
+            ${escapeHtml(
+              theme.label
+            )}
+
+          </div>
+
+        `;
+
+      }
 
 
       if (nameplate) {
