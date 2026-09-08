@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Staff Management — Middle Eastern Mixing</title>
+
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+
+      --surface: #191511;
+      --surface-2: #211c16;
+
+      --border: rgba(255,255,255,0.07);
+
+      --text: #f1ece4;
+      --muted: #968f84;
+
+      --accent: #d6a85c;
+      --accent-soft: rgba(214,168,92,0.12);
+
+      --success: #6fbd88;
+      --danger: #d96b6b;
+
+      --moderator: #8fa7c7;
+      --admin: #c89b57;
+      --manager: #b87ad1;
+      --owner: #d6a85c;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      background: var(--black);
+    }
+
+
+    body {
+      margin: 0;
+
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(214,168,92,0.055),
+          transparent 30%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .header {
+      position: sticky;
+
+      top: 0;
+
+      z-index: 20;
+
+      height: 72px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        rgba(11,10,8,0.82);
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+
+    .header-inner {
+      width:
+        min(
+          1180px,
+          calc(100% - 40px)
+        );
+
+      height: 100%;
+
+      margin: 0 auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+    }
+
+
+    .brand {
+      display: flex;
+
+      align-items: center;
+
+      gap: 11px;
+
+      font-weight: 700;
+    }
+
+
+    .brand img {
+      width: 34px;
+
+      height: 34px;
+
+      border-radius: 9px;
+
+      object-fit: cover;
+    }
+
+
+    .brand-text {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 2px;
+    }
+
+
+    .brand-title {
+      font-size: 14px;
+    }
+
+
+    .brand-subtitle {
+      color: var(--accent);
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.12em;
+    }
+
+
+    .header-links {
+      display: flex;
+
+      align-items: center;
+
+      gap: 18px;
+    }
+
+
+    .header-link {
+      color: var(--muted);
+
+      font-size: 13px;
+
+      transition:
+        color 0.2s ease;
+    }
+
+
+    .header-link:hover {
+      color: var(--text);
+    }
+
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    .page {
+      width:
+        min(
+          1180px,
+          calc(100% - 40px)
+        );
+
+      margin: 0 auto;
+
+      padding:
+        46px 0 80px;
+    }
+
+
+    .eyebrow {
+      color: var(--accent);
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.14em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 9px;
+    }
+
+
+    h1 {
+      margin: 0;
+
+      font-size:
+        clamp(
+          28px,
+          4vw,
+          40px
+        );
+
+      letter-spacing: -0.035em;
+    }
+
+
+    .intro {
+      margin:
+        10px 0 0;
+
+      max-width: 680px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.6;
+    }
+
+
+    /* ==========================================
+       TOP BAR
+    ========================================== */
+
+    .top-bar {
+      margin-top: 28px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .back {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    .back:hover {
+      color: var(--text);
+    }
+
+
+    /* ==========================================
+       ADD STAFF CARD
+    ========================================== */
+
+    .add-card {
+      margin-top: 18px;
+
+      padding: 22px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .card-title {
+      margin: 0;
+
+      font-size: 15px;
+
+      font-weight: 700;
+    }
+
+
+    .card-description {
+      margin:
+        6px 0 20px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+
+    .form-row {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        220px
+        auto;
+
+      gap: 10px;
+
+      align-items: end;
+    }
+
+
+    .field {
+      min-width: 0;
+    }
+
+
+    .field-label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.09em;
+    }
+
+
+    .input,
+    .select {
+      width: 100%;
+
+      height: 42px;
+
+      padding:
+        0 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 9px;
+
+      outline: none;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--text);
+
+      font-size: 13px;
+
+      transition:
+        border-color 0.2s ease;
+    }
+
+
+    .input:focus,
+    .select:focus {
+      border-color:
+        rgba(214,168,92,0.45);
+    }
+
+
+    .select {
+      cursor: pointer;
+    }
+
+
+    .button {
+      height: 42px;
+
+      padding:
+        0 18px;
+
+      border: 0;
+
+      border-radius: 9px;
+
+      background:
+        var(--accent);
+
+      color:
+        #17120c;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+
+
+    .button:hover {
+      opacity: 0.9;
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    .button:disabled {
+      opacity: 0.45;
+
+      cursor: not-allowed;
+
+      transform: none;
+    }
+
+
+    /* ==========================================
+       STAFF SECTION
+    ========================================== */
+
+    .section-header {
+      margin:
+        38px 0 14px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .section-title {
+      margin: 0;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      color: var(--muted);
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.1em;
+    }
+
+
+    .staff-count {
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+
+    /* ==========================================
+       STAFF LIST
+    ========================================== */
+
+    .staff-list {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 9px;
+    }
+
+
+    .staff-row {
+      min-height: 76px;
+
+      padding:
+        13px 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+
+      background:
+        var(--surface);
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        auto
+        auto;
+
+      align-items: center;
+
+      gap: 18px;
+    }
+
+
+    .staff-info {
+      min-width: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+    }
+
+
+    .staff-avatar {
+      width: 40px;
+
+      height: 40px;
+
+      flex: 0 0 40px;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .staff-name {
+      font-size: 13px;
+
+      font-weight: 700;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+
+    .staff-id {
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+
+    /* ==========================================
+       ROLE BADGES
+    ========================================== */
+
+    .role-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-width: 82px;
+
+      padding:
+        6px 10px;
+
+      border-radius: 7px;
+
+      font-size: 9px;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.08em;
+    }
+
+
+    .role-moderator {
+      color:
+        var(--moderator);
+
+      background:
+        rgba(143,167,199,0.10);
+
+      border:
+        1px solid
+        rgba(143,167,199,0.15);
+    }
+
+
+    .role-admin {
+      color:
+        var(--admin);
+
+      background:
+        rgba(200,155,87,0.10);
+
+      border:
+        1px solid
+        rgba(200,155,87,0.15);
+    }
+
+
+    .role-manager {
+      color:
+        var(--manager);
+
+      background:
+        rgba(184,122,209,0.10);
+
+      border:
+        1px solid
+        rgba(184,122,209,0.15);
+    }
+
+
+    .role-owner {
+      color:
+        var(--owner);
+
+      background:
+        var(--accent-soft);
+
+      border:
+        1px solid
+        rgba(214,168,92,0.18);
+    }
+
+
+    /* ==========================================
+       ACTIONS
+    ========================================== */
+
+    .actions {
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+    }
+
+
+    .action-button {
+      height: 34px;
+
+      padding:
+        0 10px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 8px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--muted);
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+
+    .action-button:hover {
+      color:
+        var(--text);
+
+      border-color:
+        rgba(255,255,255,0.13);
+    }
+
+
+    .remove-button:hover {
+      color:
+        var(--danger);
+
+      border-color:
+        rgba(217,107,107,0.25);
+
+      background:
+        rgba(217,107,107,0.06);
+    }
+
+
+    .owner-label {
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    /* ==========================================
+       EMPTY / LOADING
+    ========================================== */
+
+    .empty {
+      padding:
+        45px 20px;
+
+      border:
+        1px dashed var(--border);
+
+      border-radius: 12px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    .loading {
+      padding:
+        45px 20px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    .toast {
+      position: fixed;
+
+      right: 22px;
+
+      bottom: 22px;
+
+      z-index: 100;
+
+      max-width: 360px;
+
+      padding:
+        13px 16px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        var(--surface-2);
+
+      box-shadow:
+        0 12px 40px rgba(0,0,0,0.35);
+
+      color:
+        var(--text);
+
+      font-size: 12px;
+
+      opacity: 0;
+
+      transform:
+        translateY(10px);
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+
+
+    .toast.show {
+      opacity: 1;
+
+      transform:
+        translateY(0);
+    }
+
+
+    .toast.success {
+      border-color:
+        rgba(111,189,136,0.25);
+    }
+
+
+    .toast.error {
+      border-color:
+        rgba(217,107,107,0.25);
+    }
+
+
+    /* ==========================================
+       MODAL
+    ========================================== */
+
+    .modal-backdrop {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 80;
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+      background:
+        rgba(0,0,0,0.65);
+
+      backdrop-filter:
+        blur(7px);
+    }
+
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+
+    .modal {
+      width:
+        min(
+          420px,
+          100%
+        );
+
+      padding: 22px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background:
+        var(--surface);
+
+      box-shadow:
+        0 25px 80px
+        rgba(0,0,0,0.45);
+    }
+
+
+    .modal h2 {
+      margin: 0;
+
+      font-size: 17px;
+    }
+
+
+    .modal p {
+      margin:
+        8px 0 20px;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+
+    .modal-actions {
+      display: flex;
+
+      justify-content: flex-end;
+
+      gap: 8px;
+
+      margin-top: 18px;
+    }
+
+
+    .secondary-button {
+      height: 40px;
+
+      padding:
+        0 14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 8px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--muted);
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 760px) {
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+
+      .staff-row {
+        grid-template-columns:
+          minmax(0, 1fr)
+          auto;
+      }
+
+
+      .staff-row > .actions {
+        grid-column: 1 / -1;
+      }
+
+    }
+
+
+    @media (max-width: 560px) {
+
+      .header-inner,
+      .page {
+        width:
+          calc(100% - 24px);
+      }
+
+
+      .header-links {
+        gap: 10px;
+      }
+
+
+      .header-link {
+        font-size: 11px;
+      }
+
+
+      .staff-row {
+        grid-template-columns: 1fr;
+      }
+
+
+      .role-badge {
+        justify-self: start;
+      }
+
+
+      .actions {
+        flex-wrap: wrap;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- ========================================
+       HEADER
+  ========================================= -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+
+      <a
+        href="/admin"
+        class="brand"
+      >
+
+        <img
+          src="/logo.gif"
+          alt=""
+        >
+
+        <div class="brand-text">
+
+          <div class="brand-title">
+            Middle Eastern Mixing
+          </div>
+
+          <div class="brand-subtitle">
+            Administration
+          </div>
+
+        </div>
+
+      </a>
+
+
+      <div class="header-links">
+
+        <a
+          href="/admin"
+          class="header-link"
+        >
+          Dashboard
+        </a>
+
+        <a
+          href="/"
+          class="header-link"
+        >
+          Back to site
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ========================================
+       PAGE
+  ========================================= -->
+
+  <main class="page">
+
+
+    <div class="eyebrow">
+      Staff Management
+    </div>
+
+
+    <h1>
+      Staff
+    </h1>
+
+
+    <p class="intro">
+      Manage the people who have access to
+      the Middle Eastern Mixing administration
+      system.
+    </p>
+
+
+    <div class="top-bar">
+
+      <a
+        href="/admin"
+        class="back"
+      >
+        ← Admin Dashboard
+      </a>
+
+    </div>
+
+
+    <!-- ======================================
+         ADD STAFF
+    ======================================= -->
+
+    <section class="add-card">
+
+      <h2 class="card-title">
+        Add Staff Member
+      </h2>
+
+
+      <p class="card-description">
+        Add an existing minigames user by their
+        Discord user ID and assign their staff role.
+      </p>
+
+
+      <form
+        id="addStaffForm"
+        class="form-row"
+      >
+
+
+        <div class="field">
+
+          <label
+            class="field-label"
+            for="discordId"
+          >
+            Discord User ID
+          </label>
+
+          <input
+            id="discordId"
+            class="input"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="123456789012345678"
+            maxlength="20"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label
+            class="field-label"
+            for="role"
+          >
+            Staff Role
+          </label>
+
+          <select
+            id="role"
+            class="select"
+            required
+          >
+
+            <option value="moderator">
+              Moderator
+            </option>
+
+            <option value="admin">
+              Admin
+            </option>
+
+            <option value="manager">
+              Manager
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          id="addButton"
+          class="button"
+          type="submit"
+        >
+          Add Staff
+        </button>
+
+
+      </form>
+
+    </section>
+
+
+    <!-- ======================================
+         STAFF LIST
+    ======================================= -->
+
+    <div class="section-header">
+
+      <h2 class="section-title">
+        Current Staff
+      </h2>
+
+      <div
+        id="staffCount"
+        class="staff-count"
+      >
+        Loading...
+      </div>
+
+    </div>
+
+
+    <div
+      id="staffList"
+      class="staff-list"
+    >
+
+      <div class="loading">
+        Loading staff...
+      </div>
+
+    </div>
+
+
+  </main>
+
+
+  <!-- ========================================
+       ROLE MODAL
+  ========================================= -->
+
+  <div
+    id="roleModal"
+    class="modal-backdrop"
+  >
+
+    <div class="modal">
+
+      <h2>
+        Change Staff Role
+      </h2>
+
+
+      <p>
+        Select the new role for this staff member.
+      </p>
+
+
+      <div class="field">
+
+        <label
+          class="field-label"
+          for="newRole"
+        >
+          New Role
+        </label>
+
+
+        <select
+          id="newRole"
+          class="select"
+        >
+
+          <option value="moderator">
+            Moderator
+          </option>
+
+          <option value="admin">
+            Admin
+          </option>
+
+          <option value="manager">
+            Manager
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="modal-actions">
+
+        <button
+          id="cancelRole"
+          class="secondary-button"
+          type="button"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          id="confirmRole"
+          class="button"
+          type="button"
+        >
+          Update Role
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================
+       TOAST
+  ========================================= -->
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+
+  <script>
+
+    const API =
+      "https://api.memplace.xyz";
+
+
+    let currentStaff = null;
+
+    let selectedStaffId = null;
+
+
+    /* ==========================================
+       ELEMENTS
+    ========================================== */
+
+    const staffList =
+      document.getElementById(
+        "staffList"
+      );
+
+    const staffCount =
+      document.getElementById(
+        "staffCount"
+      );
+
+    const addForm =
+      document.getElementById(
+        "addStaffForm"
+      );
+
+    const discordIdInput =
+      document.getElementById(
+        "discordId"
+      );
+
+    const roleInput =
+      document.getElementById(
+        "role"
+      );
+
+    const addButton =
+      document.getElementById(
+        "addButton"
+      );
+
+    const roleModal =
+      document.getElementById(
+        "roleModal"
+      );
+
+    const newRoleInput =
+      document.getElementById(
+        "newRole"
+      );
+
+    const cancelRole =
+      document.getElementById(
+        "cancelRole"
+      );
+
+    const confirmRole =
+      document.getElementById(
+        "confirmRole"
+      );
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    let toastTimer = null;
+
+
+    function showToast(
+      message,
+      type = "success"
+    ) {
+
+      toast.textContent =
+        message;
+
+      toast.className =
+        "toast " +
+        type +
+        " show";
+
+
+      clearTimeout(
+        toastTimer
+      );
+
+
+      toastTimer =
+        setTimeout(() => {
+
+          toast.className =
+            "toast";
+
+        }, 3500);
+
+    }
+
+
+    /* ==========================================
+       LOAD CURRENT STAFF USER
+    ========================================== */
+
+    async function loadCurrentStaff() {
+
+      const response =
+        await fetch(
+          API + "/api/admin/me",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.staff
+      ) {
+
+        window.location.href =
+          "/";
+
+        return false;
+
+      }
+
+
+      currentStaff =
+        data;
+
+
+      /*
+       * Only users with the staff permission
+       * can manage this page.
+       */
+
+      const canManageStaff =
+        data.role === "owner" ||
+        (
+          Array.isArray(
+            data.permissions
+          ) &&
+          data.permissions.includes(
+            "staff"
+          )
+        );
+
+
+      if (!canManageStaff) {
+
+        document.body.innerHTML = `
+
+          <div
+            style="
+              min-height:100vh;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              padding:24px;
+              color:#968f84;
+              background:#0b0a08;
+              font-family:system-ui,sans-serif;
+              text-align:center;
+            "
+          >
+
+            <div>
+
+              <h2
+                style="
+                  color:#f1ece4;
+                  margin:0 0 8px;
+                "
+              >
+                Access denied
+              </h2>
+
+              <p>
+                You do not have permission
+                to manage staff.
+              </p>
+
+              <a
+                href="/admin"
+                style="
+                  color:#d6a85c;
+                "
+              >
+                Return to admin
+              </a>
+
+            </div>
+
+          </div>
+
+        `;
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+
+    /* ==========================================
+       LOAD STAFF
+    ========================================== */
+
+    async function loadStaff() {
+
+      staffList.innerHTML = `
+
+        <div class="loading">
+          Loading staff...
+        </div>
+
+      `;
+
+
+      try {
+
+        const response =
+          await fetch(
+            API + "/api/admin/staff",
+            {
+              method: "GET",
+
+              credentials: "include",
+
+              cache: "no-store"
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.error ||
+            "Unable to load staff."
+          );
+
+        }
+
+
+        renderStaff(
+          Array.isArray(data.staff)
+            ? data.staff
+            : []
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "STAFF LOAD ERROR:",
+          error
+        );
+
+
+        staffList.innerHTML = `
+
+          <div class="empty">
+
+            Unable to load staff.
+
+          </div>
+
+        `;
+
+
+        showToast(
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       RENDER STAFF
+    ========================================== */
+
+    function renderStaff(
+      staffMembers
+    ) {
+
+      staffCount.textContent =
+        `${staffMembers.length} ${
+          staffMembers.length === 1
+            ? "member"
+            : "members"
+        }`;
+
+
+      if (!staffMembers.length) {
+
+        staffList.innerHTML = `
+
+          <div class="empty">
+            No staff members found.
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      /*
+       * Highest role first.
+       */
+
+      const roleOrder = {
+        owner: 4,
+        manager: 3,
+        admin: 2,
+        moderator: 1
+      };
+
+
+      staffMembers.sort(
+        (a, b) =>
+          (
+            roleOrder[b.role] || 0
+          ) -
+          (
+            roleOrder[a.role] || 0
+          )
+      );
+
+
+      staffList.innerHTML =
+        staffMembers
+          .map(
+            member =>
+              renderStaffMember(
+                member
+              )
+          )
+          .join("");
+
+
+      document
+        .querySelectorAll(
+          "[data-role-button]"
+        )
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              openRoleModal(
+                button.dataset.id,
+                button.dataset.role
+              );
+
+            }
+          );
+
+        });
+
+
+      document
+        .querySelectorAll(
+          "[data-remove-button]"
+        )
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              removeStaff(
+                button.dataset.id,
+                button.dataset.name
+              );
+
+            }
+          );
+
+        });
+
+    }
+
+
+    /* ==========================================
+       RENDER STAFF MEMBER
+    ========================================== */
+
+    function renderStaffMember(
+      member
+    ) {
+
+      const role =
+        String(
+          member.role || ""
+        ).toLowerCase();
+
+
+      const roleClass =
+        `role-${role}`;
+
+
+      const displayName =
+        member.username ||
+        member.discordUsername ||
+        "Unknown User";
+
+
+      const canManage =
+        canManageTarget(
+          role
+        );
+
+
+      /*
+       * Discord avatar cannot be retrieved
+       * from the current admin/staff API because
+       * it only stores the user's account data.
+       *
+       * Use logo until we expose avatar in
+       * the staff endpoint.
+       */
+
+      const avatar =
+        "/logo.gif";
+
+
+      const actions =
+        role === "owner"
+          ? `
+            <div class="owner-label">
+              Protected
+            </div>
+          `
+          : canManage
+            ? `
+
+              <div class="actions">
+
+                <button
+                  class="action-button"
+                  data-role-button
+                  data-id="${escapeAttribute(member.id)}"
+                  data-role="${escapeAttribute(role)}"
+                >
+                  Change Role
+                </button>
+
+                <button
+                  class="action-button remove-button"
+                  data-remove-button
+                  data-id="${escapeAttribute(member.id)}"
+                  data-name="${escapeAttribute(displayName)}"
+                >
+                  Remove
+                </button>
+
+              </div>
+
+            `
+            : `
+              <div class="owner-label">
+                Protected
+              </div>
+            `;
+
+
+      return `
+
+        <div class="staff-row">
+
+          <div class="staff-info">
+
+            <img
+              class="staff-avatar"
+              src="${avatar}"
+              alt=""
+            >
+
+            <div>
+
+              <div class="staff-name">
+                ${escapeHtml(
+                  displayName
+                )}
+              </div>
+
+              <div class="staff-id">
+                ${escapeHtml(
+                  member.id
+                )}
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="
+              role-badge
+              ${roleClass}
+            "
+          >
+            ${escapeHtml(role)}
+          </div>
+
+
+          ${actions}
+
+        </div>
+
+      `;
+
+    }
+
+
+    /* ==========================================
+       ROLE HIERARCHY
+    ========================================== */
+
+    function getRoleLevel(
+      role
+    ) {
+
+      const levels = {
+
+        moderator: 1,
+
+        admin: 2,
+
+        manager: 3,
+
+        owner: 4
+
+      };
+
+
+      return (
+        levels[role] || 0
+      );
+
+    }
+
+
+    function canManageTarget(
+      targetRole
+    ) {
+
+      if (!currentStaff) {
+        return false;
+      }
+
+
+      if (
+        currentStaff.role === "owner"
+      ) {
+
+        return targetRole !== "owner";
+
+      }
+
+
+      return (
+        getRoleLevel(
+          currentStaff.role
+        ) >
+        getRoleLevel(
+          targetRole
+        )
+      );
+
+    }
+
+
+    /* ==========================================
+       ADD STAFF
+    ========================================== */
+
+    addForm.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        const discordId =
+          discordIdInput
+            .value
+            .trim();
+
+
+        const role =
+          roleInput
+            .value
+            .trim();
+
+
+        if (
+          !/^\d{17,20}$/.test(
+            discordId
+          )
+        ) {
+
+          showToast(
+            "Enter a valid Discord user ID.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        addButton.disabled =
+          true;
+
+        addButton.textContent =
+          "Adding...";
+
+
+        try {
+
+          const response =
+            await fetch(
+              API + "/api/admin/staff",
+              {
+                method: "POST",
+
+                credentials: "include",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                  discordId,
+                  role
+                })
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if (
+            !response.ok ||
+            !data.success
+          ) {
+
+            throw new Error(
+              data.error ||
+              "Unable to add staff member."
+            );
+
+          }
+
+
+          showToast(
+            "Staff member added."
+          );
+
+
+          discordIdInput.value =
+            "";
+
+
+          roleInput.value =
+            "moderator";
+
+
+          await loadStaff();
+
+
+        } catch (error) {
+
+          console.error(
+            "ADD STAFF ERROR:",
+            error
+          );
+
+
+          showToast(
+            error.message,
+            "error"
+          );
+
+        } finally {
+
+          addButton.disabled =
+            false;
+
+          addButton.textContent =
+            "Add Staff";
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       ROLE MODAL
+    ========================================== */
+
+    function openRoleModal(
+      id,
+      currentRole
+    ) {
+
+      selectedStaffId =
+        id;
+
+
+      newRoleInput.value =
+        currentRole;
+
+
+      roleModal.classList.add(
+        "open"
+      );
+
+    }
+
+
+    function closeRoleModal() {
+
+      selectedStaffId =
+        null;
+
+      roleModal.classList.remove(
+        "open"
+      );
+
+    }
+
+
+    cancelRole.addEventListener(
+      "click",
+      closeRoleModal
+    );
+
+
+    roleModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          roleModal
+        ) {
+
+          closeRoleModal();
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       UPDATE ROLE
+    ========================================== */
+
+    confirmRole.addEventListener(
+      "click",
+      async () => {
+
+        if (!selectedStaffId) {
+          return;
+        }
+
+
+        const role =
+          newRoleInput.value;
+
+
+        confirmRole.disabled =
+          true;
+
+        confirmRole.textContent =
+          "Updating...";
+
+
+        try {
+
+          const response =
+            await fetch(
+              API + "/api/admin/staff",
+              {
+                method: "PATCH",
+
+                credentials: "include",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+
+                  discordId:
+                    selectedStaffId,
+
+                  role
+
+                })
+
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if (
+            !response.ok ||
+            !data.success
+          ) {
+
+            throw new Error(
+              data.error ||
+              "Unable to update role."
+            );
+
+          }
+
+
+          closeRoleModal();
+
+
+          showToast(
+            "Staff role updated."
+          );
+
+
+          await loadStaff();
+
+
+        } catch (error) {
+
+          console.error(
+            "ROLE UPDATE ERROR:",
+            error
+          );
+
+
+          showToast(
+            error.message,
+            "error"
+          );
+
+        } finally {
+
+          confirmRole.disabled =
+            false;
+
+          confirmRole.textContent =
+            "Update Role";
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       REMOVE STAFF
+    ========================================== */
+
+    async function removeStaff(
+      id,
+      name
+    ) {
+
+      const confirmed =
+        window.confirm(
+          `Remove ${name} from staff?`
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            API + "/api/admin/staff",
+            {
+              method: "DELETE",
+
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                discordId: id
+              })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.error ||
+            "Unable to remove staff member."
+          );
+
+        }
+
+
+        showToast(
+          "Staff member removed."
+        );
+
+
+        await loadStaff();
+
+
+      } catch (error) {
+
+        console.error(
+          "REMOVE STAFF ERROR:",
+          error
+        );
+
+
+        showToast(
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       HTML ESCAPING
+    ========================================== */
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(
+        value ?? ""
+      )
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
+
+    }
+
+
+    function escapeAttribute(
+      value
+    ) {
+
+      return escapeHtml(
+        value
+      );
+
+    }
+
+
+    /* ==========================================
+       START
+    ========================================== */
+
+    async function init() {
+
+      try {
+
+        const authorized =
+          await loadCurrentStaff();
+
+
+        if (!authorized) {
+          return;
+        }
+
+
+        await loadStaff();
+
+
+      } catch (error) {
+
+        console.error(
+          "STAFF INIT ERROR:",
+          error
+        );
+
+
+        showToast(
+          "Unable to initialize staff management.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    init();
+
+  </script>
+
+
+</body>
+
+</html>
