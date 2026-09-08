@@ -3776,6 +3776,761 @@ body.theme-sword .sword-sound-prompt {
 
 }
 
+
+/* ==========================================
+   SAKURA THEME VARIABLES
+========================================== */
+
+html.theme-sakura,
+body.theme-sakura {
+
+  --black: #080a16;
+  --black-2: rgba(12,14,30,0.72);
+  --black-3: rgba(20,22,42,0.72);
+
+  --surface: rgba(18,20,40,0.68);
+  --surface-2: rgba(25,27,50,0.72);
+  --surface-3: rgba(34,36,62,0.76);
+
+  --border:
+    rgba(255,182,203,0.16);
+
+  --border-hover:
+    rgba(255,182,203,0.32);
+
+  --text:
+    #fff8fb;
+
+  --text-2:
+    rgba(255,235,242,0.74);
+
+  --text-3:
+    rgba(255,210,225,0.48);
+
+  --accent:
+    #ff9fba;
+
+  --accent-soft:
+    rgba(255,159,186,0.12);
+
+  --success:
+    #91d9ad;
+
+  --danger:
+    #ef7f96;
+
+  --page-glow:
+    rgba(255,130,165,0.12);
+
+  --header-bg:
+    rgba(8,10,22,0.72);
+
+  --button-text:
+    #28131b;
+}
+
+
+/* ==========================================
+   SAKURA BACKGROUND
+========================================== */
+
+.sakura-theme-background {
+
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(255,170,195,0.13),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #080a18 0%,
+      #0c1022 45%,
+      #10152a 100%
+    );
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transition:
+    opacity .5s ease;
+
+}
+
+
+/* ==========================================
+   SAKURA BACKGROUND GLOW
+========================================== */
+
+.sakura-theme-background::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: -20%;
+
+  background:
+
+    radial-gradient(
+      circle at 20% 25%,
+      rgba(255,170,195,0.10),
+      transparent 22%
+    ),
+
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255,210,225,0.08),
+      transparent 24%
+    ),
+
+    radial-gradient(
+      circle at 50% 80%,
+      rgba(130,145,220,0.08),
+      transparent 30%
+    );
+
+  pointer-events: none;
+
+}
+
+
+/* ==========================================
+   SAKURA PETAL DECORATION
+========================================== */
+
+.sakura-theme-background::after {
+
+  content:
+    "✿    ❀       ✿        ❀    ✿       ❀";
+
+  position: absolute;
+
+  top: 8%;
+  left: -5%;
+
+  width: 110%;
+
+  color:
+    rgba(255,185,207,0.16);
+
+  font-size: 26px;
+
+  letter-spacing: 42px;
+
+  white-space: nowrap;
+
+  transform:
+    rotate(-7deg);
+
+  pointer-events: none;
+
+}
+
+
+/* ==========================================
+   ENABLE SAKURA BACKGROUND
+========================================== */
+
+body.theme-sakura
+.sakura-theme-background {
+
+  opacity: 1;
+
+}
+
+
+/* ==========================================
+   SAKURA PAGE
+========================================== */
+
+body.theme-sakura {
+
+  background:
+    #080a16;
+
+  color:
+    var(--text);
+
+}
+
+
+/* ==========================================
+   CONTENT ABOVE BACKGROUND
+========================================== */
+
+body.theme-sakura .header,
+body.theme-sakura .page,
+body.theme-sakura .footer {
+
+  position: relative;
+
+  z-index: 2;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+body.theme-sakura .header {
+
+  background:
+    rgba(8,10,22,0.68);
+
+  border-bottom:
+    1px solid
+    rgba(255,182,203,0.12);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 10px 40px
+    rgba(3,5,18,0.35);
+
+}
+
+
+/* ==========================================
+   BRAND
+========================================== */
+
+body.theme-sakura .brand img {
+
+  box-shadow:
+
+    0 0 0 1px
+    rgba(255,182,203,0.18),
+
+    0 0 28px
+    rgba(255,140,175,0.12);
+
+}
+
+
+/* ==========================================
+   NAV
+========================================== */
+
+body.theme-sakura .nav-link:hover {
+
+  background:
+    rgba(255,182,203,0.08);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(255,182,203,0.08);
+
+}
+
+
+body.theme-sakura .nav-link.active {
+
+  color:
+    #ffdce7;
+
+  background:
+    rgba(255,159,186,0.12);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(255,182,203,0.14);
+
+}
+
+
+/* ==========================================
+   ACCOUNT
+========================================== */
+
+body.theme-sakura .balance,
+body.theme-sakura .user-button {
+
+  background:
+    rgba(12,14,30,0.62);
+
+  border-color:
+    rgba(255,182,203,0.14);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  box-shadow:
+    0 8px 25px
+    rgba(3,5,18,0.28);
+
+}
+
+
+/* ==========================================
+   PROFILE CARD
+========================================== */
+
+body.theme-sakura .profile-card {
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(255,182,203,0.075),
+      rgba(10,12,28,0.68)
+    );
+
+  border-color:
+    rgba(255,182,203,0.18);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+
+    inset 0 1px 0
+    rgba(255,220,230,0.08),
+
+    0 20px 70px
+    rgba(3,5,18,0.48);
+
+}
+
+
+/* ==========================================
+   PROFILE CARD DECORATION
+========================================== */
+
+body.theme-sakura
+.profile-card::before {
+
+  content:
+    "桜";
+
+  position:
+    absolute;
+
+  right:
+    22px;
+
+  bottom:
+    -24px;
+
+  color:
+    rgba(255,182,203,0.035);
+
+  font-size:
+    150px;
+
+  font-weight:
+    900;
+
+  line-height:
+    1;
+
+  pointer-events:
+    none;
+
+}
+
+
+body.theme-sakura
+.profile-card::after {
+
+  content:
+    "✿  ·  ❀  ·  ✿";
+
+  position:
+    absolute;
+
+  right:
+    28px;
+
+  top:
+    15px;
+
+  color:
+    rgba(255,182,203,0.18);
+
+  font-size:
+    13px;
+
+  letter-spacing:
+    7px;
+
+  pointer-events:
+    none;
+
+}
+
+
+/* ==========================================
+   AVATAR
+========================================== */
+
+body.theme-sakura
+.profile-avatar {
+
+  border-color:
+    rgba(255,182,203,0.24);
+
+  box-shadow:
+
+    0 0 0 4px
+    rgba(255,159,186,0.045),
+
+    0 0 30px
+    rgba(255,130,165,0.13);
+
+}
+
+
+/* ==========================================
+   PROFILE NAME
+========================================== */
+
+body.theme-sakura
+.profile-name:not(.gold):not(.royal):not(.diamond) {
+
+  color:
+    #fff7fa;
+
+  text-shadow:
+    0 0 25px
+    rgba(255,170,195,0.14);
+
+}
+
+
+/* ==========================================
+   PROFILE TITLE
+========================================== */
+
+body.theme-sakura
+.profile-title {
+
+  color:
+    #ffc4d5;
+
+  text-shadow:
+
+    0 0 7px
+    rgba(255,159,186,0.55),
+
+    0 0 18px
+    rgba(255,130,165,0.22);
+
+}
+
+
+body.theme-sakura
+.profile-title-icon {
+
+  color:
+    #ffb5cb;
+
+  text-shadow:
+
+    0 0 8px
+    rgba(255,182,203,0.75),
+
+    0 0 18px
+    rgba(255,130,165,0.35);
+
+}
+
+
+/* ==========================================
+   EQUIPPED ITEMS
+========================================== */
+
+body.theme-sakura
+.equipped-item {
+
+  background:
+    rgba(255,182,203,0.045);
+
+  border-color:
+    rgba(255,182,203,0.13);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+}
+
+
+body.theme-sakura
+.equipped-item-icon {
+
+  color:
+    #ffb5cb;
+
+}
+
+
+/* ==========================================
+   BALANCE
+========================================== */
+
+body.theme-sakura
+.balance-card {
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(255,182,203,0.08),
+      rgba(10,12,28,0.70)
+    );
+
+  border-color:
+    rgba(255,182,203,0.15);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  box-shadow:
+    0 15px 45px
+    rgba(3,5,18,0.36);
+
+}
+
+
+/* ==========================================
+   STAT CARDS
+========================================== */
+
+body.theme-sakura
+.stat-card,
+body.theme-sakura
+.financial-card {
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,182,203,0.055),
+      rgba(10,12,28,0.68)
+    );
+
+  border-color:
+    rgba(255,182,203,0.12);
+
+  backdrop-filter:
+    blur(11px);
+
+  -webkit-backdrop-filter:
+    blur(11px);
+
+  box-shadow:
+    0 15px 45px
+    rgba(3,5,18,0.32);
+
+}
+
+
+body.theme-sakura
+.stat-card:hover,
+body.theme-sakura
+.financial-card:hover {
+
+  border-color:
+    rgba(255,182,203,0.27);
+
+  box-shadow:
+
+    0 18px 50px
+    rgba(3,5,18,0.40),
+
+    0 0 25px
+    rgba(255,159,186,0.06);
+
+}
+
+
+/* ==========================================
+   CHESS CARD
+========================================== */
+
+body.theme-sakura
+.chess-card {
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,182,203,0.06),
+      rgba(10,12,28,0.72)
+    );
+
+  border-color:
+    rgba(255,182,203,0.14);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  box-shadow:
+    0 15px 50px
+    rgba(3,5,18,0.36);
+
+}
+
+
+body.theme-sakura
+.chess-icon {
+
+  background:
+    rgba(255,182,203,0.06);
+
+  border-color:
+    rgba(255,182,203,0.13);
+
+  box-shadow:
+    inset 0 0 20px
+    rgba(255,159,186,0.05);
+
+}
+
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+body.theme-sakura
+.action-button {
+
+  background:
+    rgba(10,12,28,0.54);
+
+  border-color:
+    rgba(255,182,203,0.14);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+}
+
+
+body.theme-sakura
+.action-button:hover {
+
+  background:
+    rgba(255,159,186,0.10);
+
+  border-color:
+    rgba(255,182,203,0.28);
+
+  box-shadow:
+    0 8px 28px
+    rgba(3,5,18,0.35);
+
+}
+
+
+body.theme-sakura
+.action-button.primary {
+
+  background:
+    #ffb3c8;
+
+  color:
+    #28131b;
+
+  border-color:
+    #ffb3c8;
+
+  box-shadow:
+    0 8px 30px
+    rgba(255,159,186,0.16);
+
+}
+
+
+body.theme-sakura
+.action-button.primary:hover {
+
+  background:
+    #ffc4d5;
+
+}
+
+
+/* ==========================================
+   LOADING / ERROR
+========================================== */
+
+body.theme-sakura
+.loading,
+body.theme-sakura
+.login-required {
+
+  color:
+    rgba(255,235,242,0.72);
+
+}
+
+
+body.theme-sakura
+.error {
+
+  color:
+    #ff8fa8;
+
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+body.theme-sakura
+.footer {
+
+  border-top-color:
+    rgba(255,182,203,0.11);
+
+}
+
+
+body.theme-sakura
+.footer-links a:hover {
+
+  color:
+    #ffc4d5;
+
+}
+
     </style>
   
 </head>
@@ -4315,7 +5070,8 @@ body.theme-sword .sword-sound-prompt {
     body.classList.remove(
       "theme-mixing-after-dark",
       "theme-hello-kitty",
-      "theme-sword"
+      "theme-sword",
+      "theme-sakura"
     );
 
 
@@ -4346,6 +5102,21 @@ body.theme-sword .sword-sound-prompt {
 
       body.classList.add(
         "theme-hello-kitty"
+      );
+
+    }
+
+    if (
+      equippedTheme ===
+      "sakura-theme"
+    ) {
+
+      html.classList.add(
+        "theme-sakura"
+      );
+
+      body.classList.add(
+        "theme-sakura"
       );
 
     }
@@ -4396,10 +5167,7 @@ if (
 
   async function loadStaffStatus() {
 
-    /*
-     * Public profiles receive staff information
-     * directly from /api/profile.
-     */
+
     if (isPublicProfile) {
       return null;
     }
@@ -4574,13 +5342,6 @@ if (
         currentUser =
           data.profile;
 
-
-        /*
-         * IMPORTANT:
-         *
-         * Do NOT erase the public user's
-         * Discord ID or staff information.
-         */
 
         currentUser.id =
           data.profile.id ||
@@ -4858,12 +5619,6 @@ if (
     }
 
 
-    /*
-     * We intentionally don't put the
-     * public user's avatar into the
-     * logged-in header.
-     */
-
   }
 
 
@@ -5039,6 +5794,21 @@ if (
 
           icon:
             "⚔️"
+
+        };
+
+     case "sakura-theme":
+
+        return {
+
+          className:
+            "theme-sakura",
+
+          label:
+            "Sakura Theme",
+
+          icon:
+            "🌸"
 
         };
 
