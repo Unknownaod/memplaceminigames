@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Shop — Middle Eastern Mixing</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191611;
+
+      --surface: #191611;
+      --surface-2: #211d17;
+      --surface-3: #282219;
+
+      --border: rgba(255,255,255,.08);
+      --border-hover: rgba(255,255,255,.16);
+
+      --text: #f4eee5;
+      --muted: #9d958b;
+
+      --accent: #d5b36a;
+      --accent-2: #b99348;
+
+      --danger: #d96b6b;
+      --success: #76c893;
+
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(213,179,106,.08),
+          transparent 35%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    header {
+      height: 72px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        rgba(11,10,8,.88);
+
+      backdrop-filter: blur(18px);
+
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+
+      height: 100%;
+
+      margin: 0 auto;
+
+      padding: 0 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      font-weight: 700;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 10px;
+
+      object-fit: cover;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 14px;
+    }
+
+    .brand-subtitle {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    nav a {
+      padding: 9px 12px;
+
+      border-radius: 10px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      transition: .2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--text);
+      background: rgba(255,255,255,.05);
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .balance {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 8px 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.03);
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .coin {
+      color: var(--accent);
+    }
+
+    .login-btn,
+    .profile-btn {
+      padding: 9px 13px;
+
+      border-radius: 10px;
+
+      border: 1px solid var(--border);
+
+      background: var(--surface);
+
+      color: var(--text);
+
+      cursor: pointer;
+
+      font-size: 13px;
+    }
+
+    .profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-btn img {
+      width: 24px;
+      height: 24px;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+    }
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    main {
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 54px 24px 80px;
+    }
+
+    .page-heading {
+      margin-bottom: 34px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+
+      text-transform: uppercase;
+
+      letter-spacing: .14em;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size: clamp(32px, 5vw, 48px);
+
+      letter-spacing: -.035em;
+    }
+
+    .page-heading p {
+      max-width: 650px;
+
+      margin: 12px 0 0;
+
+      color: var(--muted);
+
+      line-height: 1.65;
+
+      font-size: 15px;
+    }
+
+    /* ==========================================
+       SHOP GRID
+    ========================================== */
+
+    .shop-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+    .shop-card {
+      min-width: 0;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.035),
+          rgba(255,255,255,.015)
+        );
+
+      border:
+        1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      padding: 22px;
+
+      display: flex;
+      flex-direction: column;
+
+      min-height: 290px;
+
+      transition:
+        transform .2s,
+        border-color .2s,
+        background .2s;
+    }
+
+    .shop-card:hover {
+      transform: translateY(-3px);
+
+      border-color:
+        var(--border-hover);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.055),
+          rgba(255,255,255,.02)
+        );
+    }
+
+    .item-icon {
+      width: 54px;
+      height: 54px;
+
+      border-radius: 14px;
+
+      display: grid;
+      place-items: center;
+
+      background:
+        rgba(213,179,106,.09);
+
+      border:
+        1px solid rgba(213,179,106,.16);
+
+      color: var(--accent);
+
+      font-size: 25px;
+
+      margin-bottom: 20px;
+    }
+
+    .item-type {
+      color: var(--muted);
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .12em;
+
+      margin-bottom: 7px;
+    }
+
+    .item-name {
+      margin: 0;
+
+      font-size: 18px;
+    }
+
+    .item-description {
+      margin: 9px 0 20px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.55;
+
+      flex: 1;
+    }
+
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+    }
+
+    .price {
+      color: var(--accent);
+
+      font-size: 15px;
+
+      font-weight: 700;
+    }
+
+    .buy-btn {
+      border: 0;
+
+      border-radius: 10px;
+
+      padding: 10px 15px;
+
+      background:
+        var(--accent);
+
+      color: #17130d;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: .2s;
+    }
+
+    .buy-btn:hover {
+      background: #e1c27d;
+
+      transform: translateY(-1px);
+    }
+
+    .buy-btn:disabled {
+      cursor: not-allowed;
+
+      opacity: .5;
+
+      transform: none;
+    }
+
+    .owned-btn {
+      border:
+        1px solid rgba(118,200,147,.2);
+
+      background:
+        rgba(118,200,147,.08);
+
+      color:
+        var(--success);
+
+      cursor: default;
+    }
+
+    /* ==========================================
+       EMPTY / LOADING
+    ========================================== */
+
+    .state {
+      grid-column: 1 / -1;
+
+      padding: 70px 20px;
+
+      text-align: center;
+
+      border:
+        1px dashed var(--border);
+
+      border-radius: var(--radius);
+
+      color: var(--muted);
+    }
+
+    .state strong {
+      display: block;
+
+      color: var(--text);
+
+      margin-bottom: 7px;
+    }
+
+    /* ==========================================
+       MODAL
+    ========================================== */
+
+    .modal-backdrop {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 100;
+
+      background:
+        rgba(0,0,0,.72);
+
+      backdrop-filter:
+        blur(10px);
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 430px;
+
+      background:
+        var(--surface-2);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 18px;
+
+      padding: 25px;
+
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.5);
+    }
+
+    .modal-icon {
+      width: 58px;
+      height: 58px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 15px;
+
+      background:
+        rgba(213,179,106,.1);
+
+      color: var(--accent);
+
+      font-size: 26px;
+
+      margin-bottom: 18px;
+    }
+
+    .modal h2 {
+      margin: 0;
+
+      font-size: 22px;
+    }
+
+    .modal p {
+      margin: 9px 0 22px;
+
+      color: var(--muted);
+
+      line-height: 1.55;
+
+      font-size: 14px;
+    }
+
+    .modal-price {
+      display: flex;
+
+      justify-content: space-between;
+
+      padding: 14px 0;
+
+      border-top:
+        1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
+
+      margin-bottom: 20px;
+
+      font-size: 14px;
+    }
+
+    .modal-price strong {
+      color: var(--accent);
+    }
+
+    .modal-actions {
+      display: flex;
+
+      gap: 10px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+
+      border-radius: 10px;
+
+      padding: 11px;
+
+      cursor: pointer;
+    }
+
+    .cancel-btn {
+      border:
+        1px solid var(--border);
+
+      background:
+        transparent;
+
+      color: var(--text);
+    }
+
+    .confirm-btn {
+      border: 0;
+
+      background: var(--accent);
+
+      color: #17130d;
+
+      font-weight: 700;
+    }
+
+    .error {
+      color: var(--danger);
+
+      font-size: 13px;
+
+      margin-top: 13px;
+
+      display: none;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 950px) {
+      .shop-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .header-inner {
+        padding: 0 15px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      main {
+        padding:
+          38px 15px 60px;
+      }
+
+      .shop-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .balance {
+        display: none;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="header-inner">
+
+    <a
+      href="/"
+      class="brand"
+    >
+
+      <img
+        src="/logo.gif"
+        alt=""
+      >
+
+      <div class="brand-text">
+
+        <div class="brand-title">
+          Middle Eastern Mixing
+        </div>
+
+        <div class="brand-subtitle">
+          Minigames
+        </div>
+
+      </div>
+
+    </a>
+
+    <nav>
+
+      <a href="/games">
+        Games
+      </a>
+
+      <a href="/leaderboard">
+        Leaderboard
+      </a>
+
+      <a
+        href="/shop"
+        class="active"
+      >
+        Shop
+      </a>
+
+      <a href="/daily">
+        Daily
+      </a>
+
+    </nav>
+
+    <div
+      class="account"
+      id="account"
+    >
+
+      <a
+        class="login-btn"
+        href="https://api.memplace.xyz/api/auth/login"
+        id="loginButton"
+      >
+        Login
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <section class="page-heading">
+
+    <div class="eyebrow">
+      Marketplace
+    </div>
+
+    <h1>
+      Shop
+    </h1>
+
+    <p>
+      Spend your winnings on exclusive items
+      for your Minigames profile.
+    </p>
+
+  </section>
+
+
+  <section
+    class="shop-grid"
+    id="shopGrid"
+  >
+
+    <div class="state">
+
+      <strong>
+        Loading shop...
+      </strong>
+
+      Please wait.
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- ==========================================
+     PURCHASE MODAL
+========================================== -->
+
+<div
+  class="modal-backdrop"
+  id="purchaseModal"
+>
+
+  <div class="modal">
+
+    <div
+      class="modal-icon"
+      id="modalIcon"
+    >
+      ✦
+    </div>
+
+    <h2 id="modalName">
+      Purchase Item
+    </h2>
+
+    <p id="modalDescription">
+      Are you sure you want to purchase this item?
+    </p>
+
+    <div class="modal-price">
+
+      <span>
+        Cost
+      </span>
+
+      <strong id="modalPrice">
+        0 coins
+      </strong>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        class="cancel-btn"
+        id="cancelPurchase"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="confirm-btn"
+        id="confirmPurchase"
+      >
+        Purchase
+      </button>
+
+    </div>
+
+    <div
+      class="error"
+      id="purchaseError"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const API =
+  "https://api.memplace.xyz";
+
+
+let currentUser = null;
+
+let shopItems = [];
+
+let ownedItems =
+  new Set();
+
+let selectedItem = null;
+
+let purchasing = false;
+
+
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const shopGrid =
+  document.getElementById(
+    "shopGrid"
+  );
+
+const account =
+  document.getElementById(
+    "account"
+  );
+
+const purchaseModal =
+  document.getElementById(
+    "purchaseModal"
+  );
+
+const modalIcon =
+  document.getElementById(
+    "modalIcon"
+  );
+
+const modalName =
+  document.getElementById(
+    "modalName"
+  );
+
+const modalDescription =
+  document.getElementById(
+    "modalDescription"
+  );
+
+const modalPrice =
+  document.getElementById(
+    "modalPrice"
+  );
+
+const purchaseError =
+  document.getElementById(
+    "purchaseError"
+  );
+
+const confirmPurchase =
+  document.getElementById(
+    "confirmPurchase"
+  );
+
+const cancelPurchase =
+  document.getElementById(
+    "cancelPurchase"
+  );
+
+
+/* ==========================================
+   ESCAPE HTML
+========================================== */
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* ==========================================
+   LOAD CURRENT USER
+========================================== */
+
+async function loadCurrentUser() {
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/api/user/me`,
+        {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store"
+        }
+      );
+
+    if (!response.ok) {
+
+      currentUser = null;
+
+      renderLoggedOut();
+
+      return false;
+
+    }
+
+    const data =
+      await response.json();
+
+    if (
+      !data.success ||
+      !data.authenticated ||
+      !data.user
+    ) {
+
+      currentUser = null;
+
+      renderLoggedOut();
+
+      return false;
+
+    }
+
+    currentUser =
+      data.user;
+
+    renderLoggedIn();
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "USER LOAD ERROR:",
+      error
+    );
+
+    currentUser = null;
+
+    renderLoggedOut();
+
+    return false;
+
+  }
+
+}
+
+
+/* ==========================================
+   ACCOUNT
+========================================== */
+
+function renderLoggedOut() {
+
+  account.innerHTML = `
+    <a
+      class="login-btn"
+      href="${API}/api/auth/login"
+    >
+      Login
+    </a>
+  `;
+
+}
+
+
+function renderLoggedIn() {
+
+  const avatar =
+    currentUser.avatar
+      ? `https://cdn.discordapp.com/avatars/${encodeURIComponent(currentUser.id)}/${encodeURIComponent(currentUser.avatar)}.png?size=64`
+      : "/logo.gif";
+
+  account.innerHTML = `
+
+    <div class="balance">
+
+      <span class="coin">
+        ◆
+      </span>
+
+      <span>
+        ${Number(currentUser.balance || 0).toLocaleString()}
+      </span>
+
+    </div>
+
+    <a
+      class="profile-btn"
+      href="/profile"
+    >
+
+      <img
+        src="${avatar}"
+        alt=""
+      >
+
+      <span>
+        ${escapeHtml(
+          currentUser.username ||
+          currentUser.discordUsername ||
+          "Profile"
+        )}
+      </span>
+
+    </a>
+
+  `;
+
+}
+
+
+/* ==========================================
+   LOAD SHOP ITEMS
+========================================== */
+
+async function loadShopItems() {
+
+  const response =
+    await fetch(
+      `${API}/api/shop/items`,
+      {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store"
+      }
+    );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to load shop."
+    );
+  }
+
+  const data =
+    await response.json();
+
+  if (!data.success) {
+    throw new Error(
+      data.error ||
+      "Failed to load shop."
+    );
+  }
+
+  shopItems =
+    Array.isArray(data.items)
+      ? data.items
+      : [];
+
+}
+
+
+/* ==========================================
+   LOAD INVENTORY
+========================================== */
+
+async function loadInventory() {
+
+  ownedItems =
+    new Set();
+
+  if (!currentUser) {
+    return;
+  }
+
+  const response =
+    await fetch(
+      `${API}/api/shop/inventory`,
+      {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store"
+      }
+    );
+
+  if (!response.ok) {
+    return;
+  }
+
+  const data =
+    await response.json();
+
+  if (!data.success) {
+    return;
+  }
+
+  for (
+    const item of
+    data.inventory || []
+  ) {
+
+    ownedItems.add(
+      item.itemId
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   RENDER SHOP
+========================================== */
+
+function renderShop() {
+
+  if (!shopItems.length) {
+
+    shopGrid.innerHTML = `
+
+      <div class="state">
+
+        <strong>
+          Shop is empty
+        </strong>
+
+        There are currently no items
+        available for purchase.
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  shopGrid.innerHTML =
+    shopItems.map(item => {
+
+      const owned =
+        ownedItems.has(item.id);
+
+      const type =
+        String(item.type || "cosmetic")
+          .replaceAll("_", " ");
+
+
+      return `
+
+        <article
+          class="shop-card"
+        >
+
+          <div class="item-icon">
+            ${escapeHtml(
+              item.icon || "✦"
+            )}
+          </div>
+
+          <div class="item-type">
+            ${escapeHtml(type)}
+          </div>
+
+          <h2 class="item-name">
+            ${escapeHtml(item.name)}
+          </h2>
+
+          <p class="item-description">
+            ${escapeHtml(
+              item.description || ""
+            )}
+          </p>
+
+          <div class="item-footer">
+
+            <div class="price">
+              ◆
+              ${Number(item.price || 0).toLocaleString()}
+            </div>
+
+            ${
+              owned
+
+              ? `
+
+                <button
+                  class="buy-btn owned-btn"
+                  disabled
+                >
+                  Owned
+                </button>
+
+              `
+
+              : `
+
+                <button
+                  class="buy-btn"
+                  data-item-id="${escapeHtml(item.id)}"
+                >
+                  Buy
+                </button>
+
+              `
+            }
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+
+
+  shopGrid
+    .querySelectorAll(
+      "[data-item-id]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const item =
+            shopItems.find(
+              entry =>
+                entry.id ===
+                button.dataset.itemId
+            );
+
+          if (item) {
+            openPurchaseModal(item);
+          }
+
+        }
+      );
+
+    });
+
+}
+
+
+/* ==========================================
+   PURCHASE MODAL
+========================================== */
+
+function openPurchaseModal(item) {
+
+  if (!currentUser) {
+
+    window.location.href =
+      `${API}/api/auth/login`;
+
+    return;
+
+  }
+
+  selectedItem = item;
+
+  modalIcon.textContent =
+    item.icon || "✦";
+
+  modalName.textContent =
+    item.name;
+
+  modalDescription.textContent =
+    item.description ||
+    "Are you sure you want to purchase this item?";
+
+  modalPrice.textContent =
+    `◆ ${Number(item.price || 0).toLocaleString()}`;
+
+  purchaseError.textContent = "";
+
+  purchaseError.classList.remove(
+    "show"
+  );
+
+  confirmPurchase.disabled =
+    false;
+
+  confirmPurchase.textContent =
+    "Purchase";
+
+  purchaseModal.classList.add(
+    "open"
+  );
+
+}
+
+
+function closePurchaseModal() {
+
+  if (purchasing) {
+    return;
+  }
+
+  selectedItem = null;
+
+  purchaseModal.classList.remove(
+    "open"
+  );
+
+}
+
+
+cancelPurchase.addEventListener(
+  "click",
+  closePurchaseModal
+);
+
+
+purchaseModal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      purchaseModal
+    ) {
+      closePurchaseModal();
+    }
+
+  }
+);
+
+
+/* ==========================================
+   PURCHASE
+========================================== */
+
+async function purchaseItem() {
+
+  if (
+    purchasing ||
+    !selectedItem ||
+    !currentUser
+  ) {
+    return;
+  }
+
+  purchasing = true;
+
+  confirmPurchase.disabled =
+    true;
+
+  confirmPurchase.textContent =
+    "Purchasing...";
+
+  purchaseError.classList.remove(
+    "show"
+  );
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/api/shop/purchase`,
+        {
+          method: "POST",
+
+          credentials: "include",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            itemId:
+              selectedItem.id
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "Purchase failed."
+      );
+
+    }
+
+    if (!data.success) {
+
+      throw new Error(
+        data.error ||
+        "Purchase failed."
+      );
+
+    }
+
+
+    currentUser.balance =
+      Number(data.balance || 0);
+
+
+    ownedItems.add(
+      selectedItem.id
+    );
+
+
+    closePurchaseModal();
+
+    renderLoggedIn();
+
+    renderShop();
+
+
+  } catch (error) {
+
+    console.error(
+      "PURCHASE ERROR:",
+      error
+    );
+
+    purchaseError.textContent =
+      error.message ||
+      "Purchase failed.";
+
+    purchaseError.classList.add(
+      "show"
+    );
+
+    confirmPurchase.disabled =
+      false;
+
+    confirmPurchase.textContent =
+      "Purchase";
+
+  } finally {
+
+    purchasing = false;
+
+  }
+
+}
+
+
+confirmPurchase.addEventListener(
+  "click",
+  purchaseItem
+);
+
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+
+async function initShop() {
+
+  try {
+
+    await loadCurrentUser();
+
+    await loadShopItems();
+
+    await loadInventory();
+
+    renderShop();
+
+  } catch (error) {
+
+    console.error(
+      "SHOP LOAD ERROR:",
+      error
+    );
+
+    shopGrid.innerHTML = `
+
+      <div class="state">
+
+        <strong>
+          Unable to load shop
+        </strong>
+
+        Please refresh the page
+        and try again.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+initShop();
+
+</script>
+
+</body>
+</html>
