@@ -103,6 +103,10 @@
   {
   "source": "/admin/daily",
   "destination": "/admin-daily.html"
+  },
+  {
+  "source": "/inventory",
+  "destination": "/inventory.html"
   }
   ]
 }
