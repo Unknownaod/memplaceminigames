@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Games — Middle Eastern Mixing</title>
+
+  <link rel="icon" href="/logo.gif">
+
+  <style>
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191611;
+
+      --surface: #191611;
+      --surface-2: #211d17;
+      --surface-3: #29231c;
+
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.14);
+
+      --text: #f5f1e8;
+      --text-2: #aaa398;
+      --text-3: #746e65;
+
+      --accent: #d7a84f;
+      --accent-2: #b98a35;
+
+      --success: #68c18a;
+      --danger: #d96c6c;
+
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--black);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(215,168,79,0.08),
+          transparent 35%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      height: 70px;
+
+      background: rgba(11,10,8,0.92);
+      backdrop-filter: blur(16px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      width: min(1200px, calc(100% - 40px));
+      height: 100%;
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+
+      border-radius: 9px;
+
+      object-fit: cover;
+    }
+
+    .brand span {
+      font-size: 15px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      margin-left: auto;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 9px 12px;
+
+      color: var(--text-2);
+
+      border-radius: 9px;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      transition:
+        color .15s ease,
+        background .15s ease;
+    }
+
+    .nav-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav-link.active {
+      color: var(--accent);
+      background: rgba(215,168,79,0.08);
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .balance {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 8px 11px;
+
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .coin {
+      color: var(--accent);
+    }
+
+    .login {
+      padding: 9px 13px;
+
+      border-radius: 9px;
+
+      background: var(--accent);
+      color: #17120a;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .user-button {
+      display: none;
+
+      align-items: center;
+      gap: 8px;
+
+      padding: 4px 9px 4px 4px;
+
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .user-button img {
+      width: 29px;
+      height: 29px;
+
+      border-radius: 8px;
+    }
+
+    .user-name {
+      max-width: 100px;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    .page {
+      width: min(1200px, calc(100% - 40px));
+
+      margin: 0 auto;
+
+      padding: 54px 0 70px;
+    }
+
+    .page-header {
+      margin-bottom: 34px;
+    }
+
+    .eyebrow {
+      margin-bottom: 9px;
+
+      color: var(--accent);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.05;
+
+      letter-spacing: -0.035em;
+    }
+
+    .page-description {
+      max-width: 650px;
+
+      margin: 13px 0 0;
+
+      color: var(--text-2);
+
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ==========================================
+       GAME GRID
+    ========================================== */
+
+    .games-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+    .game-card {
+      position: relative;
+
+      min-height: 255px;
+
+      padding: 24px;
+
+      display: flex;
+      flex-direction: column;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.025),
+          transparent 60%
+        ),
+        var(--surface);
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      overflow: hidden;
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        background .18s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-3px);
+
+      border-color: var(--border-hover);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(215,168,79,0.055),
+          transparent 65%
+        ),
+        var(--surface);
+    }
+
+    .game-card.featured {
+      border-color: rgba(215,168,79,0.24);
+    }
+
+    .game-card.coming-soon {
+      opacity: .72;
+    }
+
+    .game-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .game-icon {
+      width: 54px;
+      height: 54px;
+
+      display: grid;
+      place-items: center;
+
+      background: var(--surface-3);
+
+      border: 1px solid var(--border);
+      border-radius: 14px;
+
+      font-size: 27px;
+    }
+
+    .game-status {
+      padding: 5px 8px;
+
+      border-radius: 7px;
+
+      background: rgba(104,193,138,0.10);
+      color: var(--success);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .game-status.soon {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-3);
+    }
+
+    .game-card h2 {
+      margin: 22px 0 7px;
+
+      font-size: 19px;
+      letter-spacing: -0.02em;
+    }
+
+    .game-description {
+      margin: 0;
+
+      color: var(--text-2);
+
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .game-footer {
+      margin-top: auto;
+      padding-top: 21px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .game-type {
+      color: var(--text-3);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .play-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+
+      min-width: 91px;
+
+      padding: 9px 13px;
+
+      background: var(--accent);
+      color: #17120a;
+
+      border: 0;
+      border-radius: 9px;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        background .15s ease,
+        transform .15s ease;
+    }
+
+    .play-button:hover {
+      background: #e0b45d;
+      transform: translateY(-1px);
+    }
+
+    .play-button svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .disabled-button {
+      min-width: 91px;
+
+      padding: 9px 13px;
+
+      background: rgba(255,255,255,0.045);
+      color: var(--text-3);
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      text-align: center;
+    }
+
+    /* ==========================================
+       BOTTOM INFO
+    ========================================== */
+
+    .info-panel {
+      margin-top: 28px;
+
+      padding: 21px 23px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .info-content h3 {
+      margin: 0 0 5px;
+
+      font-size: 14px;
+    }
+
+    .info-content p {
+      margin: 0;
+
+      color: var(--text-2);
+
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .info-link {
+      flex-shrink: 0;
+
+      color: var(--accent);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+
+    .footer {
+      width: min(1200px, calc(100% - 40px));
+
+      margin: 0 auto;
+
+      padding: 24px 0 35px;
+
+      border-top: 1px solid var(--border);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      color: var(--text-3);
+
+      font-size: 11px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-2);
+    }
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 900px) {
+      .games-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .nav-link span {
+        display: none;
+      }
+
+      .nav-link {
+        padding: 9px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .header-inner,
+      .page,
+      .footer {
+        width: min(100% - 28px, 1200px);
+      }
+
+      .header {
+        height: 62px;
+      }
+
+      .brand span {
+        display: none;
+      }
+
+      .balance {
+        display: none;
+      }
+
+      .page {
+        padding-top: 38px;
+      }
+
+      .games-grid {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+      }
+
+      .game-card {
+        min-height: 225px;
+      }
+
+      .info-panel {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================
+       HEADER
+  ========================================== -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a href="/" class="brand">
+
+        <img
+          src="/logo.gif"
+          alt="Middle Eastern Mixing"
+        >
+
+        <span>
+          Middle Eastern Mixing
+        </span>
+
+      </a>
+
+
+      <nav class="nav">
+
+        <a
+          href="/games"
+          class="nav-link active"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect
+              x="3"
+              y="6"
+              width="18"
+              height="12"
+              rx="3"
+            />
+            <path d="M8 10v4M6 12h4" />
+            <circle cx="16.5" cy="11" r="1" />
+            <circle cx="18.5" cy="13" r="1" />
+          </svg>
+
+          <span>Games</span>
+        </a>
+
+
+        <a
+          href="/leaderboard"
+          class="nav-link"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M8 21h8" />
+            <path d="M12 17v4" />
+            <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" />
+            <path d="M7 7H4v1a4 4 0 0 0 4 4" />
+            <path d="M17 7h3v1a4 4 0 0 1-4 4" />
+          </svg>
+
+          <span>Leaderboard</span>
+        </a>
+
+
+        <a
+          href="/shop"
+          class="nav-link"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 8h12l1 12H5L6 8Z" />
+            <path d="M9 8a3 3 0 0 1 6 0" />
+          </svg>
+
+          <span>Shop</span>
+        </a>
+
+      </nav>
+
+
+      <div class="account">
+
+        <div
+          id="balance"
+          class="balance"
+        >
+          <span class="coin">◆</span>
+          <span id="balanceValue">—</span>
+        </div>
+
+
+        <a
+          id="loginButton"
+          class="login"
+          href="https://api.memplace.xyz/api/auth/login"
+        >
+          Login
+        </a>
+
+
+        <a
+          id="userButton"
+          class="user-button"
+          href="/profile"
+        >
+          <img
+            id="userAvatar"
+            src=""
+            alt=""
+          >
+
+          <span
+            id="userName"
+            class="user-name"
+          >
+            —
+          </span>
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ==========================================
+       MAIN
+  ========================================== -->
+
+  <main class="page">
+
+    <section class="page-header">
+
+      <div class="eyebrow">
+        Middle Eastern Mixing
+      </div>
+
+      <h1>
+        Games
+      </h1>
+
+      <p class="page-description">
+        Choose a game and put your balance on the line.
+        More games are being added regularly.
+      </p>
+
+    </section>
+
+
+    <section class="games-grid">
+
+
+      <!-- CHESS -->
+
+      <article class="game-card featured">
+
+        <div class="game-top">
+
+          <div class="game-icon">
+            ♟
+          </div>
+
+          <div class="game-status">
+            Available
+          </div>
+
+        </div>
+
+
+        <h2>
+          Chess
+        </h2>
+
+        <p class="game-description">
+          Challenge another player to a competitive
+          chess match. Wager currency and fight for
+          the pot.
+        </p>
+
+
+        <div class="game-footer">
+
+          <span class="game-type">
+            2 Players
+          </span>
+
+          <a
+            href="/chess"
+            class="play-button"
+          >
+            Play
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- BLACKJACK -->
+
+      <article class="game-card">
+
+        <div class="game-top">
+
+          <div class="game-icon">
+            🃏
+          </div>
+
+          <div class="game-status">
+            Available
+          </div>
+
+        </div>
+
+
+        <h2>
+          Blackjack
+        </h2>
+
+        <p class="game-description">
+          Play against the house, manage your hand,
+          and try to get as close to 21 as possible
+          without going over.
+        </p>
+
+
+        <div class="game-footer">
+
+          <span class="game-type">
+            Casino
+          </span>
+
+          <a
+            href="/blackjack"
+            class="play-button"
+          >
+            Play
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- SLOTS -->
+
+      <article class="game-card">
+
+        <div class="game-top">
+
+          <div class="game-icon">
+            🎰
+          </div>
+
+          <div class="game-status">
+            Available
+          </div>
+
+        </div>
+
+
+        <h2>
+          Slots
+        </h2>
+
+        <p class="game-description">
+          Spin the reels and match symbols for
+          different payouts. Simple, fast, and
+          completely luck based.
+        </p>
+
+
+        <div class="game-footer">
+
+          <span class="game-type">
+            Casino
+          </span>
+
+          <a
+            href="/slots"
+            class="play-button"
+          >
+            Play
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- DICE -->
+
+      <article class="game-card">
+
+        <div class="game-top">
+
+          <div class="game-icon">
+            🎲
+          </div>
+
+          <div class="game-status">
+            Available
+          </div>
+
+        </div>
+
+
+        <h2>
+          Dice
+        </h2>
+
+        <p class="game-description">
+          Pick your prediction and roll the dice.
+          The server handles the result and payout
+          securely.
+        </p>
+
+
+        <div class="game-footer">
+
+          <span class="game-type">
+            Casino
+          </span>
+
+          <a
+            href="/dice"
+            class="play-button"
+          >
+            Play
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- DUELS -->
+
+      <article class="game-card">
+
+        <div class="game-top">
+
+          <div class="game-icon">
+            ⚔️
+          </div>
+
+          <div class="game-status">
+            Available
+          </div>
+
+        </div>
+
+
+        <h2>
+          Duels
+        </h2>
+
+        <p class="game-description">
+          Challenge another player to a high-roll
+          duel. Both players wager and the higher
+          roll takes the pot.
+        </p>
+
+
+        <div class="game-footer">
+
+          <span class="game-type">
+            2 Players
+          </span>
+
+          <a
+            href="/duels"
+            class="play-button"
+          >
+            Play
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- TRIVIA -->
+
+      <article class="game-card">
+
+        <div class="game-top">
+
+          <div class="game-icon">
+            🧠
+          </div>
+
+          <div class="game-status">
+            Available
+          </div>
+
+        </div>
+
+
+        <h2>
+          Trivia
+        </h2>
+
+        <p class="game-description">
+          Test your knowledge with timed questions.
+          Build streaks and earn rewards for correct
+          answers.
+        </p>
+
+
+        <div class="game-footer">
+
+          <span class="game-type">
+            Knowledge
+          </span>
+
+          <a
+            href="/trivia"
+            class="play-button"
+          >
+            Play
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- FUTURE GAME -->
+
+      <article class="game-card coming-soon">
+
+        <div class="game-top">
+
+          <div class="game-icon">
+            🏆
+          </div>
+
+          <div class="game-status soon">
+            Coming Soon
+          </div>
+
+        </div>
+
+
+        <h2>
+          More Games
+        </h2>
+
+        <p class="game-description">
+          New games and game modes will be added
+          to Middle Eastern Mixing as the platform
+          grows.
+        </p>
+
+
+        <div class="game-footer">
+
+          <span class="game-type">
+            In Development
+          </span>
+
+          <div class="disabled-button">
+            Soon
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <section class="info-panel">
+
+      <div class="info-content">
+
+        <h3>
+          More games are coming
+        </h3>
+
+        <p>
+          We're continuing to expand the game
+          selection. Check back for new ways to
+          play and compete.
+        </p>
+
+      </div>
+
+
+      <a
+        href="/"
+        class="info-link"
+      >
+        Back to home →
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==========================================
+       FOOTER
+  ========================================== -->
+
+  <footer class="footer">
+
+    <span>
+      © 2026 Middle Eastern Mixing
+    </span>
+
+
+    <div class="footer-links">
+
+      <a href="/terms">
+        Terms
+      </a>
+
+      <a href="/privacy">
+        Privacy
+      </a>
+
+      <a href="/support">
+        Support
+      </a>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ==========================================
+       USER / BALANCE
+  ========================================== -->
+
+  <script>
+
+    const API_URL =
+      "https://api.memplace.xyz";
+
+
+    async function loadCurrentUser() {
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL + "/api/user/me",
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+
+
+        if (!response.ok) {
+
+          document
+            .getElementById("loginButton")
+            .style.display = "block";
+
+          document
+            .getElementById("userButton")
+            .style.display = "none";
+
+          return;
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !data.success ||
+          !data.authenticated ||
+          !data.user
+        ) {
+
+          return;
+
+        }
+
+
+        const user =
+          data.user;
+
+
+        document
+          .getElementById("loginButton")
+          .style.display = "none";
+
+
+        document
+          .getElementById("userButton")
+          .style.display = "flex";
+
+
+        document
+          .getElementById("userName")
+          .textContent =
+            user.username ||
+            user.discordUsername ||
+            "User";
+
+
+        document
+          .getElementById("balanceValue")
+          .textContent =
+            Number(user.balance || 0)
+              .toLocaleString();
+
+
+        if (
+          user.id &&
+          user.avatar
+        ) {
+
+          document
+            .getElementById("userAvatar")
+            .src =
+              "https://cdn.discordapp.com/avatars/" +
+              user.id +
+              "/" +
+              user.avatar +
+              ".png?size=64";
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Failed to load user:",
+          error
+        );
+
+      }
+
+    }
+
+
+    loadCurrentUser();
+
+
+    /*
+      Keep the balance reasonably fresh.
+    */
+
+    setInterval(
+      loadCurrentUser,
+      10000
+    );
+
+  </script>
+
+</body>
+</html>
