@@ -134,19 +134,13 @@
 
     /* ==========================================
        MIXING AFTER DARK
-       ENTIRE PAGE THEME
     ========================================== */
 
     body.theme-mixing-after-dark {
 
-      --surface:
-        #171016;
-
-      --surface-2:
-        #21151e;
-
-      --surface-3:
-        #2b1a26;
+      --surface: #171016;
+      --surface-2: #21151e;
+      --surface-3: #2b1a26;
 
       --border:
         rgba(213,179,106,.13);
@@ -154,32 +148,20 @@
       --border-hover:
         rgba(213,179,106,.28);
 
-      --text:
-        #f7eee9;
+      --text: #f7eee9;
+      --muted: #b4a2aa;
+      --muted-2: #85727c;
 
-      --muted:
-        #b4a2aa;
+      --accent: #e1b967;
+      --accent-2: #b9864b;
 
-      --muted-2:
-        #85727c;
-
-      --accent:
-        #e1b967;
-
-      --accent-2:
-        #b9864b;
-
-      --theme-primary:
-        #e1b967;
-
-      --theme-secondary:
-        #9a3f68;
+      --theme-primary: #e1b967;
+      --theme-secondary: #9a3f68;
 
       --theme-glow:
         rgba(143,55,92,.20);
 
-      --theme-bg:
-        #0d090c;
+      --theme-bg: #0d090c;
 
       background:
 
@@ -355,9 +337,7 @@
 
 
     .brand-title {
-
       font-size: 14px;
-
     }
 
 
@@ -465,10 +445,7 @@
 
 
     .coin {
-
-      color:
-        var(--accent);
-
+      color: var(--accent);
     }
 
 
@@ -1967,6 +1944,9 @@
 
     .success-item {
 
+      position:
+        relative;
+
       width:
         115px;
 
@@ -2543,7 +2523,7 @@
 
     <p>
       Spend your winnings on exclusive items,
-      profile cosmetics, badges, and themes.
+      profile cosmetics, badges, titles, and themes.
     </p>
 
   </section>
@@ -2619,6 +2599,46 @@
     <div
       class="shop-grid"
       id="cosmeticsGrid"
+    ></div>
+
+  </section>
+
+
+  <!-- ==========================================
+       PROFILE TITLES
+  ========================================== -->
+
+  <section
+    class="shop-section"
+    id="titlesSection"
+    style="display:none;"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h2 class="section-title">
+          Profile Titles
+        </h2>
+
+        <p class="section-description">
+          Exclusive titles displayed beneath your username.
+        </p>
+
+      </div>
+
+      <div
+        class="section-count"
+        id="titlesCount"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="shop-grid"
+      id="titlesGrid"
     ></div>
 
   </section>
@@ -2705,7 +2725,47 @@
 
 
   <!-- ==========================================
-       EMPTY / LOADING
+       OTHER
+  ========================================== -->
+
+  <section
+    class="shop-section"
+    id="otherSection"
+    style="display:none;"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h2 class="section-title">
+          Other
+        </h2>
+
+        <p class="section-description">
+          Additional items available in the marketplace.
+        </p>
+
+      </div>
+
+      <div
+        class="section-count"
+        id="otherCount"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="shop-grid"
+      id="otherGrid"
+    ></div>
+
+  </section>
+
+
+  <!-- ==========================================
+       EMPTY
   ========================================== -->
 
   <section
@@ -3295,7 +3355,7 @@ async function loadInventory() {
     if (item.itemId) {
 
       ownedItems.add(
-        item.itemId
+        String(item.itemId)
       );
 
     }
@@ -3306,16 +3366,47 @@ async function loadInventory() {
 
 
 /* ==========================================
-   ITEM TYPE
+   ITEM TYPE LABEL
 ========================================== */
 
-function getItemType(
+function getItemTypeLabel(
   item
 ) {
 
-  return String(
-    item.type ||
-    "cosmetic"
+  const type =
+    String(
+      item.type ||
+      "other"
+    );
+
+
+  const labels = {
+
+    profile_cosmetic:
+      "Profile Cosmetic",
+
+    profile_badge:
+      "Profile Badge",
+
+    profile_title:
+      "Profile Title",
+
+    profile_theme:
+      "Profile Theme"
+
+  };
+
+
+  return (
+    labels[type] ||
+    type
+      .replaceAll(
+        "_",
+        " "
+      )
+      .replace(/\b\w/g, char =>
+        char.toUpperCase()
+      )
   );
 
 }
@@ -3331,22 +3422,8 @@ function createShopCard(
 
   const owned =
     ownedItems.has(
-      item.id
+      String(item.id)
     );
-
-
-  const type =
-    getItemType(
-      item
-    );
-
-
-  const typeLabel =
-    type
-      .replaceAll(
-        "_",
-        " "
-      );
 
 
   const themeClass =
@@ -3377,7 +3454,7 @@ function createShopCard(
       <div class="item-type">
 
         ${escapeHtml(
-          typeLabel
+          getItemTypeLabel(item)
         )}
 
       </div>
@@ -3488,6 +3565,9 @@ function renderSection(
     section.style.display =
       "none";
 
+    grid.innerHTML =
+      "";
+
     return;
 
   }
@@ -3555,6 +3635,9 @@ function renderFeatured() {
     featuredSection.style.display =
       "none";
 
+    featuredGrid.innerHTML =
+      "";
+
     return;
 
   }
@@ -3566,7 +3649,7 @@ function renderFeatured() {
 
   const owned =
     ownedItems.has(
-      featured.id
+      String(featured.id)
     );
 
 
@@ -3692,8 +3775,45 @@ function renderShop() {
     shopItems.filter(
       item =>
         item.type ===
-        "profile_cosmetic"
+        "profile_cosmetic" &&
+        item.id !==
+        "legendary-title"
     );
+
+
+  const titles =
+    shopItems.filter(
+      item =>
+        item.type ===
+        "profile_title"
+    );
+
+
+  /*
+   * Backwards compatibility:
+   *
+   * If the old Legendary title was
+   * accidentally created as profile_cosmetic,
+   * keep it in Profile Titles instead.
+   */
+
+  const legacyTitles =
+    shopItems.filter(
+      item =>
+        item.type ===
+        "profile_cosmetic" &&
+        (
+          item.id ===
+          "legendary-title"
+        )
+    );
+
+
+  const allTitles =
+    [
+      ...titles,
+      ...legacyTitles
+    ];
 
 
   const badges =
@@ -3714,6 +3834,25 @@ function renderShop() {
     );
 
 
+  /*
+   * Anything that isn't one of the
+   * known categories goes here.
+   */
+
+  const other =
+    shopItems.filter(
+      item =>
+        ![
+          "profile_cosmetic",
+          "profile_title",
+          "profile_badge",
+          "profile_theme"
+        ].includes(
+          item.type
+        )
+    );
+
+
   renderFeatured();
 
 
@@ -3722,6 +3861,14 @@ function renderShop() {
     "cosmeticsSection",
     "cosmeticsGrid",
     "cosmeticsCount"
+  );
+
+
+  renderSection(
+    allTitles,
+    "titlesSection",
+    "titlesGrid",
+    "titlesCount"
   );
 
 
@@ -3741,15 +3888,16 @@ function renderShop() {
   );
 
 
+  renderSection(
+    other,
+    "otherSection",
+    "otherGrid",
+    "otherCount"
+  );
+
+
   const anyItems =
-    cosmetics.length ||
-    badges.length ||
-    themes.length ||
-    shopItems.some(
-      item =>
-        item.id ===
-        "mixing-after-dark"
-    );
+    shopItems.length > 0;
 
 
   document
@@ -3786,8 +3934,10 @@ function bindBuyButtons(
             const item =
               shopItems.find(
                 entry =>
-                  entry.id ===
-                  button.dataset.itemId
+                  String(entry.id) ===
+                  String(
+                    button.dataset.itemId
+                  )
               );
 
 
@@ -3828,7 +3978,7 @@ function openPurchaseModal(
 
   if (
     ownedItems.has(
-      item.id
+      String(item.id)
     )
   ) {
 
@@ -3870,12 +4020,37 @@ function openPurchaseModal(
   );
 
 
-  confirmPurchase.disabled =
-    false;
+  const price =
+    Number(
+      item.price || 0
+    );
 
 
-  confirmPurchase.textContent =
-    "Purchase";
+  const balance =
+    Number(
+      currentUser.balance || 0
+    );
+
+
+  if (
+    balance < price
+  ) {
+
+    confirmPurchase.disabled =
+      true;
+
+    confirmPurchase.textContent =
+      "Insufficient Coins";
+
+  } else {
+
+    confirmPurchase.disabled =
+      false;
+
+    confirmPurchase.textContent =
+      "Purchase";
+
+  }
 
 
   purchaseModal.classList.add(
@@ -4069,12 +4244,6 @@ function showPurchaseSuccess(
   );
 
 
-  /*
-   * Automatically close after
-   * the animation has had time
-   * to play.
-   */
-
   setTimeout(
     () => {
 
@@ -4109,12 +4278,40 @@ async function purchaseItem() {
   }
 
 
-  purchasing =
-    true;
-
-
   const item =
     selectedItem;
+
+
+  const price =
+    Number(
+      item.price || 0
+    );
+
+
+  const balance =
+    Number(
+      currentUser.balance || 0
+    );
+
+
+  if (
+    balance < price
+  ) {
+
+    purchaseError.textContent =
+      "You do not have enough coins to purchase this item.";
+
+    purchaseError.classList.add(
+      "show"
+    );
+
+    return;
+
+  }
+
+
+  purchasing =
+    true;
 
 
   confirmPurchase.disabled =
@@ -4183,23 +4380,27 @@ async function purchaseItem() {
 
 
     /*
-     * Update local user state.
+     * Update local user balance.
      */
 
     currentUser.balance =
       Number(
-        data.balance ||
+        data.balance ??
         0
       );
 
 
+    /*
+     * Mark item as owned.
+     */
+
     ownedItems.add(
-      item.id
+      String(item.id)
     );
 
 
     /*
-     * Close confirmation.
+     * Close confirmation modal.
      */
 
     purchaseModal.classList.remove(
@@ -4212,8 +4413,8 @@ async function purchaseItem() {
 
 
     /*
-     * Update account
-     * and shop immediately.
+     * Update account and
+     * shop immediately.
      */
 
     renderLoggedIn();
@@ -4222,8 +4423,7 @@ async function purchaseItem() {
 
 
     /*
-     * Show the full-screen
-     * purchase animation.
+     * Show success animation.
      */
 
     showPurchaseSuccess(
