@@ -1,354 +1,1611 @@
-import { setCors } from "../../lib/cors.js";
-import {
-  requireStaff
-} from "../../lib/staff.js";
-import {
-  createAuditLog
-} from "../../lib/audit.js";
-import {
-  getDb
-} from "../../lib/mongodb.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
 
-function cleanItem(item) {
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  if (!item) {
-    return null;
-  }
+  <title>Daily Rewards — Admin</title>
 
-  return {
-    _id: item._id,
-    name: item.name || "",
-    description: item.description || "",
-    price: Number(item.price) || 0,
-    icon: item.icon || "",
-    image: item.image || null,
-    active: item.active !== false,
-    createdAt: item.createdAt || null,
-    updatedAt: item.updatedAt || null
-  };
+  <style>
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
 
-}
+      --surface: #191511;
+      --surface-2: #211c16;
+      --surface-3: #282119;
 
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(214,168,92,0.3);
 
-export default async function handler(
-  req,
-  res
-) {
+      --text: #f3eee6;
+      --muted: #a59d91;
+      --muted-2: #756e65;
 
-  if (setCors(req, res)) {
-    return;
-  }
+      --accent: #d6a85c;
+      --accent-light: #e7c47e;
 
+      --success: #72c78b;
+      --danger: #d96c6c;
 
-  /*
-   * Every Shop admin operation requires
-   * the Shop permission.
-   */
-  const staff =
-    await requireStaff(
-      req,
-      res,
-      "shop"
-    );
+      --radius: 14px;
+    }
 
+    * {
+      box-sizing: border-box;
+    }
 
-  if (!staff) {
-    return;
-  }
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
 
+      background: var(--black);
+      color: var(--text);
+    }
 
-  const db =
-    await getDb();
+    body {
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
 
-  const collection =
-    db.collection("shop_items");
+    button,
+    input {
+      font: inherit;
+    }
 
+    button {
+      cursor: pointer;
+    }
 
-  /* ==========================================
-     GET SHOP ITEMS
-  ========================================== */
-
-  if (req.method === "GET") {
-
-    try {
-
-      const items =
-        await collection
-          .find({})
-          .sort({
-            createdAt: -1
-          })
-          .toArray();
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
 
-      return res.status(200).json({
-        success: true,
+    /* ==========================================
+       TOPBAR
+    ========================================== */
 
-        items:
-          items.map(
-            cleanItem
-          )
-      });
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
 
-    } catch (error) {
+      border-bottom: 1px solid var(--border);
 
-      console.error(
-        "ADMIN SHOP GET:",
-        error
+      background: rgba(11,10,8,0.88);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      width: min(1220px, calc(100% - 32px));
+      min-height: 68px;
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      min-width: 0;
+    }
+
+    .back-button {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface);
+
+      color: var(--muted);
+
+      transition: 0.15s ease;
+    }
+
+    .back-button:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+      background: var(--surface-2);
+    }
+
+    .page-title {
+      min-width: 0;
+    }
+
+    .page-title strong {
+      display: block;
+
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .page-title span {
+      display: block;
+
+      margin-top: 2px;
+
+      color: var(--muted-2);
+
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .staff-badge {
+      padding: 7px 10px;
+
+      border: 1px solid rgba(214,168,92,0.18);
+      border-radius: 999px;
+
+      background: rgba(214,168,92,0.07);
+
+      color: var(--accent-light);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    .page {
+      width: min(1220px, calc(100% - 32px));
+
+      margin: 0 auto;
+
+      padding: 34px 0 70px;
+    }
+
+
+    /* ==========================================
+       HERO
+    ========================================== */
+
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+
+      padding: 6px 10px;
+
+      border: 1px solid rgba(214,168,92,0.18);
+      border-radius: 999px;
+
+      background: rgba(214,168,92,0.07);
+
+      color: var(--accent-light);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 13px 0 7px;
+
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.05;
+
+      letter-spacing: -0.035em;
+    }
+
+    .hero p {
+      max-width: 720px;
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+
+    /* ==========================================
+       STATS
+    ========================================== */
+
+    .stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 14px;
+
+      margin-bottom: 26px;
+    }
+
+    .stat {
+      min-width: 0;
+
+      padding: 19px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      background: var(--surface);
+    }
+
+    .stat-label {
+      color: var(--muted-2);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .stat-value {
+      margin-top: 9px;
+
+      font-size: 25px;
+      font-weight: 850;
+
+      letter-spacing: -0.025em;
+    }
+
+
+    /* ==========================================
+       GRID
+    ========================================== */
+
+    .content-grid {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        340px;
+
+      gap: 16px;
+
+      align-items: start;
+    }
+
+
+    /* ==========================================
+       CARD
+    ========================================== */
+
+    .card {
+      min-width: 0;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      background: var(--surface);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 18px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .card-subtitle {
+      margin-top: 3px;
+
+      color: var(--muted-2);
+
+      font-size: 11px;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+
+    /* ==========================================
+       SEARCH
+    ========================================== */
+
+    .search {
+      width: 100%;
+      height: 40px;
+
+      padding: 0 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      outline: none;
+
+      background: var(--surface-2);
+
+      color: var(--text);
+
+      transition: 0.15s ease;
+    }
+
+    .search::placeholder {
+      color: var(--muted-2);
+    }
+
+    .search:focus {
+      border-color: var(--border-hover);
+    }
+
+
+    /* ==========================================
+       USER LIST
+    ========================================== */
+
+    .users {
+      display: grid;
+
+      margin-top: 14px;
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 13px 0;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .user-row:last-child {
+      border-bottom: 0;
+    }
+
+    .user-main {
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+
+      min-width: 0;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+
+      flex: 0 0 auto;
+
+      display: grid;
+      place-items: center;
+
+      overflow: hidden;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface-2);
+
+      color: var(--accent-light);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .user-info {
+      min-width: 0;
+    }
+
+    .username {
+      overflow: hidden;
+
+      color: var(--text);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .user-id {
+      margin-top: 3px;
+
+      color: var(--muted-2);
+
+      font-size: 10px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-right {
+      display: flex;
+      align-items: center;
+
+      gap: 12px;
+
+      flex: 0 0 auto;
+    }
+
+    .streak {
+      color: var(--accent-light);
+
+      font-size: 12px;
+      font-weight: 850;
+
+      white-space: nowrap;
+    }
+
+    .last-claim {
+      color: var(--muted-2);
+
+      font-size: 10px;
+
+      white-space: nowrap;
+    }
+
+
+    /* ==========================================
+       RESET BUTTON
+    ========================================== */
+
+    .reset-button {
+      height: 31px;
+
+      padding: 0 10px;
+
+      border: 1px solid rgba(217,108,108,0.2);
+      border-radius: 8px;
+
+      background: rgba(217,108,108,0.06);
+
+      color: var(--danger);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+    .reset-button:hover {
+      background: rgba(217,108,108,0.11);
+      border-color: rgba(217,108,108,0.35);
+    }
+
+
+    /* ==========================================
+       CONFIG
+    ========================================== */
+
+    .config-list {
+      display: grid;
+
+      gap: 10px;
+    }
+
+    .config-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      padding: 13px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface-2);
+    }
+
+    .config-label {
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .config-value {
+      color: var(--accent-light);
+
+      font-size: 13px;
+      font-weight: 850;
+
+      text-align: right;
+    }
+
+    .info-box {
+      margin-top: 14px;
+
+      padding: 13px;
+
+      border: 1px solid rgba(214,168,92,0.13);
+      border-radius: 10px;
+
+      background: rgba(214,168,92,0.045);
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+
+    /* ==========================================
+       EMPTY / LOADING
+    ========================================== */
+
+    .state {
+      padding: 42px 15px;
+
+      text-align: center;
+    }
+
+    .spinner {
+      width: 23px;
+      height: 23px;
+
+      margin: 0 auto 12px;
+
+      border: 2px solid rgba(255,255,255,0.08);
+      border-top-color: var(--accent);
+
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .state-title {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .state-text {
+      margin-top: 4px;
+
+      color: var(--muted-2);
+
+      font-size: 11px;
+    }
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    .toast-container {
+      position: fixed;
+
+      right: 18px;
+      bottom: 18px;
+
+      z-index: 200;
+
+      display: grid;
+      gap: 8px;
+    }
+
+    .toast {
+      min-width: 250px;
+
+      padding: 13px 15px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface-2);
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,0.4);
+
+      color: var(--text);
+
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .toast.error {
+      border-color: rgba(217,108,108,0.25);
+    }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 900px) {
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 700px) {
+
+      .stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .user-row {
+        align-items: flex-start;
+      }
+
+      .user-right {
+        flex-direction: column;
+        align-items: flex-end;
+
+        gap: 6px;
+      }
+
+    }
+
+    @media (max-width: 500px) {
+
+      .page,
+      .topbar-inner {
+        width: calc(100% - 22px);
+      }
+
+      .stats {
+        gap: 9px;
+      }
+
+      .stat {
+        padding: 14px;
+      }
+
+      .stat-value {
+        font-size: 20px;
+      }
+
+      .staff-badge {
+        display: none;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+
+    <div class="topbar-inner">
+
+      <div class="topbar-left">
+
+        <a
+          href="/admin"
+          class="back-button"
+          aria-label="Back to admin"
+        >
+          ←
+        </a>
+
+        <div class="page-title">
+
+          <strong>
+            Daily Rewards
+          </strong>
+
+          <span>
+            Daily reward management
+          </span>
+
+        </div>
+
+      </div>
+
+      <div
+        class="staff-badge"
+        id="staffRole"
+      >
+        Loading
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <main class="page">
+
+    <section class="hero">
+
+      <div class="eyebrow">
+        Admin Panel
+      </div>
+
+      <h1>
+        Daily Rewards
+      </h1>
+
+      <p>
+        Monitor daily reward activity, streaks,
+        and claim status across the minigame economy.
+      </p>
+
+    </section>
+
+
+    <!-- ========================================
+         STATS
+    ========================================= -->
+
+    <section class="stats">
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Total Accounts
+        </div>
+
+        <div
+          class="stat-value"
+          id="totalUsers"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Claimed
+        </div>
+
+        <div
+          class="stat-value"
+          id="claimedUsers"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Never Claimed
+        </div>
+
+        <div
+          class="stat-value"
+          id="neverClaimed"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Active Streaks
+        </div>
+
+        <div
+          class="stat-value"
+          id="activeStreaks"
+        >
+          —
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="content-grid">
+
+
+      <!-- ======================================
+           USERS
+      ======================================= -->
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div>
+
+            <div class="card-title">
+              Daily Accounts
+            </div>
+
+            <div class="card-subtitle">
+              Users with minigame daily reward data
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+          <input
+            id="searchInput"
+            class="search"
+            type="search"
+            placeholder="Search username or Discord ID..."
+            autocomplete="off"
+          >
+
+
+          <div
+            class="users"
+            id="usersList"
+          >
+
+            <div class="state">
+
+              <div class="spinner"></div>
+
+              <div class="state-title">
+                Loading daily accounts...
+              </div>
+
+              <div class="state-text">
+                Fetching real database data.
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================
+           CONFIGURATION
+      ======================================= -->
+
+      <aside class="card">
+
+        <div class="card-header">
+
+          <div>
+
+            <div class="card-title">
+              Reward Configuration
+            </div>
+
+            <div class="card-subtitle">
+              Current daily reward settings
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+          <div class="config-list">
+
+            <div class="config-row">
+
+              <div class="config-label">
+                Base Reward
+              </div>
+
+              <div
+                class="config-value"
+                id="baseReward"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="config-row">
+
+              <div class="config-label">
+                Claim Interval
+              </div>
+
+              <div
+                class="config-value"
+                id="claimInterval"
+              >
+                24 hours
+              </div>
+
+            </div>
+
+
+            <div class="config-row">
+
+              <div class="config-label">
+                Streak Tracking
+              </div>
+
+              <div
+                class="config-value"
+                id="streakStatus"
+              >
+                Enabled
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="info-box">
+
+            Daily reward administration uses the
+            existing minigame account fields.
+            Resetting a user clears their current
+            daily claim timestamp and streak.
+
+          </div>
+
+        </div>
+
+      </aside>
+
+
+    </section>
+
+  </main>
+
+
+  <div
+    class="toast-container"
+    id="toastContainer"
+  ></div>
+
+
+  <script>
+
+    const API_BASE =
+      "https://api.memplace.xyz";
+
+
+    let staff = null;
+    let users = [];
+
+
+    /* ==========================================
+       HELPERS
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function formatNumber(value) {
+
+      return new Intl.NumberFormat(
+        "en-US"
+      ).format(
+        Number(value) || 0
       );
 
-      return res.status(500).json({
-        success: false,
-        error:
-          "Failed to load shop items."
-      });
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "Never";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "Never";
+      }
+
+      return date.toLocaleDateString(
+        "en-US",
+        {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        }
+      );
 
     }
 
-  }
 
-
-  /* ==========================================
-     CREATE ITEM
-  ========================================== */
-
-  if (req.method === "POST") {
-
-    /*
-     * Only Manager and Owner can
-     * modify Shop configuration.
-     */
-
-    if (
-      staff.role !== "manager" &&
-      staff.role !== "owner"
+    function showToast(
+      message,
+      type = "success"
     ) {
 
-      return res.status(403).json({
-        success: false,
-        error:
-          "Only Managers and Owners can modify the shop."
-      });
+      const container =
+        document.getElementById(
+          "toastContainer"
+        );
+
+      const toast =
+        document.createElement(
+          "div"
+        );
+
+      toast.className =
+        `toast ${type}`;
+
+      toast.textContent =
+        message;
+
+      container.appendChild(
+        toast
+      );
+
+      setTimeout(
+        () => toast.remove(),
+        3500
+      );
 
     }
 
 
-    try {
+    /* ==========================================
+       STAFF
+    ========================================== */
 
-      const {
-        name,
-        description,
-        price,
-        icon,
-        image,
-        active
-      } = req.body || {};
+    async function loadStaff() {
 
-
-      const cleanName =
-        String(
-          name || ""
-        ).trim();
-
-      const cleanDescription =
-        String(
-          description || ""
-        ).trim();
-
-      const cleanIcon =
-        String(
-          icon || ""
-        ).trim();
-
-      const cleanImage =
-        image
-          ? String(image).trim()
-          : null;
-
-      const cleanPrice =
-        Number(price);
-
-
-      if (!cleanName) {
-
-        return res.status(400).json({
-          success: false,
-          error:
-            "Item name is required."
-        });
-
-      }
-
-
-      if (
-        cleanName.length > 100
-      ) {
-
-        return res.status(400).json({
-          success: false,
-          error:
-            "Item name is too long."
-        });
-
-      }
-
-
-      if (
-        cleanDescription.length > 500
-      ) {
-
-        return res.status(400).json({
-          success: false,
-          error:
-            "Description is too long."
-        });
-
-      }
-
-
-      if (
-        !Number.isInteger(
-          cleanPrice
-        ) ||
-        cleanPrice < 0
-      ) {
-
-        return res.status(400).json({
-          success: false,
-          error:
-            "Price must be a whole number greater than or equal to zero."
-        });
-
-      }
-
-
-      /*
-       * Prevent duplicate item names.
-       */
-
-      const existing =
-        await collection.findOne({
-          name: {
-            $regex:
-              `^${cleanName.replace(
-                /[.*+?^${}()|[\]\\]/g,
-                "\\$&"
-              )}$`,
-            $options: "i"
+      const response =
+        await fetch(
+          `${API_BASE}/api/admin/me`,
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
           }
-        });
-
-
-      if (existing) {
-
-        return res.status(409).json({
-          success: false,
-          error:
-            "A shop item with that name already exists."
-        });
-
-      }
-
-
-      const now =
-        new Date();
-
-
-      const item = {
-        name: cleanName,
-
-        description:
-          cleanDescription,
-
-        price:
-          cleanPrice,
-
-        icon:
-          cleanIcon,
-
-        image:
-          cleanImage,
-
-        active:
-          active !== false,
-
-        createdAt:
-          now,
-
-        updatedAt:
-          now
-      };
-
-
-      const result =
-        await collection.insertOne(
-          item
         );
 
 
-      const created =
-        await collection.findOne({
-          _id:
-            result.insertedId
-        });
+      if (!response.ok) {
+        throw new Error(
+          "Staff access required."
+        );
+      }
 
 
-      await createAuditLog({
-        staff,
-
-        action:
-          "shop_item_created",
-
-        targetType:
-          "shop_item",
-
-        targetId:
-          result.insertedId.toString(),
-
-        details: {
-          name:
-            cleanName,
-
-          price:
-            cleanPrice,
-
-          active:
-            active !== false
-        }
-      });
+      const data =
+        await response.json();
 
 
-      return res.status(201).json({
-        success: true,
+      if (
+        !data.success ||
+        !data.staff
+      ) {
+        throw new Error(
+          "Staff access required."
+        );
+      }
 
-        item:
-          cleanItem(
-            created
-          )
-      });
 
-    } catch (error) {
+      if (
+        !Array.isArray(
+          data.permissions
+        ) ||
+        !data.permissions.includes(
+          "daily"
+        )
+      ) {
 
-      console.error(
-        "ADMIN SHOP CREATE:",
-        error
-      );
+        throw new Error(
+          "You do not have permission to access Daily Rewards."
+        );
 
-      return res.status(500).json({
-        success: false,
-        error:
-          "Failed to create shop item."
-      });
+      }
+
+
+      staff = data;
+
+
+      document.getElementById(
+        "staffRole"
+      ).textContent =
+        data.role || "Staff";
 
     }
 
-  }
+
+    /* ==========================================
+       LOAD DATA
+    ========================================== */
+
+    async function loadDaily() {
+
+      const response =
+        await fetch(
+          `${API_BASE}/api/admin/daily`,
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
 
 
-  return res.status(405).json({
-    success: false,
-    error:
-      "Method not allowed."
-  });
+      const data =
+        await response.json();
 
-}
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          "Failed to load daily rewards."
+        );
+
+      }
+
+
+      users =
+        Array.isArray(
+          data.users
+        )
+          ? data.users
+          : [];
+
+
+      const stats =
+        data.stats || {};
+
+
+      document.getElementById(
+        "totalUsers"
+      ).textContent =
+        formatNumber(
+          stats.totalUsers ??
+          users.length
+        );
+
+
+      document.getElementById(
+        "claimedUsers"
+      ).textContent =
+        formatNumber(
+          stats.claimedUsers || 0
+        );
+
+
+      document.getElementById(
+        "neverClaimed"
+      ).textContent =
+        formatNumber(
+          stats.neverClaimed || 0
+        );
+
+
+      document.getElementById(
+        "activeStreaks"
+      ).textContent =
+        formatNumber(
+          stats.activeStreaks || 0
+        );
+
+
+      document.getElementById(
+        "baseReward"
+      ).textContent =
+        `${formatNumber(
+          data.baseReward ?? 250
+        )} coins`;
+
+
+      renderUsers();
+
+    }
+
+
+    /* ==========================================
+       RENDER USERS
+    ========================================== */
+
+    function renderUsers() {
+
+      const container =
+        document.getElementById(
+          "usersList"
+        );
+
+
+      const search =
+        document.getElementById(
+          "searchInput"
+        ).value
+          .trim()
+          .toLowerCase();
+
+
+      const filtered =
+        users.filter(user => {
+
+          const username =
+            String(
+              user.username || ""
+            ).toLowerCase();
+
+          const discordUsername =
+            String(
+              user.discordUsername || ""
+            ).toLowerCase();
+
+          const id =
+            String(
+              user.id || ""
+            ).toLowerCase();
+
+
+          return (
+            !search ||
+            username.includes(search) ||
+            discordUsername.includes(search) ||
+            id.includes(search)
+          );
+
+        });
+
+
+      if (!filtered.length) {
+
+        container.innerHTML = `
+          <div class="state">
+
+            <div class="state-title">
+              No accounts found
+            </div>
+
+            <div class="state-text">
+              No daily reward accounts match your search.
+            </div>
+
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      container.innerHTML =
+        filtered
+          .map(user => {
+
+            const initials =
+              String(
+                user.username ||
+                "?"
+              )
+                .slice(0, 2)
+                .toUpperCase();
+
+
+            const avatar =
+              user.avatar
+                ? `
+                  <img
+                    src="${escapeHtml(
+                      user.avatar
+                    )}"
+                    alt=""
+                    onerror="this.style.display='none'"
+                  >
+                `
+                : initials;
+
+
+            const streak =
+              Number(
+                user.dailyStreak
+              ) || 0;
+
+
+            return `
+              <div class="user-row">
+
+                <div class="user-main">
+
+                  <div class="avatar">
+                    ${avatar}
+                  </div>
+
+                  <div class="user-info">
+
+                    <div class="username">
+                      ${escapeHtml(
+                        user.username ||
+                        user.discordUsername ||
+                        "Unknown User"
+                      )}
+                    </div>
+
+                    <div class="user-id">
+                      ${escapeHtml(
+                        user.id || "Unknown ID"
+                      )}
+                    }
+                  </div>
+
+                </div>
+
+
+                <div class="user-right">
+
+                  <div class="streak">
+                    🔥 ${formatNumber(streak)}
+                  </div>
+
+                  <div class="last-claim">
+                    ${formatDate(
+                      user.dailyLastClaim
+                    )}
+                  </div>
+
+                  ${
+                    staff &&
+                    (
+                      staff.role === "manager" ||
+                      staff.role === "owner"
+                    )
+                      ? `
+                        <button
+                          class="reset-button"
+                          type="button"
+                          onclick="resetDaily('${escapeHtml(
+                            user.id
+                          )}')"
+                        >
+                          Reset
+                        </button>
+                      `
+                      : ""
+                  }
+
+                </div>
+
+              </div>
+            `;
+
+          })
+          .join("");
+
+    }
+
+
+    /* ==========================================
+       RESET DAILY
+    ========================================== */
+
+    async function resetDaily(
+      userId
+    ) {
+
+      const user =
+        users.find(
+          user =>
+            String(user.id) ===
+            String(userId)
+        );
+
+
+      if (!user) {
+        return;
+      }
+
+
+      const username =
+        user.username ||
+        user.discordUsername ||
+        user.id;
+
+
+      const confirmed =
+        confirm(
+          `Reset the daily reward for ${username}?\n\nThis will clear their current daily claim timestamp and streak.`
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/admin/daily`,
+            {
+              method: "PATCH",
+
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  userId
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Failed to reset daily reward."
+          );
+
+        }
+
+
+        showToast(
+          "Daily reward reset."
+        );
+
+
+        await loadDaily();
+
+      } catch (error) {
+
+        console.error(
+          "RESET DAILY:",
+          error
+        );
+
+        showToast(
+          error.message ||
+          "Failed to reset daily reward.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       EVENTS
+    ========================================== */
+
+    document
+      .getElementById(
+        "searchInput"
+      )
+      .addEventListener(
+        "input",
+        renderUsers
+      );
+
+
+    /* ==========================================
+       INIT
+    ========================================== */
+
+    async function initialize() {
+
+      try {
+
+        await loadStaff();
+
+        await loadDaily();
+
+      } catch (error) {
+
+        console.error(
+          "ADMIN DAILY:",
+          error
+        );
+
+
+        showToast(
+          error.message ||
+          "Unable to load Daily Rewards.",
+          "error"
+        );
+
+
+        setTimeout(
+          () => {
+            window.location.href =
+              "/admin";
+          },
+          1800
+        );
+
+      }
+
+    }
+
+
+    initialize();
+
+  </script>
+
+</body>
+</html>
