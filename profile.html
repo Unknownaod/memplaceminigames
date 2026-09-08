@@ -48,15 +48,12 @@
 
     html {
       min-height: 100%;
-
-      background:
-        var(--black);
+      background: var(--black);
     }
 
 
     body {
       margin: 0;
-
       min-height: 100vh;
 
       background:
@@ -67,8 +64,7 @@
         ),
         var(--black);
 
-      color:
-        var(--text);
+      color: var(--text);
 
       font-family:
         Inter,
@@ -93,9 +89,7 @@
 
     .header {
       position: sticky;
-
       top: 0;
-
       z-index: 100;
 
       height: 70px;
@@ -569,13 +563,10 @@
 
 
     /* ==========================================
-       BADGE
+       PROFILE BADGES
     ========================================== */
 
-    .profile-badge {
-      width: 62px;
-      height: 62px;
-
+    .profile-badges {
       margin-left: auto;
 
       flex-shrink: 0;
@@ -584,11 +575,23 @@
 
       align-items: center;
 
-      justify-content: center;
+      gap: 8px;
 
       position: relative;
 
       z-index: 2;
+    }
+
+
+    .profile-badge {
+      width: 62px;
+      height: 62px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
     }
 
 
@@ -601,6 +604,19 @@
       display: block;
 
       filter:
+        drop-shadow(
+          0 5px 14px
+          rgba(0,0,0,0.30)
+        );
+    }
+
+
+    .profile-badge.staff img {
+      filter:
+        drop-shadow(
+          0 0 10px
+          rgba(215,168,79,0.22)
+        )
         drop-shadow(
           0 5px 14px
           rgba(0,0,0,0.30)
@@ -1159,6 +1175,8 @@
         padding: 20px;
 
         align-items: flex-start;
+
+        gap: 14px;
       }
 
 
@@ -1172,6 +1190,11 @@
 
       .profile-name {
         font-size: 19px;
+      }
+
+
+      .profile-badges {
+        gap: 5px;
       }
 
 
@@ -1533,6 +1556,68 @@
 
 
     /* ==========================================
+       LOAD STAFF STATUS
+    ========================================== */
+
+    async function loadStaffStatus() {
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL + "/api/admin/me",
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+
+
+        if (!response.ok) {
+          return null;
+        }
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !data.success ||
+          !data.staff
+        ) {
+
+          return null;
+
+        }
+
+
+        return {
+
+          staff: true,
+
+          role:
+            data.role ||
+            null
+
+        };
+
+      } catch (error) {
+
+        console.error(
+          "STAFF STATUS ERROR:",
+          error
+        );
+
+        return null;
+
+      }
+
+    }
+
+
+    /* ==========================================
        LOAD PROFILE
     ========================================== */
 
@@ -1591,6 +1676,25 @@
           data.user;
 
 
+        /*
+         * Staff status is checked separately
+         * through the existing /api/admin/me
+         * endpoint.
+         */
+
+        const staffStatus =
+          await loadStaffStatus();
+
+
+        currentUser.isStaff =
+          !!staffStatus;
+
+
+        currentUser.staffRole =
+          staffStatus?.role ||
+          null;
+
+
         updateHeader(
           currentUser
         );
@@ -1610,9 +1714,11 @@
 
 
         content.innerHTML = `
+
           <div class="error">
             Failed to load your profile.
           </div>
+
         `;
 
       }
@@ -1694,27 +1800,45 @@
         case "gold-nameplate":
 
           return {
+
             className: "gold",
-            label: "Gold Nameplate",
-            icon: "✦"
+
+            label:
+              "Gold Nameplate",
+
+            icon:
+              "✦"
+
           };
 
 
         case "royal-nameplate":
 
           return {
+
             className: "royal",
-            label: "Royal Nameplate",
-            icon: "♛"
+
+            label:
+              "Royal Nameplate",
+
+            icon:
+              "♛"
+
           };
 
 
         case "diamond-nameplate":
 
           return {
+
             className: "diamond",
-            label: "Diamond Nameplate",
-            icon: "◆"
+
+            label:
+              "Diamond Nameplate",
+
+            icon:
+              "◆"
+
           };
 
 
@@ -1728,7 +1852,7 @@
 
 
     /* ==========================================
-       GET BADGE
+       GET EQUIPPED BADGE
     ========================================== */
 
     function getBadge(
@@ -1741,14 +1865,48 @@
       ) {
 
         return {
-          image: "/championbadge.png",
-          label: "Champion Badge"
+
+          image:
+            "/championbadge.png",
+
+          label:
+            "Champion Badge"
+
         };
 
       }
 
 
       return null;
+
+    }
+
+
+    /* ==========================================
+       GET STAFF BADGE
+    ========================================== */
+
+    function getStaffBadge(user) {
+
+      if (
+        !user ||
+        !user.isStaff
+      ) {
+
+        return null;
+
+      }
+
+
+      return {
+
+        image:
+          "/staffbadge.png",
+
+        label:
+          "Staff"
+
+      };
 
     }
 
@@ -1845,6 +2003,12 @@
         );
 
 
+      const staffBadge =
+        getStaffBadge(
+          user
+        );
+
+
       const profileCardClass =
         nameplate
           ? `profile-card nameplate-${nameplate.className}`
@@ -1906,18 +2070,48 @@
                 font-weight:800;
               "
             >
+
               ${escapeHtml(
                 username
                   .charAt(0)
                   .toUpperCase()
               )}
+
             </div>
 
           `;
 
 
       /* ==========================================
-         BADGE
+         STAFF BADGE
+      ========================================== */
+
+      const staffBadgeHtml =
+        staffBadge
+
+          ? `
+
+            <div
+              class="profile-badge staff"
+              title="${escapeHtml(
+                staffBadge.label
+              )}"
+            >
+
+              <img
+                src="/staffbadge.png"
+                alt="Staff"
+              >
+
+            </div>
+
+          `
+
+          : "";
+
+
+      /* ==========================================
+         EQUIPPED BADGE
       ========================================== */
 
       const badgeHtml =
@@ -1940,6 +2134,31 @@
                   badge.label
                 )}"
               >
+
+            </div>
+
+          `
+
+          : "";
+
+
+      /* ==========================================
+         ALL PROFILE BADGES
+      ========================================== */
+
+      const profileBadgesHtml =
+        (
+          staffBadgeHtml ||
+          badgeHtml
+        )
+
+          ? `
+
+            <div class="profile-badges">
+
+              ${staffBadgeHtml}
+
+              ${badgeHtml}
 
             </div>
 
@@ -1991,6 +2210,25 @@
             ${escapeHtml(
               badge.label
             )}
+
+          </div>
+
+        `;
+
+      }
+
+
+      if (staffBadge) {
+
+        equippedHtml += `
+
+          <div class="equipped-item">
+
+            <span class="equipped-item-icon">
+              ✓
+            </span>
+
+            Staff
 
           </div>
 
@@ -2076,7 +2314,7 @@
           </div>
 
 
-          ${badgeHtml}
+          ${profileBadgesHtml}
 
         </section>
 
