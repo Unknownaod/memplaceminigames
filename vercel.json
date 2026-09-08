@@ -71,6 +71,10 @@
    {
   "source": "/admin/staff",
   "destination": "/admin-staff.html" 
+  },
+  {
+  "source": "/admin/support",
+  "destination": "/admin-support.html" 
   }
   ]
 }
