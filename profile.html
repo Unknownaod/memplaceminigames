@@ -5981,8 +5981,7 @@ if (
 
   }
 
-
- /* ==========================================
+/* ==========================================
    SWORD THEME SOUND
 ========================================== */
 
@@ -6016,9 +6015,15 @@ const swordSoundClose =
 
 function showSwordSoundPrompt() {
 
-  /*
-   * Only show this for the Sword Theme.
-   */
+  if (
+    !document.body.classList.contains(
+      "theme-sword"
+    )
+  ) {
+    return;
+  }
+
+
   if (
     !swordSoundPrompt ||
     !swordVideo
@@ -6056,17 +6061,28 @@ function hideSwordSoundPrompt() {
 
 function restartSwordTheme() {
 
-  /*
-   * No Sword video = nothing to do.
-   */
   if (!swordVideo) {
     return;
   }
 
 
   /*
-   * Always reset the video to the beginning.
+   * Make absolutely sure this is
+   * actually the Sword Theme.
    */
+  if (
+    !document.body.classList.contains(
+      "theme-sword"
+    )
+  ) {
+
+    stopSwordTheme();
+
+    return;
+
+  }
+
+
   try {
 
     swordVideo.pause();
@@ -6075,7 +6091,9 @@ function restartSwordTheme() {
 
     swordVideo.muted = true;
 
-    swordVideo.play().catch(() => {});
+    swordVideo
+      .play()
+      .catch(() => {});
 
   } catch (error) {
 
@@ -6088,8 +6106,8 @@ function restartSwordTheme() {
 
 
   /*
-   * Reset the sound prompt every time
-   * the profile is loaded.
+   * Reset sound button whenever
+   * the Sword Theme is loaded.
    */
   if (swordSoundButton) {
 
@@ -6132,8 +6150,7 @@ function stopSwordTheme() {
 
   }
 
-
-  hideSwordSoundPrompt();
+wordSoundPrompt();
 
 }
 
@@ -6151,14 +6168,27 @@ if (
     "click",
     async () => {
 
+      /*
+       * Don't allow the button to activate
+       * if Sword Theme isn't active.
+       */
+      if (
+        !document.body.classList.contains(
+          "theme-sword"
+        )
+      ) {
+
+        hideSwordSoundPrompt();
+
+        return;
+
+      }
+
+
       try {
 
         swordVideo.muted =
           false;
-
-
-        swordVideo.currentTime =
-          swordVideo.currentTime;
 
 
         await swordVideo.play();
@@ -6170,7 +6200,19 @@ if (
 
         setTimeout(() => {
 
-          hideSwordSoundPrompt();
+          /*
+           * Only hide it if Sword Theme
+           * is still active.
+           */
+          if (
+            document.body.classList.contains(
+              "theme-sword"
+            )
+          ) {
+
+            hideSwordSoundPrompt();
+
+          }
 
         }, 800);
 
