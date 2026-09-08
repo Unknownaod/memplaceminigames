@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Chess — Middle Eastern Mixing</title>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.4.0/chess.min.js"></script>
-
+  
   <style>
     :root {
       --black: #0b0a08;
@@ -1139,6 +1137,77 @@
   const POLL_INTERVAL =
     1500;
 
+  const CHESS_CDN =
+    "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/dist/esm/chess.js";
+
+
+  /* ==========================================
+     CHESS LIBRARY
+  ========================================== */
+
+  let Chess = null;
+
+  let chessLoadPromise = null;
+
+
+  async function loadChessLibrary() {
+
+    if (Chess) {
+      return Chess;
+    }
+
+    if (chessLoadPromise) {
+      return chessLoadPromise;
+    }
+
+    chessLoadPromise =
+      import(CHESS_CDN)
+        .then(module => {
+
+          if (
+            !module ||
+            typeof module.Chess !== "function"
+          ) {
+
+            throw new Error(
+              "Chess library loaded incorrectly."
+            );
+
+          }
+
+          Chess =
+            module.Chess;
+
+          window.Chess =
+            Chess;
+
+          console.log(
+            "chess.js loaded successfully."
+          );
+
+          return Chess;
+
+        })
+        .catch(error => {
+
+          console.error(
+            "CHESS LIBRARY LOAD ERROR:",
+            error
+          );
+
+          chessLoadPromise =
+            null;
+
+          throw new Error(
+            "Unable to load the chess library. Please refresh the page."
+          );
+
+        });
+
+    return chessLoadPromise;
+
+  }
+
 
   /* ==========================================
      STATE
@@ -1166,6 +1235,8 @@
 
   let pendingPromotion = null;
 
+  let waitingForJoin = false;
+
 
   /* ==========================================
      API
@@ -1189,7 +1260,9 @@
         }
       );
 
+
     let data;
+
 
     try {
 
@@ -1205,14 +1278,25 @@
 
     }
 
+
     if (!response.ok) {
 
-      throw new Error(
-        data?.error ||
-        `Request failed (${response.status}).`
-      );
+      const error =
+        new Error(
+          data?.error ||
+          `Request failed (${response.status}).`
+        );
+
+      error.status =
+        response.status;
+
+      error.data =
+        data;
+
+      throw error;
 
     }
+
 
     return data;
 
@@ -1254,7 +1338,13 @@
   ) {
 
     const element =
-      document.getElementById("message");
+      document.getElementById(
+        "message"
+      );
+
+    if (!element) {
+      return;
+    }
 
     element.textContent =
       text;
@@ -1268,7 +1358,13 @@
   function clearMessage() {
 
     const element =
-      document.getElementById("message");
+      document.getElementById(
+        "message"
+      );
+
+    if (!element) {
+      return;
+    }
 
     element.className =
       "message";
@@ -1292,6 +1388,7 @@
           "/api/user/me"
         );
 
+
       if (
         data.success &&
         data.user
@@ -1300,6 +1397,7 @@
         currentUser =
           data.user;
 
+
         document.getElementById(
           "balance"
         ).textContent =
@@ -1307,19 +1405,23 @@
             data.user.balance || 0
           ).toLocaleString();
 
+
         document.getElementById(
           "rating"
         ).textContent =
           data.user.chessRating ??
           "—";
 
+
         updateAvatar(
           data.user
         );
 
+
         return true;
 
       }
+
 
       currentUser =
         null;
@@ -1333,6 +1435,9 @@
         error
       );
 
+      currentUser =
+        null;
+
       return false;
 
     }
@@ -1342,14 +1447,14 @@
 
   function updateAvatar(user) {
 
-    if (
-      !user
-    ) {
+    if (!user) {
       return;
     }
 
+
     let avatarURL =
       "";
+
 
     if (
       user.id &&
@@ -1360,6 +1465,7 @@
         `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
 
     }
+
 
     document
       .querySelectorAll(
@@ -1393,9 +1499,7 @@
 
   async function loadGame() {
 
-    if (
-      !currentGameId
-    ) {
+    if (!currentGameId) {
 
       showNoGame();
 
@@ -1403,7 +1507,26 @@
 
     }
 
-    await refreshGame();
+
+    const loaded =
+      await refreshGame();
+
+
+    /*
+      If the status endpoint says this
+      user isn't currently a player,
+      show the Join Game UI instead of
+      just leaving the page broken.
+    */
+
+    if (!loaded) {
+
+      showJoinState();
+
+      return;
+
+    }
+
 
     startPolling();
 
@@ -1412,40 +1535,195 @@
 
   function showNoGame() {
 
+    stopPolling();
+
+
     document.getElementById(
       "loading"
     ).style.display =
       "none";
+
 
     document.getElementById(
       "game"
     ).style.display =
       "block";
 
+
     document.getElementById(
       "statusMain"
     ).textContent =
       "No game selected";
+
 
     document.getElementById(
       "statusSub"
     ).textContent =
       "Create a new chess game to begin.";
 
+
     document.getElementById(
       "drawButton"
     ).disabled =
       true;
+
 
     document.getElementById(
       "resignButton"
     ).disabled =
       true;
 
+
     document.getElementById(
       "joinButton"
     ).style.display =
       "none";
+
+
+    renderStartingBoard();
+
+  }
+
+
+  /* ==========================================
+     JOIN STATE
+  ========================================== */
+
+  function showJoinState() {
+
+    waitingForJoin =
+      true;
+
+
+    stopPolling();
+
+
+    document.getElementById(
+      "loading"
+    ).style.display =
+      "none";
+
+
+    document.getElementById(
+      "game"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "gameIdDisplay"
+    ).textContent =
+      "Game " +
+      currentGameId;
+
+
+    document.getElementById(
+      "statusMain"
+    ).textContent =
+      "Game available";
+
+
+    document.getElementById(
+      "statusSub"
+    ).textContent =
+      "You are not in this game yet. Join to start playing.";
+
+
+    document.getElementById(
+      "joinButton"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "joinButton"
+    ).disabled =
+      false;
+
+
+    document.getElementById(
+      "joinButton"
+    ).textContent =
+      "Join Game";
+
+
+    document.getElementById(
+      "drawButton"
+    ).disabled =
+      true;
+
+
+    document.getElementById(
+      "resignButton"
+    ).disabled =
+      true;
+
+
+    document.getElementById(
+      "wager"
+    ).textContent =
+      "—";
+
+
+    document.getElementById(
+      "pot"
+    ).textContent =
+      "—";
+
+
+    document.getElementById(
+      "moves"
+    ).textContent =
+      "0";
+
+
+    const white =
+      document.getElementById(
+        "whitePlayer"
+      );
+
+
+    const black =
+      document.getElementById(
+        "blackPlayer"
+      );
+
+
+    white.querySelector(
+      ".player-name"
+    ).textContent =
+      "Waiting for you";
+
+
+    white.querySelector(
+      ".player-meta"
+    ).textContent =
+      "White";
+
+
+    white.querySelector(
+      ".player-turn"
+    ).textContent =
+      "Creator";
+
+
+    black.querySelector(
+      ".player-name"
+    ).textContent =
+      "You can join";
+
+
+    black.querySelector(
+      ".player-meta"
+    ).textContent =
+      "Black";
+
+
+    black.querySelector(
+      ".player-turn"
+    ).textContent =
+      "Available";
+
 
     renderStartingBoard();
 
@@ -1463,14 +1741,19 @@
       isLoadingStatus
     ) {
 
-      return;
+      return false;
 
     }
+
 
     isLoadingStatus =
       true;
 
+
     try {
+
+      await loadChessLibrary();
+
 
       const data =
         await api(
@@ -1480,9 +1763,8 @@
           )
         );
 
-      if (
-        !data.success
-      ) {
+
+      if (!data.success) {
 
         throw new Error(
           data.error ||
@@ -1491,16 +1773,27 @@
 
       }
 
+
+      waitingForJoin =
+        false;
+
+
       gameState =
         data;
+
 
       currentColor =
         data.color ||
         null;
 
+
       renderGame(
         data
       );
+
+
+      return true;
+
 
     } catch (error) {
 
@@ -1509,20 +1802,27 @@
         error
       );
 
-      showMessage(
-        error.message,
-        "error"
-      );
 
-      document.getElementById(
-        "loading"
-      ).style.display =
-        "none";
+      /*
+        If this is another player's waiting
+        game, the status endpoint may reject
+        us because we're not a participant yet.
 
-      document.getElementById(
-        "game"
-      ).style.display =
-        "block";
+        In that case, don't treat the page
+        as broken. Show the Join Game UI.
+      */
+
+      if (
+        currentGameId
+      ) {
+
+        showJoinState();
+
+      }
+
+
+      return false;
+
 
     } finally {
 
@@ -1542,9 +1842,18 @@
 
     stopPolling();
 
+
     pollTimer =
       setInterval(
-        refreshGame,
+        async () => {
+
+          if (waitingForJoin) {
+            return;
+          }
+
+          await refreshGame();
+
+        },
         POLL_INTERVAL
       );
 
@@ -1553,9 +1862,7 @@
 
   function stopPolling() {
 
-    if (
-      pollTimer
-    ) {
+    if (pollTimer) {
 
       clearInterval(
         pollTimer
@@ -1579,6 +1886,7 @@
       "loading"
     ).style.display =
       "none";
+
 
     document.getElementById(
       "game"
@@ -1621,22 +1929,27 @@
       data
     );
 
+
     renderStatus(
       data
     );
+
 
     renderBoard(
       data.board?.fen ||
       data.fen
     );
 
+
     renderDrawState(
       data
     );
 
+
     updateButtons(
       data
     );
+
 
     checkForIncomingDraw(
       data
@@ -1651,11 +1964,10 @@
 
   function getPlayerId(player) {
 
-    if (
-      !player
-    ) {
+    if (!player) {
       return null;
     }
+
 
     return (
       player.id ||
@@ -1690,17 +2002,14 @@
 
   function getCurrentPlayerId(data) {
 
-    if (
-      currentUser?.id
-    ) {
+    if (currentUser?.id) {
 
       return currentUser.id;
 
     }
 
-    if (
-      data.color === "white"
-    ) {
+
+    if (data.color === "white") {
 
       return getWhiteId(
         data
@@ -1708,15 +2017,15 @@
 
     }
 
-    if (
-      data.color === "black"
-    ) {
+
+    if (data.color === "black") {
 
       return getBlackId(
         data
       );
 
     }
+
 
     return null;
 
@@ -1728,13 +2037,12 @@
     fallback
   ) {
 
-    if (
-      !player
-    ) {
+    if (!player) {
 
       return fallback;
 
     }
+
 
     return (
       player.username ||
@@ -1756,6 +2064,7 @@
         "whitePlayer"
       );
 
+
     const black =
       document.getElementById(
         "blackPlayer"
@@ -1765,6 +2074,7 @@
     const whitePlayer =
       data.white ||
       null;
+
 
     const blackPlayer =
       data.black ||
@@ -1776,6 +2086,7 @@
         whitePlayer,
         "White"
       );
+
 
     let blackName =
       playerName(
@@ -1792,6 +2103,7 @@
         "You";
 
     }
+
 
     if (
       data.color === "black"
@@ -1834,6 +2146,7 @@
         ".player-turn"
       );
 
+
     const blackTurn =
       black.querySelector(
         ".player-turn"
@@ -1843,6 +2156,7 @@
     whiteTurn.classList.remove(
       "active"
     );
+
 
     blackTurn.classList.remove(
       "active"
@@ -1856,8 +2170,10 @@
       whiteTurn.textContent =
         "Waiting for opponent";
 
+
       blackTurn.textContent =
         "Waiting";
+
 
       return;
 
@@ -1875,9 +2191,11 @@
         whiteTurn.textContent =
           "White to move";
 
+
         whiteTurn.classList.add(
           "active"
         );
+
 
         blackTurn.textContent =
           "Waiting";
@@ -1887,14 +2205,17 @@
         whiteTurn.textContent =
           "Waiting";
 
+
         blackTurn.textContent =
           "Black to move";
+
 
         blackTurn.classList.add(
           "active"
         );
 
       }
+
 
       return;
 
@@ -1903,6 +2224,7 @@
 
     whiteTurn.textContent =
       "Game over";
+
 
     blackTurn.textContent =
       "Game over";
@@ -1920,6 +2242,7 @@
       document.getElementById(
         "statusMain"
       );
+
 
     const sub =
       document.getElementById(
@@ -1965,6 +2288,7 @@
             ? "Your move — Check!"
             : "Your turn";
 
+
         sub.textContent =
           "Make your move on the board.";
 
@@ -1975,10 +2299,12 @@
             ? "Opponent is in check"
             : "Opponent's turn";
 
+
         sub.textContent =
           "Waiting for your opponent.";
 
       }
+
 
       return;
 
@@ -1996,6 +2322,7 @@
         main.textContent =
           "Draw";
 
+
         sub.textContent =
           "The game ended in a draw.";
 
@@ -2008,10 +2335,12 @@
               data
             );
 
+
         main.textContent =
           won
             ? "You won"
             : "You lost";
+
 
         sub.textContent =
           "The game has been settled.";
@@ -2019,9 +2348,7 @@
       }
 
 
-      if (
-        !gameOverShown
-      ) {
+      if (!gameOverShown) {
 
         showGameOver(
           data
@@ -2040,8 +2367,14 @@
 
   function renderStartingBoard() {
 
+    if (!Chess) {
+      return;
+    }
+
+
     const chess =
       new Chess();
+
 
     renderBoard(
       chess.fen()
@@ -2057,12 +2390,7 @@
     ) {
 
       console.error(
-        "chess.js did not load."
-      );
-
-      showMessage(
-        "Chess library failed to load. Refresh the page.",
-        "error"
+        "Chess library is not loaded."
       );
 
       return;
@@ -2070,9 +2398,7 @@
     }
 
 
-    if (
-      !fen
-    ) {
+    if (!fen) {
 
       console.error(
         "No FEN received."
@@ -2084,6 +2410,7 @@
 
 
     let chess;
+
 
     try {
 
@@ -2098,10 +2425,12 @@
         error
       );
 
+
       showMessage(
         "The chess board position is invalid.",
         "error"
       );
+
 
       return;
 
@@ -2113,12 +2442,9 @@
         "board"
       );
 
-    if (
-      !board
-    ) {
 
+    if (!board) {
       return;
-
     }
 
 
@@ -2148,9 +2474,7 @@
       null;
 
 
-    if (
-      chess.isCheck()
-    ) {
+    if (chess.isCheck()) {
 
       const kingColor =
         chess.turn();
@@ -2291,9 +2615,7 @@
           );
 
 
-        if (
-          availableMove
-        ) {
+        if (availableMove) {
 
           square.classList.add(
             "possible"
@@ -2321,9 +2643,7 @@
           );
 
 
-        if (
-          piece
-        ) {
+        if (piece) {
 
           const pieceElement =
             document.createElement(
@@ -2390,9 +2710,7 @@
         }
 
 
-        if (
-          fileIndex === 0
-        ) {
+        if (fileIndex === 0) {
 
           const rankCoord =
             document.createElement(
@@ -2551,12 +2869,8 @@
     }
 
 
-    if (
-      !currentColor
-    ) {
-
+    if (!currentColor) {
       return;
-
     }
 
 
@@ -2565,12 +2879,8 @@
       gameState.fen;
 
 
-    if (
-      !fen
-    ) {
-
+    if (!fen) {
       return;
-
     }
 
 
@@ -2613,9 +2923,7 @@
 
     /* SECOND CLICK */
 
-    if (
-      selectedSquare
-    ) {
+    if (selectedSquare) {
 
       const selectedMove =
         legalMoves.find(
@@ -2624,20 +2932,20 @@
         );
 
 
-      if (
-        selectedMove
-      ) {
+      if (selectedMove) {
 
         if (
           selectedMove.promotion
         ) {
 
           pendingPromotion = {
+
             from:
               selectedSquare,
 
             to:
               square
+
           };
 
 
@@ -2659,8 +2967,6 @@
       }
 
 
-      /* Click another own piece */
-
       if (
         piece &&
         piece.color ===
@@ -2672,6 +2978,7 @@
           chess
         );
 
+
         return;
 
       }
@@ -2679,9 +2986,11 @@
 
       clearSelection();
 
+
       renderBoard(
         chess.fen()
       );
+
 
       return;
 
@@ -2734,6 +3043,7 @@
     selectedSquare =
       null;
 
+
     legalMoves =
       [];
 
@@ -2770,9 +3080,7 @@
       };
 
 
-      if (
-        promotion
-      ) {
+      if (promotion) {
 
         body.promotion =
           promotion;
@@ -2795,9 +3103,7 @@
         );
 
 
-      if (
-        !data.success
-      ) {
+      if (!data.success) {
 
         throw new Error(
           data.error ||
@@ -2859,9 +3165,7 @@
     piece
   ) {
 
-    if (
-      !pendingPromotion
-    ) {
+    if (!pendingPromotion) {
 
       closePromotionModal();
 
@@ -2896,12 +3200,8 @@
 
   async function joinGame() {
 
-    if (
-      !currentGameId
-    ) {
-
+    if (!currentGameId) {
       return;
-
     }
 
 
@@ -2913,6 +3213,7 @@
 
     button.disabled =
       true;
+
 
     button.textContent =
       "Joining...";
@@ -2931,16 +3232,17 @@
 
             body:
               JSON.stringify({
+
                 gameId:
                   currentGameId
+
               })
+
           }
         );
 
 
-      if (
-        !data.success
-      ) {
+      if (!data.success) {
 
         throw new Error(
           data.error ||
@@ -2948,6 +3250,10 @@
         );
 
       }
+
+
+      waitingForJoin =
+        false;
 
 
       currentColor =
@@ -2961,7 +3267,21 @@
       );
 
 
-      await refreshGame();
+      /*
+        The join endpoint already confirmed
+        the player. Now retrieve the complete
+        board/game state.
+      */
+
+      const loaded =
+        await refreshGame();
+
+
+      if (loaded) {
+
+        startPolling();
+
+      }
 
 
     } catch (error) {
@@ -2980,6 +3300,7 @@
 
       button.disabled =
         false;
+
 
       button.textContent =
         "Join Game";
@@ -3008,6 +3329,7 @@
       button.disabled =
         true;
 
+
       return;
 
     }
@@ -3027,6 +3349,7 @@
       button.disabled =
         false;
 
+
       button.textContent =
         "Accept Draw";
 
@@ -3037,6 +3360,7 @@
       button.disabled =
         true;
 
+
       button.textContent =
         "Draw Offered";
 
@@ -3044,6 +3368,7 @@
 
       button.disabled =
         false;
+
 
       button.textContent =
         "Offer Draw";
@@ -3106,9 +3431,7 @@
         );
 
 
-      if (
-        !data.success
-      ) {
+      if (!data.success) {
 
         throw new Error(
           data.error ||
@@ -3167,9 +3490,7 @@
         );
 
 
-      if (
-        !data.success
-      ) {
+      if (!data.success) {
 
         throw new Error(
           data.error ||
@@ -3296,9 +3617,7 @@
         );
 
 
-      if (
-        !data.success
-      ) {
+      if (!data.success) {
 
         throw new Error(
           data.error ||
@@ -3334,10 +3653,12 @@
         "joinButton"
       );
 
+
     const draw =
       document.getElementById(
         "drawButton"
       );
+
 
     const resign =
       document.getElementById(
@@ -3346,9 +3667,9 @@
 
 
     /*
-      Only show Join when this user
-      is NOT the white creator and
-      the game is still waiting.
+      Only show Join when this is a waiting
+      game and the current user is not
+      already the white creator.
     */
 
     if (
@@ -3392,7 +3713,9 @@
       previousDrawOffer =
         null;
 
+
       closeDrawModal();
+
 
       return;
 
@@ -3559,6 +3882,7 @@
         "error"
       );
 
+
       return;
 
     }
@@ -3571,6 +3895,7 @@
 
       button.disabled =
         true;
+
 
       button.textContent =
         "Creating...";
@@ -3591,9 +3916,7 @@
         );
 
 
-      if (
-        !data.success
-      ) {
+      if (!data.success) {
 
         throw new Error(
           data.error ||
@@ -3625,6 +3948,7 @@
       button.disabled =
         false;
 
+
       button.textContent =
         "Create Chess Game";
 
@@ -3641,28 +3965,37 @@
 
     try {
 
+      console.log(
+        "Initializing chess..."
+      );
+
+
+      /*
+        IMPORTANT:
+        Load chess.js BEFORE anything
+        attempts to construct a Chess object.
+      */
+
+      await loadChessLibrary();
+
+
       currentGameId =
         getGameIdFromURL();
 
 
       /*
-        Always load the user first.
-        This is needed to determine
-        whether the current player is
-        the creator/opponent.
+        Always load the current user first.
       */
 
       await loadUser();
 
 
       /*
-        Render the starting board immediately
-        so /chess is never blank.
+        If no game was selected,
+        render the starting board.
       */
 
-      if (
-        !currentGameId
-      ) {
+      if (!currentGameId) {
 
         renderStartingBoard();
 
@@ -3670,6 +4003,11 @@
 
 
       await loadGame();
+
+
+      console.log(
+        "Chess initialized successfully."
+      );
 
 
     } catch (error) {
@@ -3703,7 +4041,29 @@
   }
 
 
-  init();
+  /*
+    Start only after the page has loaded.
+    The chess library itself is loaded
+    inside init(), so there is no race
+    between module scripts and this script.
+  */
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      init,
+      { once: true }
+    );
+
+  } else {
+
+    init();
+
+  }
 
 </script>
 
