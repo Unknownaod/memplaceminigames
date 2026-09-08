@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -13,6 +14,7 @@
   <link rel="icon" href="/logo.gif">
 
   <style>
+
     :root {
       --black: #0b0a08;
       --black-2: #12100d;
@@ -38,17 +40,23 @@
       --radius: 14px;
     }
 
+
     * {
       box-sizing: border-box;
     }
 
+
     html {
       min-height: 100%;
-      background: var(--black);
+
+      background:
+        var(--black);
     }
+
 
     body {
       margin: 0;
+
       min-height: 100vh;
 
       background:
@@ -59,7 +67,8 @@
         ),
         var(--black);
 
-      color: var(--text);
+      color:
+        var(--text);
 
       font-family:
         Inter,
@@ -71,10 +80,12 @@
         sans-serif;
     }
 
+
     a {
       color: inherit;
       text-decoration: none;
     }
+
 
     /* ==========================================
        HEADER
@@ -82,39 +93,58 @@
 
     .header {
       position: sticky;
+
       top: 0;
+
       z-index: 100;
 
       height: 70px;
 
-      background: rgba(11,10,8,0.92);
+      background:
+        rgba(11,10,8,0.92);
 
-      backdrop-filter: blur(16px);
+      backdrop-filter:
+        blur(16px);
 
-      border-bottom: 1px solid var(--border);
+      -webkit-backdrop-filter:
+        blur(16px);
+
+      border-bottom:
+        1px solid var(--border);
     }
 
+
     .header-inner {
-      width: min(1200px, calc(100% - 40px));
+      width:
+        min(
+          1200px,
+          calc(100% - 40px)
+        );
 
       height: 100%;
 
       margin: 0 auto;
 
       display: flex;
+
       align-items: center;
+
       gap: 24px;
     }
 
+
     .brand {
       display: flex;
+
       align-items: center;
+
       gap: 11px;
 
       font-weight: 800;
 
       white-space: nowrap;
     }
+
 
     .brand img {
       width: 34px;
@@ -125,12 +155,15 @@
       object-fit: cover;
     }
 
+
     .brand span {
       font-size: 15px;
     }
 
+
     .nav {
       display: flex;
+
       align-items: center;
 
       gap: 5px;
@@ -138,18 +171,24 @@
       margin-left: auto;
     }
 
+
     .nav-link {
       display: flex;
+
       align-items: center;
+
       gap: 8px;
 
-      padding: 9px 12px;
+      padding:
+        9px 12px;
 
-      color: var(--text-2);
+      color:
+        var(--text-2);
 
       border-radius: 9px;
 
       font-size: 13px;
+
       font-weight: 600;
 
       transition:
@@ -157,75 +196,107 @@
         background .15s ease;
     }
 
+
     .nav-link:hover {
-      color: var(--text);
+      color:
+        var(--text);
 
       background:
         rgba(255,255,255,0.05);
     }
 
+
     .nav-link.active {
-      color: var(--accent);
+      color:
+        var(--accent);
 
       background:
         rgba(215,168,79,0.08);
     }
+
 
     .nav-link svg {
       width: 16px;
       height: 16px;
     }
 
+
     .account {
       display: flex;
+
       align-items: center;
+
       gap: 10px;
     }
 
+
     .balance {
       display: flex;
+
       align-items: center;
+
       gap: 7px;
 
-      padding: 8px 11px;
+      padding:
+        8px 11px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       border-radius: 9px;
 
       font-size: 13px;
+
       font-weight: 700;
     }
 
+
     .coin {
-      color: var(--accent);
+      color:
+        var(--accent);
     }
 
+
     .login {
-      padding: 9px 13px;
+      padding:
+        9px 13px;
 
       border-radius: 9px;
 
-      background: var(--accent);
-      color: #17120a;
+      background:
+        var(--accent);
+
+      color:
+        #17120a;
 
       font-size: 13px;
+
       font-weight: 800;
     }
 
+
     .user-button {
       display: flex;
+
       align-items: center;
+
       gap: 8px;
 
-      padding: 4px 9px 4px 4px;
+      padding:
+        4px 9px 4px 4px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       border-radius: 10px;
     }
+
 
     .user-button img {
       width: 29px;
@@ -236,71 +307,100 @@
       object-fit: cover;
     }
 
+
     .user-name {
       max-width: 100px;
 
       overflow: hidden;
+
       text-overflow: ellipsis;
+
       white-space: nowrap;
 
       font-size: 12px;
+
       font-weight: 700;
     }
+
 
     /* ==========================================
        PAGE
     ========================================== */
 
     .page {
-      width: min(1000px, calc(100% - 40px));
+      width:
+        min(
+          1000px,
+          calc(100% - 40px)
+        );
 
       margin: 0 auto;
 
-      padding: 54px 0 70px;
+      padding:
+        54px 0 70px;
     }
+
 
     .eyebrow {
       margin-bottom: 9px;
 
-      color: var(--accent);
+      color:
+        var(--accent);
 
       font-size: 11px;
+
       font-weight: 800;
 
-      letter-spacing: .13em;
-      text-transform: uppercase;
+      letter-spacing:
+        .13em;
+
+      text-transform:
+        uppercase;
     }
+
 
     h1 {
       margin: 0;
 
-      font-size: clamp(30px, 5vw, 44px);
+      font-size:
+        clamp(30px, 5vw, 44px);
 
       line-height: 1.05;
 
-      letter-spacing: -0.035em;
+      letter-spacing:
+        -0.035em;
     }
+
 
     .description {
       max-width: 650px;
 
-      margin: 13px 0 30px;
+      margin:
+        13px 0 30px;
 
-      color: var(--text-2);
+      color:
+        var(--text-2);
 
       font-size: 15px;
+
       line-height: 1.7;
     }
+
 
     /* ==========================================
        PROFILE CARD
     ========================================== */
 
     .profile-card {
-      padding: 26px;
+      position: relative;
+
+      padding:
+        26px;
 
       display: flex;
+
       align-items: center;
+
       gap: 20px;
 
       background:
@@ -311,10 +411,57 @@
         ),
         var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
-      border-radius: var(--radius);
+      border-radius:
+        var(--radius);
+
+      overflow: hidden;
     }
+
+
+    .profile-card.nameplate-gold {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(215,168,79,0.18),
+          rgba(215,168,79,0.04) 45%,
+          var(--surface) 85%
+        );
+
+      border-color:
+        rgba(215,168,79,0.30);
+    }
+
+
+    .profile-card.nameplate-royal {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(150,110,220,0.16),
+          rgba(215,168,79,0.04) 48%,
+          var(--surface) 85%
+        );
+
+      border-color:
+        rgba(150,110,220,0.28);
+    }
+
+
+    .profile-card.nameplate-diamond {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(120,205,235,0.16),
+          rgba(215,168,79,0.03) 48%,
+          var(--surface) 85%
+        );
+
+      border-color:
+        rgba(120,205,235,0.30);
+    }
+
 
     .profile-avatar {
       width: 82px;
@@ -324,42 +471,92 @@
 
       border-radius: 20px;
 
-      background: var(--surface-3);
+      background:
+        var(--surface-3);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       object-fit: cover;
     }
 
+
     .profile-info {
       min-width: 0;
+
+      position: relative;
+
+      z-index: 2;
     }
+
 
     .profile-name {
       margin: 0;
 
       overflow: hidden;
+
       text-overflow: ellipsis;
+
       white-space: nowrap;
 
       font-size: 23px;
+
       font-weight: 800;
 
-      letter-spacing: -0.025em;
+      letter-spacing:
+        -0.025em;
     }
+
+
+    /* ==========================================
+       NAMEPLATE TEXT
+    ========================================== */
+
+    .profile-name.gold {
+      color:
+        #e8c16d;
+
+      text-shadow:
+        0 0 18px
+        rgba(215,168,79,0.25);
+    }
+
+
+    .profile-name.royal {
+      color:
+        #c6a6f0;
+
+      text-shadow:
+        0 0 18px
+        rgba(150,110,220,0.22);
+    }
+
+
+    .profile-name.diamond {
+      color:
+        #9edff2;
+
+      text-shadow:
+        0 0 18px
+        rgba(120,205,235,0.24);
+    }
+
 
     .profile-discord {
       margin-top: 5px;
 
-      color: var(--text-2);
+      color:
+        var(--text-2);
 
       font-size: 12px;
     }
 
+
     .profile-id {
       margin-top: 9px;
 
-      color: var(--text-3);
+      color:
+        var(--text-3);
 
       font-size: 10px;
 
@@ -370,6 +567,97 @@
         monospace;
     }
 
+
+    /* ==========================================
+       BADGE
+    ========================================== */
+
+    .profile-badge {
+      width: 62px;
+      height: 62px;
+
+      margin-left: auto;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      position: relative;
+
+      z-index: 2;
+    }
+
+
+    .profile-badge img {
+      width: 58px;
+      height: 58px;
+
+      object-fit: contain;
+
+      display: block;
+
+      filter:
+        drop-shadow(
+          0 5px 14px
+          rgba(0,0,0,0.30)
+        );
+    }
+
+
+    /* ==========================================
+       EQUIPPED DISPLAY
+    ========================================== */
+
+    .equipped-display {
+      margin-top: 18px;
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+    }
+
+
+    .equipped-item {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      padding:
+        6px 9px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,0.035);
+
+      color:
+        var(--text-2);
+
+      font-size: 10px;
+
+      font-weight: 750;
+    }
+
+
+    .equipped-item-icon {
+      color:
+        var(--accent);
+
+      font-size: 12px;
+    }
+
+
     /* ==========================================
        BALANCE
     ========================================== */
@@ -377,46 +665,64 @@
     .balance-card {
       margin-top: 18px;
 
-      padding: 22px 24px;
+      padding:
+        22px 24px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
-      border-radius: var(--radius);
+      border-radius:
+        var(--radius);
     }
+
 
     .balance-label {
-      color: var(--text-3);
+      color:
+        var(--text-3);
 
       font-size: 10px;
+
       font-weight: 800;
 
-      letter-spacing: .1em;
-      text-transform: uppercase;
+      letter-spacing:
+        .1em;
+
+      text-transform:
+        uppercase;
     }
+
 
     .balance-number {
       margin-top: 7px;
 
-      color: var(--accent);
+      color:
+        var(--accent);
 
       font-size: 31px;
+
       font-weight: 850;
 
-      letter-spacing: -0.035em;
+      letter-spacing:
+        -0.035em;
     }
+
 
     /* ==========================================
        STAT GRID
     ========================================== */
 
     .section-title {
-      margin: 30px 0 13px;
+      margin:
+        30px 0 13px;
 
       font-size: 14px;
+
       font-weight: 800;
     }
+
 
     .stats-grid {
       display: grid;
@@ -427,46 +733,65 @@
       gap: 12px;
     }
 
+
     .stat-card {
       padding: 18px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       border-radius: 12px;
     }
 
+
     .stat-label {
-      color: var(--text-3);
+      color:
+        var(--text-3);
 
       font-size: 10px;
+
       font-weight: 800;
 
-      letter-spacing: .07em;
-      text-transform: uppercase;
+      letter-spacing:
+        .07em;
+
+      text-transform:
+        uppercase;
     }
+
 
     .stat-value {
       margin-top: 8px;
 
       font-size: 20px;
+
       font-weight: 800;
 
-      letter-spacing: -0.02em;
+      letter-spacing:
+        -0.02em;
     }
+
 
     .stat-value.success {
-      color: var(--success);
+      color:
+        var(--success);
     }
+
 
     .stat-value.danger {
-      color: var(--danger);
+      color:
+        var(--danger);
     }
 
+
     .stat-value.accent {
-      color: var(--accent);
+      color:
+        var(--accent);
     }
+
 
     /* ==========================================
        FINANCIAL STATS
@@ -481,97 +806,132 @@
       gap: 12px;
     }
 
+
     .financial-card {
       padding: 20px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       border-radius: 12px;
     }
 
+
     .financial-label {
-      color: var(--text-3);
+      color:
+        var(--text-3);
 
       font-size: 10px;
+
       font-weight: 800;
 
-      letter-spacing: .07em;
-      text-transform: uppercase;
+      letter-spacing:
+        .07em;
+
+      text-transform:
+        uppercase;
     }
+
 
     .financial-value {
       margin-top: 8px;
 
       font-size: 19px;
+
       font-weight: 800;
     }
 
+
     .financial-value.accent {
-      color: var(--accent);
+      color:
+        var(--accent);
     }
+
 
     /* ==========================================
        CHESS
     ========================================== */
 
     .chess-card {
-      padding: 21px 22px;
+      padding:
+        21px 22px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       gap: 20px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       border-radius: 12px;
     }
 
+
     .chess-left {
       display: flex;
+
       align-items: center;
+
       gap: 14px;
     }
+
 
     .chess-icon {
       width: 45px;
       height: 45px;
 
       display: grid;
+
       place-items: center;
 
-      background: var(--surface-3);
+      background:
+        var(--surface-3);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       border-radius: 11px;
 
       font-size: 23px;
     }
 
+
     .chess-title {
       font-size: 13px;
+
       font-weight: 800;
     }
+
 
     .chess-subtitle {
       margin-top: 4px;
 
-      color: var(--text-3);
+      color:
+        var(--text-3);
 
       font-size: 10px;
     }
 
+
     .chess-rating {
-      color: var(--accent);
+      color:
+        var(--accent);
 
       font-size: 23px;
+
       font-weight: 850;
     }
+
 
     /* ==========================================
        ACTIONS
@@ -581,47 +941,65 @@
       margin-top: 28px;
 
       display: flex;
+
       gap: 10px;
     }
 
+
     .action-button {
       display: inline-flex;
+
       align-items: center;
+
       justify-content: center;
 
-      padding: 10px 15px;
+      padding:
+        10px 15px;
 
       border-radius: 9px;
 
       font-size: 12px;
+
       font-weight: 800;
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
       transition:
         background .15s ease,
         border-color .15s ease;
     }
 
-    .action-button:hover {
-      background: var(--surface-2);
 
-      border-color: var(--border-hover);
+    .action-button:hover {
+      background:
+        var(--surface-2);
+
+      border-color:
+        var(--border-hover);
     }
+
 
     .action-button.primary {
-      background: var(--accent);
+      background:
+        var(--accent);
 
-      color: #17120a;
+      color:
+        #17120a;
 
-      border-color: var(--accent);
+      border-color:
+        var(--accent);
     }
+
 
     .action-button.primary:hover {
-      background: #e0b45d;
+      background:
+        #e0b45d;
     }
+
 
     /* ==========================================
        LOADING / LOGIN
@@ -630,66 +1008,92 @@
     .loading,
     .error,
     .login-required {
-      padding: 60px 20px;
+      padding:
+        60px 20px;
 
-      text-align: center;
+      text-align:
+        center;
 
-      color: var(--text-2);
+      color:
+        var(--text-2);
 
       font-size: 13px;
     }
 
+
     .error {
-      color: var(--danger);
+      color:
+        var(--danger);
     }
+
 
     .login-required a {
       display: inline-block;
 
       margin-top: 15px;
 
-      padding: 10px 16px;
+      padding:
+        10px 16px;
 
-      background: var(--accent);
+      background:
+        var(--accent);
 
-      color: #17120a;
+      color:
+        #17120a;
 
       border-radius: 9px;
 
       font-size: 12px;
+
       font-weight: 800;
     }
+
 
     /* ==========================================
        FOOTER
     ========================================== */
 
     .footer {
-      width: min(1000px, calc(100% - 40px));
+      width:
+        min(
+          1000px,
+          calc(100% - 40px)
+        );
 
-      margin: 0 auto;
+      margin:
+        0 auto;
 
-      padding: 24px 0 35px;
+      padding:
+        24px 0 35px;
 
-      border-top: 1px solid var(--border);
+      border-top:
+        1px solid var(--border);
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
-      color: var(--text-3);
+      color:
+        var(--text-3);
 
       font-size: 11px;
     }
 
+
     .footer-links {
       display: flex;
+
       gap: 18px;
     }
 
+
     .footer-links a:hover {
-      color: var(--text-2);
+      color:
+        var(--text-2);
     }
+
 
     /* ==========================================
        MOBILE
@@ -702,14 +1106,17 @@
           repeat(2, minmax(0, 1fr));
       }
 
+
       .financial-grid {
         grid-template-columns:
           1fr;
       }
 
+
       .nav-link span {
         display: none;
       }
+
 
       .nav-link {
         padding: 9px;
@@ -717,33 +1124,43 @@
 
     }
 
+
     @media (max-width: 600px) {
 
       .header-inner,
       .page,
       .footer {
-        width: calc(100% - 28px);
+        width:
+          calc(100% - 28px);
       }
+
 
       .header {
         height: 62px;
       }
 
+
       .brand span {
         display: none;
       }
+
 
       .balance {
         display: none;
       }
 
+
       .page {
         padding-top: 38px;
       }
 
+
       .profile-card {
         padding: 20px;
+
+        align-items: flex-start;
       }
+
 
       .profile-avatar {
         width: 65px;
@@ -752,45 +1169,70 @@
         border-radius: 16px;
       }
 
+
       .profile-name {
         font-size: 19px;
       }
+
+
+      .profile-badge {
+        width: 48px;
+        height: 48px;
+      }
+
+
+      .profile-badge img {
+        width: 45px;
+        height: 45px;
+      }
+
 
       .stats-grid {
         gap: 9px;
       }
 
+
       .stat-card {
         padding: 15px;
       }
+
 
       .stat-value {
         font-size: 18px;
       }
 
+
       .chess-card {
         padding: 17px;
       }
+
 
       .actions {
         flex-direction: column;
       }
 
+
       .action-button {
         width: 100%;
       }
 
+
       .footer {
         align-items: flex-start;
+
         flex-direction: column;
+
         gap: 12px;
       }
 
     }
+
   </style>
+
 </head>
 
 <body>
+
 
   <!-- ==========================================
        HEADER
@@ -799,6 +1241,7 @@
   <header class="header">
 
     <div class="header-inner">
+
 
       <a
         href="/"
@@ -819,6 +1262,7 @@
 
       <nav class="nav">
 
+
         <a
           href="/games"
           class="nav-link"
@@ -830,6 +1274,7 @@
             stroke="currentColor"
             stroke-width="2"
           >
+
             <rect
               x="3"
               y="6"
@@ -851,6 +1296,7 @@
               cy="13"
               r="1"
             />
+
           </svg>
 
           <span>
@@ -871,7 +1317,9 @@
             stroke="currentColor"
             stroke-width="2"
           >
+
             <path d="M8 21h8" />
+
             <path d="M12 17v4" />
 
             <path
@@ -885,6 +1333,7 @@
             <path
               d="M17 7h3v1a4 4 0 0 1-4 4"
             />
+
           </svg>
 
           <span>
@@ -905,8 +1354,15 @@
             stroke="currentColor"
             stroke-width="2"
           >
-            <path d="M6 8h12l1 12H5L6 8Z" />
-            <path d="M9 8a3 3 0 0 1 6 0" />
+
+            <path
+              d="M6 8h12l1 12H5L6 8Z"
+            />
+
+            <path
+              d="M9 8a3 3 0 0 1 6 0"
+            />
+
           </svg>
 
           <span>
@@ -915,10 +1371,53 @@
 
         </a>
 
+
+        <a
+          href="/inventory"
+          class="nav-link"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+
+            <rect
+              x="3"
+              y="5"
+              width="18"
+              height="16"
+              rx="3"
+            />
+
+            <path
+              d="M8 5V3h8v2"
+            />
+
+            <path
+              d="M8 11h8"
+            />
+
+            <path
+              d="M8 15h5"
+            />
+
+          </svg>
+
+          <span>
+            Inventory
+          </span>
+
+        </a>
+
+
       </nav>
 
 
       <div class="account">
+
 
         <div class="balance">
 
@@ -964,6 +1463,7 @@
           </span>
 
         </a>
+
 
       </div>
 
@@ -1128,12 +1628,14 @@
 
       document
         .getElementById("loginButton")
-        .style.display = "none";
+        .style.display =
+          "none";
 
 
       document
         .getElementById("userButton")
-        .style.display = "flex";
+        .style.display =
+          "flex";
 
 
       document
@@ -1166,10 +1668,87 @@
 
 
         document
-          .getElementById("headerAvatar")
-          .src = avatar;
+          .getElementById(
+            "headerAvatar"
+          )
+          .src =
+            avatar;
 
       }
+
+    }
+
+
+    /* ==========================================
+       GET NAMEPLATE
+    ========================================== */
+
+    function getNameplate(
+      equippedNameplate
+    ) {
+
+      switch (
+        equippedNameplate
+      ) {
+
+        case "gold-nameplate":
+
+          return {
+            className: "gold",
+            label: "Gold Nameplate",
+            icon: "✦"
+          };
+
+
+        case "royal-nameplate":
+
+          return {
+            className: "royal",
+            label: "Royal Nameplate",
+            icon: "♛"
+          };
+
+
+        case "diamond-nameplate":
+
+          return {
+            className: "diamond",
+            label: "Diamond Nameplate",
+            icon: "◆"
+          };
+
+
+        default:
+
+          return null;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       GET BADGE
+    ========================================== */
+
+    function getBadge(
+      equippedBadge
+    ) {
+
+      if (
+        equippedBadge ===
+        "champion-badge"
+      ) {
+
+        return {
+          image: "/championbadge.png",
+          label: "Champion Badge"
+        };
+
+      }
+
+
+      return null;
 
     }
 
@@ -1250,6 +1829,34 @@
         );
 
 
+      /* ==========================================
+         COSMETICS
+      ========================================== */
+
+      const nameplate =
+        getNameplate(
+          user.equippedNameplate
+        );
+
+
+      const badge =
+        getBadge(
+          user.equippedBadge
+        );
+
+
+      const profileCardClass =
+        nameplate
+          ? `profile-card nameplate-${nameplate.className}`
+          : "profile-card";
+
+
+      const profileNameClass =
+        nameplate
+          ? `profile-name ${nameplate.className}`
+          : "profile-name";
+
+
       const totalDecided =
         gamesWon +
         gamesLost;
@@ -1257,29 +1864,38 @@
 
       const winRate =
         totalDecided > 0
+
           ? Math.round(
               (
                 gamesWon /
                 totalDecided
               ) * 100
             )
+
           : 0;
 
+
+      /* ==========================================
+         AVATAR
+      ========================================== */
 
       const avatar =
         user.id &&
         user.avatar
 
           ? `
+
             <img
               id="profileAvatar"
               class="profile-avatar"
               src="https://cdn.discordapp.com/avatars/${encodeURIComponent(user.id)}/${encodeURIComponent(user.avatar)}.png?size=256"
               alt="${username}"
             >
+
           `
 
           : `
+
             <div
               id="profileAvatar"
               class="profile-avatar"
@@ -1296,8 +1912,112 @@
                   .toUpperCase()
               )}
             </div>
+
           `;
 
+
+      /* ==========================================
+         BADGE
+      ========================================== */
+
+      const badgeHtml =
+        badge
+
+          ? `
+
+            <div
+              class="profile-badge"
+              title="${escapeHtml(
+                badge.label
+              )}"
+            >
+
+              <img
+                src="${escapeHtml(
+                  badge.image
+                )}"
+                alt="${escapeHtml(
+                  badge.label
+                )}"
+              >
+
+            </div>
+
+          `
+
+          : "";
+
+
+      /* ==========================================
+         EQUIPPED ITEMS
+      ========================================== */
+
+      let equippedHtml = "";
+
+
+      if (nameplate) {
+
+        equippedHtml += `
+
+          <div class="equipped-item">
+
+            <span class="equipped-item-icon">
+              ${escapeHtml(
+                nameplate.icon
+              )}
+            </span>
+
+            ${escapeHtml(
+              nameplate.label
+            )}
+
+          </div>
+
+        `;
+
+      }
+
+
+      if (badge) {
+
+        equippedHtml += `
+
+          <div class="equipped-item">
+
+            <span class="equipped-item-icon">
+              ♛
+            </span>
+
+            ${escapeHtml(
+              badge.label
+            )}
+
+          </div>
+
+        `;
+
+      }
+
+
+      const equippedSection =
+        equippedHtml
+
+          ? `
+
+            <div class="equipped-display">
+
+              ${equippedHtml}
+
+            </div>
+
+          `
+
+          : "";
+
+
+      /* ==========================================
+         HTML
+      ========================================== */
 
       content.innerHTML = `
 
@@ -1319,38 +2039,58 @@
         </section>
 
 
-        <!-- PROFILE -->
+        <!-- ======================================
+             PROFILE
+        ======================================= -->
 
-        <section class="profile-card">
+        <section
+          class="${profileCardClass}"
+        >
 
           ${avatar}
 
+
           <div class="profile-info">
 
-            <h2 class="profile-name">
+            <h2
+              class="${profileNameClass}"
+            >
               ${username}
             </h2>
+
 
             <div class="profile-discord">
               @${discordUsername}
             </div>
 
+
             <div class="profile-id">
-              ID: ${escapeHtml(user.id || "—")}
+              ID: ${escapeHtml(
+                user.id || "—"
+              )}
             </div>
 
+
+            ${equippedSection}
+
           </div>
+
+
+          ${badgeHtml}
 
         </section>
 
 
-        <!-- BALANCE -->
+        <!-- ======================================
+             BALANCE
+        ======================================= -->
 
         <section class="balance-card">
 
           <div class="balance-label">
             Current Balance
           </div>
+
 
           <div class="balance-number">
             ◆ ${balance}
@@ -1359,7 +2099,9 @@
         </section>
 
 
-        <!-- GAME STATS -->
+        <!-- ======================================
+             GAME STATS
+        ======================================= -->
 
         <div class="section-title">
           Game Statistics
@@ -1367,6 +2109,7 @@
 
 
         <section class="stats-grid">
+
 
           <div class="stat-card">
 
@@ -1419,10 +2162,13 @@
 
           </div>
 
+
         </section>
 
 
-        <!-- ECONOMY -->
+        <!-- ======================================
+             ECONOMY
+        ======================================= -->
 
         <div class="section-title">
           Economy
@@ -1430,6 +2176,7 @@
 
 
         <section class="financial-grid">
+
 
           <div class="financial-card">
 
@@ -1469,10 +2216,13 @@
 
           </div>
 
+
         </section>
 
 
-        <!-- CHESS -->
+        <!-- ======================================
+             CHESS
+        ======================================= -->
 
         <div class="section-title">
           Chess
@@ -1481,11 +2231,13 @@
 
         <section class="chess-card">
 
+
           <div class="chess-left">
 
             <div class="chess-icon">
               ♟
             </div>
+
 
             <div>
 
@@ -1506,12 +2258,16 @@
             ${chessRating}
           </div>
 
+
         </section>
 
 
-        <!-- ACTIONS -->
+        <!-- ======================================
+             ACTIONS
+        ======================================= -->
 
         <div class="actions">
+
 
           <a
             href="/games"
@@ -1520,12 +2276,22 @@
             Play a Game
           </a>
 
+
+          <a
+            href="/inventory"
+            class="action-button"
+          >
+            Open Inventory
+          </a>
+
+
           <a
             href="/leaderboard"
             class="action-button"
           >
             View Leaderboard
           </a>
+
 
         </div>
 
@@ -1567,6 +2333,7 @@
             You need to log in to view your profile.
           </div>
 
+
           <a
             href="https://api.memplace.xyz/api/auth/login"
           >
@@ -1586,7 +2353,7 @@
 
     function escapeHtml(value) {
 
-      return String(value)
+      return String(value ?? "")
         .replace(
           /&/g,
           "&amp;"
@@ -1618,9 +2385,9 @@
     loadProfile();
 
 
-    /*
-      Keep profile information fresh.
-    */
+    /* ==========================================
+       REFRESH PROFILE
+    ========================================== */
 
     setInterval(
       loadProfile,
