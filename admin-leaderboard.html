@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Leaderboard — Admin</title>
+
+
+  <style>
+
+    :root {
+
+      --black: #0b0a08;
+      --black-2: #12100d;
+
+      --surface: #191511;
+      --surface-2: #211c16;
+      --surface-3: #282119;
+
+      --border:
+        rgba(255,255,255,.08);
+
+      --text: #f3eee6;
+      --muted: #9d958a;
+
+      --accent: #d6a85c;
+      --accent-soft:
+        rgba(214,168,92,.12);
+
+      --green: #71c98b;
+      --red: #e06c6c;
+
+      --radius: 14px;
+
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html,
+    body {
+
+      margin: 0;
+
+      min-height: 100%;
+
+      background:
+
+        radial-gradient(
+          circle at top,
+          rgba(214,168,92,.06),
+          transparent 35%
+        ),
+
+        var(--black);
+
+      color:
+        var(--text);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    }
+
+
+    body {
+      padding-bottom: 60px;
+    }
+
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* ========================================
+       HEADER
+    ======================================== */
+
+    .header {
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 50;
+
+      height: 70px;
+
+      background:
+        rgba(11,10,8,.88);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter:
+        blur(18px);
+
+    }
+
+
+    .header-inner {
+
+      width:
+        min(
+          1180px,
+          calc(100% - 32px)
+        );
+
+      height: 100%;
+
+      margin: 0 auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content:
+        space-between;
+
+      gap: 20px;
+
+    }
+
+
+    .brand {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      color:
+        var(--text);
+
+      text-decoration: none;
+
+    }
+
+
+    .brand img {
+
+      width: 38px;
+
+      height: 38px;
+
+      border-radius: 10px;
+
+      object-fit: cover;
+
+    }
+
+
+    .brand-text {
+
+      display: flex;
+
+      flex-direction: column;
+
+    }
+
+
+    .brand-title {
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+    }
+
+
+    .brand-subtitle {
+
+      margin-top: 2px;
+
+      color:
+        var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    .back {
+
+      color:
+        var(--muted);
+
+      text-decoration: none;
+
+      font-size: 13px;
+
+    }
+
+
+    .back:hover {
+      color: var(--text);
+    }
+
+
+    /* ========================================
+       PAGE
+    ======================================== */
+
+    .page {
+
+      width:
+        min(
+          1180px,
+          calc(100% - 32px)
+        );
+
+      margin:
+        0 auto;
+
+      padding-top: 36px;
+
+    }
+
+
+    .heading {
+      margin-bottom: 25px;
+    }
+
+
+    .eyebrow {
+
+      color:
+        var(--accent);
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing:
+        .12em;
+
+      text-transform:
+        uppercase;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    h1 {
+
+      margin: 0;
+
+      font-size: 30px;
+
+      letter-spacing:
+        -.03em;
+
+    }
+
+
+    .description {
+
+      margin:
+        8px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size: 14px;
+
+    }
+
+
+    /* ========================================
+       TOOLBAR
+    ======================================== */
+
+    .toolbar {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      margin-bottom: 16px;
+
+    }
+
+
+    .search {
+
+      flex: 1;
+
+      min-width: 0;
+
+    }
+
+
+    input,
+    select {
+
+      width: 100%;
+
+      padding:
+        11px 12px;
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        9px;
+
+      outline: none;
+
+    }
+
+
+    input:focus,
+    select:focus {
+
+      border-color:
+        rgba(214,168,92,.55);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(214,168,92,.08);
+
+    }
+
+
+    .sort {
+
+      width: 190px;
+
+      flex-shrink: 0;
+
+    }
+
+
+    /* ========================================
+       PANEL
+    ======================================== */
+
+    .panel {
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      overflow: hidden;
+
+    }
+
+
+    .panel-header {
+
+      padding:
+        17px 20px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      display: flex;
+
+      justify-content:
+        space-between;
+
+      align-items: center;
+
+      gap: 12px;
+
+    }
+
+
+    .panel-title {
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+    }
+
+
+    .panel-meta {
+
+      color:
+        var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    /* ========================================
+       TABLE
+    ======================================== */
+
+    .table-wrap {
+
+      width: 100%;
+
+      overflow-x: auto;
+
+    }
+
+
+    table {
+
+      width: 100%;
+
+      border-collapse:
+        collapse;
+
+      min-width: 850px;
+
+    }
+
+
+    th {
+
+      padding:
+        12px 18px;
+
+      color:
+        var(--muted);
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      text-align: left;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .07em;
+
+      background:
+        rgba(255,255,255,.018);
+
+      border-bottom:
+        1px solid var(--border);
+
+    }
+
+
+    td {
+
+      padding:
+        13px 18px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      font-size: 13px;
+
+      vertical-align:
+        middle;
+
+    }
+
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+
+    tbody tr {
+
+      transition:
+        background .15s;
+
+    }
+
+
+    tbody tr:hover {
+
+      background:
+        rgba(255,255,255,.025);
+
+    }
+
+
+    /* ========================================
+       RANK
+    ======================================== */
+
+    .rank {
+
+      width: 55px;
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+    }
+
+
+    .rank.top {
+
+      color:
+        var(--accent);
+
+    }
+
+
+    /* ========================================
+       USER
+    ======================================== */
+
+    .user {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 11px;
+
+      min-width: 190px;
+
+    }
+
+
+    .avatar {
+
+      width: 38px;
+
+      height: 38px;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      background:
+        var(--surface-3);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      overflow: hidden;
+
+      color:
+        var(--accent);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+    }
+
+
+    .avatar img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+
+    .username {
+
+      font-weight: 700;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      max-width: 190px;
+
+    }
+
+
+    .discord {
+
+      margin-top: 3px;
+
+      color:
+        var(--muted);
+
+      font-size: 10px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      max-width: 190px;
+
+    }
+
+
+    /* ========================================
+       VALUES
+    ======================================== */
+
+    .value {
+
+      font-weight: 700;
+
+      white-space: nowrap;
+
+    }
+
+
+    .balance {
+
+      color:
+        var(--accent);
+
+    }
+
+
+    .muted-value {
+
+      color:
+        var(--muted);
+
+    }
+
+
+    /* ========================================
+       PAGINATION
+    ======================================== */
+
+    .pagination {
+
+      padding:
+        15px 18px;
+
+      border-top:
+        1px solid var(--border);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content:
+        space-between;
+
+      gap: 12px;
+
+    }
+
+
+    .page-info {
+
+      color:
+        var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    .page-buttons {
+
+      display: flex;
+
+      gap: 7px;
+
+    }
+
+
+    .page-button {
+
+      padding:
+        8px 11px;
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-2);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 8px;
+
+      font-size: 11px;
+
+    }
+
+
+    .page-button:hover:not(:disabled) {
+
+      border-color:
+        rgba(214,168,92,.35);
+
+    }
+
+
+    .page-button:disabled {
+
+      opacity: .35;
+
+      cursor:
+        not-allowed;
+
+    }
+
+
+    /* ========================================
+       EMPTY
+    ======================================== */
+
+    .empty {
+
+      padding:
+        50px 20px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+
+    }
+
+
+    /* ========================================
+       LOADING
+    ======================================== */
+
+    .loading {
+
+      padding:
+        50px 20px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+
+    }
+
+
+    /* ========================================
+       RESPONSIVE
+    ======================================== */
+
+    @media (
+      max-width: 650px
+    ) {
+
+      .header-inner,
+      .page {
+
+        width:
+          calc(100% - 22px);
+
+      }
+
+
+      .toolbar {
+
+        flex-direction:
+          column;
+
+        align-items:
+          stretch;
+
+      }
+
+
+      .sort {
+
+        width: 100%;
+
+      }
+
+
+      h1 {
+        font-size: 25px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- ======================================
+       HEADER
+  ======================================= -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a
+        href="/admin"
+        class="brand"
+      >
+
+        <img
+          src="/logo.gif"
+          alt=""
+        >
+
+        <div class="brand-text">
+
+          <div class="brand-title">
+            Middle Eastern Mixing
+          </div>
+
+          <div class="brand-subtitle">
+            Administration
+          </div>
+
+        </div>
+
+      </a>
+
+
+      <a
+        href="/admin"
+        class="back"
+      >
+        ← Admin Dashboard
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================
+       PAGE
+  ======================================= -->
+
+  <main class="page">
+
+
+    <section class="heading">
+
+      <div class="eyebrow">
+        Administration
+      </div>
+
+      <h1>
+        Leaderboard
+      </h1>
+
+      <p class="description">
+        View player rankings across the minigame economy
+        and game statistics.
+      </p>
+
+    </section>
+
+
+    <!-- ====================================
+         TOOLBAR
+    ===================================== -->
+
+    <div class="toolbar">
+
+      <div class="search">
+
+        <input
+          id="search"
+          type="search"
+          placeholder="Search username, Discord username, or ID..."
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <div class="sort">
+
+        <select id="sort">
+
+          <option value="balance">
+            Balance
+          </option>
+
+          <option value="gamesPlayed">
+            Games Played
+          </option>
+
+          <option value="gamesWon">
+            Games Won
+          </option>
+
+          <option value="gamesLost">
+            Games Lost
+          </option>
+
+          <option value="totalWagered">
+            Total Wagered
+          </option>
+
+          <option value="totalWon">
+            Total Won
+          </option>
+
+          <option value="totalLost">
+            Total Lost
+          </option>
+
+          <option value="chessRating">
+            Chess Rating
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <!-- ====================================
+         LEADERBOARD
+    ===================================== -->
+
+    <section class="panel">
+
+
+      <div class="panel-header">
+
+        <div class="panel-title">
+          Rankings
+        </div>
+
+        <div
+          class="panel-meta"
+          id="resultCount"
+        >
+          Loading...
+        </div>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Rank
+              </th>
+
+              <th>
+                User
+              </th>
+
+              <th>
+                Balance
+              </th>
+
+              <th>
+                Games
+              </th>
+
+              <th>
+                Wins
+              </th>
+
+              <th>
+                Wagered
+              </th>
+
+              <th>
+                Won
+              </th>
+
+              <th>
+                Chess
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="leaderboardBody">
+
+            <tr>
+
+              <td
+                colspan="8"
+                class="loading"
+              >
+                Loading leaderboard...
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="pagination">
+
+        <div
+          class="page-info"
+          id="pageInfo"
+        >
+          —
+        </div>
+
+
+        <div class="page-buttons">
+
+          <button
+            class="page-button"
+            id="previousButton"
+            type="button"
+          >
+            Previous
+          </button>
+
+
+          <button
+            class="page-button"
+            id="nextButton"
+            type="button"
+          >
+            Next
+          </button>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+  <script>
+
+    /* ========================================
+       API
+    ======================================== */
+
+    const API =
+      "https://api.memplace.xyz";
+
+
+    let currentPage = 1;
+
+    const limit = 50;
+
+
+    /* ========================================
+       HELPERS
+    ======================================== */
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function formatNumber(value) {
+
+      return Number(
+        value || 0
+      ).toLocaleString(
+        "en-US"
+      );
+
+    }
+
+
+    function getInitials(user) {
+
+      const value =
+        user.username ||
+        user.discordUsername ||
+        "U";
+
+
+      return value
+        .replace(
+          /#\d+$/,
+          ""
+        )
+        .split(
+          /[\s_-]+/
+        )
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(
+          part =>
+            part.charAt(0)
+              .toUpperCase()
+        )
+        .join("") ||
+        "U";
+
+    }
+
+
+    function renderAvatar(user) {
+
+      const initials =
+        escapeHtml(
+          getInitials(user)
+        );
+
+
+      if (!user.avatar) {
+
+        return `
+
+          <div class="avatar">
+            ${initials}
+          </div>
+
+        `;
+
+      }
+
+
+      return `
+
+        <div class="avatar">
+
+          <img
+            src="${escapeHtml(
+              user.avatar
+            )}"
+            alt=""
+            loading="lazy"
+            onerror="
+              this.style.display='none';
+              this.parentElement.textContent='${initials}';
+            "
+          >
+
+        </div>
+
+      `;
+
+    }
+
+
+    /* ========================================
+       STAFF CHECK
+    ======================================== */
+
+    async function checkStaff() {
+
+      const response =
+        await fetch(
+          API +
+          "/api/admin/me",
+          {
+            method: "GET",
+
+            credentials:
+              "include",
+
+            cache:
+              "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+
+        window.location.href =
+          "/";
+
+        return null;
+
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !data.success ||
+        !data.staff
+      ) {
+
+        window.location.href =
+          "/";
+
+        return null;
+
+      }
+
+
+      const permissions =
+        Array.isArray(
+          data.permissions
+        )
+          ? data.permissions
+          : [];
+
+
+      if (
+        data.role !== "owner" &&
+        !permissions.includes(
+          "leaderboard"
+        )
+      ) {
+
+        window.location.href =
+          "/admin";
+
+        return null;
+
+      }
+
+
+      return data;
+
+    }
+
+
+    /* ========================================
+       LOAD LEADERBOARD
+    ======================================== */
+
+    async function loadLeaderboard() {
+
+      const search =
+        document
+          .getElementById(
+            "search"
+          )
+          .value
+          .trim();
+
+
+      const sort =
+        document
+          .getElementById(
+            "sort"
+          )
+          .value;
+
+
+      const params =
+        new URLSearchParams();
+
+
+      params.set(
+        "page",
+        String(currentPage)
+      );
+
+
+      params.set(
+        "limit",
+        String(limit)
+      );
+
+
+      params.set(
+        "sort",
+        sort
+      );
+
+
+      if (search) {
+
+        params.set(
+          "search",
+          search
+        );
+
+      }
+
+
+      const body =
+        document.getElementById(
+          "leaderboardBody"
+        );
+
+
+      body.innerHTML = `
+
+        <tr>
+
+          <td
+            colspan="8"
+            class="loading"
+          >
+            Loading leaderboard...
+          </td>
+
+        </tr>
+
+      `;
+
+
+      try {
+
+        const response =
+          await fetch(
+
+            API +
+            "/api/admin/leaderboard?" +
+            params.toString() +
+            "&t=" +
+            Date.now(),
+
+            {
+              method:
+                "GET",
+
+              credentials:
+                "include",
+
+              cache:
+                "no-store"
+            }
+
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            "Failed to load leaderboard."
+          );
+
+        }
+
+
+        renderLeaderboard(
+          data
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "LEADERBOARD ERROR:",
+          error
+        );
+
+
+        body.innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="empty"
+            >
+              Failed to load leaderboard.
+            </td>
+
+          </tr>
+
+        `;
+
+        document.getElementById(
+          "resultCount"
+        ).textContent =
+          "Error";
+
+      }
+
+    }
+
+
+    /* ========================================
+       RENDER
+    ======================================== */
+
+    function renderLeaderboard(
+      data
+    ) {
+
+      const rows =
+        data.leaderboard ||
+        [];
+
+
+      const pagination =
+        data.pagination ||
+        {};
+
+
+      document.getElementById(
+        "resultCount"
+      ).textContent =
+        formatNumber(
+          pagination.total || 0
+        ) +
+        " players";
+
+
+      document.getElementById(
+        "pageInfo"
+      ).textContent =
+        pagination.total
+          ? `Page ${pagination.page} of ${pagination.totalPages}`
+          : "No results";
+
+
+      document.getElementById(
+        "previousButton"
+      ).disabled =
+        !pagination.page ||
+        pagination.page <= 1;
+
+
+      document.getElementById(
+        "nextButton"
+      ).disabled =
+        !pagination.totalPages ||
+        pagination.page >=
+          pagination.totalPages;
+
+
+      const body =
+        document.getElementById(
+          "leaderboardBody"
+        );
+
+
+      if (!rows.length) {
+
+        body.innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="empty"
+            >
+              No players found.
+            </td>
+
+          </tr>
+
+        `;
+
+        return;
+
+      }
+
+
+      body.innerHTML =
+        rows.map(
+          user => {
+
+            const rankClass =
+              user.rank <= 3
+                ? "rank top"
+                : "rank";
+
+
+            return `
+
+              <tr>
+
+                <td>
+
+                  <div
+                    class="${rankClass}"
+                  >
+                    #${formatNumber(
+                      user.rank
+                    )}
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <div class="user">
+
+                    ${renderAvatar(user)}
+
+                    <div>
+
+                      <div class="username">
+
+                        ${escapeHtml(
+                          user.username ||
+                          user.discordUsername ||
+                          "Unknown User"
+                        )}
+
+                      </div>
+
+
+                      <div class="discord">
+
+                        ${escapeHtml(
+                          user.discordUsername ||
+                          user.id ||
+                          ""
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <div class="value balance">
+
+                    ${formatNumber(
+                      user.balance
+                    )}
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <div class="value">
+
+                    ${formatNumber(
+                      user.gamesPlayed
+                    )}
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <div class="value">
+
+                    ${formatNumber(
+                      user.gamesWon
+                    )}
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <div class="value muted-value">
+
+                    ${formatNumber(
+                      user.totalWagered
+                    )}
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <div class="value">
+
+                    ${formatNumber(
+                      user.totalWon
+                    )}
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  <div class="value">
+
+                    ${formatNumber(
+                      user.chessRating
+                    )}
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /* ========================================
+       SEARCH
+    ======================================== */
+
+    let searchTimeout;
+
+
+    document
+      .getElementById(
+        "search"
+      )
+      .addEventListener(
+        "input",
+        () => {
+
+          clearTimeout(
+            searchTimeout
+          );
+
+
+          searchTimeout =
+            setTimeout(
+              () => {
+
+                currentPage = 1;
+
+                loadLeaderboard();
+
+              },
+              300
+            );
+
+        }
+      );
+
+
+    /* ========================================
+       SORT
+    ======================================== */
+
+    document
+      .getElementById(
+        "sort"
+      )
+      .addEventListener(
+        "change",
+        () => {
+
+          currentPage = 1;
+
+          loadLeaderboard();
+
+        }
+      );
+
+
+    /* ========================================
+       PAGINATION
+    ======================================== */
+
+    document
+      .getElementById(
+        "previousButton"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (
+            currentPage <= 1
+          ) {
+            return;
+          }
+
+
+          currentPage--;
+
+          loadLeaderboard();
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "nextButton"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          currentPage++;
+
+          loadLeaderboard();
+
+        }
+      );
+
+
+    /* ========================================
+       INIT
+    ======================================== */
+
+    async function init() {
+
+      const staff =
+        await checkStaff();
+
+
+      if (!staff) {
+        return;
+      }
+
+
+      await loadLeaderboard();
+
+    }
+
+
+    init();
+
+  </script>
+
+</body>
+
+</html>
