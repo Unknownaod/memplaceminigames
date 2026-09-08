@@ -1,0 +1,68 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/chess",
+      "destination": "/chess.html"
+    },
+    {
+      "source": "/blackjack",
+      "destination": "/blackjack.html"
+    },
+    {
+      "source": "/slots",
+      "destination": "/slots.html"
+    },
+    {
+      "source": "/dice",
+      "destination": "/dice.html"
+    },
+    {
+      "source": "/duels",
+      "destination": "/duels.html"
+    },
+    {
+      "source": "/trivia",
+      "destination": "/trivia.html"
+    },
+    {
+      "source": "/games",
+      "destination": "/games.html"
+    },
+    {
+      "source": "/leaderboard",
+      "destination": "/leaderboard.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/profile.html"
+    },
+    {
+      "source": "/shop",
+      "destination": "/shop.html"
+    },
+    {
+      "source": "/daily",
+      "destination": "/daily.html"
+    },
+    {
+      "source": "/history",
+      "destination": "/history.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/support.html"
+    }
+  ]
+}
