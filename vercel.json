@@ -67,6 +67,10 @@
     {
   "source": "/admin",
   "destination": "/admin.html"
-   }
+   },
+   {
+  "source": "/admin/staff",
+  "destination": "/admin-staff.html" 
+  }
   ]
 }
