@@ -4294,43 +4294,41 @@ body.theme-sword
     }
 
 
-    if (
-      equippedTheme ===
-      "sword-theme"
-    ) {
+if (
+  equippedTheme ===
+  "sword-theme"
+) {
 
-      html.classList.add(
-        "theme-sword"
-      );
+  html.classList.add(
+    "theme-sword"
+  );
 
-      body.classList.add(
-        "theme-sword"
-      );
+  body.classList.add(
+    "theme-sword"
+  );
 
 
-      if (
-        typeof showSwordSoundPrompt ===
-        "function"
-      ) {
+  if (
+    typeof restartSwordTheme ===
+    "function"
+  ) {
 
-        showSwordSoundPrompt();
-
-      }
-
-    } else {
-
-      if (
-        typeof hideSwordSoundPrompt ===
-        "function"
-      ) {
-
-        hideSwordSoundPrompt();
-
-      }
-
-    }
+    restartSwordTheme();
 
   }
+
+} else {
+
+  if (
+    typeof stopSwordTheme ===
+    "function"
+  ) {
+
+    stopSwordTheme();
+
+  }
+
+}
 
 
   /* ==========================================
@@ -5981,109 +5979,230 @@ body.theme-sword
   }
 
 
-  /* ==========================================
-     SWORD THEME SOUND
-  ========================================== */
+ /* ==========================================
+   SWORD THEME SOUND
+========================================== */
 
-  const swordVideo =
-    document.getElementById(
-      "swordThemeVideo"
-    );
-
-
-  const swordSoundPrompt =
-    document.getElementById(
-      "swordSoundPrompt"
-    );
+const swordVideo =
+  document.getElementById(
+    "swordThemeVideo"
+  );
 
 
-  const swordSoundButton =
-    document.getElementById(
-      "swordSoundButton"
-    );
+const swordSoundPrompt =
+  document.getElementById(
+    "swordSoundPrompt"
+  );
 
 
-  const swordSoundClose =
-    document.getElementById(
-      "swordSoundClose"
-    );
+const swordSoundButton =
+  document.getElementById(
+    "swordSoundButton"
+  );
 
 
-  function showSwordSoundPrompt() {
-
-    if (!swordSoundPrompt) {
-      return;
-    }
-
-    swordSoundPrompt.hidden =
-      false;
-
-  }
+const swordSoundClose =
+  document.getElementById(
+    "swordSoundClose"
+  );
 
 
-  function hideSwordSoundPrompt() {
+/* ==========================================
+   SHOW SOUND PROMPT
+========================================== */
 
-    if (!swordSoundPrompt) {
-      return;
-    }
+function showSwordSoundPrompt() {
 
-    swordSoundPrompt.hidden =
-      true;
-
-  }
-
-
+  /*
+   * Only show this for the Sword Theme.
+   */
   if (
-    swordSoundButton &&
-    swordVideo
+    !swordSoundPrompt ||
+    !swordVideo
   ) {
-
-    swordSoundButton.addEventListener(
-      "click",
-      async () => {
-
-        try {
-
-          swordVideo.muted =
-            false;
+    return;
+  }
 
 
-          await swordVideo.play();
+  swordSoundPrompt.hidden =
+    false;
+
+}
 
 
-          swordSoundButton.textContent =
-            "🔊 Sound On";
+/* ==========================================
+   HIDE SOUND PROMPT
+========================================== */
+
+function hideSwordSoundPrompt() {
+
+  if (!swordSoundPrompt) {
+    return;
+  }
 
 
-          setTimeout(() => {
+  swordSoundPrompt.hidden =
+    true;
 
-            hideSwordSoundPrompt();
+}
 
-          }, 800);
 
-        } catch (error) {
+/* ==========================================
+   RESTART SWORD VIDEO
+========================================== */
 
-          console.error(
-            "Sword theme audio error:",
-            error
-          );
+function restartSwordTheme() {
 
-        }
+  /*
+   * No Sword video = nothing to do.
+   */
+  if (!swordVideo) {
+    return;
+  }
+
+
+  /*
+   * Always reset the video to the beginning.
+   */
+  try {
+
+    swordVideo.pause();
+
+    swordVideo.currentTime = 0;
+
+    swordVideo.muted = true;
+
+    swordVideo.play().catch(() => {});
+
+  } catch (error) {
+
+    console.error(
+      "Sword theme video restart error:",
+      error
+    );
+
+  }
+
+
+  /*
+   * Reset the sound prompt every time
+   * the profile is loaded.
+   */
+  if (swordSoundButton) {
+
+    swordSoundButton.textContent =
+      "🔊 Enable Sound";
+
+  }
+
+
+  showSwordSoundPrompt();
+
+}
+
+
+/* ==========================================
+   STOP SWORD VIDEO
+========================================== */
+
+function stopSwordTheme() {
+
+  if (!swordVideo) {
+    return;
+  }
+
+
+  try {
+
+    swordVideo.pause();
+
+    swordVideo.currentTime = 0;
+
+    swordVideo.muted = true;
+
+  } catch (error) {
+
+    console.error(
+      "Sword theme video stop error:",
+      error
+    );
+
+  }
+
+
+  hideSwordSoundPrompt();
+
+}
+
+
+/* ==========================================
+   ENABLE SWORD SOUND
+========================================== */
+
+if (
+  swordSoundButton &&
+  swordVideo
+) {
+
+  swordSoundButton.addEventListener(
+    "click",
+    async () => {
+
+      try {
+
+        swordVideo.muted =
+          false;
+
+
+        swordVideo.currentTime =
+          swordVideo.currentTime;
+
+
+        await swordVideo.play();
+
+
+        swordSoundButton.textContent =
+          "🔊 Sound On";
+
+
+        setTimeout(() => {
+
+          hideSwordSoundPrompt();
+
+        }, 800);
+
+
+      } catch (error) {
+
+        console.error(
+          "Sword theme audio error:",
+          error
+        );
 
       }
-    );
 
-  }
+    }
+  );
+
+}
 
 
-  if (swordSoundClose) {
+/* ==========================================
+   CLOSE SOUND PROMPT
+========================================== */
 
-    swordSoundClose.addEventListener(
-      "click",
-      hideSwordSoundPrompt
-    );
+if (swordSoundClose) {
 
-  }
+  swordSoundClose.addEventListener(
+    "click",
+    () => {
+
+      hideSwordSoundPrompt();
+
+    }
+  );
+
+}
 
 
   /* ==========================================
