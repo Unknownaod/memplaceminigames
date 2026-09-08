@@ -420,7 +420,7 @@
       display: grid;
 
       grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+        repeat(4, minmax(0, 1fr));
 
       gap: 14px;
     }
@@ -446,7 +446,8 @@
 
       transition:
         border-color 0.18s ease,
-        background 0.18s ease;
+        background 0.18s ease,
+        transform 0.18s ease;
     }
 
 
@@ -460,6 +461,9 @@
           rgba(255,255,255,0.035),
           rgba(255,255,255,0.015)
         );
+
+      transform:
+        translateY(-1px);
     }
 
 
@@ -471,6 +475,19 @@
         linear-gradient(
           145deg,
           rgba(92,37,67,0.13),
+          rgba(255,255,255,0.01)
+        );
+    }
+
+
+    .equipment-card.title-equipment {
+      border-color:
+        rgba(214,168,92,0.18);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(214,168,92,0.055),
           rgba(255,255,255,0.01)
         );
     }
@@ -518,6 +535,18 @@
 
       color:
         #d58baa;
+    }
+
+
+    .equipment-card.title-equipment .equipment-icon {
+      border-color:
+        rgba(214,168,92,0.28);
+
+      background:
+        rgba(214,168,92,0.11);
+
+      color:
+        #e3bd73;
     }
 
 
@@ -654,45 +683,55 @@
     }
 
 
-    .item-card.theme-mixing-after-dark {
+    .item-card.title-item {
       border-color:
-        rgba(177,88,126,0.34);
+        rgba(214,168,92,0.24);
 
       background:
         linear-gradient(
           145deg,
-          rgba(77,29,56,0.22),
-          rgba(20,15,19,0.95)
+          rgba(75,57,28,0.16),
+          rgba(20,17,13,0.95)
         );
-
-      box-shadow:
-        inset 0 1px 0
-        rgba(255,255,255,0.025);
     }
 
 
-    .item-card.theme-mixing-after-dark:hover {
+    .item-card.title-item:hover {
       border-color:
-        rgba(205,103,149,0.5);
+        rgba(214,168,92,0.38);
 
       background:
         linear-gradient(
           145deg,
-          rgba(92,34,66,0.27),
-          rgba(20,15,19,0.98)
+          rgba(90,68,32,0.2),
+          rgba(20,17,13,0.98)
         );
     }
 
 
-    .item-card.theme-mixing-after-dark.equipped {
+    .item-card.title-item .item-icon {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(214,168,92,0.16),
+          rgba(120,85,30,0.1)
+        );
+
       border-color:
-        rgba(205,103,149,0.62);
+        rgba(214,168,92,0.25);
+
+      color:
+        #e3bd73;
 
       box-shadow:
-        0 0 0 1px
-        rgba(205,103,149,0.08),
-        0 12px 35px
-        rgba(77,29,56,0.16);
+        0 0 24px
+        rgba(214,168,92,0.07);
+    }
+
+
+    .item-card.title-item .item-type {
+      color:
+        #b9985e;
     }
 
 
@@ -747,6 +786,48 @@
         var(--accent);
 
       font-size: 29px;
+    }
+
+
+    .item-card.theme-mixing-after-dark {
+      border-color:
+        rgba(177,88,126,0.34);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(77,29,56,0.22),
+          rgba(20,15,19,0.95)
+        );
+
+      box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,0.025);
+    }
+
+
+    .item-card.theme-mixing-after-dark:hover {
+      border-color:
+        rgba(205,103,149,0.5);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(92,34,66,0.27),
+          rgba(20,15,19,0.98)
+        );
+    }
+
+
+    .item-card.theme-mixing-after-dark.equipped {
+      border-color:
+        rgba(205,103,149,0.62);
+
+      box-shadow:
+        0 0 0 1px
+        rgba(205,103,149,0.08),
+        0 12px 35px
+        rgba(77,29,56,0.16);
     }
 
 
@@ -1127,17 +1208,21 @@
 
 
     @keyframes toast-in {
+
       from {
         opacity: 0;
+
         transform:
           translateY(8px);
       }
 
       to {
         opacity: 1;
+
         transform:
           translateY(0);
       }
+
     }
 
 
@@ -1145,17 +1230,17 @@
        RESPONSIVE
     ========================================== */
 
-    @media (max-width: 1000px) {
-
-      .inventory-grid {
-        grid-template-columns:
-          repeat(3, minmax(0, 1fr));
-      }
-
+    @media (max-width: 1100px) {
 
       .equipment-grid {
         grid-template-columns:
           repeat(2, minmax(0, 1fr));
+      }
+
+
+      .inventory-grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
       }
 
     }
@@ -1362,7 +1447,7 @@
         <p class="page-description">
           Manage the items you've purchased and
           customize your profile with your owned
-          cosmetics, badges, and profile themes.
+          cosmetics, titles, badges, and profile themes.
         </p>
 
       </div>
@@ -1428,6 +1513,31 @@
 
               <div class="equipment-slot">
                 Nameplate
+              </div>
+
+              <div class="equipment-empty">
+                Loading...
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="equipment-card title-equipment">
+
+          <div class="equipment-card-inner">
+
+            <div class="equipment-icon">
+              ♛
+            </div>
+
+            <div class="equipment-info">
+
+              <div class="equipment-slot">
+                Profile Title
               </div>
 
               <div class="equipment-empty">
@@ -1564,9 +1674,19 @@
     let currentUser = null;
 
     let equipment = {
-      equippedNameplate: null,
-      equippedBadge: null,
-      equippedTheme: null
+
+      equippedNameplate:
+        null,
+
+      equippedTitle:
+        null,
+
+      equippedBadge:
+        null,
+
+      equippedTheme:
+        null
+
     };
 
 
@@ -1588,7 +1708,42 @@
     }
 
 
-    function getItemTypeLabel(type) {
+    /* ==========================================
+       PROFILE TITLE ITEMS
+    ========================================== */
+
+    const PROFILE_TITLE_ITEMS =
+      new Set([
+        "legendary-title"
+      ]);
+
+
+    /* ==========================================
+       GET ITEM TYPE LABEL
+    ========================================== */
+
+    function getItemTypeLabel(
+      type,
+      itemId = null
+    ) {
+
+      /*
+       * profile_cosmetic normally means
+       * nameplate, except title cosmetics.
+       */
+
+      if (
+        type === "profile_cosmetic" &&
+        itemId &&
+        PROFILE_TITLE_ITEMS.has(
+          itemId
+        )
+      ) {
+
+        return "Profile Title";
+
+      }
+
 
       if (
         type === "profile_cosmetic"
@@ -1625,7 +1780,33 @@
     }
 
 
-    function getEquipmentField(type) {
+    /* ==========================================
+       GET EQUIPMENT FIELD
+    ========================================== */
+
+    function getEquipmentField(
+      type,
+      itemId = null
+    ) {
+
+      /*
+       * Legendary Title is stored as
+       * profile_cosmetic but has its own
+       * equipment slot.
+       */
+
+      if (
+        type === "profile_cosmetic" &&
+        itemId &&
+        PROFILE_TITLE_ITEMS.has(
+          itemId
+        )
+      ) {
+
+        return "equippedTitle";
+
+      }
+
 
       if (
         type === "profile_cosmetic"
@@ -1659,7 +1840,13 @@
     }
 
 
-    function getThemeClass(itemId) {
+    /* ==========================================
+       GET THEME CLASS
+    ========================================== */
+
+    function getThemeClass(
+      itemId
+    ) {
 
       if (
         itemId === "mixing-after-dark"
@@ -1674,6 +1861,34 @@
 
     }
 
+
+    /* ==========================================
+       GET TITLE CLASS
+    ========================================== */
+
+    function getTitleClass(
+      itemId
+    ) {
+
+      if (
+        PROFILE_TITLE_ITEMS.has(
+          itemId
+        )
+      ) {
+
+        return "title-item";
+
+      }
+
+
+      return "";
+
+    }
+
+
+    /* ==========================================
+       SHOW TOAST
+    ========================================== */
 
     function showToast(
       message,
@@ -1770,6 +1985,10 @@
           data.user.equippedNameplate ||
           null,
 
+        equippedTitle:
+          data.user.equippedTitle ||
+          null,
+
         equippedBadge:
           data.user.equippedBadge ||
           null,
@@ -1817,9 +2036,8 @@
 
 
       /*
-       * Your inventory endpoint may return
-       * either the array directly or inside
-       * data.inventory.
+       * Support the different response
+       * structures used by the API.
        */
 
       if (
@@ -1830,14 +2048,18 @@
           data;
 
       } else if (
-        Array.isArray(data.inventory)
+        Array.isArray(
+          data.inventory
+        )
       ) {
 
         inventory =
           data.inventory;
 
       } else if (
-        Array.isArray(data.items)
+        Array.isArray(
+          data.items
+        )
       ) {
 
         inventory =
@@ -1860,6 +2082,11 @@
     function findInventoryItem(
       itemId
     ) {
+
+      if (!itemId) {
+        return null;
+      }
+
 
       return inventory.find(
         item =>
@@ -1931,6 +2158,12 @@
         );
 
 
+      const titleItem =
+        findInventoryItem(
+          equipment.equippedTitle
+        );
+
+
       const badgeItem =
         findInventoryItem(
           equipment.equippedBadge
@@ -1947,6 +2180,14 @@
         nameplateItem
           ? getInventoryItemDetails(
               nameplateItem
+            )
+          : null;
+
+
+      const title =
+        titleItem
+          ? getInventoryItemDetails(
+              titleItem
             )
           : null;
 
@@ -1969,6 +2210,7 @@
 
       const equippedCount =
         Number(!!nameplate) +
+        Number(!!title) +
         Number(!!badge) +
         Number(!!theme);
 
@@ -1976,16 +2218,19 @@
       document.getElementById(
         "equipmentCount"
       ).textContent =
-        `${equippedCount} / 3 equipped`;
+        `${equippedCount} / 4 equipped`;
 
 
       grid.innerHTML = `
+
+        <!-- NAMEPLATE -->
 
         <div class="equipment-card">
 
           <div class="equipment-card-inner">
 
             <div class="equipment-icon">
+
               ${
                 nameplate
                   ? escapeHtml(
@@ -1993,13 +2238,16 @@
                     )
                   : "✦"
               }
+
             </div>
+
 
             <div class="equipment-info">
 
               <div class="equipment-slot">
                 Nameplate
               </div>
+
 
               ${
                 nameplate
@@ -2037,11 +2285,81 @@
         </div>
 
 
+        <!-- PROFILE TITLE -->
+
+        <div
+          class="
+            equipment-card
+            title-equipment
+          "
+        >
+
+          <div class="equipment-card-inner">
+
+            <div class="equipment-icon">
+
+              ${
+                title
+                  ? escapeHtml(
+                      title.icon
+                    )
+                  : "♛"
+              }
+
+            </div>
+
+
+            <div class="equipment-info">
+
+              <div class="equipment-slot">
+                Profile Title
+              </div>
+
+
+              ${
+                title
+
+                  ? `
+
+                    <div class="equipment-name">
+                      ${escapeHtml(
+                        title.name
+                      )}
+                    </div>
+
+                    <div
+                      class="equipped-pill"
+                      style="margin-top:7px;"
+                    >
+                      Equipped
+                    </div>
+
+                  `
+
+                  : `
+
+                    <div class="equipment-empty">
+                      No profile title equipped
+                    </div>
+
+                  `
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- BADGE -->
+
         <div class="equipment-card">
 
           <div class="equipment-card-inner">
 
             <div class="equipment-icon">
+
               ${
                 badge
                   ? escapeHtml(
@@ -2049,13 +2367,16 @@
                     )
                   : "♛"
               }
+
             </div>
+
 
             <div class="equipment-info">
 
               <div class="equipment-slot">
                 Badge
               </div>
+
 
               ${
                 badge
@@ -2093,6 +2414,8 @@
         </div>
 
 
+        <!-- PROFILE THEME -->
+
         <div
           class="
             equipment-card
@@ -2107,6 +2430,7 @@
           <div class="equipment-card-inner">
 
             <div class="equipment-icon">
+
               ${
                 theme
                   ? escapeHtml(
@@ -2114,13 +2438,16 @@
                     )
                   : "☾"
               }
+
             </div>
+
 
             <div class="equipment-info">
 
               <div class="equipment-slot">
                 Profile Theme
               </div>
+
 
               ${
                 theme
@@ -2203,8 +2530,8 @@
             <p class="empty-text">
               Items you purchase from the shop
               will appear here. You can equip
-              profile cosmetics, badges, and
-              profile themes from your inventory.
+              profile cosmetics, titles, badges,
+              and profile themes from your inventory.
             </p>
 
             <a
@@ -2238,7 +2565,8 @@
 
               const slot =
                 getEquipmentField(
-                  details.type
+                  details.type,
+                  details.id
                 );
 
 
@@ -2254,12 +2582,19 @@
                 );
 
 
+              const titleClass =
+                getTitleClass(
+                  details.id
+                );
+
+
               return `
 
                 <article
                   class="
                     item-card
                     ${themeClass}
+                    ${titleClass}
                     ${
                       isEquipped
                         ? "equipped"
@@ -2284,40 +2619,51 @@
 
 
                   <div class="item-icon">
+
                     ${escapeHtml(
                       details.icon
                     )}
+
                   </div>
 
 
                   <div class="item-type">
+
                     ${escapeHtml(
                       getItemTypeLabel(
-                        details.type
+                        details.type,
+                        details.id
                       )
                     )}
+
                   </div>
 
 
                   <h3 class="item-name">
+
                     ${escapeHtml(
                       details.name
                     )}
+
                   </h3>
 
 
                   <p class="item-description">
+
                     ${escapeHtml(
                       details.description
                     )}
+
                   </p>
 
 
                   <div class="item-footer">
 
                     <span class="quantity">
+
                       Quantity:
                       ${details.quantity}
+
                     </span>
 
 
@@ -2344,11 +2690,13 @@
                                 : "equip"
                             }"
                           >
+
                             ${
                               isEquipped
                                 ? "Unequip"
                                 : "Equip"
                             }
+
                           </button>
 
                         `
@@ -2494,14 +2842,14 @@
         }
 
 
-        /*
-         * Update all returned equipment
-         * slots immediately.
-         */
+        /* ==========================================
+           UPDATE EQUIPMENT
+        ========================================== */
 
         if (
           data.equipment
         ) {
+
 
           if (
             Object.prototype.hasOwnProperty.call(
@@ -2512,6 +2860,19 @@
 
             equipment.equippedNameplate =
               data.equipment.equippedNameplate;
+
+          }
+
+
+          if (
+            Object.prototype.hasOwnProperty.call(
+              data.equipment,
+              "equippedTitle"
+            )
+          ) {
+
+            equipment.equippedTitle =
+              data.equipment.equippedTitle;
 
           }
 
@@ -2543,6 +2904,11 @@
 
         } else {
 
+
+          /* ==========================================
+             FALLBACK EQUIPMENT UPDATE
+          ========================================== */
+
           const item =
             findInventoryItem(
               itemId
@@ -2559,7 +2925,8 @@
 
             const slot =
               getEquipmentField(
-                details.type
+                details.type,
+                details.id
               );
 
 
@@ -2573,6 +2940,29 @@
             }
 
           }
+
+        }
+
+
+        /* ==========================================
+           UPDATE CURRENT USER STATE
+        ========================================== */
+
+        if (
+          currentUser
+        ) {
+
+          currentUser.equippedNameplate =
+            equipment.equippedNameplate;
+
+          currentUser.equippedTitle =
+            equipment.equippedTitle;
+
+          currentUser.equippedBadge =
+            equipment.equippedBadge;
+
+          currentUser.equippedTheme =
+            equipment.equippedTheme;
 
         }
 
@@ -2647,10 +3037,12 @@
         ).innerHTML = `
 
           <div class="error-state">
+
             ${escapeHtml(
               error.message ||
               "Unable to load your inventory."
             )}
+
           </div>
 
         `;
