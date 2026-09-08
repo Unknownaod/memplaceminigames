@@ -4123,171 +4123,257 @@ body.theme-sword
        SCRIPT
   ========================================== -->
 
-  <script>
+<script>
 
-    const API_URL =
-      "https://api.memplace.xyz";
-
-
-    let currentUser = null;
+  const API_URL =
+    "https://api.memplace.xyz";
 
 
-    /* ==========================================
-       APPLY PAGE THEME
-    ========================================== */
+  let currentUser = null;
 
-function applyPageTheme(
-  equippedTheme
-) {
+  /*
+   * Determines whether this is:
+   *
+   * /profile
+   *
+   * or:
+   *
+   * /profile/username
+   */
 
-  const html =
-    document.documentElement;
+  function getPublicProfileUsername() {
 
-  const body =
-    document.body;
+    const parts =
+      window.location.pathname
+        .split("/")
+        .filter(Boolean);
 
+    if (
+      parts.length >= 2 &&
+      parts[0].toLowerCase() === "profile"
+    ) {
 
-  html.classList.remove(
-    "theme-mixing-after-dark",
-    "theme-hello-kitty",
-    "theme-sword"
-  );
+      return decodeURIComponent(
+        parts[1]
+      );
 
+    }
 
-  body.classList.remove(
-    "theme-mixing-after-dark",
-    "theme-hello-kitty",
-    "theme-sword"
-  );
-
-
-  if (
-    equippedTheme ===
-    "mixing-after-dark"
-  ) {
-
-    html.classList.add(
-      "theme-mixing-after-dark"
-    );
-
-    body.classList.add(
-      "theme-mixing-after-dark"
-    );
+    return null;
 
   }
 
 
-  if (
-    equippedTheme ===
-    "hello-kitty-theme"
+  const publicProfileUsername =
+    getPublicProfileUsername();
+
+
+  const isPublicProfile =
+    !!publicProfileUsername;
+
+
+  /* ==========================================
+     APPLY PAGE THEME
+  ========================================== */
+
+  function applyPageTheme(
+    equippedTheme
   ) {
 
-    html.classList.add(
-      "theme-hello-kitty"
-    );
+    const html =
+      document.documentElement;
 
-    body.classList.add(
-      "theme-hello-kitty"
-    );
-
-  }
+    const body =
+      document.body;
 
 
-   if (
-    equippedTheme ===
-    "sword-theme"
-  ) {
-
-    html.classList.add(
+    html.classList.remove(
+      "theme-mixing-after-dark",
+      "theme-hello-kitty",
       "theme-sword"
     );
 
-    body.classList.add(
+
+    body.classList.remove(
+      "theme-mixing-after-dark",
+      "theme-hello-kitty",
       "theme-sword"
     );
+
+
+    if (
+      equippedTheme ===
+      "mixing-after-dark"
+    ) {
+
+      html.classList.add(
+        "theme-mixing-after-dark"
+      );
+
+      body.classList.add(
+        "theme-mixing-after-dark"
+      );
+
+    }
+
+
+    if (
+      equippedTheme ===
+      "hello-kitty-theme"
+    ) {
+
+      html.classList.add(
+        "theme-hello-kitty"
+      );
+
+      body.classList.add(
+        "theme-hello-kitty"
+      );
+
+    }
+
+
+    if (
+      equippedTheme ===
+      "sword-theme"
+    ) {
+
+      html.classList.add(
+        "theme-sword"
+      );
+
+      body.classList.add(
+        "theme-sword"
+      );
+
+    }
 
   }
 
 
-}
-    
-    /* ==========================================
-       LOAD STAFF STATUS
-    ========================================== */
+  /* ==========================================
+     LOAD STAFF STATUS
+  ========================================== */
 
-    async function loadStaffStatus() {
+  async function loadStaffStatus() {
 
-      try {
+    /*
+     * Public profiles should not need
+     * staff authentication.
+     */
 
-        const response =
-          await fetch(
-            API_URL + "/api/admin/me",
-            {
-              method: "GET",
-              credentials: "include",
-              cache: "no-store"
-            }
-          );
+    if (isPublicProfile) {
+      return null;
+    }
 
 
-        if (!response.ok) {
-          return null;
-        }
+    try {
 
-
-        const data =
-          await response.json();
-
-
-        if (
-          !data.success ||
-          !data.staff
-        ) {
-
-          return null;
-
-        }
-
-
-        return {
-
-          staff: true,
-
-          role:
-            data.role ||
-            null
-
-        };
-
-      } catch (error) {
-
-        console.error(
-          "STAFF STATUS ERROR:",
-          error
+      const response =
+        await fetch(
+          API_URL + "/api/admin/me",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
         );
+
+
+      if (!response.ok) {
+        return null;
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !data.success ||
+        !data.staff
+      ) {
 
         return null;
 
       }
 
+
+      return {
+
+        staff: true,
+
+        role:
+          data.role ||
+          null
+
+      };
+
+    } catch (error) {
+
+      console.error(
+        "STAFF STATUS ERROR:",
+        error
+      );
+
+      return null;
+
     }
 
-
-    /* ==========================================
-       LOAD PROFILE
-    ========================================== */
-
-    async function loadProfile() {
-
-      const content =
-        document.getElementById(
-          "content"
-        );
+  }
 
 
-      try {
+  /* ==========================================
+     LOAD PROFILE
+  ========================================== */
 
-        const response =
+  async function loadProfile() {
+
+    const content =
+      document.getElementById(
+        "content"
+      );
+
+
+    try {
+
+      let response;
+
+
+      /*
+       * PUBLIC PROFILE
+       *
+       * /profile/username
+       */
+
+      if (isPublicProfile) {
+
+        response =
+          await fetch(
+            API_URL +
+            "/api/profile?username=" +
+            encodeURIComponent(
+              publicProfileUsername
+            ),
+            {
+              method: "GET",
+              credentials: "omit",
+              cache: "no-store"
+            }
+          );
+
+      }
+
+
+      /*
+       * OWN PROFILE
+       *
+       * /profile
+       */
+
+      else {
+
+        response =
           await fetch(
             API_URL + "/api/user/me",
             {
@@ -4297,689 +4383,1060 @@ function applyPageTheme(
             }
           );
 
+      }
 
-        const data =
-          await response.json();
 
+      const data =
+        await response.json();
+
+
+      /* ========================================
+         PUBLIC PROFILE RESPONSE
+      ======================================== */
+
+      if (isPublicProfile) {
 
         if (
-          response.status === 401 ||
-          !data.authenticated ||
-          !data.user
+          response.status === 404 ||
+          !data.success ||
+          !data.profile
         ) {
 
-          applyPageTheme(null);
+          content.innerHTML = `
 
-          showLoginRequired();
+            <section class="page-header">
+
+              <div class="eyebrow">
+                Middle Eastern Mixing
+              </div>
+
+              <h1>
+                Profile Not Found
+              </h1>
+
+              <p class="description">
+                The requested profile could not be found.
+              </p>
+
+            </section>
+
+          `;
+
+          applyPageTheme(null);
 
           return;
 
         }
 
 
-        if (
-          !response.ok ||
-          !data.success
-        ) {
-
-          throw new Error(
-            data.error ||
-            "Failed to load profile."
-          );
-
-        }
-
-
         currentUser =
-          data.user;
+          data.profile;
 
 
-        /* ==========================================
-           APPLY FULL PAGE THEME
-        ========================================== */
+        /*
+         * Public profiles do not expose
+         * Discord IDs or staff information.
+         */
+
+        currentUser.id =
+          null;
+
+        currentUser.isStaff =
+          false;
+
+        currentUser.staffRole =
+          null;
+
 
         applyPageTheme(
           currentUser.equippedTheme
         );
 
 
-        const staffStatus =
-          await loadStaffStatus();
+        /*
+         * Hide account controls when viewing
+         * somebody else's profile.
+         */
 
-
-        currentUser.isStaff =
-          !!staffStatus;
-
-
-        currentUser.staffRole =
-          staffStatus?.role ||
-          null;
-
-
-        updateHeader(
+        updatePublicHeader(
           currentUser
         );
 
 
         renderProfile(
-          currentUser
+          currentUser,
+          true
         );
 
 
-      } catch (error) {
-
-        console.error(
-          "PROFILE LOAD ERROR:",
-          error
-        );
-
-
-        content.innerHTML = `
-
-          <div class="error">
-            Failed to load your profile.
-          </div>
-
-        `;
+        return;
 
       }
 
-    }
 
+      /* ========================================
+         OWN PROFILE RESPONSE
+      ======================================== */
 
-    /* ==========================================
-       HEADER
-    ========================================== */
+      if (
+        response.status === 401 ||
+        !data.authenticated ||
+        !data.user
+      ) {
 
-    function updateHeader(user) {
+        applyPageTheme(null);
 
-      document
-        .getElementById("loginButton")
-        .style.display =
-          "none";
+        showLoginRequired();
 
+        return;
 
-      document
-        .getElementById("userButton")
-        .style.display =
-          "flex";
-
-
-      document
-        .getElementById("headerUsername")
-        .textContent =
-          user.username ||
-          user.discordUsername ||
-          "User";
-
-
-      document
-        .getElementById("headerBalance")
-        .textContent =
-          Number(
-            user.balance || 0
-          ).toLocaleString();
+      }
 
 
       if (
-        user.id &&
-        user.avatar
+        !response.ok ||
+        !data.success
       ) {
 
-        const avatar =
-          "https://cdn.discordapp.com/avatars/" +
-          encodeURIComponent(user.id) +
-          "/" +
-          encodeURIComponent(user.avatar) +
-          ".png?size=64";
-
-
-        document
-          .getElementById(
-            "headerAvatar"
-          )
-          .src =
-            avatar;
+        throw new Error(
+          data.error ||
+          "Failed to load profile."
+        );
 
       }
 
-    }
+
+      currentUser =
+        data.user;
 
 
-    /* ==========================================
-       GET NAMEPLATE
-    ========================================== */
-
-    function getNameplate(
-      equippedNameplate
-    ) {
-
-      switch (
-        equippedNameplate
-      ) {
-
-        case "gold-nameplate":
-
-          return {
-
-            className:
-              "gold",
-
-            label:
-              "Gold Nameplate",
-
-            icon:
-              "✦"
-
-          };
+      applyPageTheme(
+        currentUser.equippedTheme
+      );
 
 
-        case "royal-nameplate":
-
-          return {
-
-            className:
-              "royal",
-
-            label:
-              "Royal Nameplate",
-
-            icon:
-              "♛"
-
-          };
+      const staffStatus =
+        await loadStaffStatus();
 
 
-        case "diamond-nameplate":
-
-          return {
-
-            className:
-              "diamond",
-
-            label:
-              "Diamond Nameplate",
-
-            icon:
-              "◆"
-
-          };
+      currentUser.isStaff =
+        !!staffStatus;
 
 
-        default:
+      currentUser.staffRole =
+        staffStatus?.role ||
+        null;
 
-          return null;
 
-      }
+      updateHeader(
+        currentUser
+      );
+
+
+      renderProfile(
+        currentUser,
+        false
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "PROFILE LOAD ERROR:",
+        error
+      );
+
+
+      content.innerHTML = `
+
+        <div class="error">
+          Failed to load profile.
+        </div>
+
+      `;
 
     }
-
-
-/* ==========================================
-   GET PROFILE TITLE
-========================================== */
-
-function getProfileTitle(
-  equippedTitle
-) {
-
-  switch (
-    equippedTitle
-  ) {
-
-    case "the-mixing-legend":
-
-      return {
-
-        label:
-          "The Mixing Legend",
-
-        icon:
-          "✦"
-
-      };
-
-
-    case "mnyak-title":
-
-      return {
-
-        label:
-          "Mnyak",
-
-        icon:
-          "♛"
-
-      };
-
-
-    default:
-
-      return null;
 
   }
 
-}
+
+  /* ==========================================
+     HEADER — OWN PROFILE
+  ========================================== */
+
+  function updateHeader(user) {
+
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
+
+    const userButton =
+      document.getElementById(
+        "userButton"
+      );
 
 
-    /* ==========================================
-       GET PROFILE THEME
-    ========================================== */
+    if (loginButton) {
 
-    function getProfileTheme(
-      equippedTheme
-    ) {
-
-      switch (
-        equippedTheme
-      ) {
-
-        case "mixing-after-dark":
-
-          return {
-
-            className:
-              "theme-mixing-after-dark",
-
-            label:
-              "Mixing After Dark",
-
-            icon:
-              "🌙"
-
-          };
-
-          case "hello-kitty-theme":
-
-          return {
-
-            className:
-              "theme-hello-kitty",
-
-            label:
-              "Hello Kitty Theme",
-
-            icon:
-              "🎀"
-
-          };
-
-        default:
-
-          return null;
-
-      }
+      loginButton.style.display =
+        "none";
 
     }
 
 
-    /* ==========================================
-       GET EQUIPPED BADGE
-    ========================================== */
+    if (userButton) {
 
-    function getBadge(
-      equippedBadge
-    ) {
-
-      if (
-        equippedBadge ===
-        "champion-badge"
-      ) {
-
-        return {
-
-          image:
-            "/championbadge.png",
-
-          label:
-            "Champion Badge"
-
-        };
-
-      }
-
-
-      return null;
+      userButton.style.display =
+        "flex";
 
     }
 
 
-    /* ==========================================
-       GET STAFF BADGE
-    ========================================== */
-
-    function getStaffBadge(user) {
-
-      if (
-        !user ||
-        !user.isStaff
-      ) {
-
-        return null;
-
-      }
+    const headerUsername =
+      document.getElementById(
+        "headerUsername"
+      );
 
 
-      return {
+    if (headerUsername) {
 
-        image:
-          "/staffbadge.png",
-
-        label:
-          "Staff"
-
-      };
+      headerUsername.textContent =
+        user.username ||
+        user.discordUsername ||
+        "User";
 
     }
 
 
-    /* ==========================================
-       RENDER PROFILE
-    ========================================== */
-
-    function renderProfile(user) {
-
-      const content =
-        document.getElementById(
-          "content"
-        );
+    const headerBalance =
+      document.getElementById(
+        "headerBalance"
+      );
 
 
-      const username =
-        escapeHtml(
-          user.username ||
-          user.discordUsername ||
-          "User"
-        );
+    if (headerBalance) {
 
-
-      const discordUsername =
-        escapeHtml(
-          user.discordUsername ||
-          user.username ||
-          "Unknown"
-        );
-
-
-      const balance =
+      headerBalance.textContent =
         Number(
           user.balance || 0
         ).toLocaleString();
 
-
-      const gamesPlayed =
-        Number(
-          user.gamesPlayed || 0
-        );
+    }
 
 
-      const gamesWon =
-        Number(
-          user.gamesWon || 0
-        );
-
-
-      const gamesLost =
-        Number(
-          user.gamesLost || 0
-        );
-
-
-      const totalWagered =
-        Number(
-          user.totalWagered || 0
-        );
-
-
-      const totalWon =
-        Number(
-          user.totalWon || 0
-        );
-
-
-      const totalLost =
-        Number(
-          user.totalLost || 0
-        );
-
-
-      const chessRating =
-        Number(
-          user.chessRating || 1200
-        );
-
-
-      /* ==========================================
-         COSMETICS
-      ========================================== */
-
-      const nameplate =
-        getNameplate(
-          user.equippedNameplate
-        );
-
-
-      const title =
-        getProfileTitle(
-          user.equippedTitle
-        );
-
-
-      const theme =
-        getProfileTheme(
-          user.equippedTheme
-        );
-
-
-      const badge =
-        getBadge(
-          user.equippedBadge
-        );
-
-
-      const staffBadge =
-        getStaffBadge(
-          user
-        );
-
-
-      /* ==========================================
-         PROFILE CARD CLASSES
-      ========================================== */
-
-      const profileClasses = [
-        "profile-card"
-      ];
-
-
-      if (nameplate) {
-
-        profileClasses.push(
-          `nameplate-${nameplate.className}`
-        );
-
-      }
-
-
-      if (theme) {
-
-        profileClasses.push(
-          theme.className
-        );
-
-      }
-
-
-      const profileCardClass =
-        profileClasses.join(" ");
-
-
-      const profileNameClass =
-        nameplate
-          ? `profile-name ${nameplate.className}`
-          : "profile-name";
-
-
-      const totalDecided =
-        gamesWon +
-        gamesLost;
-
-
-      const winRate =
-        totalDecided > 0
-
-          ? Math.round(
-              (
-                gamesWon /
-                totalDecided
-              ) * 100
-            )
-
-          : 0;
-
-
-      /* ==========================================
-         AVATAR
-      ========================================== */
+    if (
+      user.id &&
+      user.avatar
+    ) {
 
       const avatar =
-        user.id &&
-        user.avatar
+        "https://cdn.discordapp.com/avatars/" +
+        encodeURIComponent(user.id) +
+        "/" +
+        encodeURIComponent(user.avatar) +
+        ".png?size=64";
 
-          ? `
+
+      const headerAvatar =
+        document.getElementById(
+          "headerAvatar"
+        );
+
+
+      if (headerAvatar) {
+
+        headerAvatar.src =
+          avatar;
+
+      }
+
+    }
+
+  }
+
+
+  /* ==========================================
+     HEADER — PUBLIC PROFILE
+  ========================================== */
+
+  function updatePublicHeader(user) {
+
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
+
+    const userButton =
+      document.getElementById(
+        "userButton"
+      );
+
+
+    /*
+     * Keep the normal login button visible
+     * because visitors may not be logged in.
+     */
+
+    if (loginButton) {
+
+      loginButton.style.display =
+        "flex";
+
+    }
+
+
+    if (userButton) {
+
+      userButton.style.display =
+        "none";
+
+    }
+
+
+    const headerUsername =
+      document.getElementById(
+        "headerUsername"
+      );
+
+
+    if (headerUsername) {
+
+      headerUsername.textContent =
+        user.username ||
+        "Profile";
+
+    }
+
+
+    const headerBalance =
+      document.getElementById(
+        "headerBalance"
+      );
+
+
+    if (headerBalance) {
+
+      headerBalance.textContent =
+        "—";
+
+    }
+
+  }
+
+
+  /* ==========================================
+     GET NAMEPLATE
+  ========================================== */
+
+  function getNameplate(
+    equippedNameplate
+  ) {
+
+    switch (
+      equippedNameplate
+    ) {
+
+      case "gold-nameplate":
+
+        return {
+
+          className:
+            "gold",
+
+          label:
+            "Gold Nameplate",
+
+          icon:
+            "✦"
+
+        };
+
+
+      case "royal-nameplate":
+
+        return {
+
+          className:
+            "royal",
+
+          label:
+            "Royal Nameplate",
+
+          icon:
+            "♛"
+
+        };
+
+
+      case "diamond-nameplate":
+
+        return {
+
+          className:
+            "diamond",
+
+          label:
+            "Diamond Nameplate",
+
+          icon:
+            "◆"
+
+        };
+
+
+      default:
+
+        return null;
+
+    }
+
+  }
+
+
+  /* ==========================================
+     GET PROFILE TITLE
+  ========================================== */
+
+  function getProfileTitle(
+    equippedTitle
+  ) {
+
+    switch (
+      equippedTitle
+    ) {
+
+      case "the-mixing-legend":
+
+        return {
+
+          label:
+            "The Mixing Legend",
+
+          icon:
+            "✦"
+
+        };
+
+
+      case "mnyak-title":
+
+        return {
+
+          label:
+            "Mnyak",
+
+          icon:
+            "♛"
+
+        };
+
+
+      default:
+
+        return null;
+
+    }
+
+  }
+
+
+  /* ==========================================
+     GET PROFILE THEME
+  ========================================== */
+
+  function getProfileTheme(
+    equippedTheme
+  ) {
+
+    switch (
+      equippedTheme
+    ) {
+
+      case "mixing-after-dark":
+
+        return {
+
+          className:
+            "theme-mixing-after-dark",
+
+          label:
+            "Mixing After Dark",
+
+          icon:
+            "🌙"
+
+        };
+
+
+      case "hello-kitty-theme":
+
+        return {
+
+          className:
+            "theme-hello-kitty",
+
+          label:
+            "Hello Kitty Theme",
+
+          icon:
+            "🎀"
+
+        };
+
+
+      case "sword-theme":
+
+        return {
+
+          className:
+            "theme-sword",
+
+          label:
+            "Sword Theme",
+
+          icon:
+            "⚔️"
+
+        };
+
+
+      default:
+
+        return null;
+
+    }
+
+  }
+
+
+  /* ==========================================
+     GET EQUIPPED BADGE
+  ========================================== */
+
+  function getBadge(
+    equippedBadge
+  ) {
+
+    if (
+      equippedBadge ===
+      "champion-badge"
+    ) {
+
+      return {
+
+        image:
+          "/championbadge.png",
+
+        label:
+          "Champion Badge"
+
+      };
+
+    }
+
+
+    return null;
+
+  }
+
+
+  /* ==========================================
+     GET STAFF BADGE
+  ========================================== */
+
+  function getStaffBadge(user) {
+
+    /*
+     * Never display staff status on a public
+     * profile unless you explicitly decide
+     * to expose it publicly later.
+     */
+
+    if (
+      !user ||
+      !user.isStaff ||
+      isPublicProfile
+    ) {
+
+      return null;
+
+    }
+
+
+    return {
+
+      image:
+        "/staffbadge.png",
+
+      label:
+        "Staff"
+
+    };
+
+  }
+
+
+  /* ==========================================
+     RENDER PROFILE
+  ========================================== */
+
+  function renderProfile(
+    user,
+    publicProfile = false
+  ) {
+
+    const content =
+      document.getElementById(
+        "content"
+      );
+
+
+    const username =
+      escapeHtml(
+        user.username ||
+        user.discordUsername ||
+        "User"
+      );
+
+
+    const discordUsername =
+      escapeHtml(
+        user.discordUsername ||
+        user.username ||
+        "Unknown"
+      );
+
+
+    const balance =
+      Number(
+        user.balance || 0
+      ).toLocaleString();
+
+
+    const gamesPlayed =
+      Number(
+        user.gamesPlayed || 0
+      );
+
+
+    const gamesWon =
+      Number(
+        user.gamesWon || 0
+      );
+
+
+    const gamesLost =
+      Number(
+        user.gamesLost || 0
+      );
+
+
+    const totalWagered =
+      Number(
+        user.totalWagered || 0
+      );
+
+
+    const totalWon =
+      Number(
+        user.totalWon || 0
+      );
+
+
+    const totalLost =
+      Number(
+        user.totalLost || 0
+      );
+
+
+    const chessRating =
+      Number(
+        user.chessRating || 1200
+      );
+
+
+    /* ==========================================
+       COSMETICS
+    ========================================== */
+
+    const nameplate =
+      getNameplate(
+        user.equippedNameplate
+      );
+
+
+    const title =
+      getProfileTitle(
+        user.equippedTitle
+      );
+
+
+    const theme =
+      getProfileTheme(
+        user.equippedTheme
+      );
+
+
+    const badge =
+      getBadge(
+        user.equippedBadge
+      );
+
+
+    const staffBadge =
+      getStaffBadge(
+        user
+      );
+
+
+    /* ==========================================
+       PROFILE CARD CLASSES
+    ========================================== */
+
+    const profileClasses = [
+      "profile-card"
+    ];
+
+
+    if (nameplate) {
+
+      profileClasses.push(
+        `nameplate-${nameplate.className}`
+      );
+
+    }
+
+
+    if (theme) {
+
+      profileClasses.push(
+        theme.className
+      );
+
+    }
+
+
+    const profileCardClass =
+      profileClasses.join(" ");
+
+
+    const profileNameClass =
+      nameplate
+        ? `profile-name ${nameplate.className}`
+        : "profile-name";
+
+
+    const totalDecided =
+      gamesWon +
+      gamesLost;
+
+
+    const winRate =
+      totalDecided > 0
+
+        ? Math.round(
+            (
+              gamesWon /
+              totalDecided
+            ) * 100
+          )
+
+        : 0;
+
+
+    /* ==========================================
+       AVATAR
+    ========================================== */
+
+    let avatar = "";
+
+
+    /*
+     * Public API currently returns an avatar hash
+     * but not the Discord user ID.
+     *
+     * Therefore don't try to construct a Discord
+     * CDN URL here for public profiles.
+     */
+
+    if (
+      !publicProfile &&
+      user.id &&
+      user.avatar
+    ) {
+
+      avatar = `
+
+        <img
+          id="profileAvatar"
+          class="profile-avatar"
+          src="https://cdn.discordapp.com/avatars/${encodeURIComponent(user.id)}/${encodeURIComponent(user.avatar)}.png?size=256"
+          alt="${username}"
+        >
+
+      `;
+
+    }
+
+
+    if (!avatar) {
+
+      avatar = `
+
+        <div
+          id="profileAvatar"
+          class="profile-avatar"
+          style="
+            display:grid;
+            place-items:center;
+            font-size:28px;
+            font-weight:800;
+          "
+        >
+
+          ${escapeHtml(
+            username
+              .charAt(0)
+              .toUpperCase()
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+
+    /* ==========================================
+       STAFF BADGE
+    ========================================== */
+
+    const staffBadgeHtml =
+      staffBadge
+
+        ? `
+
+          <div
+            class="profile-badge staff"
+            title="${escapeHtml(
+              staffBadge.label
+            )}"
+          >
 
             <img
-              id="profileAvatar"
-              class="profile-avatar"
-              src="https://cdn.discordapp.com/avatars/${encodeURIComponent(user.id)}/${encodeURIComponent(user.avatar)}.png?size=256"
-              alt="${username}"
+              src="/staffbadge.png"
+              alt="Staff"
             >
 
-          `
+          </div>
 
-          : `
+        `
 
-            <div
-              id="profileAvatar"
-              class="profile-avatar"
-              style="
-                display:grid;
-                place-items:center;
-                font-size:28px;
-                font-weight:800;
-              "
-            >
-
-              ${escapeHtml(
-                username
-                  .charAt(0)
-                  .toUpperCase()
-              )}
-
-            </div>
-
-          `;
+        : "";
 
 
-      /* ==========================================
-         STAFF BADGE
-      ========================================== */
+    /* ==========================================
+       EQUIPPED BADGE
+    ========================================== */
 
-      const staffBadgeHtml =
-        staffBadge
+    const badgeHtml =
+      badge
 
-          ? `
+        ? `
 
-            <div
-              class="profile-badge staff"
-              title="${escapeHtml(
-                staffBadge.label
+          <div
+            class="profile-badge"
+            title="${escapeHtml(
+              badge.label
+            )}"
+          >
+
+            <img
+              src="${escapeHtml(
+                badge.image
               )}"
-            >
-
-              <img
-                src="/staffbadge.png"
-                alt="Staff"
-              >
-
-            </div>
-
-          `
-
-          : "";
-
-
-      /* ==========================================
-         EQUIPPED BADGE
-      ========================================== */
-
-      const badgeHtml =
-        badge
-
-          ? `
-
-            <div
-              class="profile-badge"
-              title="${escapeHtml(
+              alt="${escapeHtml(
                 badge.label
               )}"
             >
 
-              <img
-                src="${escapeHtml(
-                  badge.image
-                )}"
-                alt="${escapeHtml(
-                  badge.label
-                )}"
-              >
+          </div>
 
-            </div>
+        `
 
-          `
-
-          : "";
+        : "";
 
 
-      /* ==========================================
-         ALL PROFILE BADGES
-      ========================================== */
+    /* ==========================================
+       ALL PROFILE BADGES
+    ========================================== */
 
-      const profileBadgesHtml =
-        (
-          staffBadgeHtml ||
-          badgeHtml
-        )
+    const profileBadgesHtml =
+      (
+        staffBadgeHtml ||
+        badgeHtml
+      )
 
-          ? `
+        ? `
 
-            <div class="profile-badges">
+          <div class="profile-badges">
 
-              ${staffBadgeHtml}
+            ${staffBadgeHtml}
 
-              ${badgeHtml}
+            ${badgeHtml}
 
-            </div>
+          </div>
 
-          `
+        `
 
-          : "";
-
-
-      /* ==========================================
-         EQUIPPED ITEMS
-      ========================================== */
-
-      let equippedHtml = "";
+        : "";
 
 
-      if (title) {
+    /* ==========================================
+       EQUIPPED ITEMS
+    ========================================== */
 
-        equippedHtml += `
+    let equippedHtml = "";
 
-          <div class="equipped-item">
 
-            <span class="equipped-item-icon">
+    if (title) {
+
+      equippedHtml += `
+
+        <div class="equipped-item">
+
+          <span class="equipped-item-icon">
+            ${escapeHtml(
+              title.icon
+            )}
+          </span>
+
+          ${escapeHtml(
+            title.label
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+
+    if (theme) {
+
+      equippedHtml += `
+
+        <div class="equipped-item">
+
+          <span class="equipped-item-icon">
+            ${escapeHtml(
+              theme.icon
+            )}
+          </span>
+
+          ${escapeHtml(
+            theme.label
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+
+    if (nameplate) {
+
+      equippedHtml += `
+
+        <div class="equipped-item">
+
+          <span class="equipped-item-icon">
+            ${escapeHtml(
+              nameplate.icon
+            )}
+          </span>
+
+          ${escapeHtml(
+            nameplate.label
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+
+    if (badge) {
+
+      equippedHtml += `
+
+        <div class="equipped-item">
+
+          <span class="equipped-item-icon">
+            ♛
+          </span>
+
+          ${escapeHtml(
+            badge.label
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+
+    if (staffBadge) {
+
+      equippedHtml += `
+
+        <div class="equipped-item">
+
+          <span class="equipped-item-icon">
+            ✓
+          </span>
+
+          Staff
+
+        </div>
+
+      `;
+
+    }
+
+
+    const equippedSection =
+      equippedHtml
+
+        ? `
+
+          <div class="equipped-display">
+
+            ${equippedHtml}
+
+          </div>
+
+        `
+
+        : "";
+
+
+    /* ==========================================
+       PROFILE TITLE DISPLAY
+    ========================================== */
+
+    const profileTitleHtml =
+      title
+
+        ? `
+
+          <div class="profile-title">
+
+            <span class="profile-title-icon">
               ${escapeHtml(
                 title.icon
               )}
@@ -4991,617 +5448,558 @@ function getProfileTitle(
 
           </div>
 
-        `;
+        `
 
-      }
-
-
-      if (theme) {
-
-        equippedHtml += `
-
-          <div class="equipped-item">
-
-            <span class="equipped-item-icon">
-              ${escapeHtml(
-                theme.icon
-              )}
-            </span>
-
-            ${escapeHtml(
-              theme.label
-            )}
-
-          </div>
-
-        `;
-
-      }
+        : "";
 
 
-      if (nameplate) {
+    /* ==========================================
+       PAGE DESCRIPTION
+    ========================================== */
 
-        equippedHtml += `
+    const pageDescription =
+      publicProfile
 
-          <div class="equipped-item">
+        ? `
 
-            <span class="equipped-item-icon">
-              ${escapeHtml(
-                nameplate.icon
-              )}
-            </span>
+          <p class="description">
+            Public profile, game statistics, and
+            current progress.
+          </p>
 
-            ${escapeHtml(
-              nameplate.label
-            )}
+        `
 
-          </div>
-
-        `;
-
-      }
-
-
-      if (badge) {
-
-        equippedHtml += `
-
-          <div class="equipped-item">
-
-            <span class="equipped-item-icon">
-              ♛
-            </span>
-
-            ${escapeHtml(
-              badge.label
-            )}
-
-          </div>
-
-        `;
-
-      }
-
-
-      if (staffBadge) {
-
-        equippedHtml += `
-
-          <div class="equipped-item">
-
-            <span class="equipped-item-icon">
-              ✓
-            </span>
-
-            Staff
-
-          </div>
-
-        `;
-
-      }
-
-
-      const equippedSection =
-        equippedHtml
-
-          ? `
-
-            <div class="equipped-display">
-
-              ${equippedHtml}
-
-            </div>
-
-          `
-
-          : "";
-
-
-      /* ==========================================
-         PROFILE TITLE DISPLAY
-      ========================================== */
-
-      const profileTitleHtml =
-        title
-
-          ? `
-
-            <div class="profile-title">
-
-              <span class="profile-title-icon">
-                ${escapeHtml(
-                  title.icon
-                )}
-              </span>
-
-              ${escapeHtml(
-                title.label
-              )}
-
-            </div>
-
-          `
-
-          : "";
-
-
-      /* ==========================================
-         HTML
-      ========================================== */
-
-      content.innerHTML = `
-
-        <section class="page-header">
-
-          <div class="eyebrow">
-            Middle Eastern Mixing
-          </div>
-
-          <h1>
-            Profile
-          </h1>
+        : `
 
           <p class="description">
             Your account, game statistics, and
             current progress.
           </p>
 
-        </section>
-
-
-        <!-- ======================================
-             PROFILE
-        ======================================= -->
-
-        <section
-          class="${profileCardClass}"
-        >
-
-          ${avatar}
-
-
-          <div class="profile-info">
-
-            <h2
-              class="${profileNameClass}"
-            >
-              ${username}
-            </h2>
-
-
-            ${profileTitleHtml}
-
-
-            <div class="profile-discord">
-              @${discordUsername}
-            </div>
-
-
-            <div class="profile-id">
-              ID: ${escapeHtml(
-                user.id || "—"
-              )}
-            </div>
-
-
-            ${equippedSection}
-
-          </div>
-
-
-          ${profileBadgesHtml}
-
-        </section>
-
-
-        <!-- ======================================
-             BALANCE
-        ======================================= -->
-
-        <section class="balance-card">
-
-          <div class="balance-label">
-            Current Balance
-          </div>
-
-
-          <div class="balance-number">
-            ◆ ${balance}
-          </div>
-
-        </section>
-
-
-        <!-- ======================================
-             GAME STATS
-        ======================================= -->
-
-        <div class="section-title">
-          Game Statistics
-        </div>
-
-
-        <section class="stats-grid">
-
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              Games Played
-            </div>
-
-            <div class="stat-value">
-              ${gamesPlayed}
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              Games Won
-            </div>
-
-            <div class="stat-value success">
-              ${gamesWon}
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              Games Lost
-            </div>
-
-            <div class="stat-value danger">
-              ${gamesLost}
-            </div>
-
-          </div>
-
-
-          <div class="stat-card">
-
-            <div class="stat-label">
-              Win Rate
-            </div>
-
-            <div class="stat-value accent">
-              ${winRate}%
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-        <!-- ======================================
-             ECONOMY
-        ======================================= -->
-
-        <div class="section-title">
-          Economy
-        </div>
-
-
-        <section class="financial-grid">
-
-
-          <div class="financial-card">
-
-            <div class="financial-label">
-              Total Wagered
-            </div>
-
-            <div class="financial-value">
-              ◆ ${totalWagered.toLocaleString()}
-            </div>
-
-          </div>
-
-
-          <div class="financial-card">
-
-            <div class="financial-label">
-              Total Won
-            </div>
-
-            <div class="financial-value accent">
-              ◆ ${totalWon.toLocaleString()}
-            </div>
-
-          </div>
-
-
-          <div class="financial-card">
-
-            <div class="financial-label">
-              Total Lost
-            </div>
-
-            <div class="financial-value">
-              ◆ ${totalLost.toLocaleString()}
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-        <!-- ======================================
-             CHESS
-        ======================================= -->
-
-        <div class="section-title">
-          Chess
-        </div>
-
-
-        <section class="chess-card">
-
-
-          <div class="chess-left">
-
-            <div class="chess-icon">
-              ♟
-            </div>
-
-
-            <div>
-
-              <div class="chess-title">
-                Chess Rating
-              </div>
-
-              <div class="chess-subtitle">
-                Current ELO rating
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <div class="chess-rating">
-            ${chessRating}
-          </div>
-
-
-        </section>
-
-
-        <!-- ======================================
-             ACTIONS
-        ======================================= -->
-
-        <div class="actions">
-
-
-          <a
-            href="/games"
-            class="action-button primary"
-          >
-            Play a Game
-          </a>
-
-
-          <a
-            href="/inventory"
-            class="action-button"
-          >
-            Open Inventory
-          </a>
-
-
-          <a
-            href="/leaderboard"
-            class="action-button"
-          >
-            View Leaderboard
-          </a>
-
-
-        </div>
-
-      `;
-
-    }
+        `;
 
 
     /* ==========================================
-       LOGIN REQUIRED
+       ACTIONS
     ========================================== */
 
-    function showLoginRequired() {
+    const actionsHtml =
+      publicProfile
 
-      const content =
-        document.getElementById(
-          "content"
-        );
+        ? `
 
+          <div class="actions">
 
-      content.innerHTML = `
+            <a
+              href="/leaderboard"
+              class="action-button"
+            >
+              View Leaderboard
+            </a>
 
-        <section class="page-header">
+            <a
+              href="/games"
+              class="action-button primary"
+            >
+              Play a Game
+            </a>
 
-          <div class="eyebrow">
-            Middle Eastern Mixing
           </div>
 
-          <h1>
-            Profile
-          </h1>
+        `
 
-        </section>
+        : `
+
+          <div class="actions">
+
+            <a
+              href="/games"
+              class="action-button primary"
+            >
+              Play a Game
+            </a>
+
+            <a
+              href="/inventory"
+              class="action-button"
+            >
+              Open Inventory
+            </a>
+
+            <a
+              href="/leaderboard"
+              class="action-button"
+            >
+              View Leaderboard
+            </a>
+
+          </div>
+
+        `;
 
 
-        <div class="login-required">
+    /* ==========================================
+       HTML
+    ========================================== */
+
+    content.innerHTML = `
+
+      <section class="page-header">
+
+        <div class="eyebrow">
+          Middle Eastern Mixing
+        </div>
+
+        <h1>
+          ${publicProfile ? "Public Profile" : "Profile"}
+        </h1>
+
+        ${pageDescription}
+
+      </section>
+
+
+      <!-- ======================================
+           PROFILE
+      ======================================= -->
+
+      <section
+        class="${profileCardClass}"
+      >
+
+        ${avatar}
+
+
+        <div class="profile-info">
+
+          <h2
+            class="${profileNameClass}"
+          >
+            ${username}
+          </h2>
+
+
+          ${profileTitleHtml}
+
+
+          ${
+            publicProfile
+              ? ""
+              : `
+                <div class="profile-discord">
+                  @${discordUsername}
+                </div>
+
+                <div class="profile-id">
+                  ID: ${escapeHtml(
+                    user.id || "—"
+                  )}
+                </div>
+              `
+          }
+
+
+          ${equippedSection}
+
+        </div>
+
+
+        ${profileBadgesHtml}
+
+      </section>
+
+
+      <!-- ======================================
+           BALANCE
+      ======================================= -->
+
+      <section class="balance-card">
+
+        <div class="balance-label">
+          ${publicProfile
+            ? "Balance"
+            : "Current Balance"
+          }
+        </div>
+
+
+        <div class="balance-number">
+          ◆ ${balance}
+        </div>
+
+      </section>
+
+
+      <!-- ======================================
+           GAME STATS
+      ======================================= -->
+
+      <div class="section-title">
+        Game Statistics
+      </div>
+
+
+      <section class="stats-grid">
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Games Played
+          </div>
+
+          <div class="stat-value">
+            ${gamesPlayed}
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Games Won
+          </div>
+
+          <div class="stat-value success">
+            ${gamesWon}
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Games Lost
+          </div>
+
+          <div class="stat-value danger">
+            ${gamesLost}
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Win Rate
+          </div>
+
+          <div class="stat-value accent">
+            ${winRate}%
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+      <!-- ======================================
+           ECONOMY
+      ======================================= -->
+
+      <div class="section-title">
+        Economy
+      </div>
+
+
+      <section class="financial-grid">
+
+
+        <div class="financial-card">
+
+          <div class="financial-label">
+            Total Wagered
+          </div>
+
+          <div class="financial-value">
+            ◆ ${totalWagered.toLocaleString()}
+          </div>
+
+        </div>
+
+
+        <div class="financial-card">
+
+          <div class="financial-label">
+            Total Won
+          </div>
+
+          <div class="financial-value accent">
+            ◆ ${totalWon.toLocaleString()}
+          </div>
+
+        </div>
+
+
+        <div class="financial-card">
+
+          <div class="financial-label">
+            Total Lost
+          </div>
+
+          <div class="financial-value">
+            ◆ ${totalLost.toLocaleString()}
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+      <!-- ======================================
+           CHESS
+      ======================================= -->
+
+      <div class="section-title">
+        Chess
+      </div>
+
+
+      <section class="chess-card">
+
+
+        <div class="chess-left">
+
+          <div class="chess-icon">
+            ♟
+          </div>
+
 
           <div>
-            You need to log in to view your profile.
+
+            <div class="chess-title">
+              Chess Rating
+            </div>
+
+            <div class="chess-subtitle">
+              Current ELO rating
+            </div>
+
           </div>
-
-
-          <a
-            href="https://api.memplace.xyz/api/auth/login"
-          >
-            Login with Discord
-          </a>
 
         </div>
 
-      `;
 
-    }
-
-
-    /* ==========================================
-       HTML ESCAPE
-    ========================================== */
-
-    function escapeHtml(value) {
-
-      return String(value ?? "")
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
+        <div class="chess-rating">
+          ${chessRating}
+        </div>
 
 
-    /* ==========================================
-       INIT
-    ========================================== */
-
-    loadProfile();
+      </section>
 
 
-    /* ==========================================
-       REFRESH PROFILE
-    ========================================== */
+      ${actionsHtml}
 
-    setInterval(
-      loadProfile,
-      10000
+    `;
+
+  }
+
+
+  /* ==========================================
+     LOGIN REQUIRED
+  ========================================== */
+
+  function showLoginRequired() {
+
+    const content =
+      document.getElementById(
+        "content"
+      );
+
+
+    content.innerHTML = `
+
+      <section class="page-header">
+
+        <div class="eyebrow">
+          Middle Eastern Mixing
+        </div>
+
+        <h1>
+          Profile
+        </h1>
+
+      </section>
+
+
+      <div class="login-required">
+
+        <div>
+          You need to log in to view your profile.
+        </div>
+
+
+        <a
+          href="https://api.memplace.xyz/api/auth/login"
+        >
+          Login with Discord
+        </a>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* ==========================================
+     HTML ESCAPE
+  ========================================== */
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  /* ==========================================
+     INIT
+  ========================================== */
+
+  loadProfile();
+
+
+  /* ==========================================
+     REFRESH PROFILE
+  ========================================== */
+
+  setInterval(
+    loadProfile,
+    10000
+  );
+
+
+  /* ==========================================
+     SWORD THEME SOUND
+  ========================================== */
+
+  const swordVideo =
+    document.getElementById(
+      "swordThemeVideo"
     );
 
-    /* ==========================================
-   SWORD THEME SOUND
-========================================== */
 
-const swordVideo =
-  document.getElementById(
-    "swordThemeVideo"
-  );
-
-const swordSoundPrompt =
-  document.getElementById(
-    "swordSoundPrompt"
-  );
-
-const swordSoundButton =
-  document.getElementById(
-    "swordSoundButton"
-  );
-
-const swordSoundClose =
-  document.getElementById(
-    "swordSoundClose"
-  );
+  const swordSoundPrompt =
+    document.getElementById(
+      "swordSoundPrompt"
+    );
 
 
-function showSwordSoundPrompt() {
+  const swordSoundButton =
+    document.getElementById(
+      "swordSoundButton"
+    );
 
-  if (!swordSoundPrompt) {
-    return;
+
+  const swordSoundClose =
+    document.getElementById(
+      "swordSoundClose"
+    );
+
+
+  function showSwordSoundPrompt() {
+
+    if (!swordSoundPrompt) {
+      return;
+    }
+
+    swordSoundPrompt.hidden =
+      false;
+
   }
 
-  swordSoundPrompt.hidden = false;
 
-}
+  function hideSwordSoundPrompt() {
 
+    if (!swordSoundPrompt) {
+      return;
+    }
 
-function hideSwordSoundPrompt() {
+    swordSoundPrompt.hidden =
+      true;
 
-  if (!swordSoundPrompt) {
-    return;
   }
 
-  swordSoundPrompt.hidden = true;
 
-}
+  if (
+    swordSoundButton &&
+    swordVideo
+  ) {
+
+    swordSoundButton.addEventListener(
+      "click",
+      async () => {
+
+        try {
+
+          swordVideo.muted =
+            false;
 
 
-if (
-  swordSoundButton &&
-  swordVideo
-) {
+          await swordVideo.play();
 
-  swordSoundButton.addEventListener(
-    "click",
-    async () => {
 
-      try {
+          swordSoundButton.textContent =
+            "🔊 Sound On";
 
-        swordVideo.muted = false;
 
-        await swordVideo.play();
+          setTimeout(() => {
 
-        swordSoundButton.textContent =
-          "🔊 Sound On";
+            hideSwordSoundPrompt();
 
-        setTimeout(() => {
-          hideSwordSoundPrompt();
-        }, 800);
+          }, 800);
 
-      } catch (error) {
+        } catch (error) {
 
-        console.error(
-          "Sword theme audio error:",
-          error
-        );
+          console.error(
+            "Sword theme audio error:",
+            error
+          );
+
+        }
 
       }
+    );
 
-    }
-  );
-
-}
+  }
 
 
-if (swordSoundClose) {
+  if (swordSoundClose) {
 
-  swordSoundClose.addEventListener(
-    "click",
-    hideSwordSoundPrompt
-  );
+    swordSoundClose.addEventListener(
+      "click",
+      hideSwordSoundPrompt
+    );
 
-}
-    
-  </script>
+  }
+
+</script>
 
 </body>
 </html>
