@@ -103,7 +103,54 @@
 
     }
 
+/* ==========================================
+   HELLO KITTY THEME VARIABLES
+========================================== */
 
+html.theme-hello-kitty,
+body.theme-hello-kitty {
+
+  --black: #fff5f7;
+  --black-2: #ffe9ee;
+  --black-3: #ffdce4;
+
+  --surface: #fff0f3;
+  --surface-2: #ffe4ea;
+  --surface-3: #ffd6e0;
+
+  --border:
+    rgba(255,105,145,0.16);
+
+  --border-hover:
+    rgba(255,105,145,0.32);
+
+  --text: #4a252f;
+
+  --text-2: #8a5664;
+
+  --text-3: #b6818e;
+
+  --accent: #ff6f91;
+
+  --accent-soft:
+    rgba(255,111,145,0.12);
+
+  --success: #67bd8b;
+
+  --danger: #e85d72;
+
+  --page-glow:
+    rgba(255,105,145,0.20);
+
+  --header-bg:
+    rgba(255,245,247,0.90);
+
+  --button-text:
+    #ffffff;
+
+}
+
+    
     /* ==========================================
        GLOBAL
     ========================================== */
@@ -3101,6 +3148,20 @@ function getProfileTitle(
 
           };
 
+          case "hello-kitty-theme":
+
+          return {
+
+            className:
+              "theme-hello-kitty",
+
+            label:
+              "Hello Kitty Theme",
+
+            icon:
+              "🩷"
+
+          };
 
         default:
 
