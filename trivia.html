@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Trivia — Middle Eastern Mixing</title>
+
+  <style>
+
+    :root {
+      --black: #0b0a08;
+      --black-2: #12100d;
+      --black-3: #191611;
+
+      --surface: #191611;
+      --surface-2: #211d17;
+      --surface-3: #29231c;
+
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.13);
+
+      --text: #f4efe7;
+      --muted: #9d9589;
+
+      --accent: #d4a85c;
+      --accent-hover: #e3b96f;
+
+      --success: #65c98b;
+      --danger: #df7272;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,0.35);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(212,168,92,0.08),
+          transparent 35%
+        ),
+        var(--black);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+
+    button,
+    input {
+      font: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background:
+        rgba(11,10,8,0.88);
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+
+    .header-inner {
+      width: min(1180px, calc(100% - 32px));
+
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: var(--text);
+
+      text-decoration: none;
+
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 10px;
+
+      object-fit: cover;
+    }
+
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+
+    .nav a {
+      padding: 9px 12px;
+
+      border-radius: 9px;
+
+      color: var(--muted);
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      transition:
+        color .2s ease,
+        background .2s ease;
+    }
+
+
+    .nav a:hover,
+    .nav a.active {
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .balance {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      padding: 8px 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 9px;
+
+      background:
+        var(--surface);
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    .coin {
+      color: var(--accent);
+    }
+
+
+    .login-button,
+    .profile-button {
+      border: 0;
+
+      border-radius: 9px;
+
+      padding: 9px 13px;
+
+      background: var(--accent);
+
+      color: #171109;
+
+      font-weight: 800;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+    }
+
+
+    .login-button:hover,
+    .profile-button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+
+    .profile-button {
+      display: none;
+
+      width: 38px;
+      height: 38px;
+
+      padding: 0;
+
+      overflow: hidden;
+
+      border-radius: 50%;
+    }
+
+
+    .profile-button img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    .page {
+      width: min(920px, calc(100% - 32px));
+
+      margin: 0 auto;
+
+      padding:
+        54px 0
+        90px;
+    }
+
+
+    .page-heading {
+      text-align: center;
+
+      margin-bottom: 32px;
+    }
+
+
+    .eyebrow {
+      margin-bottom: 10px;
+
+      color: var(--accent);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: .14em;
+    }
+
+
+    h1 {
+      margin: 0;
+
+      font-size:
+        clamp(34px, 6vw, 52px);
+
+      line-height: 1;
+
+      letter-spacing: -0.045em;
+    }
+
+
+    .subtitle {
+      max-width: 620px;
+
+      margin:
+        14px auto 0;
+
+      color: var(--muted);
+
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+
+    /* ==========================================
+       LOGIN NOTICE
+    ========================================== */
+
+    .login-notice {
+      display: none;
+
+      margin-bottom: 18px;
+
+      padding: 16px 18px;
+
+      border:
+        1px solid rgba(212,168,92,.18);
+
+      border-radius: 14px;
+
+      background:
+        rgba(212,168,92,.06);
+
+      color: var(--muted);
+
+      text-align: center;
+    }
+
+
+    .login-notice strong {
+      color: var(--text);
+    }
+
+
+    /* ==========================================
+       TRIVIA CARD
+    ========================================== */
+
+    .trivia-card {
+      position: relative;
+
+      padding: 28px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.025),
+          transparent
+        ),
+        var(--surface);
+
+      box-shadow: var(--shadow);
+    }
+
+
+    /* ==========================================
+       TOP STATS
+    ========================================== */
+
+    .game-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 14px;
+
+      margin-bottom: 30px;
+    }
+
+
+    .stat {
+      min-width: 0;
+
+      padding: 11px 14px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+
+      background: var(--surface-2);
+    }
+
+
+    .stat-label {
+      margin-bottom: 3px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: .08em;
+    }
+
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+
+    .streak-value {
+      color: var(--accent);
+    }
+
+
+    /* ==========================================
+       TIMER
+    ========================================== */
+
+    .timer-wrap {
+      position: relative;
+
+      width: 76px;
+      height: 76px;
+
+      flex: 0 0 auto;
+    }
+
+
+    .timer {
+      width: 76px;
+      height: 76px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border:
+        2px solid var(--border-strong);
+
+      border-radius: 50%;
+
+      background: var(--surface-2);
+
+      font-size: 22px;
+      font-weight: 900;
+
+      transition:
+        border-color .2s ease,
+        color .2s ease;
+    }
+
+
+    .timer.warning {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+
+    .timer.danger {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+
+    /* ==========================================
+       PROGRESS
+    ========================================== */
+
+    .progress {
+      width: 100%;
+      height: 5px;
+
+      margin-bottom: 32px;
+
+      overflow: hidden;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.06);
+    }
+
+
+    .progress-bar {
+      width: 100%;
+      height: 100%;
+
+      transform-origin: left;
+
+      background:
+        var(--accent);
+
+      transition:
+        transform .25s linear;
+    }
+
+
+    /* ==========================================
+       QUESTION
+    ========================================== */
+
+    .question-number {
+      margin-bottom: 9px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: .1em;
+    }
+
+
+    .question {
+      margin: 0 0 26px;
+
+      font-size:
+        clamp(23px, 4vw, 32px);
+
+      line-height: 1.3;
+
+      letter-spacing: -0.025em;
+    }
+
+
+    /* ==========================================
+       ANSWERS
+    ========================================== */
+
+    .answers {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 12px;
+    }
+
+
+    .answer {
+      position: relative;
+
+      min-height: 68px;
+
+      display: flex;
+      align-items: center;
+
+      padding: 16px 18px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+
+      background:
+        var(--surface-2);
+
+      color: var(--text);
+
+      text-align: left;
+
+      transition:
+        border-color .18s ease,
+        background .18s ease,
+        transform .18s ease;
+    }
+
+
+    .answer:hover:not(:disabled) {
+      border-color:
+        rgba(212,168,92,.42);
+
+      background:
+        var(--surface-3);
+
+      transform:
+        translateY(-2px);
+    }
+
+
+    .answer:disabled {
+      cursor: default;
+    }
+
+
+    .answer-letter {
+      width: 34px;
+      height: 34px;
+
+      flex: 0 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-right: 13px;
+
+      border:
+        1px solid var(--border-strong);
+
+      border-radius: 9px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+
+    .answer-text {
+      font-size: 15px;
+      font-weight: 700;
+
+      line-height: 1.35;
+    }
+
+
+    .answer.correct {
+      border-color:
+        rgba(101,201,139,.55);
+
+      background:
+        rgba(101,201,139,.10);
+    }
+
+
+    .answer.correct .answer-letter {
+      border-color:
+        rgba(101,201,139,.55);
+
+      color: var(--success);
+    }
+
+
+    .answer.wrong {
+      border-color:
+        rgba(223,114,114,.55);
+
+      background:
+        rgba(223,114,114,.10);
+    }
+
+
+    .answer.wrong .answer-letter {
+      border-color:
+        rgba(223,114,114,.55);
+
+      color: var(--danger);
+    }
+
+
+    /* ==========================================
+       RESULT
+    ========================================== */
+
+    .result {
+      display: none;
+
+      margin-top: 22px;
+
+      padding: 20px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background:
+        var(--surface-2);
+
+      text-align: center;
+    }
+
+
+    .result-title {
+      margin-bottom: 5px;
+
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+
+    .result-title.correct {
+      color: var(--success);
+    }
+
+
+    .result-title.incorrect {
+      color: var(--danger);
+    }
+
+
+    .result-title.timeout {
+      color: var(--muted);
+    }
+
+
+    .result-message {
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+
+    .reward {
+      margin-top: 10px;
+
+      color: var(--accent);
+
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+
+    /* ==========================================
+       NEXT BUTTON
+    ========================================== */
+
+    .next-button {
+      width: 100%;
+
+      margin-top: 14px;
+
+      padding: 14px 18px;
+
+      border: 0;
+
+      border-radius: 11px;
+
+      background:
+        var(--accent);
+
+      color: #171109;
+
+      font-weight: 900;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
+    }
+
+
+    .next-button:hover {
+      background:
+        var(--accent-hover);
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* ==========================================
+       LOADING
+    ========================================== */
+
+    .loading {
+      min-height: 300px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-direction: column;
+
+      gap: 14px;
+
+      color: var(--muted);
+    }
+
+
+    .spinner {
+      width: 34px;
+      height: 34px;
+
+      border:
+        3px solid var(--border);
+
+      border-top-color:
+        var(--accent);
+
+      border-radius: 50%;
+
+      animation:
+        spin .8s linear infinite;
+    }
+
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    /* ==========================================
+       ERROR
+    ========================================== */
+
+    .error-state {
+      display: none;
+
+      padding: 30px;
+
+      color: var(--muted);
+
+      text-align: center;
+    }
+
+
+    .retry-button {
+      margin-top: 15px;
+
+      padding: 11px 18px;
+
+      border:
+        1px solid var(--border-strong);
+
+      border-radius: 10px;
+
+      background:
+        var(--surface-2);
+
+      color: var(--text);
+
+      font-weight: 800;
+    }
+
+
+    /* ==========================================
+       LOGIN MODAL
+    ========================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+
+      z-index: 1000;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background:
+        rgba(0,0,0,.72);
+
+      backdrop-filter:
+        blur(8px);
+    }
+
+
+    .modal-card {
+      width: min(420px, 100%);
+
+      padding: 28px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 18px;
+
+      background:
+        var(--surface);
+
+      box-shadow: var(--shadow);
+
+      text-align: center;
+    }
+
+
+    .modal-card h2 {
+      margin:
+        0 0 9px;
+
+      font-size: 25px;
+    }
+
+
+    .modal-card p {
+      margin:
+        0 0 22px;
+
+      color: var(--muted);
+
+      line-height: 1.5;
+    }
+
+
+    .modal-login {
+      width: 100%;
+
+      padding: 13px;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background:
+        var(--accent);
+
+      color: #171109;
+
+      font-weight: 900;
+    }
+
+
+    .modal-close {
+      width: 100%;
+
+      margin-top: 9px;
+
+      padding: 12px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        transparent;
+
+      color: var(--muted);
+
+      font-weight: 700;
+    }
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    .toast-container {
+      position: fixed;
+
+      right: 20px;
+      bottom: 20px;
+
+      z-index: 2000;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 9px;
+    }
+
+
+    .toast {
+      max-width: 340px;
+
+      padding: 13px 16px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      background:
+        var(--surface-3);
+
+      box-shadow:
+        0 12px 35px rgba(0,0,0,.35);
+
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 700;
+
+      animation:
+        toastIn .2s ease;
+    }
+
+
+    .toast.success {
+      border-color:
+        rgba(101,201,139,.35);
+    }
+
+
+    .toast.error {
+      border-color:
+        rgba(223,114,114,.35);
+    }
+
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform:
+          translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform:
+          translateY(0);
+      }
+    }
+
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 720px) {
+
+      .header {
+        height: auto;
+
+        padding:
+          12px 0;
+      }
+
+
+      .header-inner {
+        flex-wrap: wrap;
+      }
+
+
+      .nav {
+        order: 3;
+
+        width: 100%;
+
+        overflow-x: auto;
+      }
+
+
+      .nav a {
+        white-space: nowrap;
+      }
+
+
+      .page {
+        padding-top: 35px;
+      }
+
+
+      .trivia-card {
+        padding: 20px;
+      }
+
+
+      .answers {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .game-top {
+        align-items: flex-start;
+      }
+
+
+      .timer-wrap,
+      .timer {
+        width: 64px;
+        height: 64px;
+      }
+
+
+      .timer {
+        font-size: 19px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- ==========================================
+       HEADER
+  ========================================== -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a
+        class="brand"
+        href="/"
+      >
+
+        <img
+          src="/logo.gif"
+          alt=""
+        >
+
+        <span>
+          Middle Eastern Mixing
+        </span>
+
+      </a>
+
+
+      <nav class="nav">
+
+        <a href="/games">
+          Games
+        </a>
+
+        <a href="/leaderboard">
+          Leaderboard
+        </a>
+
+        <a href="/shop">
+          Shop
+        </a>
+
+      </nav>
+
+
+      <div class="account">
+
+        <div class="balance">
+
+          <span class="coin">
+            ◆
+          </span>
+
+          <span id="balance">
+            —
+          </span>
+
+        </div>
+
+
+        <button
+          class="login-button"
+          id="loginButton"
+        >
+          Login
+        </button>
+
+
+        <button
+          class="profile-button"
+          id="profileButton"
+          title="Profile"
+        >
+
+          <img
+            id="profileAvatar"
+            src="https://cdn.discordapp.com/embed/avatars/0.png"
+            alt="Profile"
+          >
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ==========================================
+       PAGE
+  ========================================== -->
+
+  <main class="page">
+
+
+    <section class="page-heading">
+
+      <div class="eyebrow">
+        Middle Eastern Mixing
+      </div>
+
+      <h1>
+        Trivia
+      </h1>
+
+      <p class="subtitle">
+        Test your knowledge, build your streak,
+        and earn coins for every correct answer.
+      </p>
+
+    </section>
+
+
+    <div
+      class="login-notice"
+      id="loginNotice"
+    >
+      <strong>
+        Login required.
+      </strong>
+      Sign in with Discord to play Trivia.
+    </div>
+
+
+
+    <!-- ==========================================
+         GAME
+    ========================================== -->
+
+    <section
+      class="trivia-card"
+      id="triviaCard"
+    >
+
+
+      <div
+        class="loading"
+        id="loading"
+      >
+
+        <div class="spinner"></div>
+
+        <span>
+          Loading question...
+        </span>
+
+      </div>
+
+
+      <div
+        class="error-state"
+        id="errorState"
+      >
+
+        <div id="errorMessage">
+          Unable to load Trivia.
+        </div>
+
+        <button
+          class="retry-button"
+          id="retryButton"
+        >
+          Try Again
+        </button>
+
+      </div>
+
+
+      <div id="gameContent" style="display:none;">
+
+
+        <div class="game-top">
+
+
+          <div class="stat">
+
+            <div class="stat-label">
+              Streak
+            </div>
+
+            <div
+              class="stat-value streak-value"
+              id="streak"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="timer-wrap">
+
+            <div
+              class="timer"
+              id="timer"
+            >
+              15
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="progress">
+
+          <div
+            class="progress-bar"
+            id="progressBar"
+          ></div>
+
+        </div>
+
+
+        <div class="question-number">
+          Question
+        </div>
+
+
+        <h2
+          class="question"
+          id="question"
+        ></h2>
+
+
+        <div
+          class="answers"
+          id="answers"
+        ></div>
+
+
+        <div
+          class="result"
+          id="result"
+        >
+
+          <div
+            class="result-title"
+            id="resultTitle"
+          ></div>
+
+          <div
+            class="result-message"
+            id="resultMessage"
+          ></div>
+
+          <div
+            class="reward"
+            id="reward"
+          ></div>
+
+          <button
+            class="next-button"
+            id="nextButton"
+          >
+            Next Question
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- ==========================================
+       LOGIN MODAL
+  ========================================== -->
+
+  <div
+    class="modal"
+    id="loginModal"
+  >
+
+    <div class="modal-card">
+
+      <h2>
+        Login to play
+      </h2>
+
+      <p>
+        Sign in with Discord to play Trivia
+        and earn coins.
+      </p>
+
+      <button
+        class="modal-login"
+        id="modalLoginButton"
+      >
+        Login with Discord
+      </button>
+
+      <button
+        class="modal-close"
+        id="modalCloseButton"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ==========================================
+       TOASTS
+  ========================================== -->
+
+  <div
+    class="toast-container"
+    id="toastContainer"
+  ></div>
+
+
+
+  <script>
+
+    const API_BASE =
+      "https://api.memplace.xyz";
+
+
+    let currentUser =
+      null;
+
+    let currentRoundId =
+      null;
+
+    let currentQuestion =
+      null;
+
+    let timerInterval =
+      null;
+
+    let questionExpiresAt =
+      null;
+
+    let answering =
+      false;
+
+
+    /* ==========================================
+       ELEMENTS
+    ========================================== */
+
+    const balance =
+      document.getElementById(
+        "balance"
+      );
+
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
+
+    const profileButton =
+      document.getElementById(
+        "profileButton"
+      );
+
+    const profileAvatar =
+      document.getElementById(
+        "profileAvatar"
+      );
+
+    const loginNotice =
+      document.getElementById(
+        "loginNotice"
+      );
+
+    const loginModal =
+      document.getElementById(
+        "loginModal"
+      );
+
+    const modalLoginButton =
+      document.getElementById(
+        "modalLoginButton"
+      );
+
+    const modalCloseButton =
+      document.getElementById(
+        "modalCloseButton"
+      );
+
+    const loading =
+      document.getElementById(
+        "loading"
+      );
+
+    const errorState =
+      document.getElementById(
+        "errorState"
+      );
+
+    const errorMessage =
+      document.getElementById(
+        "errorMessage"
+      );
+
+    const retryButton =
+      document.getElementById(
+        "retryButton"
+      );
+
+    const gameContent =
+      document.getElementById(
+        "gameContent"
+      );
+
+    const question =
+      document.getElementById(
+        "question"
+      );
+
+    const answers =
+      document.getElementById(
+        "answers"
+      );
+
+    const timer =
+      document.getElementById(
+        "timer"
+      );
+
+    const progressBar =
+      document.getElementById(
+        "progressBar"
+      );
+
+    const streak =
+      document.getElementById(
+        "streak"
+      );
+
+    const result =
+      document.getElementById(
+        "result"
+      );
+
+    const resultTitle =
+      document.getElementById(
+        "resultTitle"
+      );
+
+    const resultMessage =
+      document.getElementById(
+        "resultMessage"
+      );
+
+    const reward =
+      document.getElementById(
+        "reward"
+      );
+
+    const nextButton =
+      document.getElementById(
+        "nextButton"
+      );
+
+    const toastContainer =
+      document.getElementById(
+        "toastContainer"
+      );
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    function showToast(
+      message,
+      type = ""
+    ) {
+
+      const toast =
+        document.createElement(
+          "div"
+        );
+
+      toast.className =
+        "toast " + type;
+
+      toast.textContent =
+        message;
+
+      toastContainer.appendChild(
+        toast
+      );
+
+      setTimeout(() => {
+
+        toast.remove();
+
+      }, 3500);
+
+    }
+
+
+    /* ==========================================
+       LOGIN
+    ========================================== */
+
+    function login() {
+
+      window.location.href =
+        API_BASE +
+        "/api/auth/login";
+
+    }
+
+
+    function requireLogin() {
+
+      if (currentUser) {
+        return true;
+      }
+
+      loginModal.style.display =
+        "flex";
+
+      return false;
+
+    }
+
+
+    loginButton.addEventListener(
+      "click",
+      login
+    );
+
+
+    modalLoginButton.addEventListener(
+      "click",
+      login
+    );
+
+
+    modalCloseButton.addEventListener(
+      "click",
+      () => {
+
+        loginModal.style.display =
+          "none";
+
+      }
+    );
+
+
+    loginModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          loginModal
+        ) {
+
+          loginModal.style.display =
+            "none";
+
+        }
+
+      }
+    );
+
+
+    profileButton.addEventListener(
+      "click",
+      () => {
+
+        window.location.href =
+          "/profile";
+
+      }
+    );
+
+
+    /* ==========================================
+       LOAD USER
+    ========================================== */
+
+    async function loadCurrentUser() {
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/api/user/me?t=" +
+            Date.now(),
+            {
+              method: "GET",
+              credentials: "include",
+              cache: "no-store"
+            }
+          );
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.authenticated ||
+          !data.user
+        ) {
+
+          currentUser =
+            null;
+
+          balance.textContent =
+            "—";
+
+          loginButton.style.display =
+            "block";
+
+          profileButton.style.display =
+            "none";
+
+          loginNotice.style.display =
+            "block";
+
+          return false;
+
+        }
+
+
+        currentUser =
+          data.user;
+
+
+        balance.textContent =
+          Number(
+            data.user.balance || 0
+          ).toLocaleString();
+
+
+        loginButton.style.display =
+          "none";
+
+        profileButton.style.display =
+          "block";
+
+        loginNotice.style.display =
+          "none";
+
+
+        if (
+          data.user.avatar
+        ) {
+
+          profileAvatar.src =
+            "https://cdn.discordapp.com/avatars/" +
+            data.user.id +
+            "/" +
+            data.user.avatar +
+            ".png?size=64";
+
+        } else {
+
+          profileAvatar.src =
+            "https://cdn.discordapp.com/embed/avatars/0.png";
+
+        }
+
+
+        return true;
+
+      } catch (error) {
+
+        console.error(
+          "LOAD USER ERROR:",
+          error
+        );
+
+        currentUser =
+          null;
+
+        balance.textContent =
+          "—";
+
+        loginButton.style.display =
+          "block";
+
+        profileButton.style.display =
+          "none";
+
+        loginNotice.style.display =
+          "block";
+
+        return false;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       LOAD QUESTION
+    ========================================== */
+
+    async function loadQuestion() {
+
+      if (
+        !requireLogin()
+      ) {
+        return;
+      }
+
+
+      stopTimer();
+
+
+      answering =
+        false;
+
+
+      currentRoundId =
+        null;
+
+
+      loading.style.display =
+        "flex";
+
+      errorState.style.display =
+        "none";
+
+      gameContent.style.display =
+        "none";
+
+      result.style.display =
+        "none";
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/api/games/trivia/question",
+            {
+              method: "POST",
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              }
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.error ||
+            "Unable to load question."
+          );
+
+        }
+
+
+        currentRoundId =
+          data.roundId;
+
+        currentQuestion =
+          data.question;
+
+        questionExpiresAt =
+          new Date(
+            data.expiresAt
+          ).getTime();
+
+
+        question.textContent =
+          data.question.text;
+
+
+        answers.innerHTML =
+          "";
+
+
+        const letters =
+          [
+            "A",
+            "B",
+            "C",
+            "D"
+          ];
+
+
+        data.question.choices
+          .forEach(
+            (choice, index) => {
+
+              const button =
+                document.createElement(
+                  "button"
+                );
+
+              button.className =
+                "answer";
+
+              button.dataset.answer =
+                index;
+
+
+              button.innerHTML = `
+                <span class="answer-letter">
+                  ${letters[index]}
+                </span>
+
+                <span class="answer-text">
+                  ${escapeHtml(choice)}
+                </span>
+              `;
+
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  submitAnswer(
+                    index,
+                    button
+                  );
+
+                }
+              );
+
+
+              answers.appendChild(
+                button
+              );
+
+            }
+          );
+
+
+        streak.textContent =
+          Number(
+            data.streak || 0
+          );
+
+
+        loading.style.display =
+          "none";
+
+        errorState.style.display =
+          "none";
+
+        gameContent.style.display =
+          "block";
+
+
+        updateTimer();
+
+
+        timerInterval =
+          setInterval(
+            updateTimer,
+            100
+          );
+
+
+      } catch (error) {
+
+        console.error(
+          "LOAD QUESTION ERROR:",
+          error
+        );
+
+
+        loading.style.display =
+          "none";
+
+        gameContent.style.display =
+          "none";
+
+        errorState.style.display =
+          "block";
+
+        errorMessage.textContent =
+          error.message ||
+          "Unable to load Trivia.";
+
+      }
+
+    }
+
+
+    /* ==========================================
+       TIMER
+    ========================================== */
+
+    function updateTimer() {
+
+      if (
+        !questionExpiresAt
+      ) {
+        return;
+      }
+
+
+      const remaining =
+        Math.max(
+          0,
+          questionExpiresAt -
+          Date.now()
+        );
+
+
+      const seconds =
+        Math.ceil(
+          remaining / 1000
+        );
+
+
+      timer.textContent =
+        seconds;
+
+
+      const percent =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            (
+              remaining /
+              15000
+            ) * 100
+          )
+        );
+
+
+      progressBar.style.transform =
+        `scaleX(${percent / 100})`;
+
+
+      timer.classList.remove(
+        "warning",
+        "danger"
+      );
+
+
+      if (
+        seconds <= 5
+      ) {
+
+        timer.classList.add(
+          "danger"
+        );
+
+      } else if (
+        seconds <= 8
+      ) {
+
+        timer.classList.add(
+          "warning"
+        );
+
+      }
+
+
+      if (
+        remaining <= 0
+      ) {
+
+        stopTimer();
+
+        handleTimeout();
+
+      }
+
+    }
+
+
+    function stopTimer() {
+
+      if (
+        timerInterval !==
+        null
+      ) {
+
+        clearInterval(
+          timerInterval
+        );
+
+        timerInterval =
+          null;
+
+      }
+
+    }
+
+
+    /* ==========================================
+       TIMEOUT
+    ========================================== */
+
+    async function handleTimeout() {
+
+      if (
+        answering
+      ) {
+        return;
+      }
+
+
+      answering =
+        true;
+
+
+      disableAnswers();
+
+
+      /*
+        Tell the server the round
+        has expired.
+
+        We intentionally submit an
+        answer after the client timer
+        expires. The server independently
+        checks its own expiresAt.
+      */
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/api/games/trivia/answer",
+            {
+              method: "POST",
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  roundId:
+                    currentRoundId,
+
+                  answer:
+                    0
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          response.ok &&
+          data.result ===
+            "timeout"
+        ) {
+
+          showResult(
+            "timeout",
+            data
+          );
+
+          return;
+
+        }
+
+
+        /*
+          If the request happened
+          right on the boundary and
+          the server accepted it,
+          use the returned result.
+        */
+
+        if (
+          response.ok
+        ) {
+
+          showResult(
+            data.result,
+            data
+          );
+
+          return;
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "TIMEOUT SUBMISSION ERROR:",
+          error
+        );
+
+      }
+
+
+      showResult(
+        "timeout",
+        {
+          reward: 0,
+          streak: 0
+        }
+      );
+
+    }
+
+
+    /* ==========================================
+       SUBMIT ANSWER
+    ========================================== */
+
+    async function submitAnswer(
+      selectedAnswer,
+      selectedButton
+    ) {
+
+      if (
+        answering ||
+        !currentRoundId
+      ) {
+        return;
+      }
+
+
+      answering =
+        true;
+
+
+      stopTimer();
+
+      disableAnswers();
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/api/games/trivia/answer",
+            {
+              method: "POST",
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+
+                  roundId:
+                    currentRoundId,
+
+                  answer:
+                    selectedAnswer
+
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok
+        ) {
+
+          throw new Error(
+            data.error ||
+            "Unable to submit answer."
+          );
+
+        }
+
+
+        /*
+          Highlight the selected
+          answer based on the
+          server's result.
+
+          The correct answer itself
+          is never received.
+        */
+
+        if (
+          data.result ===
+          "correct"
+        ) {
+
+          selectedButton.classList.add(
+            "correct"
+          );
+
+        } else {
+
+          selectedButton.classList.add(
+            "wrong"
+          );
+
+        }
+
+
+        if (
+          data.balance !==
+          undefined
+        ) {
+
+          balance.textContent =
+            Number(
+              data.balance
+            ).toLocaleString();
+
+
+          if (
+            currentUser
+          ) {
+
+            currentUser.balance =
+              data.balance;
+
+          }
+
+        }
+
+
+        showResult(
+          data.result,
+          data
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "SUBMIT ANSWER ERROR:",
+          error
+        );
+
+
+        answering =
+          false;
+
+
+        enableAnswers();
+
+
+        showToast(
+          error.message ||
+          "Unable to submit answer.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================
+       SHOW RESULT
+    ========================================== */
+
+    function showResult(
+      resultType,
+      data
+    ) {
+
+      stopTimer();
+
+
+      result.style.display =
+        "block";
+
+
+      resultTitle.className =
+        "result-title";
+
+
+      if (
+        resultType ===
+        "correct"
+      ) {
+
+        resultTitle.textContent =
+          "Correct!";
+
+        resultTitle.classList.add(
+          "correct"
+        );
+
+
+        resultMessage.textContent =
+          "Great answer. Keep the streak going.";
+
+        reward.textContent =
+          "+" +
+          Number(
+            data.reward || 0
+          ).toLocaleString() +
+          " coins";
+
+
+      } else if (
+        resultType ===
+        "timeout"
+      ) {
+
+        resultTitle.textContent =
+          "Time's Up!";
+
+        resultTitle.classList.add(
+          "timeout"
+        );
+
+
+        resultMessage.textContent =
+          "You ran out of time.";
+
+        reward.textContent =
+          "+0 coins";
+
+
+      } else {
+
+        resultTitle.textContent =
+          "Incorrect";
+
+        resultTitle.classList.add(
+          "incorrect"
+        );
+
+
+        resultMessage.textContent =
+          "Your streak has been reset.";
+
+        reward.textContent =
+          "+0 coins";
+
+      }
+
+
+      streak.textContent =
+        Number(
+          data.streak || 0
+        );
+
+
+      nextButton.focus();
+
+
+      result.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+
+    }
+
+
+    /* ==========================================
+       ANSWER BUTTONS
+    ========================================== */
+
+    function disableAnswers() {
+
+      document
+        .querySelectorAll(
+          ".answer"
+        )
+        .forEach(
+          button => {
+
+            button.disabled =
+              true;
+
+          }
+        );
+
+    }
+
+
+    function enableAnswers() {
+
+      document
+        .querySelectorAll(
+          ".answer"
+        )
+        .forEach(
+          button => {
+
+            button.disabled =
+              false;
+
+          }
+        );
+
+    }
+
+
+    /* ==========================================
+       HTML ESCAPE
+    ========================================== */
+
+    function escapeHtml(
+      value
+    ) {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.textContent =
+        value;
+
+      return div.innerHTML;
+
+    }
+
+
+    /* ==========================================
+       RETRY
+    ========================================== */
+
+    retryButton.addEventListener(
+      "click",
+      loadQuestion
+    );
+
+
+    nextButton.addEventListener(
+      "click",
+      loadQuestion
+    );
+
+
+    /* ==========================================
+       INITIALIZE
+    ========================================== */
+
+    async function initialize() {
+
+      const authenticated =
+        await loadCurrentUser();
+
+
+      if (
+        authenticated
+      ) {
+
+        await loadQuestion();
+
+      } else {
+
+        loading.style.display =
+          "none";
+
+        gameContent.style.display =
+          "none";
+
+      }
+
+    }
+
+
+    initialize();
+
+
+    /* ==========================================
+       BALANCE REFRESH
+    ========================================== */
+
+    setInterval(
+      async () => {
+
+        if (
+          !currentUser
+        ) {
+          return;
+        }
+
+
+        try {
+
+          const response =
+            await fetch(
+              API_BASE +
+              "/api/user/me?t=" +
+              Date.now(),
+              {
+                credentials:
+                  "include",
+
+                cache:
+                  "no-store"
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if (
+            response.ok &&
+            data.authenticated &&
+            data.user
+          ) {
+
+            currentUser =
+              data.user;
+
+            balance.textContent =
+              Number(
+                data.user.balance || 0
+              ).toLocaleString();
+
+          }
+
+        } catch (error) {
+
+          console.error(
+            "BALANCE REFRESH ERROR:",
+            error
+          );
+
+        }
+
+      },
+      5000
+    );
+
+  </script>
+
+</body>
+
+</html>
