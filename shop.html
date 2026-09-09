@@ -493,11 +493,14 @@
 
     .profile-btn {
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 8px;
+      gap:
+        8px;
 
     }
 
@@ -682,6 +685,447 @@
 
       font-weight:
         700;
+
+    }
+
+
+    /* ==========================================
+       BUNDLES
+    ========================================== */
+
+    .bundles-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0, 1fr)
+        );
+
+      gap:
+        18px;
+
+    }
+
+
+    .bundle-card {
+
+      position:
+        relative;
+
+      overflow:
+        hidden;
+
+      min-width:
+        0;
+
+      padding:
+        25px;
+
+      border:
+        1px solid
+        rgba(213,179,106,.18);
+
+      border-radius:
+        19px;
+
+      background:
+
+        radial-gradient(
+          circle at 100% 0%,
+          rgba(213,179,106,.10),
+          transparent 35%
+        ),
+
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.045),
+          rgba(255,255,255,.012)
+        );
+
+      box-shadow:
+        0 15px 50px
+        rgba(0,0,0,.16);
+
+      transition:
+        transform .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease;
+
+    }
+
+
+    .bundle-card:hover {
+
+      transform:
+        translateY(-3px);
+
+      border-color:
+        rgba(213,179,106,.34);
+
+      box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.25);
+
+    }
+
+
+    .bundle-card::after {
+
+      content:
+        "BUNDLE";
+
+      position:
+        absolute;
+
+      right:
+        -12px;
+
+      top:
+        15px;
+
+      color:
+        rgba(213,179,106,.035);
+
+      font-size:
+        68px;
+
+      line-height:
+        1;
+
+      font-weight:
+        950;
+
+      letter-spacing:
+        -.06em;
+
+      transform:
+        rotate(-8deg);
+
+      pointer-events:
+        none;
+
+    }
+
+
+    .bundle-top {
+
+      position:
+        relative;
+
+      z-index:
+        2;
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      justify-content:
+        space-between;
+
+      gap:
+        16px;
+
+    }
+
+
+    .bundle-icon {
+
+      width:
+        64px;
+
+      height:
+        64px;
+
+      flex-shrink:
+        0;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        17px;
+
+      background:
+        rgba(213,179,106,.10);
+
+      border:
+        1px solid
+        rgba(213,179,106,.23);
+
+      color:
+        var(--accent);
+
+      font-size:
+        29px;
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.18);
+
+    }
+
+
+    .bundle-label {
+
+      color:
+        var(--accent);
+
+      font-size:
+        10px;
+
+      font-weight:
+        900;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .14em;
+
+      margin-bottom:
+        6px;
+
+    }
+
+
+    .bundle-name {
+
+      margin:
+        0;
+
+      font-size:
+        22px;
+
+      letter-spacing:
+        -.025em;
+
+    }
+
+
+    .bundle-description {
+
+      position:
+        relative;
+
+      z-index:
+        2;
+
+      margin:
+        17px 0 16px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.6;
+
+    }
+
+
+    .bundle-contents {
+
+      position:
+        relative;
+
+      z-index:
+        2;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        7px;
+
+      margin-bottom:
+        20px;
+
+    }
+
+
+    .bundle-content {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      padding:
+        9px 11px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(255,255,255,.025);
+
+      font-size:
+        12px;
+
+    }
+
+
+    .bundle-content-icon {
+
+      width:
+        27px;
+
+      height:
+        27px;
+
+      flex-shrink:
+        0;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        7px;
+
+      background:
+        rgba(213,179,106,.08);
+
+      color:
+        var(--accent);
+
+      font-size:
+        13px;
+
+    }
+
+
+    .bundle-content-name {
+
+      min-width:
+        0;
+
+      overflow:
+        hidden;
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+    }
+
+
+    .bundle-more {
+
+      color:
+        var(--muted-2);
+
+      font-size:
+        11px;
+
+      padding:
+        2px 2px;
+
+    }
+
+
+    .bundle-footer {
+
+      position:
+        relative;
+
+      z-index:
+        2;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        14px;
+
+    }
+
+
+    .bundle-price {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        3px;
+
+    }
+
+
+    .bundle-price-label {
+
+      color:
+        var(--muted-2);
+
+      font-size:
+        10px;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .10em;
+
+    }
+
+
+    .bundle-price-value {
+
+      color:
+        var(--accent);
+
+      font-size:
+        17px;
+
+      font-weight:
+        850;
+
+    }
+
+
+    .bundle-count {
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      margin-top:
+        1px;
 
     }
 
@@ -2289,6 +2733,14 @@
 
       }
 
+
+      .bundles-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
     }
 
 
@@ -2423,6 +2875,33 @@
 
       }
 
+
+      .bundle-card {
+
+        padding:
+          20px;
+
+      }
+
+
+      .bundle-footer {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .bundle-footer .buy-btn {
+
+        width:
+          100%;
+
+      }
+
     }
 
   </style>
@@ -2523,8 +3002,49 @@
 
     <p>
       Spend your winnings on exclusive items,
-      profile cosmetics, badges, titles, and themes.
+      profile cosmetics, badges, titles, themes,
+      and special bundles.
     </p>
+
+  </section>
+
+
+  <!-- ==========================================
+       BUNDLES
+  ========================================== -->
+
+  <section
+    class="shop-section"
+    id="bundlesSection"
+    style="display:none;"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h2 class="section-title">
+          Bundles
+        </h2>
+
+        <p class="section-description">
+          Get multiple exclusive items together in one purchase.
+        </p>
+
+      </div>
+
+      <div
+        class="section-count"
+        id="bundlesCount"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="bundles-grid"
+      id="bundlesGrid"
+    ></div>
 
   </section>
 
@@ -3392,7 +3912,10 @@ function getItemTypeLabel(
       "Profile Title",
 
     profile_theme:
-      "Profile Theme"
+      "Profile Theme",
+
+    bundle:
+      "Bundle"
 
   };
 
@@ -3407,6 +3930,356 @@ function getItemTypeLabel(
       .replace(/\b\w/g, char =>
         char.toUpperCase()
       )
+  );
+
+}
+
+
+/* ==========================================
+   GET BUNDLE CONTENTS
+========================================== */
+
+function getBundleItems(
+  bundle
+) {
+
+  if (
+    !Array.isArray(
+      bundle.items
+    )
+  ) {
+
+    return [];
+
+  }
+
+
+  return bundle.items
+    .map(
+      itemId =>
+        shopItems.find(
+          item =>
+            String(item.id) ===
+            String(itemId)
+        )
+    )
+    .filter(Boolean);
+
+}
+
+
+/* ==========================================
+   BUNDLE CARD
+========================================== */
+
+function createBundleCard(
+  bundle
+) {
+
+  const owned =
+    ownedItems.has(
+      String(bundle.id)
+    );
+
+
+  const contents =
+    getBundleItems(
+      bundle
+    );
+
+
+  const visibleContents =
+    contents.slice(
+      0,
+      4
+    );
+
+
+  const remaining =
+    Math.max(
+      0,
+      contents.length -
+      visibleContents.length
+    );
+
+
+  return `
+
+    <article
+      class="bundle-card"
+    >
+
+      <div class="bundle-top">
+
+
+        <div>
+
+          <div class="bundle-label">
+            Bundle
+          </div>
+
+          <h2 class="bundle-name">
+
+            ${escapeHtml(
+              bundle.name
+            )}
+
+          </h2>
+
+        </div>
+
+
+        <div class="bundle-icon">
+
+          ${escapeHtml(
+            bundle.icon ||
+            "🎁"
+          )}
+
+        </div>
+
+
+      </div>
+
+
+      <p class="bundle-description">
+
+        ${escapeHtml(
+          bundle.description ||
+          "A collection of exclusive items."
+        )}
+
+      </p>
+
+
+      <div class="bundle-contents">
+
+        ${
+          visibleContents.length
+
+            ? visibleContents
+                .map(
+                  item => `
+
+                    <div
+                      class="bundle-content"
+                    >
+
+                      <div
+                        class="bundle-content-icon"
+                      >
+
+                        ${escapeHtml(
+                          item.icon ||
+                          "✦"
+                        )}
+
+                      </div>
+
+
+                      <div
+                        class="bundle-content-name"
+                      >
+
+                        ${escapeHtml(
+                          item.name
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  `
+                )
+                .join("")
+
+            : `
+
+                <div
+                  class="bundle-content"
+                >
+
+                  <div
+                    class="bundle-content-icon"
+                  >
+                    ?
+                  </div>
+
+                  <div
+                    class="bundle-content-name"
+                  >
+                    Bundle contents unavailable
+                  </div>
+
+                </div>
+
+              `
+        }
+
+
+        ${
+          remaining > 0
+
+            ? `
+
+              <div class="bundle-more">
+
+                + ${remaining}
+                more ${
+                  remaining === 1
+                    ? "item"
+                    : "items"
+                }
+
+              </div>
+
+            `
+
+            : ""
+        }
+
+      </div>
+
+
+      <div class="bundle-footer">
+
+
+        <div class="bundle-price">
+
+          <div class="bundle-price-label">
+            Bundle Price
+          </div>
+
+          <div class="bundle-price-value">
+
+            ◆
+            ${Number(
+              bundle.price || 0
+            ).toLocaleString()}
+
+          </div>
+
+          <div class="bundle-count">
+
+            ${contents.length}
+            ${
+              contents.length === 1
+                ? "item"
+                : "items"
+            }
+            included
+
+          </div>
+
+        </div>
+
+
+        ${
+          owned
+
+            ? `
+
+              <button
+                class="buy-btn owned-btn"
+                disabled
+              >
+                Owned
+              </button>
+
+            `
+
+            : `
+
+              <button
+                class="buy-btn"
+                data-item-id="${escapeHtml(
+                  bundle.id
+                )}"
+              >
+                Buy Bundle
+              </button>
+
+            `
+        }
+
+
+      </div>
+
+
+    </article>
+
+  `;
+
+}
+
+
+/* ==========================================
+   RENDER BUNDLES
+========================================== */
+
+function renderBundles() {
+
+  const section =
+    document.getElementById(
+      "bundlesSection"
+    );
+
+
+  const grid =
+    document.getElementById(
+      "bundlesGrid"
+    );
+
+
+  const count =
+    document.getElementById(
+      "bundlesCount"
+    );
+
+
+  const bundles =
+    shopItems.filter(
+      item =>
+        item.type ===
+        "bundle"
+    );
+
+
+  if (!bundles.length) {
+
+    section.style.display =
+      "none";
+
+    grid.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  section.style.display =
+    "block";
+
+
+  count.textContent =
+    `${bundles.length} ${
+      bundles.length === 1
+        ? "bundle"
+        : "bundles"
+    }`;
+
+
+  grid.innerHTML =
+    bundles
+      .map(
+        createBundleCard
+      )
+      .join("");
+
+
+  bindBuyButtons(
+    grid
   );
 
 }
@@ -3802,10 +4675,8 @@ function renderShop() {
       item =>
         item.type ===
         "profile_cosmetic" &&
-        (
-          item.id ===
-          "legendary-title"
-        )
+        item.id ===
+        "legendary-title"
     );
 
 
@@ -3835,8 +4706,23 @@ function renderShop() {
 
 
   /*
+   * Bundles have their own dedicated
+   * marketplace section.
+   */
+
+  const bundles =
+    shopItems.filter(
+      item =>
+        item.type ===
+        "bundle"
+    );
+
+
+  /*
    * Anything that isn't one of the
    * known categories goes here.
+   *
+   * Bundles are intentionally excluded.
    */
 
   const other =
@@ -3846,11 +4732,15 @@ function renderShop() {
           "profile_cosmetic",
           "profile_title",
           "profile_badge",
-          "profile_theme"
+          "profile_theme",
+          "bundle"
         ].includes(
           item.type
         )
     );
+
+
+  renderBundles();
 
 
   renderFeatured();
@@ -3993,16 +4883,55 @@ function openPurchaseModal(
 
   modalIcon.textContent =
     item.icon ||
-    "✦";
+    (
+      item.type ===
+      "bundle"
+        ? "🎁"
+        : "✦"
+    );
 
 
   modalName.textContent =
-    item.name;
+    item.type === "bundle"
+      ? `Purchase ${item.name}`
+      : item.name;
 
 
-  modalDescription.textContent =
-    item.description ||
-    "Are you sure you want to purchase this item?";
+  if (
+    item.type ===
+    "bundle"
+  ) {
+
+    const contents =
+      getBundleItems(
+        item
+      );
+
+
+    const names =
+      contents
+        .map(
+          entry =>
+            entry.name
+        )
+        .join(", ");
+
+
+    modalDescription.textContent =
+      contents.length
+        ? `This bundle includes: ${names}.`
+        : (
+            item.description ||
+            "Are you sure you want to purchase this bundle?"
+          );
+
+  } else {
+
+    modalDescription.textContent =
+      item.description ||
+      "Are you sure you want to purchase this item?";
+
+  }
 
 
   modalPrice.textContent =
@@ -4048,7 +4977,9 @@ function openPurchaseModal(
       false;
 
     confirmPurchase.textContent =
-      "Purchase";
+      item.type === "bundle"
+        ? "Purchase Bundle"
+        : "Purchase";
 
   }
 
@@ -4223,11 +5154,18 @@ function showPurchaseSuccess(
 
   successIcon.textContent =
     item.icon ||
-    "✦";
+    (
+      item.type ===
+      "bundle"
+        ? "🎁"
+        : "✦"
+    );
 
 
   successName.textContent =
-    item.name;
+    item.type === "bundle"
+      ? `${item.name} Bundle`
+      : item.name;
 
 
   successBalance.textContent =
@@ -4391,7 +5329,12 @@ async function purchaseItem() {
 
 
     /*
-     * Mark item as owned.
+     * Mark the purchased listing
+     * as owned.
+     *
+     * For bundles, the backend should
+     * also create inventory records
+     * for each included item.
      */
 
     ownedItems.add(
@@ -4459,7 +5402,9 @@ async function purchaseItem() {
 
 
     confirmPurchase.textContent =
-      "Purchase";
+      item.type === "bundle"
+        ? "Purchase Bundle"
+        : "Purchase";
 
 
   } finally {
