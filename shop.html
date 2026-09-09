@@ -3979,6 +3979,16 @@ function createBundleCard(
   const owned =
     ownedItems.has(
       String(bundle.id)
+    ) ||
+    (
+      Array.isArray(bundle.items) &&
+      bundle.items.length > 0 &&
+      bundle.items.every(
+        itemId =>
+          ownedItems.has(
+            String(itemId)
+          )
+      )
     );
 
 
@@ -4011,7 +4021,6 @@ function createBundleCard(
 
       <div class="bundle-top">
 
-
         <div>
 
           <div class="bundle-label">
@@ -4037,7 +4046,6 @@ function createBundleCard(
           )}
 
         </div>
-
 
       </div>
 
@@ -4143,7 +4151,6 @@ function createBundleCard(
 
       <div class="bundle-footer">
 
-
         <div class="bundle-price">
 
           <div class="bundle-price-label">
@@ -4211,7 +4218,6 @@ function createBundleCard(
   `;
 
 }
-
 
 /* ==========================================
    RENDER BUNDLES
