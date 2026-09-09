@@ -4931,6 +4931,7 @@ body.theme-sakura
   </footer>
 
 
+```html
 <script>
 
   const API_URL =
@@ -4938,6 +4939,7 @@ body.theme-sakura
 
 
   let currentUser = null;
+  let loggedInUser = null;
 
 
   /* ==========================================
@@ -4988,9 +4990,6 @@ body.theme-sakura
     }
 
 
-    /*
-     * Already a complete URL.
-     */
     if (
       typeof user.avatar === "string" &&
       (
@@ -5004,9 +5003,6 @@ body.theme-sakura
     }
 
 
-    /*
-     * Direct avatarUrl from database.
-     */
     if (
       typeof user.avatarUrl === "string" &&
       user.avatarUrl
@@ -5017,9 +5013,6 @@ body.theme-sakura
     }
 
 
-    /*
-     * Discord avatar hash + Discord user ID.
-     */
     if (
       user.id &&
       user.avatar
@@ -5063,7 +5056,8 @@ body.theme-sakura
     html.classList.remove(
       "theme-mixing-after-dark",
       "theme-hello-kitty",
-      "theme-sword"
+      "theme-sword",
+      "theme-sakura"
     );
 
 
@@ -5106,6 +5100,7 @@ body.theme-sakura
 
     }
 
+
     if (
       equippedTheme ===
       "sakura-theme"
@@ -5122,43 +5117,121 @@ body.theme-sakura
     }
 
 
-if (
-  equippedTheme ===
-  "sword-theme"
-) {
+    if (
+      equippedTheme ===
+      "sword-theme"
+    ) {
 
-  html.classList.add(
-    "theme-sword"
-  );
+      html.classList.add(
+        "theme-sword"
+      );
 
-  body.classList.add(
-    "theme-sword"
-  );
+      body.classList.add(
+        "theme-sword"
+      );
 
 
-  if (
-    typeof restartSwordTheme ===
-    "function"
-  ) {
+      if (
+        typeof restartSwordTheme ===
+        "function"
+      ) {
 
-    restartSwordTheme();
+        restartSwordTheme();
+
+      }
+
+    } else {
+
+      if (
+        typeof stopSwordTheme ===
+        "function"
+      ) {
+
+        stopSwordTheme();
+
+      }
+
+    }
 
   }
 
-} else {
 
-  if (
-    typeof stopSwordTheme ===
-    "function"
-  ) {
+  /* ==========================================
+     LOAD LOGGED-IN USER
+     
+     IMPORTANT:
+     This is separate from the public
+     profile request.
+  ========================================== */
 
-    stopSwordTheme();
+  async function loadLoggedInUser() {
+
+    try {
+
+      const response =
+        await fetch(
+          API_URL + "/api/user/me",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+
+      if (
+        response.status === 401
+      ) {
+
+        loggedInUser =
+          null;
+
+        return null;
+
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.authenticated ||
+        !data.user
+      ) {
+
+        loggedInUser =
+          null;
+
+        return null;
+
+      }
+
+
+      loggedInUser =
+        data.user;
+
+
+      return loggedInUser;
+
+    } catch (error) {
+
+      console.error(
+        "LOGGED IN USER CHECK ERROR:",
+        error
+      );
+
+
+      loggedInUser =
+        null;
+
+
+      return null;
+
+    }
 
   }
-
- }
-
-}
 
 
   /* ==========================================
@@ -5166,12 +5239,6 @@ if (
   ========================================== */
 
   async function loadStaffStatus() {
-
-
-    if (isPublicProfile) {
-      return null;
-    }
-
 
     try {
 
@@ -5249,16 +5316,19 @@ if (
 
     try {
 
-      let response;
-
-
       /* ========================================
          PUBLIC PROFILE
       ======================================== */
 
       if (isPublicProfile) {
 
-        response =
+        /*
+         * Get the PUBLIC profile.
+         *
+         * Do NOT use this request to determine
+         * whether the viewer is logged in.
+         */
+        const publicResponse =
           await fetch(
             API_URL +
             "/api/profile?username=" +
@@ -5272,42 +5342,19 @@ if (
             }
           );
 
-      }
+
+        const publicData =
+          await publicResponse.json();
 
 
-      /* ========================================
-         OWN PROFILE
-      ======================================== */
-
-      else {
-
-        response =
-          await fetch(
-            API_URL + "/api/user/me",
-            {
-              method: "GET",
-              credentials: "include",
-              cache: "no-store"
-            }
-          );
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      /* ========================================
-         PUBLIC PROFILE RESPONSE
-      ======================================== */
-
-      if (isPublicProfile) {
+        /* ======================================
+           PROFILE NOT FOUND
+        ====================================== */
 
         if (
-          response.status === 404 ||
-          !data.success ||
-          !data.profile
+          publicResponse.status === 404 ||
+          !publicData.success ||
+          !publicData.profile
         ) {
 
           content.innerHTML = `
@@ -5339,21 +5386,24 @@ if (
         }
 
 
+        /*
+         * This is the profile being viewed.
+         */
         currentUser =
-          data.profile;
+          publicData.profile;
 
 
         currentUser.id =
-          data.profile.id ||
+          publicData.profile.id ||
           null;
 
 
         currentUser.isStaff =
-          !!data.profile.staff;
+          !!publicData.profile.staff;
 
 
         currentUser.staffRole =
-          data.profile.staff?.role ||
+          publicData.profile.staff?.role ||
           null;
 
 
@@ -5362,11 +5412,27 @@ if (
         );
 
 
+        /*
+         * Now separately check whether
+         * THE VIEWER is logged in.
+         */
+        await loadLoggedInUser();
+
+
+        /*
+         * Update the header based on the
+         * logged-in viewer, NOT the public
+         * profile being viewed.
+         */
         updatePublicHeader(
-          currentUser
+          currentUser,
+          loggedInUser
         );
 
 
+        /*
+         * Render the profile being viewed.
+         */
         renderProfile(
           currentUser,
           true
@@ -5379,7 +5445,26 @@ if (
 
 
       /* ========================================
-         OWN PROFILE RESPONSE
+         OWN PROFILE
+      ======================================== */
+
+      const response =
+        await fetch(
+          API_URL + "/api/user/me",
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      /* ========================================
+         NOT LOGGED IN
       ======================================== */
 
       if (
@@ -5387,6 +5472,9 @@ if (
         !data.authenticated ||
         !data.user
       ) {
+
+        loggedInUser =
+          null;
 
         applyPageTheme(null);
 
@@ -5396,6 +5484,10 @@ if (
 
       }
 
+
+      /* ========================================
+         SERVER ERROR
+      ======================================== */
 
       if (
         !response.ok ||
@@ -5411,6 +5503,10 @@ if (
 
 
       currentUser =
+        data.user;
+
+
+      loggedInUser =
         data.user;
 
 
@@ -5536,20 +5632,19 @@ if (
       );
 
 
-    if (avatar) {
-
-      const headerAvatar =
-        document.getElementById(
-          "headerAvatar"
-        );
+    const headerAvatar =
+      document.getElementById(
+        "headerAvatar"
+      );
 
 
-      if (headerAvatar) {
+    if (
+      avatar &&
+      headerAvatar
+    ) {
 
-        headerAvatar.src =
-          avatar;
-
-      }
+      headerAvatar.src =
+        avatar;
 
     }
 
@@ -5558,9 +5653,16 @@ if (
 
   /* ==========================================
      HEADER — PUBLIC PROFILE
+
+     IMPORTANT:
+     user = profile being viewed
+     viewer = logged-in account
   ========================================== */
 
-  function updatePublicHeader(user) {
+  function updatePublicHeader(
+    user,
+    viewer
+  ) {
 
     const loginButton =
       document.getElementById(
@@ -5574,10 +5676,71 @@ if (
       );
 
 
+    /*
+     * NOT LOGGED IN
+     */
+    if (!viewer) {
+
+      if (loginButton) {
+
+        loginButton.style.display =
+          "flex";
+
+      }
+
+
+      if (userButton) {
+
+        userButton.style.display =
+          "none";
+
+      }
+
+
+      const headerUsername =
+        document.getElementById(
+          "headerUsername"
+        );
+
+
+      if (headerUsername) {
+
+        headerUsername.textContent =
+          user.username ||
+          "Profile";
+
+      }
+
+
+      const headerBalance =
+        document.getElementById(
+          "headerBalance"
+        );
+
+
+      if (headerBalance) {
+
+        headerBalance.textContent =
+          "—";
+
+      }
+
+
+      return;
+
+    }
+
+
+    /*
+     * LOGGED IN
+     *
+     * Show the logged-in user's
+     * account controls in the header.
+     */
     if (loginButton) {
 
       loginButton.style.display =
-        "flex";
+        "none";
 
     }
 
@@ -5585,7 +5748,7 @@ if (
     if (userButton) {
 
       userButton.style.display =
-        "none";
+        "flex";
 
     }
 
@@ -5599,8 +5762,9 @@ if (
     if (headerUsername) {
 
       headerUsername.textContent =
-        user.username ||
-        "Profile";
+        viewer.username ||
+        viewer.discordUsername ||
+        "User";
 
     }
 
@@ -5614,10 +5778,34 @@ if (
     if (headerBalance) {
 
       headerBalance.textContent =
-        "—";
+        Number(
+          viewer.balance || 0
+        ).toLocaleString();
 
     }
 
+
+    const avatar =
+      getDiscordAvatarUrl(
+        viewer
+      );
+
+
+    const headerAvatar =
+      document.getElementById(
+        "headerAvatar"
+      );
+
+
+    if (
+      avatar &&
+      headerAvatar
+    ) {
+
+      headerAvatar.src =
+        avatar;
+
+    }
 
   }
 
@@ -5728,6 +5916,7 @@ if (
 
         };
 
+
       case "wifi-warrior":
 
         return {
@@ -5739,6 +5928,7 @@ if (
             "🌐"
 
         };
+
 
       case "item-1788933073130":
 
@@ -5765,7 +5955,8 @@ if (
 
         };
 
-     case "sakura-lover":
+
+      case "sakura-lover":
 
         return {
 
@@ -5846,7 +6037,8 @@ if (
 
         };
 
-     case "sakura-theme":
+
+      case "sakura-theme":
 
         return {
 
@@ -5866,10 +6058,9 @@ if (
 
         return null;
 
-     }
+    }
 
-   }
-    
+  }
 
 
   /* ==========================================
@@ -6539,10 +6730,6 @@ if (
       </section>
 
 
-      <!-- ======================================
-           PROFILE
-      ======================================= -->
-
       <section
         class="${profileCardClass}"
       >
@@ -6589,10 +6776,6 @@ if (
       </section>
 
 
-      <!-- ======================================
-           BALANCE
-      ======================================= -->
-
       <section class="balance-card">
 
         <div class="balance-label">
@@ -6610,17 +6793,12 @@ if (
       </section>
 
 
-      <!-- ======================================
-           GAME STATS
-      ======================================= -->
-
       <div class="section-title">
         Game Statistics
       </div>
 
 
       <section class="stats-grid">
-
 
         <div class="stat-card">
 
@@ -6673,13 +6851,8 @@ if (
 
         </div>
 
-
       </section>
 
-
-      <!-- ======================================
-           ECONOMY
-      ======================================= -->
 
       <div class="section-title">
         Economy
@@ -6687,7 +6860,6 @@ if (
 
 
       <section class="financial-grid">
-
 
         <div class="financial-card">
 
@@ -6727,13 +6899,8 @@ if (
 
         </div>
 
-
       </section>
 
-
-      <!-- ======================================
-           CHESS
-      ======================================= -->
 
       <div class="section-title">
         Chess
@@ -6741,7 +6908,6 @@ if (
 
 
       <section class="chess-card">
-
 
         <div class="chess-left">
 
@@ -6768,7 +6934,6 @@ if (
         <div class="chess-rating">
           ${chessRating}
         </div>
-
 
       </section>
 
@@ -6857,272 +7022,259 @@ if (
 
   }
 
-/* ==========================================
-   SWORD THEME SOUND
-========================================== */
 
-const swordVideo =
-  document.getElementById(
-    "swordThemeVideo"
-  );
+  /* ==========================================
+     SWORD THEME SOUND
+  ========================================== */
 
-
-const swordSoundPrompt =
-  document.getElementById(
-    "swordSoundPrompt"
-  );
+  const swordVideo =
+    document.getElementById(
+      "swordThemeVideo"
+    );
 
 
-const swordSoundButton =
-  document.getElementById(
-    "swordSoundButton"
-  );
+  const swordSoundPrompt =
+    document.getElementById(
+      "swordSoundPrompt"
+    );
 
 
-const swordSoundClose =
-  document.getElementById(
-    "swordSoundClose"
-  );
+  const swordSoundButton =
+    document.getElementById(
+      "swordSoundButton"
+    );
 
 
-/* ==========================================
-   SHOW SOUND PROMPT
-========================================== */
+  const swordSoundClose =
+    document.getElementById(
+      "swordSoundClose"
+    );
 
-function showSwordSoundPrompt() {
+
+  /* ==========================================
+     SHOW SOUND PROMPT
+  ========================================== */
+
+  function showSwordSoundPrompt() {
+
+    if (
+      !document.body.classList.contains(
+        "theme-sword"
+      )
+    ) {
+      return;
+    }
+
+
+    if (
+      !swordSoundPrompt ||
+      !swordVideo
+    ) {
+      return;
+    }
+
+
+    swordSoundPrompt.hidden =
+      false;
+
+  }
+
+
+  /* ==========================================
+     HIDE SOUND PROMPT
+  ========================================== */
+
+  function hideSwordSoundPrompt() {
+
+    if (!swordSoundPrompt) {
+      return;
+    }
+
+
+    swordSoundPrompt.hidden =
+      true;
+
+  }
+
+
+  /* ==========================================
+     RESTART SWORD VIDEO
+  ========================================== */
+
+  function restartSwordTheme() {
+
+    if (!swordVideo) {
+      return;
+    }
+
+
+    if (
+      !document.body.classList.contains(
+        "theme-sword"
+      )
+    ) {
+
+      stopSwordTheme();
+
+      return;
+
+    }
+
+
+    try {
+
+      swordVideo.pause();
+
+      swordVideo.currentTime = 0;
+
+      swordVideo.muted = true;
+
+      swordVideo
+        .play()
+        .catch(() => {});
+
+    } catch (error) {
+
+      console.error(
+        "Sword theme video restart error:",
+        error
+      );
+
+    }
+
+
+    if (swordSoundButton) {
+
+      swordSoundButton.textContent =
+        "🔊 Enable Sound";
+
+    }
+
+
+    showSwordSoundPrompt();
+
+  }
+
+
+  /* ==========================================
+     STOP SWORD VIDEO
+  ========================================== */
+
+  function stopSwordTheme() {
+
+    if (!swordVideo) {
+      return;
+    }
+
+
+    try {
+
+      swordVideo.pause();
+
+      swordVideo.currentTime = 0;
+
+      swordVideo.muted = true;
+
+    } catch (error) {
+
+      console.error(
+        "Sword theme video stop error:",
+        error
+      );
+
+    }
+
+
+    hideSwordSoundPrompt();
+
+  }
+
+
+  /* ==========================================
+     ENABLE SWORD SOUND
+  ========================================== */
 
   if (
-    !document.body.classList.contains(
-      "theme-sword"
-    )
-  ) {
-    return;
-  }
-
-
-  if (
-    !swordSoundPrompt ||
-    !swordVideo
-  ) {
-    return;
-  }
-
-
-  swordSoundPrompt.hidden =
-    false;
-
-}
-
-
-/* ==========================================
-   HIDE SOUND PROMPT
-========================================== */
-
-function hideSwordSoundPrompt() {
-
-  if (!swordSoundPrompt) {
-    return;
-  }
-
-
-  swordSoundPrompt.hidden =
-    true;
-
-}
-
-
-/* ==========================================
-   RESTART SWORD VIDEO
-========================================== */
-
-function restartSwordTheme() {
-
-  if (!swordVideo) {
-    return;
-  }
-
-
-  /*
-   * Make absolutely sure this is
-   * actually the Sword Theme.
-   */
-  if (
-    !document.body.classList.contains(
-      "theme-sword"
-    )
-  ) {
-
-    stopSwordTheme();
-
-    return;
-
-  }
-
-
-  try {
-
-    swordVideo.pause();
-
-    swordVideo.currentTime = 0;
-
-    swordVideo.muted = true;
-
+    swordSoundButton &&
     swordVideo
-      .play()
-      .catch(() => {});
+  ) {
 
-  } catch (error) {
+    swordSoundButton.addEventListener(
+      "click",
+      async () => {
 
-    console.error(
-      "Sword theme video restart error:",
-      error
+        if (
+          !document.body.classList.contains(
+            "theme-sword"
+          )
+        ) {
+
+          hideSwordSoundPrompt();
+
+          return;
+
+        }
+
+
+        try {
+
+          swordVideo.muted =
+            false;
+
+
+          await swordVideo.play();
+
+
+          swordSoundButton.textContent =
+            "🔊 Sound On";
+
+
+          setTimeout(() => {
+
+            if (
+              document.body.classList.contains(
+                "theme-sword"
+              )
+            ) {
+
+              hideSwordSoundPrompt();
+
+            }
+
+          }, 800);
+
+
+        } catch (error) {
+
+          console.error(
+            "Sword theme audio error:",
+            error
+          );
+
+        }
+
+      }
     );
 
   }
 
 
-  /*
-   * Reset sound button whenever
-   * the Sword Theme is loaded.
-   */
-  if (swordSoundButton) {
+  /* ==========================================
+     CLOSE SOUND PROMPT
+  ========================================== */
 
-    swordSoundButton.textContent =
-      "🔊 Enable Sound";
+  if (swordSoundClose) {
 
-  }
-
-
-  showSwordSoundPrompt();
-
-}
-
-
-/* ==========================================
-   STOP SWORD VIDEO
-========================================== */
-
-function stopSwordTheme() {
-
-  if (!swordVideo) {
-    return;
-  }
-
-  try {
-
-    swordVideo.pause();
-
-    swordVideo.currentTime = 0;
-
-    swordVideo.muted = true;
-
-  } catch (error) {
-
-    console.error(
-      "Sword theme video stop error:",
-      error
-    );
-
-  }
-
-  hideSwordSoundPrompt();
-
-}
-
-
-/* ==========================================
-   ENABLE SWORD SOUND
-========================================== */
-
-if (
-  swordSoundButton &&
-  swordVideo
-) {
-
-  swordSoundButton.addEventListener(
-    "click",
-    async () => {
-
-      /*
-       * Don't allow the button to activate
-       * if Sword Theme isn't active.
-       */
-      if (
-        !document.body.classList.contains(
-          "theme-sword"
-        )
-      ) {
+    swordSoundClose.addEventListener(
+      "click",
+      () => {
 
         hideSwordSoundPrompt();
 
-        return;
-
       }
+    );
 
-
-      try {
-
-        swordVideo.muted =
-          false;
-
-
-        await swordVideo.play();
-
-
-        swordSoundButton.textContent =
-          "🔊 Sound On";
-
-
-        setTimeout(() => {
-
-          /*
-           * Only hide it if Sword Theme
-           * is still active.
-           */
-          if (
-            document.body.classList.contains(
-              "theme-sword"
-            )
-          ) {
-
-            hideSwordSoundPrompt();
-
-          }
-
-        }, 800);
-
-
-      } catch (error) {
-
-        console.error(
-          "Sword theme audio error:",
-          error
-        );
-
-      }
-
-    }
-  );
-
-}
-
-
-/* ==========================================
-   CLOSE SOUND PROMPT
-========================================== */
-
-if (swordSoundClose) {
-
-  swordSoundClose.addEventListener(
-    "click",
-    () => {
-
-      hideSwordSoundPrompt();
-
-    }
-  );
-
-}
+  }
 
 
   /* ==========================================
@@ -7142,6 +7294,7 @@ if (swordSoundClose) {
   );
 
 </script>
+
   
 </body>
 </html>
