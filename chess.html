@@ -721,6 +721,59 @@
         font-size: clamp(28px, 11vw, 55px);
       }
     }
+
+    .active-games {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.active-game {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.active-game-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.active-game-name {
+  font-size: 13px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.active-game-status {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.active-game-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.active-game-actions .btn {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
+.active-games-empty {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  padding: 10px 4px;
+}
   </style>
 </head>
 
@@ -990,9 +1043,20 @@
 
   </div>
 
+<div class="panel">
+  <div class="panel-title">Your Active Games</div>
+
+  <div id="activeGames" class="active-games">
+    <div class="active-games-empty">
+      Loading games...
+    </div>
+  </div>
+</div>
+  
 </main>
 
 
+  
 <!-- DRAW MODAL -->
 
 <div
@@ -3957,6 +4021,182 @@
   }
 
 
+  function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+  async function loadActiveGames() {
+  const container = document.getElementById("activeGames");
+
+  if (!container) {
+    return;
+  }
+
+  try {
+    const data = await api("/api/games/chess/active");
+
+    if (!data.success) {
+      throw new Error(data.error || "Unable to load games.");
+    }
+
+    const games = Array.isArray(data.games)
+      ? data.games
+      : [];
+
+    if (games.length === 0) {
+      container.innerHTML = `
+        <div class="active-games-empty">
+          You have no active games.
+        </div>
+      `;
+
+      return;
+    }
+
+    container.innerHTML = games.map(game => {
+
+      const opponent =
+        game.whiteId === currentUser?.id
+          ? (game.blackName || "Opponent")
+          : (game.whiteName || "Opponent");
+
+      const status =
+        game.status === "waiting"
+          ? "Waiting for opponent"
+          : "Game in progress";
+
+      return `
+        <div class="active-game">
+
+          <div class="active-game-top">
+            <div>
+              <div class="active-game-name">
+                vs ${escapeHTML(opponent)}
+              </div>
+
+              <div class="active-game-status">
+                ${status}
+              </div>
+            </div>
+          </div>
+
+          <div class="active-game-actions">
+
+            <button
+              class="btn"
+              onclick="goToGame('${escapeHTML(game.gameId || game._id)}')"
+            >
+              Open
+            </button>
+
+            <button
+              class="btn"
+              onclick="endActiveGame('${escapeHTML(game.gameId || game._id)}')"
+            >
+              End Game
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+
+  } catch (error) {
+
+    console.error("ACTIVE GAMES ERROR:", error);
+
+    container.innerHTML = `
+      <div class="active-games-empty">
+        Unable to load games.
+      </div>
+    `;
+  }
+}
+
+async function endActiveGame(gameId) {
+
+  if (!gameId) {
+    return;
+  }
+
+  if (!confirm("Are you sure you want to end this game?")) {
+    return;
+  }
+
+  try {
+
+    const data = await api(
+      "/api/games/chess/resign",
+      {
+        method: "POST",
+
+        body: JSON.stringify({
+          gameId: gameId
+        })
+      }
+    );
+
+    if (!data.success) {
+      throw new Error(
+        data.error || "Unable to end game."
+      );
+    }
+
+    showMessage(
+      "Game ended successfully.",
+      "success"
+    );
+
+    await loadActiveGames();
+
+
+    if (currentGameId === gameId) {
+      await refreshGame();
+    }
+
+  } catch (error) {
+
+    console.error(
+      "END GAME ERROR:",
+      error
+    );
+
+    showMessage(
+      error.message || "Unable to end game.",
+      "error"
+    );
+
+    await loadActiveGames();
+
+  }
+
+}
+  
+
+let activeGamesTimer = null;
+
+function startActiveGamesPolling() {
+
+  if (activeGamesTimer) {
+    clearInterval(activeGamesTimer);
+  }
+
+  activeGamesTimer = setInterval(
+    loadActiveGames,
+    5000
+  );
+
+}
+  
   /* ==========================================
      INIT
   ========================================== */
@@ -3990,10 +4230,8 @@
       await loadUser();
 
 
-      /*
-        If no game was selected,
-        render the starting board.
-      */
+     await loadActiveGames();
+     startActiveGamesPolling();
 
       if (!currentGameId) {
 
@@ -4041,13 +4279,6 @@
   }
 
 
-  /*
-    Start only after the page has loaded.
-    The chess library itself is loaded
-    inside init(), so there is no race
-    between module scripts and this script.
-  */
-
   if (
     document.readyState ===
     "loading"
@@ -4064,6 +4295,7 @@
     init();
 
   }
+
 
 </script>
 
