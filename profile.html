@@ -900,90 +900,162 @@ body.theme-hello-kitty {
     }
 
 
-    /* ==========================================
-       NAMEPLATE THEMES
-    ========================================== */
+/* ==========================================
+   NAMEPLATE THEMES
+========================================== */
 
-    .profile-card.nameplate-gold {
+.profile-card.nameplate-gold {
 
-      background:
+  background:
 
-        linear-gradient(
-          135deg,
-          rgba(215,168,79,0.18),
-          rgba(215,168,79,0.04) 45%,
-          var(--surface) 85%
-        );
+    linear-gradient(
+      135deg,
+      rgba(215,168,79,0.18),
+      rgba(215,168,79,0.04) 45%,
+      var(--surface) 85%
+    );
 
-      border-color:
-        rgba(215,168,79,0.30);
+  border-color:
+    rgba(215,168,79,0.30);
 
-    }
-
-
-    .profile-card.nameplate-royal {
-
-      background:
-
-        linear-gradient(
-          135deg,
-          rgba(150,110,220,0.16),
-          rgba(215,168,79,0.04) 48%,
-          var(--surface) 85%
-        );
-
-      border-color:
-        rgba(150,110,220,0.28);
-
-    }
+}
 
 
-    .profile-card.nameplate-diamond {
+.profile-card.nameplate-royal {
 
-      background:
+  background:
 
-        linear-gradient(
-          135deg,
-          rgba(120,205,235,0.16),
-          rgba(215,168,79,0.03) 48%,
-          var(--surface) 85%
-        );
+    linear-gradient(
+      135deg,
+      rgba(150,110,220,0.16),
+      rgba(215,168,79,0.04) 48%,
+      var(--surface) 85%
+    );
 
-      border-color:
-        rgba(120,205,235,0.30);
+  border-color:
+    rgba(150,110,220,0.28);
 
-    }
+}
 
 
-    .profile-card.theme-mixing-after-dark.nameplate-gold,
-    .profile-card.theme-mixing-after-dark.nameplate-royal,
-    .profile-card.theme-mixing-after-dark.nameplate-diamond {
+.profile-card.nameplate-diamond {
 
-      background:
+  background:
 
-        radial-gradient(
-          circle at 82% 18%,
-          rgba(143,55,92,0.22),
-          transparent 28%
-        ),
+    linear-gradient(
+      135deg,
+      rgba(120,205,235,0.16),
+      rgba(215,168,79,0.03) 48%,
+      var(--surface) 85%
+    );
 
-        radial-gradient(
-          circle at 12% 85%,
-          rgba(215,168,79,0.08),
-          transparent 30%
-        ),
+  border-color:
+    rgba(120,205,235,0.30);
 
-        linear-gradient(
-          145deg,
-          rgba(70,25,48,0.70),
-          rgba(24,14,20,0.94) 45%,
-          #0e0b0d 100%
-        );
+}
 
-      border-color:
-        rgba(215,168,79,0.28);
 
-    }
+/* ==========================================
+   SAKURA NAMEPLATE
+========================================== */
+
+.profile-card.nameplate-sakura {
+
+  background:
+
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(255,170,205,0.16),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at 15% 85%,
+      rgba(255,205,225,0.10),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      135deg,
+      rgba(235,145,180,0.18),
+      rgba(255,190,215,0.05) 48%,
+      var(--surface) 88%
+    );
+
+  border-color:
+    rgba(255,170,205,0.32);
+
+}
+
+
+/* ==========================================
+   HELLO KITTY NAMEPLATE
+========================================== */
+
+.profile-card.nameplate-hello-kitty {
+
+  background:
+
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(255,70,105,0.14),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 15% 85%,
+      rgba(255,190,205,0.12),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      135deg,
+      rgba(255,105,135,0.16),
+      rgba(255,210,220,0.06) 45%,
+      var(--surface) 88%
+    );
+
+  border-color:
+    rgba(255,115,145,0.34);
+
+}
+
+
+/* ==========================================
+   MIXING AFTER DARK
+========================================== */
+
+.profile-card.theme-mixing-after-dark.nameplate-gold,
+.profile-card.theme-mixing-after-dark.nameplate-royal,
+.profile-card.theme-mixing-after-dark.nameplate-diamond,
+.profile-card.theme-mixing-after-dark.nameplate-sakura,
+.profile-card.theme-mixing-after-dark.nameplate-hello-kitty {
+
+  background:
+
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(143,55,92,0.22),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at 12% 85%,
+      rgba(215,168,79,0.08),
+      transparent 30%
+    ),
+
+    linear-gradient(
+      145deg,
+      rgba(70,25,48,0.70),
+      rgba(24,14,20,0.94) 45%,
+      #0e0b0d 100%
+    );
+
+  border-color:
+    rgba(215,168,79,0.28);
+
+}
 
 
     /* ==========================================
@@ -3589,11 +3661,6 @@ body.theme-sword
    HIDE PROMPT BY DEFAULT
 ========================================== */
 
-/*
- * The prompt is NEVER visible unless
- * Sword Theme is currently active.
- */
-
 .sword-sound-prompt[hidden] {
   display: none !important;
 }
@@ -5810,73 +5877,105 @@ body.theme-sakura
   }
 
 
-  /* ==========================================
-     GET NAMEPLATE
-  ========================================== */
+/* ==========================================
+   GET NAMEPLATE
+========================================== */
 
-  function getNameplate(
+function getNameplate(
+  equippedNameplate
+) {
+
+  switch (
     equippedNameplate
   ) {
 
-    switch (
-      equippedNameplate
-    ) {
+    case "gold-nameplate":
 
-      case "gold-nameplate":
+      return {
 
-        return {
+        className:
+          "gold",
 
-          className:
-            "gold",
+        label:
+          "Gold Nameplate",
 
-          label:
-            "Gold Nameplate",
+        icon:
+          "✦"
 
-          icon:
-            "✦"
-
-        };
+      };
 
 
-      case "royal-nameplate":
+    case "royal-nameplate":
 
-        return {
+      return {
 
-          className:
-            "royal",
+        className:
+          "royal",
 
-          label:
-            "Royal Nameplate",
+        label:
+          "Royal Nameplate",
 
-          icon:
-            "♛"
+        icon:
+          "♛"
 
-        };
-
-
-      case "diamond-nameplate":
-
-        return {
-
-          className:
-            "diamond",
-
-          label:
-            "Diamond Nameplate",
-
-          icon:
-            "◆"
-
-        };
+      };
 
 
-      default:
+    case "diamond-nameplate":
 
-        return null;
+      return {
 
-    }
+        className:
+          "diamond",
+
+        label:
+          "Diamond Nameplate",
+
+        icon:
+          "◆"
+
+      };
+
+
+    case "sakura-nameplate":
+
+      return {
+
+        className:
+          "sakura",
+
+        label:
+          "Sakura Nameplate",
+
+        icon:
+          "🌸"
+
+      };
+
+
+    case "hello-kitty-nameplate":
+
+      return {
+
+        className:
+          "hello-kitty",
+
+        label:
+          "Hello Kitty Nameplate",
+
+        icon:
+          "🎀"
+
+      };
+
+
+    default:
+
+      return null;
 
   }
+
+}
 
 
   /* ==========================================
