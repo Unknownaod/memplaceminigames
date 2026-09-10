@@ -934,6 +934,97 @@
         gap: 8px;
       }
     }
+
+    /* ==========================================
+   ACTIVE GAME
+========================================== */
+
+.active-game-card {
+  margin-bottom: 16px;
+  padding: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+
+  border: 1px solid rgba(214,168,79,0.25);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(214,168,79,0.08),
+      rgba(214,168,79,0.025)
+    );
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.18);
+}
+
+.active-game-info {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.active-game-icon {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 11px;
+
+  background: var(--surface-3);
+  color: var(--gold-2);
+
+  font-size: 19px;
+}
+
+.active-game-label {
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.active-game-title {
+  margin-top: 3px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.active-game-meta {
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+.active-game-meta strong {
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+
+  .active-game-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .active-game-card .action-button {
+    width: 100%;
+  }
+
+}
   </style>
 </head>
 
@@ -1291,6 +1382,46 @@
 
     </section>
 
+
+<!-- ==========================================
+     ACTIVE GAME
+========================================== -->
+
+<section class="active-game-card" id="activeGameCard" style="display:none;">
+
+  <div class="active-game-info">
+
+    <div class="active-game-icon">
+      ♠
+    </div>
+
+    <div>
+      <div class="active-game-label">
+        Active Game
+      </div>
+
+      <div class="active-game-title">
+        You have an unfinished Blackjack game
+      </div>
+
+      <div class="active-game-meta">
+        Wager:
+        <strong id="activeGameWager">—</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <button
+    class="action-button primary"
+    id="resumeGameButton"
+    type="button"
+  >
+    Resume Game
+  </button>
+
+</section>
+    
   </main>
 
 
@@ -1406,6 +1537,15 @@
       document.getElementById("message");
 
 
+  const activeGameCard =
+  document.getElementById("activeGameCard");
+
+const activeGameWager =
+  document.getElementById("activeGameWager");
+
+ const resumeGameButton =
+  document.getElementById("resumeGameButton");
+    
     /* ==========================================
        API REQUEST
     ========================================== */
@@ -1498,6 +1638,99 @@
     }
 
 
+
+  /* ==========================================
+   LOAD ACTIVE GAME
+========================================== */
+
+async function loadActiveGame() {
+
+  if (!currentUser) {
+    activeGameCard.style.display = "none";
+    return;
+  }
+
+  try {
+
+    const {
+      response,
+      data
+    } = await apiRequest(
+      "/api/games/blackjack/active",
+      {
+        method: "GET"
+      }
+    );
+
+    if (response.status === 401) {
+
+      activeGameCard.style.display = "none";
+
+      return;
+    }
+
+    if (
+      !response.ok ||
+      !data.success ||
+      !data.active ||
+      !data.game
+    ) {
+
+      activeGameCard.style.display = "none";
+
+      return;
+    }
+
+    const game =
+      data.game;
+
+    /*
+     * Store the server-side game ID.
+     *
+     * Your action endpoint requires this ID
+     * when Hit or Stand is pressed.
+     */
+    currentGameId =
+      game._id ||
+      game.id ||
+      game.gameId;
+
+    if (!currentGameId) {
+
+      console.error(
+        "ACTIVE GAME HAS NO GAME ID:",
+        game
+      );
+
+      activeGameCard.style.display = "none";
+
+      return;
+    }
+
+    activeGameWager.textContent =
+      Number(
+        game.wager || 0
+      ).toLocaleString() + " coins";
+
+    activeGameCard.style.display =
+      "flex";
+
+    /*
+     * Don't immediately change the table.
+     * Let the user choose Resume Game.
+     */
+
+  } catch (error) {
+
+    console.error(
+      "LOAD ACTIVE GAME ERROR:",
+      error
+    );
+
+    activeGameCard.style.display =
+      "none";
+  }
+}
     /* ==========================================
        UPDATE USER UI
     ========================================== */
@@ -1719,162 +1952,179 @@
     }
 
 
-    /* ==========================================
-       RENDER GAME
-    ========================================== */
+/* ==========================================
+   RENDER GAME
+========================================== */
 
-    function renderGame(
-      data
-    ) {
+function renderGame(data) {
 
-      if (
-        !data ||
-        !data.player ||
-        !data.dealer
-      ) {
-        return;
-      }
+  if (
+    !data ||
+    !data.player ||
+    !data.dealer
+  ) {
+    return;
+  }
 
-      renderCards(
-        playerCards,
-        data.player.cards
-      );
+  renderCards(
+    playerCards,
+    data.player.cards
+  );
 
-      renderCards(
-        dealerCards,
-        data.dealer.cards
-      );
+  renderCards(
+    dealerCards,
+    data.dealer.cards
+  );
 
-      playerTotal.textContent =
-        data.player.total ??
-        "—";
+  playerTotal.textContent =
+    data.player.total ??
+    "—";
 
-      dealerTotal.textContent =
-        data.dealer.total ??
-        "—";
+  dealerTotal.textContent =
+    data.dealer.total ??
+    "—";
 
-      if (
-        typeof data.balance !==
-        "undefined"
-      ) {
+  if (
+    typeof data.balance !==
+    "undefined"
+  ) {
 
-        headerBalance.textContent =
-          Number(
-            data.balance
-          ).toLocaleString();
+    headerBalance.textContent =
+      Number(
+        data.balance
+      ).toLocaleString();
 
-        if (currentUser) {
-          currentUser.balance =
-            data.balance;
-        }
-      }
-
-      if (
-        data.status ===
-        "active"
-      ) {
-
-        gameActive = true;
-
-        setStatus(
-          "Playing",
-          "playing"
-        );
-
-        hitButton.disabled =
-          false;
-
-        standButton.disabled =
-          false;
-
-        dealButton.disabled =
-          true;
-
-        wagerInput.disabled =
-          true;
-
-        return;
-      }
-
-      gameActive = false;
-
-      hitButton.disabled =
-        true;
-
-      standButton.disabled =
-        true;
-
-      dealButton.disabled =
-        false;
-
-      wagerInput.disabled =
-        false;
-
-      if (
-        data.result ===
-        "win"
-      ) {
-
-        setStatus(
-          "You won",
-          "win"
-        );
-
-        showMessage(
-          `You won ${Number(data.payout || 0).toLocaleString()} coins.`,
-          "success"
-        );
-
-      } else if (
-        data.result ===
-        "blackjack"
-      ) {
-
-        setStatus(
-          "Blackjack",
-          "win"
-        );
-
-        showMessage(
-          `Blackjack! You received ${Number(data.payout || 0).toLocaleString()} coins.`,
-          "success"
-        );
-
-      } else if (
-        data.result ===
-        "push"
-      ) {
-
-        setStatus(
-          "Push"
-        );
-
-        showMessage(
-          "Push — your wager was returned."
-        );
-
-      } else if (
-        data.result ===
-        "loss"
-      ) {
-
-        setStatus(
-          "You lost",
-          "loss"
-        );
-
-        showMessage(
-          "The hand is over. Better luck next time.",
-          "error"
-        );
-
-      } else {
-
-        setStatus(
-          "Finished"
-        );
-      }
+    if (currentUser) {
+      currentUser.balance =
+        data.balance;
     }
+  }
+
+  /* ==========================================
+     ACTIVE GAME
+  ========================================== */
+
+  if (
+    data.status ===
+    "active"
+  ) {
+
+    gameActive = true;
+
+
+    if (!currentGameId) {
+      currentGameId =
+        data._id ||
+        data.id ||
+        data.gameId ||
+        null;
+    }
+
+    setStatus(
+      "Playing",
+      "playing"
+    );
+
+    hitButton.disabled =
+      false;
+
+    standButton.disabled =
+      false;
+
+    dealButton.disabled =
+      true;
+
+    wagerInput.disabled =
+      true;
+
+    return;
+  }
+
+  /* ==========================================
+     FINISHED GAME
+  ========================================== */
+
+  gameActive = false;
+
+  hitButton.disabled =
+    true;
+
+  standButton.disabled =
+    true;
+
+  dealButton.disabled =
+    false;
+
+  wagerInput.disabled =
+    false;
+
+  currentGameId = null;
+
+  if (
+    data.result ===
+    "win"
+  ) {
+
+    setStatus(
+      "You won",
+      "win"
+    );
+
+    showMessage(
+      `You won ${Number(data.payout || 0).toLocaleString()} coins.`,
+      "success"
+    );
+
+  } else if (
+    data.result ===
+    "blackjack"
+  ) {
+
+    setStatus(
+      "Blackjack",
+      "win"
+    );
+
+    showMessage(
+      `Blackjack! You received ${Number(data.payout || 0).toLocaleString()} coins.`,
+      "success"
+    );
+
+  } else if (
+    data.result ===
+    "push"
+  ) {
+
+    setStatus(
+      "Push"
+    );
+
+    showMessage(
+      "Push — your wager was returned."
+    );
+
+  } else if (
+    data.result ===
+    "loss"
+  ) {
+
+    setStatus(
+      "You lost",
+      "loss"
+    );
+
+    showMessage(
+      "The hand is over. Better luck next time.",
+      "error"
+    );
+
+  } else {
+
+    setStatus(
+      "Finished"
+    );
+  }
+}
 
 
     /* ==========================================
@@ -2275,15 +2525,136 @@
 
 
     /* ==========================================
+   RESUME ACTIVE GAME
+========================================== */
+
+resumeGameButton.addEventListener(
+  "click",
+  async () => {
+
+    if (!currentGameId) {
+      return;
+    }
+
+    resumeGameButton.disabled =
+      true;
+
+    resumeGameButton.textContent =
+      "Loading...";
+
+    try {
+
+      const {
+        response,
+        data
+      } = await apiRequest(
+        "/api/games/blackjack/active",
+        {
+          method: "GET"
+        }
+      );
+
+      if (
+        response.status === 401
+      ) {
+
+        currentUser = null;
+
+        updateUserUI();
+
+        loginOverlay.classList.add(
+          "visible"
+        );
+
+        return;
+      }
+
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.active ||
+        !data.game
+      ) {
+
+        activeGameCard.style.display =
+          "none";
+
+        resetTable();
+
+        return;
+      }
+
+      const game =
+        data.game;
+
+      currentGameId =
+        game._id ||
+        game.id ||
+        game.gameId;
+
+      /*
+       * Restore the actual game onto
+       * the Blackjack table.
+       */
+      renderGame(game);
+
+      activeGameCard.style.display =
+        "none";
+
+      hideMessage();
+
+      /*
+       * Scroll the user to the game.
+       */
+      document
+        .querySelector(".game-card")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+    } catch (error) {
+
+      console.error(
+        "RESUME GAME ERROR:",
+        error
+      );
+
+      showMessage(
+        "Unable to load your active game.",
+        "error"
+      );
+
+    } finally {
+
+      resumeGameButton.disabled =
+        false;
+
+      resumeGameButton.textContent =
+        "Resume Game";
+    }
+
+  }
+);
+
+    /* ==========================================
        INITIALIZE
     ========================================== */
 
-    async function initialize() {
+async function initialize() {
 
-      resetTable();
+  resetTable();
 
-      await loadCurrentUser();
-    }
+  const authenticated =
+    await loadCurrentUser();
+
+  if (authenticated) {
+
+    await loadActiveGame();
+
+  }
+
+}
 
     initialize();
 
