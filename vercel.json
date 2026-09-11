@@ -112,6 +112,10 @@
     {
       "source": "/admin/daily",
       "destination": "/admin-daily.html"
-    }
+    },
+    {
+    "source": "/plinko",
+    "destination": "/plinko.html"
+   }
   ]
 }
