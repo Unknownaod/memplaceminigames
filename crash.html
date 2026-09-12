@@ -1722,8 +1722,11 @@
   const API =
     "https://api.memplace.xyz";
 
-  const PLAY_ENDPOINT =
-    `${API}/api/games/crash/play`;
+const PLAY_ENDPOINT =
+  "https://api.memplace.xyz/api/games/crash/play";
+
+const CASHOUT_ENDPOINT =
+  "https://api.memplace.xyz/api/games/crash/cashout";
 
   const USER_ENDPOINT =
     `${API}/api/user/me`;
@@ -2391,58 +2394,35 @@
       return;
     }
 
+    cashoutLocked = true;
 
-    cashoutLocked =
-      true;
-
-    actionButton.disabled =
-      true;
-
+    actionButton.disabled = true;
 
     const localMultiplier =
       calculateMultiplier(
         game.startedAt
       );
 
-
     setMessage(
       `Cashing out at ${formatMultiplier(localMultiplier)}...`
     );
 
-
     try {
 
       const response =
-        await fetch(
-          PLAY_ENDPOINT,
-          {
-
-            method: "POST",
-
-            credentials: "include",
-
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-
-            body:
-              JSON.stringify({
-
-                action: "cashout",
-
-                gameId:
-                  game.gameId
-
-              })
-
-          }
-        );
-
+        await fetch(CASHOUT_ENDPOINT, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            gameId
+          })
+        });
 
       const data =
         await response.json();
-
 
       /*
         We missed the crash.
@@ -2463,9 +2443,7 @@
           );
 
           return;
-
         }
-
 
         throw new Error(
           data.error ||
@@ -2474,55 +2452,41 @@
 
       }
 
-
       const finalGame =
         data.game;
 
-
-      running =
-        false;
+      running = false;
 
       stopAnimation();
-
 
       setMultiplier(
         finalGame.multiplier,
         "won"
       );
 
-
       updateRocket(
         finalGame.multiplier
       );
 
-
       setBalance(
         data.balance
       );
-
 
       setStatus(
         "Cashed out",
         "live"
       );
 
-
       statusStat.textContent =
         "Won";
-
 
       multiplierLabel.textContent =
         "successful cash out";
 
-
       setMessage(
-
         `Cashed out at ${formatMultiplier(finalGame.multiplier)} for ${formatNumber(finalGame.payout)} coins. Profit: +${formatNumber(finalGame.profit)}.`,
-
         "success"
-
       );
-
 
       actionButton.textContent =
         "Start Crash";
@@ -2537,13 +2501,10 @@
       wagerInput.disabled =
         false;
 
-
-      game =
-        null;
+      game = null;
 
       cashoutLocked =
         false;
-
 
     } catch (error) {
 
@@ -2551,24 +2512,19 @@
         error
       );
 
-
       setMessage(
         error.message ||
         "Cash out failed.",
         "error"
       );
 
-
       actionButton.disabled =
         false;
 
       cashoutLocked =
         false;
-
     }
-
   }
-
 
   /* =====================================================
      HANDLE CRASH
