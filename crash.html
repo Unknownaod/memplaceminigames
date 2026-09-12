@@ -1722,14 +1722,22 @@
   const API =
     "https://api.memplace.xyz";
 
-const PLAY_ENDPOINT =
-  "https://api.memplace.xyz/api/games/crash/play";
+  const PLAY_ENDPOINT =
+    `${API}/api/games/crash/play`;
 
-const CASHOUT_ENDPOINT =
-  "https://api.memplace.xyz/api/games/crash/cashout";
+  const CASHOUT_ENDPOINT =
+    `${API}/api/games/crash/cashout`;
 
   const USER_ENDPOINT =
     `${API}/api/user/me`;
+
+
+  /* =====================================================
+     CONSTANTS
+  ===================================================== */
+
+  const MIN_WAGER = 1;
+  const MAX_WAGER = 1000000;
 
 
   /* =====================================================
@@ -1749,6 +1757,8 @@ const CASHOUT_ENDPOINT =
   let autoCashout = null;
 
   let cashoutLocked = false;
+
+  let starting = false;
 
 
   /* =====================================================
@@ -1782,7 +1792,7 @@ const CASHOUT_ENDPOINT =
   const statusText =
     document.getElementById("statusText");
 
-  const gameId =
+  const gameIdElement =
     document.getElementById("gameId");
 
   const currentStat =
@@ -1830,6 +1840,41 @@ const CASHOUT_ENDPOINT =
         .toFixed(2) +
       "x"
     );
+
+  }
+
+
+  /* =====================================================
+     API JSON HELPER
+  ===================================================== */
+
+  async function readJson(response) {
+
+    const text =
+      await response.text();
+
+    if (!text) {
+      return {};
+    }
+
+    try {
+
+      return JSON.parse(text);
+
+    } catch (error) {
+
+      console.error(
+        "Invalid JSON response:",
+        text
+      );
+
+      return {
+        success: false,
+        error:
+          `API returned an invalid response (${response.status}).`
+      };
+
+    }
 
   }
 
@@ -1923,26 +1968,42 @@ const CASHOUT_ENDPOINT =
     );
 
     if (state) {
+
       multiplier.classList.add(
         state
       );
+
     }
 
   }
 
 
   /* =====================================================
-     SERVER MULTIPLIER
+     SERVER-SYNCED MULTIPLIER
+     
+     MUST MATCH play.js
+     
+     Backend:
+     
+     Math.pow(1.25, seconds)
   ===================================================== */
 
   function calculateMultiplier(
     startedAt
   ) {
 
+    if (!startedAt) {
+      return 1;
+    }
+
     const start =
       new Date(
         startedAt
       ).getTime();
+
+    if (!Number.isFinite(start)) {
+      return 1;
+    }
 
     const elapsed =
       Math.max(
@@ -1950,19 +2011,21 @@ const CASHOUT_ENDPOINT =
         Date.now() - start
       );
 
-    let value =
-      1 +
-      (
-        elapsed / 1000
-      ) *
-      0.25;
+    const seconds =
+      elapsed / 1000;
 
-    value =
-      Math.floor(
-        value * 100
-      ) / 100;
+    const value =
+      Math.pow(
+        1.25,
+        seconds
+      );
 
-    return value;
+    return Number(
+      Math.max(
+        1,
+        value
+      ).toFixed(2)
+    );
 
   }
 
@@ -1975,24 +2038,14 @@ const CASHOUT_ENDPOINT =
     value
   ) {
 
-    /*
-      Convert multiplier to a smooth
-      flight percentage.
-
-      Logarithmic scaling means:
-
-      1x   = bottom
-      2x   = noticeably higher
-      5x   = very high
-      10x  = near top
-      20x+ = top
-    */
-
     const normalized =
       Math.min(
         1,
         Math.log(
-          Math.max(1, value)
+          Math.max(
+            1,
+            value
+          )
         ) /
         Math.log(20)
       );
@@ -2007,17 +2060,20 @@ const CASHOUT_ENDPOINT =
       `${bottom}%`;
 
 
-    /*
-      Make the rocket feel like
-      it's accelerating.
-    */
-
     if (value >= 2) {
-      stars.classList.add("fast");
+
+      stars.classList.add(
+        "fast"
+      );
+
     }
 
+
     if (value >= 5) {
-      stars.style.opacity = ".8";
+
+      stars.style.opacity =
+        ".8";
+
     }
 
   }
@@ -2036,6 +2092,9 @@ const CASHOUT_ENDPOINT =
       "flying"
     );
 
+    rocketContainer.style.filter =
+      "";
+
     stars.classList.remove(
       "fast"
     );
@@ -2052,7 +2111,21 @@ const CASHOUT_ENDPOINT =
       "crashed"
     );
 
-    setMultiplier(1);
+    setMultiplier(
+      1
+    );
+
+    gameIdElement.textContent =
+      "No active round";
+
+    wagerStat.textContent =
+      "—";
+
+    statusStat.textContent =
+      "Waiting";
+
+    multiplierLabel.textContent =
+      "waiting for launch";
 
   }
 
@@ -2074,6 +2147,9 @@ const CASHOUT_ENDPOINT =
     rocketContainer.classList.add(
       "flying"
     );
+
+    rocketContainer.style.filter =
+      "";
 
 
     function frame() {
@@ -2103,8 +2179,8 @@ const CASHOUT_ENDPOINT =
 
 
       /*
-        Auto cash out
-      */
+       * AUTO CASHOUT
+       */
 
       if (
         autoCashout &&
@@ -2158,12 +2234,41 @@ const CASHOUT_ENDPOINT =
 
 
   /* =====================================================
+     FINISH ROUND UI
+  ===================================================== */
+
+  function resetAfterRound() {
+
+    actionButton.textContent =
+      "Start Crash";
+
+    actionButton.classList.remove(
+      "cashout"
+    );
+
+    actionButton.disabled =
+      false;
+
+    wagerInput.disabled =
+      false;
+
+    cashoutLocked =
+      false;
+
+  }
+
+
+  /* =====================================================
      START CRASH
   ===================================================== */
 
   async function startCrash() {
 
-    if (running) {
+    if (
+      running ||
+      starting ||
+      cashoutLocked
+    ) {
       return;
     }
 
@@ -2176,7 +2281,7 @@ const CASHOUT_ENDPOINT =
 
     if (
       !Number.isInteger(wager) ||
-      wager < 1
+      wager < MIN_WAGER
     ) {
 
       setMessage(
@@ -2190,7 +2295,7 @@ const CASHOUT_ENDPOINT =
 
 
     if (
-      wager > 1000000
+      wager > MAX_WAGER
     ) {
 
       setMessage(
@@ -2217,12 +2322,17 @@ const CASHOUT_ENDPOINT =
     }
 
 
+    starting =
+      true;
+
     actionButton.disabled =
       true;
 
     wagerInput.disabled =
       true;
 
+
+    stopAnimation();
 
     resetVisuals();
 
@@ -2252,21 +2362,28 @@ const CASHOUT_ENDPOINT =
           PLAY_ENDPOINT,
           {
 
-            method: "POST",
+            method:
+              "POST",
 
-            credentials: "include",
+            credentials:
+              "include",
 
             headers: {
               "Content-Type":
+                "application/json",
+
+              "Accept":
                 "application/json"
             },
 
             body:
               JSON.stringify({
 
-                action: "start",
+                action:
+                  "start",
 
-                wager
+                wager:
+                  wager
 
               })
 
@@ -2275,13 +2392,81 @@ const CASHOUT_ENDPOINT =
 
 
       const data =
-        await response.json();
+        await readJson(
+          response
+        );
 
 
       if (
         !response.ok ||
         !data.success
       ) {
+
+        /*
+         * If the backend says an active
+         * game already exists, restore it
+         * into the UI.
+         */
+
+        if (
+          response.status === 409 &&
+          data.game &&
+          data.game.startedAt
+        ) {
+
+          game =
+            normalizeGame(
+              data.game
+            );
+
+          running =
+            true;
+
+          cashoutLocked =
+            false;
+
+          gameIdElement.textContent =
+            game.gameId;
+
+          wagerStat.textContent =
+            formatNumber(
+              game.wager
+            );
+
+          statusStat.textContent =
+            "Live";
+
+          setStatus(
+            "Rocket launched",
+            "live"
+          );
+
+          multiplierLabel.textContent =
+            "flight multiplier";
+
+          actionButton.textContent =
+            "Cash Out";
+
+          actionButton.classList.add(
+            "cashout"
+          );
+
+          actionButton.disabled =
+            false;
+
+          wagerInput.disabled =
+            true;
+
+          setMessage(
+            "Your active Crash game was restored."
+          );
+
+          startAnimation();
+
+          return;
+
+        }
+
 
         throw new Error(
           data.error ||
@@ -2291,8 +2476,31 @@ const CASHOUT_ENDPOINT =
       }
 
 
+      if (
+        !data.game
+      ) {
+
+        throw new Error(
+          "The Crash API did not return a game."
+        );
+
+      }
+
+
+      /*
+       * Backend returns:
+       *
+       * game.id
+       *
+       * Frontend internally uses:
+       *
+       * game.gameId
+       */
+
       game =
-        data.game;
+        normalizeGame(
+          data.game
+        );
 
 
       setBalance(
@@ -2307,7 +2515,7 @@ const CASHOUT_ENDPOINT =
         false;
 
 
-      gameId.textContent =
+      gameIdElement.textContent =
         game.gameId;
 
 
@@ -2334,17 +2542,18 @@ const CASHOUT_ENDPOINT =
       actionButton.textContent =
         "Cash Out";
 
+
       actionButton.classList.add(
         "cashout"
       );
+
 
       actionButton.disabled =
         false;
 
 
       setMessage(
-        "Cash out before the rocket disappears.",
-        ""
+        "Cash out before the rocket disappears."
       );
 
 
@@ -2353,8 +2562,18 @@ const CASHOUT_ENDPOINT =
     } catch (error) {
 
       console.error(
+        "CRASH START ERROR:",
         error
       );
+
+
+      running =
+        false;
+
+      game =
+        null;
+
+      stopAnimation();
 
 
       setMessage(
@@ -2364,18 +2583,70 @@ const CASHOUT_ENDPOINT =
       );
 
 
-      actionButton.disabled =
-        false;
-
-      wagerInput.disabled =
-        false;
+      resetAfterRound();
 
 
       setStatus(
         "Ready"
       );
 
+
+      statusStat.textContent =
+        "Waiting";
+
+
+      multiplierLabel.textContent =
+        "waiting for launch";
+
+    } finally {
+
+      starting =
+        false;
+
     }
+
+  }
+
+
+  /* =====================================================
+     NORMALIZE GAME
+  ===================================================== */
+
+  function normalizeGame(
+    serverGame
+  ) {
+
+    if (!serverGame) {
+      return null;
+    }
+
+
+    return {
+
+      ...serverGame,
+
+      /*
+       * Backend uses `id`.
+       * Frontend uses `gameId`.
+       */
+
+      gameId:
+        serverGame.gameId ||
+        serverGame.id,
+
+      id:
+        serverGame.id ||
+        serverGame.gameId,
+
+      wager:
+        Number(
+          serverGame.wager || 0
+        ),
+
+      startedAt:
+        serverGame.startedAt
+
+    };
 
   }
 
@@ -2394,39 +2665,102 @@ const CASHOUT_ENDPOINT =
       return;
     }
 
-    cashoutLocked = true;
 
-    actionButton.disabled = true;
+    cashoutLocked =
+      true;
+
+    actionButton.disabled =
+      true;
+
 
     const localMultiplier =
       calculateMultiplier(
         game.startedAt
       );
 
+
     setMessage(
       `Cashing out at ${formatMultiplier(localMultiplier)}...`
     );
 
+
     try {
 
       const response =
-        await fetch(CASHOUT_ENDPOINT, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            gameId
-          })
-        });
+        await fetch(
+          CASHOUT_ENDPOINT,
+          {
+
+            method:
+              "POST",
+
+            credentials:
+              "include",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              "Accept":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+
+                gameId:
+                  game.gameId
+
+              })
+
+          }
+        );
+
 
       const data =
-        await response.json();
+        await readJson(
+          response
+        );
+
 
       /*
-        We missed the crash.
-      */
+       * Backend returned a crash.
+       */
+
+      if (
+        data.result ===
+        "crashed"
+      ) {
+
+        /*
+         * Update balance if the backend
+         * provided one.
+         */
+
+        if (
+          data.balance !== undefined
+        ) {
+
+          setBalance(
+            data.balance
+          );
+
+        }
+
+
+        handleCrash(
+          data.game
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Some versions of the backend
+       * may return ROUND_ALREADY_ENDED.
+       */
 
       if (
         !response.ok ||
@@ -2443,7 +2777,9 @@ const CASHOUT_ENDPOINT =
           );
 
           return;
+
         }
+
 
         throw new Error(
           data.error ||
@@ -2452,79 +2788,143 @@ const CASHOUT_ENDPOINT =
 
       }
 
+
+      if (
+        !data.game
+      ) {
+
+        throw new Error(
+          "The Crash API did not return the completed game."
+        );
+
+      }
+
+
       const finalGame =
         data.game;
 
-      running = false;
+
+      running =
+        false;
 
       stopAnimation();
 
+
+      const finalMultiplier =
+        Number(
+          finalGame.multiplier ||
+          finalGame.cashoutMultiplier ||
+          localMultiplier
+        );
+
+
       setMultiplier(
-        finalGame.multiplier,
+        finalMultiplier,
         "won"
       );
 
+
       updateRocket(
-        finalGame.multiplier
+        finalMultiplier
       );
+
+
+      rocketContainer.classList.remove(
+        "flying"
+      );
+
 
       setBalance(
         data.balance
       );
+
 
       setStatus(
         "Cashed out",
         "live"
       );
 
+
       statusStat.textContent =
         "Won";
+
 
       multiplierLabel.textContent =
         "successful cash out";
 
+
+      const payout =
+        Number(
+          finalGame.payout || 0
+        );
+
+
+      const profit =
+        Number(
+          finalGame.profit || 0
+        );
+
+
       setMessage(
-        `Cashed out at ${formatMultiplier(finalGame.multiplier)} for ${formatNumber(finalGame.payout)} coins. Profit: +${formatNumber(finalGame.profit)}.`,
+
+        `Cashed out at ${formatMultiplier(finalMultiplier)} for ${formatNumber(payout)} coins. Profit: +${formatNumber(profit)}.`,
+
         "success"
+
       );
 
-      actionButton.textContent =
-        "Start Crash";
 
-      actionButton.classList.remove(
-        "cashout"
-      );
+      game =
+        null;
 
-      actionButton.disabled =
-        false;
 
-      wagerInput.disabled =
-        false;
-
-      game = null;
-
-      cashoutLocked =
-        false;
+      resetAfterRound();
 
     } catch (error) {
 
       console.error(
+        "CRASH CASHOUT ERROR:",
         error
       );
 
+
+      /*
+       * We do NOT immediately assume the
+       * player lost if the request failed.
+       *
+       * The game may still be active.
+       */
+
       setMessage(
         error.message ||
-        "Cash out failed.",
+        "Cash out failed. Your round may still be active.",
         "error"
       );
 
-      actionButton.disabled =
-        false;
 
       cashoutLocked =
         false;
+
+
+      /*
+       * Allow another cashout attempt.
+       */
+
+      if (game && running) {
+
+        actionButton.disabled =
+          false;
+
+      } else {
+
+        resetAfterRound();
+
+      }
+
     }
+
   }
+
 
   /* =====================================================
      HANDLE CRASH
@@ -2533,6 +2933,19 @@ const CASHOUT_ENDPOINT =
   function handleCrash(
     crashGame
   ) {
+
+    /*
+     * Keep the wager before clearing
+     * the game.
+     */
+
+    const wager =
+      Number(
+        game?.wager ||
+        crashGame?.wager ||
+        0
+      );
+
 
     const crashPoint =
       Number(
@@ -2545,12 +2958,13 @@ const CASHOUT_ENDPOINT =
     running =
       false;
 
+
     stopAnimation();
 
 
     /*
-      Put rocket where the crash happened.
-    */
+     * Put rocket where the crash happened.
+     */
 
     updateRocket(
       crashPoint
@@ -2567,8 +2981,8 @@ const CASHOUT_ENDPOINT =
 
 
     /*
-      Explosion.
-    */
+     * Explosion.
+     */
 
     explosion.classList.remove(
       "active"
@@ -2605,32 +3019,18 @@ const CASHOUT_ENDPOINT =
 
     setMessage(
 
-      `The rocket crashed at ${formatMultiplier(crashPoint)}. Your ${formatNumber(game?.wager || 0)} coin wager was lost.`,
+      `The rocket crashed at ${formatMultiplier(crashPoint)}. Your ${formatNumber(wager)} coin wager was lost.`,
 
       "error"
 
     );
 
 
-    actionButton.textContent =
-      "Start Crash";
-
-    actionButton.classList.remove(
-      "cashout"
-    );
-
-    actionButton.disabled =
-      false;
-
-    wagerInput.disabled =
-      false;
-
-
     game =
       null;
 
-    cashoutLocked =
-      false;
+
+    resetAfterRound();
 
   }
 
@@ -2661,7 +3061,9 @@ const CASHOUT_ENDPOINT =
 
 
       const data =
-        await response.json();
+        await readJson(
+          response
+        );
 
 
       if (
@@ -2674,16 +3076,20 @@ const CASHOUT_ENDPOINT =
           "show"
         );
 
+
         actionButton.disabled =
           true;
 
+
         wagerInput.disabled =
           true;
+
 
         setMessage(
           "Login required.",
           "error"
         );
+
 
         return;
 
@@ -2707,18 +3113,28 @@ const CASHOUT_ENDPOINT =
       actionButton.disabled =
         false;
 
+
       wagerInput.disabled =
         false;
+
+
+      setStatus(
+        "Ready"
+      );
+
+
+      statusStat.textContent =
+        "Waiting";
 
 
       setMessage(
         "Ready to launch."
       );
 
-
     } catch (error) {
 
       console.error(
+        "LOAD USER ERROR:",
         error
       );
 
@@ -2727,8 +3143,10 @@ const CASHOUT_ENDPOINT =
         "show"
       );
 
+
       actionButton.disabled =
         true;
+
 
       wagerInput.disabled =
         true;
@@ -2768,9 +3186,13 @@ const CASHOUT_ENDPOINT =
     () => {
 
       if (running) {
+
         cashOut();
+
       } else {
+
         startCrash();
+
       }
 
     }
@@ -2788,6 +3210,13 @@ const CASHOUT_ENDPOINT =
       button.addEventListener(
         "click",
         () => {
+
+          if (
+            wagerInput.disabled
+          ) {
+            return;
+          }
+
 
           wagerInput.value =
             button.dataset.bet;
@@ -2809,6 +3238,11 @@ const CASHOUT_ENDPOINT =
       button.addEventListener(
         "click",
         () => {
+
+          if (running) {
+            return;
+          }
+
 
           document
             .querySelectorAll(
@@ -2841,8 +3275,16 @@ const CASHOUT_ENDPOINT =
 
           } else {
 
-            autoCashout =
+            const numericTarget =
               Number(target);
+
+
+            autoCashout =
+              Number.isFinite(
+                numericTarget
+              )
+                ? numericTarget
+                : null;
 
           }
 
@@ -2863,12 +3305,31 @@ const CASHOUT_ENDPOINT =
       if (
         !document.hidden &&
         game &&
-        running
+        running &&
+        !cashoutLocked
       ) {
 
         startAnimation();
 
       }
+
+    }
+  );
+
+
+  /* =====================================================
+     PAGE UNLOAD
+     
+     Do NOT automatically cash out here.
+     
+     The server remains authoritative.
+  ===================================================== */
+
+  window.addEventListener(
+    "beforeunload",
+    () => {
+
+      stopAnimation();
 
     }
   );
