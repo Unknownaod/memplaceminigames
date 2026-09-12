@@ -2,37 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Crash — Middle Eastern Mixing</title>
 
   <style>
     :root {
-      --black: #0b0a08;
-      --black-2: #12100d;
-      --black-3: #191611;
+      --bg: #080705;
+      --surface: #12100d;
+      --surface-2: #191611;
+      --surface-3: #211c16;
 
-      --surface: #191611;
-      --surface-2: #211d17;
-      --surface-3: #29231c;
-
-      --border: rgba(255,255,255,0.08);
-      --border-hover: rgba(255,255,255,0.14);
+      --border: rgba(255,255,255,.075);
+      --border-hover: rgba(255,255,255,.13);
 
       --text: #f5f1e8;
-      --text-2: #aaa398;
-      --text-3: #746e65;
+      --muted: #958e84;
+      --muted-2: #625c54;
 
-      --accent: #d7a84f;
-      --accent-soft: rgba(215,168,79,0.10);
+      --gold: #d7a84f;
+      --gold-light: #f0c96d;
+      --gold-glow: rgba(215,168,79,.35);
 
-      --success: #68c18a;
-      --danger: #d96c6c;
+      --green: #69c78d;
+      --red: #df7070;
 
-      --radius: 14px;
+      --radius: 16px;
     }
 
     * {
@@ -43,7 +38,7 @@
     body {
       margin: 0;
       min-height: 100%;
-      background: var(--black);
+      background: var(--bg);
       color: var(--text);
       font-family:
         Inter,
@@ -76,497 +71,783 @@
     header {
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 100;
 
       height: 68px;
 
-      display: flex;
-      align-items: center;
+      border-bottom: 1px solid var(--border);
 
-      background: rgba(11,10,8,0.92);
-      backdrop-filter: blur(16px);
+      background: rgba(8,7,5,.88);
 
-      border-bottom:
-        1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
     .header-inner {
       width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
+      height: 100%;
+      margin: auto;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      gap: 24px;
+      gap: 20px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 10px;
 
       color: var(--text);
       text-decoration: none;
 
+      font-size: 14px;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -.02em;
     }
 
     .brand img {
       width: 34px;
       height: 34px;
 
-      object-fit: contain;
-
       border-radius: 9px;
-    }
 
-    .brand span {
-      white-space: nowrap;
+      object-fit: contain;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
 
     nav a {
-      color: var(--text-2);
-      text-decoration: none;
-
       padding: 9px 12px;
+
       border-radius: 9px;
 
-      font-size: 14px;
-      font-weight: 600;
+      color: var(--muted);
 
-      transition:
-        color 0.15s ease,
-        background 0.15s ease;
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      transition: .15s ease;
     }
 
     nav a:hover {
       color: var(--text);
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,.035);
     }
 
-    nav a.active {
-      color: var(--accent);
-      background: var(--accent-soft);
-    }
-
-    .header-balance {
+    .balance-pill {
       display: flex;
       align-items: center;
       gap: 7px;
 
-      padding: 8px 11px;
+      padding: 8px 12px;
 
-      border:
-        1px solid var(--border);
-
+      border: 1px solid var(--border);
       border-radius: 10px;
 
-      background:
-        rgba(255,255,255,0.025);
+      background: rgba(255,255,255,.025);
 
-      color: var(--text-2);
-
-      font-size: 13px;
+      font-size: 12px;
       white-space: nowrap;
     }
 
-    .header-balance strong {
-      color: var(--accent);
-      font-weight: 800;
+    .balance-pill span {
+      color: var(--muted);
+    }
+
+    .balance-pill strong {
+      color: var(--gold-light);
     }
 
     /* =====================================================
-       PAGE
+       MAIN
     ===================================================== */
 
     main {
       width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
+      margin: auto;
 
-      padding:
-        34px 0 60px;
+      padding: 32px 0 60px;
     }
 
-    .page-heading {
-      margin-bottom: 22px;
+    .heading {
+      margin-bottom: 20px;
     }
 
-    .page-heading h1 {
-      margin: 0 0 7px;
+    .heading h1 {
+      margin: 0 0 6px;
 
-      font-size:
-        clamp(28px, 4vw, 40px);
-
+      font-size: clamp(28px, 4vw, 38px);
       line-height: 1;
 
-      letter-spacing: -0.04em;
+      letter-spacing: -.045em;
     }
 
-    .page-heading p {
+    .heading p {
       margin: 0;
 
-      color: var(--text-2);
+      color: var(--muted);
 
-      font-size: 14px;
+      font-size: 13px;
     }
 
     /* =====================================================
-       GAME LAYOUT
+       LAYOUT
     ===================================================== */
 
-    .game-layout {
+    .layout {
       display: grid;
 
       grid-template-columns:
         minmax(0, 1fr)
-        330px;
+        320px;
 
       gap: 18px;
-
-      align-items: stretch;
     }
 
     .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
       background:
         linear-gradient(
           180deg,
-          rgba(255,255,255,0.025),
-          rgba(255,255,255,0.012)
+          rgba(255,255,255,.018),
+          rgba(255,255,255,.006)
         ),
         var(--surface);
-
-      border:
-        1px solid var(--border);
-
-      border-radius: var(--radius);
 
       overflow: hidden;
     }
 
     /* =====================================================
-       CRASH BOARD
+       GAME
     ===================================================== */
 
-    .crash-panel {
-      min-height: 570px;
+    .game-panel {
+      min-height: 610px;
 
       display: flex;
       flex-direction: column;
     }
 
-    .board-top {
+    .game-header {
+      height: 55px;
+
+      padding: 0 16px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 16px 18px;
-
-      border-bottom:
-        1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
-    .round-status {
+    .live-status {
       display: flex;
       align-items: center;
       gap: 8px;
 
-      color: var(--text-2);
+      color: var(--muted);
 
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 800;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
+    .live-dot {
+      width: 7px;
+      height: 7px;
 
       border-radius: 50%;
 
-      background: var(--text-3);
+      background: var(--muted-2);
+    }
+
+    .live-dot.live {
+      background: var(--green);
 
       box-shadow:
-        0 0 0 4px
-        rgba(255,255,255,0.025);
+        0 0 0 4px rgba(105,199,141,.08),
+        0 0 12px rgba(105,199,141,.35);
     }
 
-    .status-dot.live {
-      background: var(--success);
+    .live-dot.crashed {
+      background: var(--red);
 
       box-shadow:
-        0 0 0 4px
-        rgba(104,193,138,0.10);
+        0 0 0 4px rgba(223,112,112,.08),
+        0 0 12px rgba(223,112,112,.3);
     }
 
-    .status-dot.crashed {
-      background: var(--danger);
-
-      box-shadow:
-        0 0 0 4px
-        rgba(217,108,108,0.10);
+    .game-id {
+      color: var(--muted-2);
+      font-size: 10px;
     }
 
-    .round-id {
-      color: var(--text-3);
-      font-size: 11px;
-    }
+    /* =====================================================
+       ROCKET STAGE
+    ===================================================== */
 
-    .crash-board {
+    .rocket-stage {
       position: relative;
 
       flex: 1;
 
-      min-height: 500px;
+      min-height: 555px;
 
       overflow: hidden;
 
       background:
         radial-gradient(
-          circle at 50% 52%,
-          rgba(215,168,79,0.055),
+          ellipse at 50% 80%,
+          rgba(215,168,79,.075),
+          transparent 42%
+        ),
+        radial-gradient(
+          ellipse at 50% 15%,
+          rgba(255,255,255,.018),
           transparent 45%
-        );
+        ),
+        #090806;
     }
 
-    .grid {
+    /*
+      Stars
+    */
+
+    .stars,
+    .stars::before,
+    .stars::after {
       position: absolute;
+
       inset: 0;
 
+      pointer-events: none;
+    }
+
+    .stars {
+      opacity: .55;
+
       background-image:
-        linear-gradient(
-          rgba(255,255,255,0.025) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255,255,255,0.025) 1px,
-          transparent 1px
+        radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,255,255,.35) 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,255,255,.25) 1px, transparent 1.5px);
+
+      background-size:
+        91px 113px,
+        137px 157px,
+        181px 191px;
+
+      background-position:
+        12px 24px,
+        45px 71px,
+        91px 11px;
+
+      transition:
+        transform 1s linear,
+        opacity .3s ease;
+    }
+
+    .stars.fast {
+      animation: starsMove .75s linear infinite;
+    }
+
+    @keyframes starsMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(110px);
+      }
+    }
+
+    /*
+      Horizon glow
+    */
+
+    .horizon {
+      position: absolute;
+
+      left: 50%;
+      bottom: -100px;
+
+      width: 600px;
+      height: 300px;
+
+      transform: translateX(-50%);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          ellipse,
+          rgba(215,168,79,.12),
+          transparent 65%
         );
 
-      background-size: 55px 55px;
+      filter: blur(10px);
 
-      mask-image:
+      pointer-events: none;
+    }
+
+    /*
+      Vertical flight guide
+    */
+
+    .flight-line {
+      position: absolute;
+
+      left: 50%;
+      top: 10%;
+      bottom: 0;
+
+      width: 1px;
+
+      transform: translateX(-50%);
+
+      background:
         linear-gradient(
           to bottom,
-          black,
-          transparent
+          transparent,
+          rgba(215,168,79,.08),
+          rgba(215,168,79,.12)
+        );
+
+      opacity: .65;
+    }
+
+    /*
+      Center multiplier
+    */
+
+    .multiplier-wrap {
+      position: absolute;
+
+      left: 50%;
+      top: 28%;
+
+      transform: translate(-50%, -50%);
+
+      width: 100%;
+
+      text-align: center;
+
+      pointer-events: none;
+
+      z-index: 10;
+    }
+
+    .multiplier {
+      margin: 0;
+
+      font-size:
+        clamp(64px, 9vw, 105px);
+
+      line-height: .95;
+
+      font-weight: 950;
+
+      letter-spacing: -.075em;
+
+      color: var(--gold-light);
+
+      text-shadow:
+        0 0 40px rgba(215,168,79,.13),
+        0 0 90px rgba(215,168,79,.06);
+
+      transition:
+        color .2s ease,
+        text-shadow .2s ease;
+    }
+
+    .multiplier.won {
+      color: var(--green);
+
+      text-shadow:
+        0 0 40px rgba(105,199,141,.16);
+    }
+
+    .multiplier.crashed {
+      color: var(--red);
+
+      text-shadow:
+        0 0 40px rgba(223,112,112,.16);
+    }
+
+    .multiplier-label {
+      margin-top: 9px;
+
+      color: var(--muted-2);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    /* =====================================================
+       ROCKET
+    ===================================================== */
+
+    .rocket-container {
+      position: absolute;
+
+      left: 50%;
+      bottom: 9%;
+
+      width: 90px;
+      height: 130px;
+
+      transform:
+        translate(-50%, 0);
+
+      z-index: 8;
+
+      opacity: .9;
+
+      transition:
+        bottom .1s linear,
+        filter .2s ease;
+    }
+
+    .rocket-container.flying {
+      filter:
+        drop-shadow(
+          0 0 18px rgba(215,168,79,.22)
         );
     }
 
-    .glow {
+    /*
+      Rocket body
+    */
+
+    .rocket {
       position: absolute;
 
-      width: 420px;
-      height: 420px;
-
       left: 50%;
-      top: 52%;
+      top: 0;
+
+      width: 34px;
+      height: 72px;
 
       transform:
-        translate(-50%, -50%);
+        translateX(-50%);
+
+      border-radius:
+        50% 50% 42% 42%;
+
+      background:
+        linear-gradient(
+          90deg,
+          #9b968d 0%,
+          #eee9de 40%,
+          #bdb7ac 100%
+        );
+
+      box-shadow:
+        inset -5px 0 8px rgba(0,0,0,.18),
+        inset 5px 0 8px rgba(255,255,255,.25);
+    }
+
+    .rocket::before {
+      content: "";
+
+      position: absolute;
+
+      left: 50%;
+      top: -23px;
+
+      width: 34px;
+      height: 35px;
+
+      transform:
+        translateX(-50%);
+
+      border-radius:
+        50% 50% 15% 15%;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f1ede4,
+          #a9a398
+        );
+    }
+
+    /*
+      Window
+    */
+
+    .rocket-window {
+      position: absolute;
+
+      left: 50%;
+      top: 16px;
+
+      width: 12px;
+      height: 12px;
+
+      transform:
+        translateX(-50%);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #ffffff,
+          #7c8b91 40%,
+          #252d31 75%
+        );
+
+      border:
+        2px solid #777168;
+
+      box-shadow:
+        0 0 7px rgba(255,255,255,.16);
+    }
+
+    /*
+      Wings
+    */
+
+    .rocket-wing-left,
+    .rocket-wing-right {
+      position: absolute;
+
+      top: 45px;
+
+      width: 24px;
+      height: 28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #b2aca2,
+          #6e6961
+        );
+
+      z-index: -1;
+    }
+
+    .rocket-wing-left {
+      right: 25px;
+
+      clip-path:
+        polygon(
+          100% 0,
+          0 100%,
+          100% 82%
+        );
+    }
+
+    .rocket-wing-right {
+      left: 25px;
+
+      clip-path:
+        polygon(
+          0 0,
+          100% 100%,
+          0 82%
+        );
+    }
+
+    /*
+      Flame
+    */
+
+    .flame {
+      position: absolute;
+
+      left: 50%;
+      top: 63px;
+
+      width: 22px;
+      height: 56px;
+
+      transform:
+        translateX(-50%);
+
+      transform-origin: top center;
+
+      border-radius:
+        30% 30% 65% 65%;
+
+      background:
+        linear-gradient(
+          to bottom,
+          #fff5c7 0%,
+          #f2bf58 35%,
+          #d87536 65%,
+          transparent 100%
+        );
+
+      filter:
+        blur(.4px)
+        drop-shadow(
+          0 0 12px rgba(215,168,79,.55)
+        );
+
+      animation:
+        flame 0.08s
+        infinite alternate;
+    }
+
+    @keyframes flame {
+      from {
+        transform:
+          translateX(-50%)
+          scaleY(.85)
+          scaleX(.85);
+      }
+
+      to {
+        transform:
+          translateX(-50%)
+          scaleY(1.18)
+          scaleX(1.08);
+      }
+    }
+
+    /*
+      Exhaust trail
+    */
+
+    .exhaust {
+      position: absolute;
+
+      left: 50%;
+      bottom: -120px;
+
+      width: 3px;
+      height: 150px;
+
+      transform:
+        translateX(-50%);
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(215,168,79,.55),
+          rgba(215,168,79,.15),
+          transparent
+        );
+
+      filter:
+        blur(2px);
+
+      opacity: 0;
+
+      transition:
+        opacity .2s ease;
+    }
+
+    .rocket-container.flying .exhaust {
+      opacity: 1;
+    }
+
+    /* =====================================================
+       CRASH EXPLOSION
+    ===================================================== */
+
+    .explosion {
+      position: absolute;
+
+      left: 50%;
+      top: 45%;
+
+      width: 20px;
+      height: 20px;
+
+      transform:
+        translate(-50%, -50%)
+        scale(.1);
 
       border-radius: 50%;
 
       background:
         radial-gradient(
           circle,
-          rgba(215,168,79,0.08),
-          transparent 65%
+          #fff4ca 0%,
+          var(--gold) 25%,
+          rgba(215,168,79,.3) 50%,
+          transparent 70%
         );
-
-      pointer-events: none;
-
-      transition:
-        opacity 0.25s ease;
-    }
-
-    .multiplier {
-      position: absolute;
-
-      left: 50%;
-      top: 43%;
-
-      transform:
-        translate(-50%, -50%);
-
-      width: 100%;
-
-      text-align: center;
-
-      font-size:
-        clamp(62px, 9vw, 112px);
-
-      line-height: 1;
-
-      font-weight: 900;
-
-      letter-spacing: -0.065em;
-
-      color: var(--accent);
-
-      text-shadow:
-        0 0 50px
-        rgba(215,168,79,0.12);
-
-      transition:
-        color 0.2s ease,
-        text-shadow 0.2s ease;
-    }
-
-    .multiplier.crashed {
-      color: var(--danger);
-
-      text-shadow:
-        0 0 50px
-        rgba(217,108,108,0.15);
-    }
-
-    .multiplier.won {
-      color: var(--success);
-
-      text-shadow:
-        0 0 50px
-        rgba(104,193,138,0.15);
-    }
-
-    .sub-status {
-      position: absolute;
-
-      left: 50%;
-      top: calc(43% + 92px);
-
-      transform:
-        translateX(-50%);
-
-      width: 100%;
-
-      text-align: center;
-
-      color: var(--text-3);
-
-      font-size: 13px;
-      font-weight: 700;
-
-      pointer-events: none;
-    }
-
-    /* =====================================================
-       GRAPH
-    ===================================================== */
-
-    .graph-line {
-      position: absolute;
-
-      left: 0;
-      bottom: 0;
-
-      width: 100%;
-      height: 100%;
-
-      pointer-events: none;
-    }
-
-    .graph-line path {
-      fill: none;
-
-      stroke:
-        rgba(215,168,79,0.8);
-
-      stroke-width: 2.5;
-
-      stroke-linecap: round;
-
-      filter:
-        drop-shadow(
-          0 0 8px
-          rgba(215,168,79,0.18)
-        );
-    }
-
-    .graph-fill {
-      fill:
-        rgba(215,168,79,0.035);
-
-      stroke: none;
-    }
-
-    .rocket {
-      position: absolute;
-
-      width: 18px;
-      height: 18px;
-
-      border-radius: 50%;
-
-      background: var(--accent);
-
-      box-shadow:
-        0 0 0 5px
-          rgba(215,168,79,0.08),
-        0 0 22px
-          rgba(215,168,79,0.55);
 
       opacity: 0;
 
-      transform:
-        translate(-50%, 50%);
+      pointer-events: none;
 
-      transition:
-        left 0.08s linear,
-        bottom 0.08s linear,
-        opacity 0.2s ease;
+      z-index: 20;
     }
 
-    .rocket.active {
-      opacity: 1;
+    .explosion.active {
+      animation:
+        explosion .65s ease-out forwards;
     }
 
-    .rocket.crashed {
-      background: var(--danger);
+    @keyframes explosion {
+      0% {
+        opacity: 1;
+        transform:
+          translate(-50%, -50%)
+          scale(.1);
+      }
 
-      box-shadow:
-        0 0 0 5px
-          rgba(217,108,108,0.08),
-        0 0 22px
-          rgba(217,108,108,0.5);
+      45% {
+        opacity: .95;
+        transform:
+          translate(-50%, -50%)
+          scale(12);
+      }
+
+      100% {
+        opacity: 0;
+        transform:
+          translate(-50%, -50%)
+          scale(18);
+      }
     }
 
     /* =====================================================
-       CONTROL PANEL
+       CONTROLS
     ===================================================== */
 
     .controls {
       padding: 18px;
     }
 
-    .control-title {
-      margin-bottom: 16px;
+    .controls-title {
+      margin-bottom: 18px;
     }
 
-    .control-title h2 {
+    .controls-title h2 {
       margin: 0 0 5px;
 
       font-size: 18px;
-      letter-spacing: -0.02em;
+      letter-spacing: -.025em;
     }
 
-    .control-title p {
+    .controls-title p {
       margin: 0;
 
-      color: var(--text-3);
+      color: var(--muted);
 
       font-size: 12px;
     }
 
     .field {
-      margin-bottom: 14px;
+      margin-bottom: 15px;
     }
 
     .field-label {
@@ -576,55 +857,55 @@
 
       margin-bottom: 7px;
 
-      color: var(--text-2);
+      color: var(--muted);
 
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
     }
 
     .field-label span:last-child {
-      color: var(--text-3);
-      font-weight: 500;
+      color: var(--muted-2);
+      font-weight: 600;
     }
 
     .input-wrap {
       position: relative;
     }
 
-    input[type="number"] {
+    input {
       width: 100%;
-
       height: 46px;
 
-      padding:
-        0 45px 0 13px;
+      padding: 0 55px 0 13px;
 
       color: var(--text);
 
-      background:
-        var(--black-2);
+      background: var(--bg);
 
-      border:
-        1px solid var(--border);
-
+      border: 1px solid var(--border);
       border-radius: 10px;
 
       outline: none;
 
-      transition:
-        border-color 0.15s ease,
-        background 0.15s ease;
+      font-size: 14px;
+      font-weight: 700;
+
+      transition: .15s ease;
     }
 
-    input[type="number"]:focus {
+    input:focus {
       border-color:
-        rgba(215,168,79,0.4);
+        rgba(215,168,79,.4);
 
       background:
-        var(--black-3);
+        #0d0b09;
     }
 
-    .input-currency {
+    input:disabled {
+      opacity: .5;
+    }
+
+    .currency {
       position: absolute;
 
       right: 13px;
@@ -633,12 +914,10 @@
       transform:
         translateY(-50%);
 
-      color: var(--text-3);
+      color: var(--muted-2);
 
-      font-size: 12px;
-      font-weight: 700;
-
-      pointer-events: none;
+      font-size: 10px;
+      font-weight: 800;
     }
 
     .quick-bets {
@@ -653,25 +932,22 @@
     }
 
     .quick-bets button {
-      height: 32px;
-
-      color: var(--text-2);
-
-      background:
-        rgba(255,255,255,0.025);
+      height: 31px;
 
       border:
         1px solid var(--border);
 
       border-radius: 8px;
 
-      font-size: 11px;
-      font-weight: 700;
+      color: var(--muted);
 
-      transition:
-        color 0.15s ease,
-        border-color 0.15s ease,
-        background 0.15s ease;
+      background:
+        rgba(255,255,255,.02);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      transition: .15s ease;
     }
 
     .quick-bets button:hover {
@@ -681,97 +957,127 @@
         var(--border-hover);
 
       background:
-        rgba(255,255,255,0.05);
+        rgba(255,255,255,.045);
     }
 
-    .cashout-target {
+    /* =====================================================
+       AUTO CASHOUT
+    ===================================================== */
+
+    .auto-options {
       display: grid;
 
       grid-template-columns:
         1fr 1fr;
 
-      gap: 8px;
+      gap: 7px;
     }
 
-    .target-button {
-      height: 42px;
+    .auto-option {
+      height: 40px;
 
-      color: var(--text-2);
-
-      background:
-        rgba(255,255,255,0.025);
+      color: var(--muted);
 
       border:
         1px solid var(--border);
 
       border-radius: 9px;
 
-      font-size: 12px;
+      background:
+        rgba(255,255,255,.02);
+
+      font-size: 11px;
       font-weight: 800;
+
+      transition: .15s ease;
     }
 
-    .target-button.active {
-      color: var(--accent);
+    .auto-option:hover {
+      border-color:
+        var(--border-hover);
+
+      color: var(--text);
+    }
+
+    .auto-option.active {
+      color: var(--gold-light);
 
       border-color:
-        rgba(215,168,79,0.3);
+        rgba(215,168,79,.3);
 
       background:
-        var(--accent-soft);
+        rgba(215,168,79,.07);
     }
 
-    .main-button {
+    /* =====================================================
+       ACTION
+    ===================================================== */
+
+    .action-button {
       width: 100%;
+      height: 53px;
 
-      height: 52px;
-
-      margin-top: 8px;
+      margin-top: 5px;
 
       border: 0;
-
       border-radius: 11px;
 
-      color: var(--button-text);
+      color: #161108;
 
       background:
-        var(--accent);
+        linear-gradient(
+          180deg,
+          var(--gold-light),
+          var(--gold)
+        );
 
       font-size: 14px;
-      font-weight: 900;
+      font-weight: 950;
 
-      transition:
-        transform 0.12s ease,
-        filter 0.15s ease,
-        opacity 0.15s ease;
+      box-shadow:
+        0 7px 25px rgba(215,168,79,.08);
+
+      transition: .15s ease;
     }
 
-    .main-button:hover:not(:disabled) {
-      filter: brightness(1.06);
+    .action-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+
+      filter: brightness(1.05);
+
+      box-shadow:
+        0 9px 30px rgba(215,168,79,.12);
     }
 
-    .main-button:active:not(:disabled) {
-      transform: translateY(1px);
+    .action-button:disabled {
+      cursor: not-allowed;
+      opacity: .45;
     }
 
-    .main-button.cashout {
+    .action-button.cashout {
       color: #08110b;
 
       background:
-        var(--success);
+        linear-gradient(
+          180deg,
+          #7cdda0,
+          var(--green)
+        );
+
+      box-shadow:
+        0 7px 25px rgba(105,199,141,.08);
     }
 
-    .main-button:disabled {
-      cursor: not-allowed;
+    /* =====================================================
+       BALANCE
+    ===================================================== */
 
-      opacity: 0.45;
-    }
-
-    .balance-box {
+    .balance-card {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      margin-top: 12px;
+      margin-top: 11px;
 
       padding: 12px 13px;
 
@@ -781,78 +1087,88 @@
       border-radius: 10px;
 
       background:
-        rgba(255,255,255,0.018);
+        rgba(255,255,255,.018);
     }
 
-    .balance-box span {
-      color: var(--text-3);
-      font-size: 11px;
-      font-weight: 700;
+    .balance-card span {
+      color: var(--muted-2);
+
+      font-size: 10px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: .04em;
     }
 
-    .balance-box strong {
-      color: var(--accent);
+    .balance-card strong {
+      color: var(--gold-light);
+
       font-size: 14px;
     }
 
-    .message {
-      min-height: 40px;
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
 
-      margin-top: 12px;
+    .message {
+      min-height: 43px;
+
+      margin-top: 10px;
 
       padding: 11px 12px;
-
-      border-radius: 10px;
 
       border:
         1px solid var(--border);
 
+      border-radius: 10px;
+
+      color: var(--muted);
+
       background:
-        rgba(255,255,255,0.018);
+        rgba(255,255,255,.015);
 
-      color: var(--text-2);
-
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.45;
     }
 
     .message.success {
-      color: var(--success);
+      color: var(--green);
 
       border-color:
-        rgba(104,193,138,0.15);
+        rgba(105,199,141,.15);
 
       background:
-        rgba(104,193,138,0.04);
+        rgba(105,199,141,.035);
     }
 
     .message.error {
-      color: var(--danger);
+      color: var(--red);
 
       border-color:
-        rgba(217,108,108,0.15);
+        rgba(223,112,112,.15);
 
       background:
-        rgba(217,108,108,0.04);
+        rgba(223,112,112,.035);
     }
 
     /* =====================================================
-       INFO
+       STATS
     ===================================================== */
 
-    .info-grid {
+    .stats {
       display: grid;
 
       grid-template-columns:
         repeat(3, 1fr);
 
-      gap: 8px;
+      gap: 7px;
 
-      padding: 0 18px 18px;
+      padding:
+        0 18px 18px;
     }
 
-    .info-card {
-      padding: 12px;
+    .stat {
+      padding: 11px;
 
       border:
         1px solid var(--border);
@@ -860,25 +1176,25 @@
       border-radius: 10px;
 
       background:
-        rgba(255,255,255,0.018);
+        rgba(255,255,255,.015);
     }
 
-    .info-card span {
+    .stat span {
       display: block;
 
       margin-bottom: 5px;
 
-      color: var(--text-3);
+      color: var(--muted-2);
 
-      font-size: 10px;
-      font-weight: 700;
+      font-size: 9px;
+      font-weight: 800;
 
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: .06em;
     }
 
-    .info-card strong {
-      font-size: 13px;
+    .stat strong {
+      font-size: 12px;
     }
 
     /* =====================================================
@@ -890,7 +1206,7 @@
 
       inset: 0;
 
-      z-index: 100;
+      z-index: 500;
 
       display: none;
 
@@ -900,9 +1216,9 @@
       padding: 20px;
 
       background:
-        rgba(0,0,0,0.72);
+        rgba(0,0,0,.78);
 
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
     }
 
     .login-overlay.show {
@@ -910,32 +1226,31 @@
     }
 
     .login-card {
-      width: min(400px, 100%);
+      width: min(390px, 100%);
 
-      padding: 25px;
+      padding: 27px;
 
       border:
         1px solid var(--border);
 
-      border-radius: 16px;
+      border-radius: 17px;
 
       background:
         var(--surface);
 
-      box-shadow:
-        0 30px 100px
-        rgba(0,0,0,0.45);
-
       text-align: center;
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.5);
     }
 
     .login-card img {
-      width: 52px;
-      height: 52px;
-
-      object-fit: contain;
+      width: 50px;
+      height: 50px;
 
       border-radius: 12px;
+
+      object-fit: contain;
 
       margin-bottom: 14px;
     }
@@ -943,69 +1258,32 @@
     .login-card h2 {
       margin: 0 0 7px;
 
-      font-size: 22px;
+      font-size: 21px;
     }
 
     .login-card p {
       margin: 0;
 
-      color: var(--text-2);
+      color: var(--muted);
 
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1.5;
     }
 
     .login-card button {
       width: 100%;
-
       height: 45px;
 
       margin-top: 18px;
 
       border: 0;
-
       border-radius: 10px;
 
-      color: var(--button-text);
+      color: #161108;
 
-      background: var(--accent);
+      background: var(--gold);
 
-      font-weight: 800;
-    }
-
-    /* =====================================================
-       CRASH ANIMATION
-    ===================================================== */
-
-    @keyframes crashShake {
-      0% {
-        transform: translate(-50%, -50%) scale(1);
-      }
-
-      30% {
-        transform:
-          translate(-50%, -50%)
-          scale(1.04)
-          rotate(-1deg);
-      }
-
-      60% {
-        transform:
-          translate(-50%, -50%)
-          scale(0.98)
-          rotate(1deg);
-      }
-
-      100% {
-        transform:
-          translate(-50%, -50%)
-          scale(1);
-      }
-    }
-
-    .multiplier.crash-anim {
-      animation:
-        crashShake 0.35s ease;
+      font-weight: 900;
     }
 
     /* =====================================================
@@ -1014,15 +1292,15 @@
 
     @media (max-width: 900px) {
 
-      .game-layout {
+      .layout {
         grid-template-columns: 1fr;
       }
 
-      .controls {
-        order: 2;
+      .game-panel {
+        min-height: 580px;
       }
 
-      .crash-panel {
+      .rocket-stage {
         min-height: 520px;
       }
 
@@ -1036,10 +1314,7 @@
 
       .header-inner {
         width:
-          min(
-            100% - 20px,
-            1180px
-          );
+          calc(100% - 18px);
 
         gap: 8px;
       }
@@ -1048,217 +1323,140 @@
         display: none;
       }
 
-      nav a {
-        padding:
-          8px 7px;
-
-        font-size: 12px;
+      nav {
+        gap: 1px;
       }
 
-      .header-balance {
+      nav a {
         padding:
-          7px 8px;
+          8px 6px;
 
         font-size: 11px;
       }
 
+      .balance-pill {
+        padding:
+          7px 8px;
+
+        font-size: 10px;
+      }
+
       main {
         width:
-          calc(100% - 20px);
+          calc(100% - 18px);
 
         padding-top: 22px;
       }
 
-      .crash-board {
-        min-height: 410px;
+      .heading {
+        margin-bottom: 15px;
       }
 
-      .crash-panel {
-        min-height: 465px;
+      .game-panel {
+        min-height: 510px;
       }
 
-      .board-top {
-        padding:
-          13px 14px;
+      .rocket-stage {
+        min-height: 450px;
+      }
+
+      .multiplier-wrap {
+        top: 25%;
       }
 
       .multiplier {
-        top: 43%;
+        font-size: 70px;
       }
 
-      .sub-status {
-        top: calc(43% + 72px);
+      .rocket-container {
+        transform:
+          translate(-50%, 0)
+          scale(.85);
       }
 
-      .controls {
-        padding: 15px;
-      }
-
-      .info-grid {
+      .stats {
         grid-template-columns: 1fr;
 
         padding:
-          0 15px 15px;
+          0 14px 14px;
+      }
+
+      .controls {
+        padding: 14px;
       }
 
     }
-
   </style>
 </head>
 
 <body>
 
-  <!-- =====================================================
-       HEADER
-  ===================================================== -->
+<header>
+  <div class="header-inner">
 
-  <header>
+    <a href="/" class="brand">
+      <img src="/logo.gif" alt="Middle Eastern Mixing" />
+      <span>Middle Eastern Mixing</span>
+    </a>
 
-    <div class="header-inner">
+    <nav>
+      <a href="/games">Games</a>
+      <a href="/leaderboard">Leaderboard</a>
+      <a href="/shop">Shop</a>
+      <a href="/profile">Profile</a>
+    </nav>
 
-      <a
-        href="/"
-        class="brand"
-      >
-        <img
-          src="/logo.gif"
-          alt="Middle Eastern Mixing"
-        />
+    <div class="balance-pill">
+      <span>Balance</span>
+      <strong id="headerBalance">—</strong>
+    </div>
 
-        <span>
-          Middle Eastern Mixing
-        </span>
-      </a>
-
-
-      <nav>
-
-        <a href="/games">
-          Games
-        </a>
-
-        <a href="/leaderboard">
-          Leaderboard
-        </a>
-
-        <a href="/shop">
-          Shop
-        </a>
-
-        <a href="/profile">
-          Profile
-        </a>
-
-      </nav>
+  </div>
+</header>
 
 
-      <div class="header-balance">
+<main>
 
-        <span>Balance</span>
+  <div class="heading">
+    <h1>Crash</h1>
+    <p>How high will you go?</p>
+  </div>
 
-        <strong id="headerBalance">
-          —
-        </strong>
+
+  <div class="layout">
+
+    <!-- =================================================
+         GAME
+    ================================================== -->
+
+    <section class="panel game-panel">
+
+      <div class="game-header">
+
+        <div class="live-status">
+          <span id="liveDot" class="live-dot"></span>
+          <span id="statusText">Ready</span>
+        </div>
+
+        <div id="gameId" class="game-id">
+          No active round
+        </div>
 
       </div>
 
-    </div>
 
-  </header>
+      <div id="rocketStage" class="rocket-stage">
 
+        <div class="stars" id="stars"></div>
 
-  <!-- =====================================================
-       MAIN
-  ===================================================== -->
+        <div class="horizon"></div>
 
-  <main>
-
-    <div class="page-heading">
-
-      <h1>Crash</h1>
-
-      <p>
-        Cash out before the multiplier crashes.
-      </p>
-
-    </div>
+        <div class="flight-line"></div>
 
 
-    <div class="game-layout">
+        <!-- MULTIPLIER -->
 
-      <!-- ===================================================
-           CRASH BOARD
-      =================================================== -->
-
-      <section class="panel crash-panel">
-
-        <div class="board-top">
-
-          <div class="round-status">
-
-            <span
-              id="statusDot"
-              class="status-dot"
-            ></span>
-
-            <span id="statusText">
-              Ready
-            </span>
-
-          </div>
-
-
-          <div
-            id="roundId"
-            class="round-id"
-          >
-            No active round
-          </div>
-
-        </div>
-
-
-        <div
-          id="crashBoard"
-          class="crash-board"
-        >
-
-          <div class="grid"></div>
-
-          <div
-            id="glow"
-            class="glow"
-          ></div>
-
-
-          <!-- GRAPH -->
-
-          <svg
-            id="graph"
-            class="graph-line"
-            viewBox="0 0 1000 500"
-            preserveAspectRatio="none"
-          >
-
-            <path
-              id="graphFill"
-              class="graph-fill"
-              d=""
-            />
-
-            <path
-              id="graphPath"
-              d=""
-            />
-
-          </svg>
-
-
-          <div
-            id="rocket"
-            class="rocket"
-          ></div>
-
+        <div class="multiplier-wrap">
 
           <div
             id="multiplier"
@@ -1267,816 +1465,653 @@
             1.00x
           </div>
 
-
           <div
-            id="subStatus"
-            class="sub-status"
+            id="multiplierLabel"
+            class="multiplier-label"
           >
-            Place your wager to begin
+            waiting for launch
           </div>
 
         </div>
 
 
-        <!-- INFO -->
+        <!-- ROCKET -->
 
-        <div class="info-grid">
+        <div
+          id="rocketContainer"
+          class="rocket-container"
+        >
 
-          <div class="info-card">
+          <div class="exhaust"></div>
 
-            <span>Current</span>
+          <div class="flame"></div>
 
-            <strong id="infoCurrent">
-              1.00x
-            </strong>
+          <div class="rocket">
+
+            <div class="rocket-window"></div>
 
           </div>
 
+          <div class="rocket-wing-left"></div>
+          <div class="rocket-wing-right"></div>
 
-          <div class="info-card">
+        </div>
 
+
+        <!-- EXPLOSION -->
+
+        <div
+          id="explosion"
+          class="explosion"
+        ></div>
+
+      </div>
+
+
+      <!-- STATS -->
+
+      <div class="stats">
+
+        <div class="stat">
+          <span>Current</span>
+          <strong id="currentStat">1.00x</strong>
+        </div>
+
+        <div class="stat">
+          <span>Wager</span>
+          <strong id="wagerStat">—</strong>
+        </div>
+
+        <div class="stat">
+          <span>Status</span>
+          <strong id="statusStat">Waiting</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         CONTROLS
+    ================================================== -->
+
+    <aside class="panel">
+
+      <div class="controls">
+
+        <div class="controls-title">
+
+          <h2>Place wager</h2>
+
+          <p>
+            Launch the rocket and cash out before it crashes.
+          </p>
+
+        </div>
+
+
+        <!-- WAGER -->
+
+        <div class="field">
+
+          <div class="field-label">
             <span>Wager</span>
-
-            <strong id="infoWager">
-              —
-            </strong>
-
+            <span>1 — 1,000,000</span>
           </div>
 
+          <div class="input-wrap">
 
-          <div class="info-card">
+            <input
+              id="wager"
+              type="number"
+              min="1"
+              max="1000000"
+              step="1"
+              value="100"
+              inputmode="numeric"
+            />
 
-            <span>Status</span>
-
-            <strong id="infoStatus">
-              Waiting
-            </strong>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- ===================================================
-           CONTROLS
-      =================================================== -->
-
-      <aside class="panel">
-
-        <div class="controls">
-
-          <div class="control-title">
-
-            <h2>Place wager</h2>
-
-            <p>
-              Choose your wager and start the round.
-            </p>
-
-          </div>
-
-
-          <!-- WAGER -->
-
-          <div class="field">
-
-            <div class="field-label">
-
-              <span>Wager</span>
-
-              <span>
-                Min 1
-              </span>
-
-            </div>
-
-
-            <div class="input-wrap">
-
-              <input
-                id="wager"
-                type="number"
-                min="1"
-                max="1000000"
-                step="1"
-                value="100"
-                inputmode="numeric"
-              />
-
-              <span class="input-currency">
-                coins
-              </span>
-
-            </div>
-
-
-            <div class="quick-bets">
-
-              <button
-                type="button"
-                data-bet="10"
-              >
-                10
-              </button>
-
-              <button
-                type="button"
-                data-bet="50"
-              >
-                50
-              </button>
-
-              <button
-                type="button"
-                data-bet="100"
-              >
-                100
-              </button>
-
-              <button
-                type="button"
-                data-bet="500"
-              >
-                500
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <!-- AUTO CASHOUT -->
-
-          <div class="field">
-
-            <div class="field-label">
-
-              <span>
-                Auto cash out
-              </span>
-
-              <span>
-                Optional
-              </span>
-
-            </div>
-
-
-            <div class="cashout-target">
-
-              <button
-                type="button"
-                class="target-button active"
-                data-target="manual"
-              >
-                Manual
-              </button>
-
-              <button
-                type="button"
-                class="target-button"
-                data-target="2"
-              >
-                2.00x
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <!-- MAIN ACTION -->
-
-          <button
-            id="mainButton"
-            class="main-button"
-            type="button"
-          >
-            Start Crash
-          </button>
-
-
-          <!-- BALANCE -->
-
-          <div class="balance-box">
-
-            <span>
-              Available balance
+            <span class="currency">
+              COINS
             </span>
 
-            <strong id="balance">
-              —
-            </strong>
-
           </div>
 
 
-          <!-- MESSAGE -->
+          <div class="quick-bets">
 
-          <div
-            id="message"
-            class="message"
-          >
-            Ready to play.
+            <button type="button" data-bet="10">
+              10
+            </button>
+
+            <button type="button" data-bet="50">
+              50
+            </button>
+
+            <button type="button" data-bet="100">
+              100
+            </button>
+
+            <button type="button" data-bet="500">
+              500
+            </button>
 
           </div>
 
         </div>
 
-      </aside>
 
-    </div>
+        <!-- AUTO CASHOUT -->
 
-  </main>
+        <div class="field">
+
+          <div class="field-label">
+            <span>Auto cash out</span>
+            <span>Optional</span>
+          </div>
+
+          <div class="auto-options">
+
+            <button
+              type="button"
+              class="auto-option active"
+              data-target="manual"
+            >
+              Manual
+            </button>
+
+            <button
+              type="button"
+              class="auto-option"
+              data-target="2"
+            >
+              2.00x
+            </button>
+
+          </div>
+
+        </div>
 
 
-  <!-- =====================================================
-       LOGIN OVERLAY
-  ===================================================== -->
+        <!-- ACTION -->
 
-  <div
-    id="loginOverlay"
-    class="login-overlay"
-  >
+        <button
+          id="actionButton"
+          class="action-button"
+          type="button"
+          disabled
+        >
+          Start Crash
+        </button>
 
-    <div class="login-card">
 
-      <img
-        src="/logo.gif"
-        alt=""
-      />
+        <!-- BALANCE -->
 
-      <h2>
-        Login required
-      </h2>
+        <div class="balance-card">
 
-      <p>
-        Connect your Discord account before
-        playing Crash.
-      </p>
+          <span>
+            Available balance
+          </span>
 
-      <button
-        id="loginButton"
-        type="button"
-      >
-        Connect Discord
-      </button>
+          <strong id="balance">
+            —
+          </strong>
 
-    </div>
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div
+          id="message"
+          class="message"
+        >
+          Checking your account...
+
+        </div>
+
+      </div>
+
+    </aside>
 
   </div>
 
-
-  <script>
-
-    /* =====================================================
-       CONFIG
-    ===================================================== */
-
-    const API =
-      "https://api.memplace.xyz";
+</main>
 
 
-    const PLAY_ENDPOINT =
-      `${API}/api/games/crash/play`;
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<div
+  id="loginOverlay"
+  class="login-overlay"
+>
+
+  <div class="login-card">
+
+    <img
+      src="/logo.gif"
+      alt=""
+    />
+
+    <h2>
+      Login required
+    </h2>
+
+    <p>
+      Connect your Discord account before playing Crash.
+    </p>
+
+    <button id="loginButton">
+      Connect Discord
+    </button>
+
+  </div>
+
+</div>
 
 
-    const USER_ENDPOINT =
-      `${API}/api/user/me`;
+<script>
+
+  /* =====================================================
+     CONFIG
+  ===================================================== */
+
+  const API =
+    "https://api.memplace.xyz";
+
+  const PLAY_ENDPOINT =
+    `${API}/api/games/crash/play`;
+
+  const USER_ENDPOINT =
+    `${API}/api/user/me`;
 
 
-    /* =====================================================
-       STATE
-    ===================================================== */
+  /* =====================================================
+     STATE
+  ===================================================== */
 
-    let user = null;
+  let user = null;
 
-    let balance = 0;
+  let balance = 0;
 
-    let game = null;
+  let game = null;
 
-    let roundRunning = false;
+  let running = false;
 
-    let animationFrame = null;
+  let animationFrame = null;
 
-    let lastMultiplier = 1;
+  let autoCashout = null;
 
-    let selectedAutoCashout = null;
-
-    let cashoutLocked = false;
+  let cashoutLocked = false;
 
 
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
+  /* =====================================================
+     ELEMENTS
+  ===================================================== */
 
-    const headerBalance =
-      document.getElementById(
-        "headerBalance"
-      );
+  const headerBalance =
+    document.getElementById("headerBalance");
 
-    const balanceElement =
-      document.getElementById(
-        "balance"
-      );
+  const balanceElement =
+    document.getElementById("balance");
 
-    const wagerInput =
-      document.getElementById(
-        "wager"
-      );
+  const wagerInput =
+    document.getElementById("wager");
 
-    const mainButton =
-      document.getElementById(
-        "mainButton"
-      );
+  const actionButton =
+    document.getElementById("actionButton");
 
-    const messageElement =
-      document.getElementById(
-        "message"
-      );
+  const message =
+    document.getElementById("message");
 
-    const multiplierElement =
-      document.getElementById(
-        "multiplier"
-      );
+  const multiplier =
+    document.getElementById("multiplier");
 
-    const subStatusElement =
-      document.getElementById(
-        "subStatus"
-      );
+  const multiplierLabel =
+    document.getElementById("multiplierLabel");
 
-    const statusText =
-      document.getElementById(
-        "statusText"
-      );
+  const liveDot =
+    document.getElementById("liveDot");
 
-    const statusDot =
-      document.getElementById(
-        "statusDot"
-      );
+  const statusText =
+    document.getElementById("statusText");
 
-    const roundIdElement =
-      document.getElementById(
-        "roundId"
-      );
+  const gameId =
+    document.getElementById("gameId");
 
-    const infoCurrent =
-      document.getElementById(
-        "infoCurrent"
-      );
+  const currentStat =
+    document.getElementById("currentStat");
 
-    const infoWager =
-      document.getElementById(
-        "infoWager"
-      );
+  const wagerStat =
+    document.getElementById("wagerStat");
 
-    const infoStatus =
-      document.getElementById(
-        "infoStatus"
-      );
+  const statusStat =
+    document.getElementById("statusStat");
 
-    const rocket =
-      document.getElementById(
-        "rocket"
-      );
+  const rocketContainer =
+    document.getElementById("rocketContainer");
 
-    const graphPath =
-      document.getElementById(
-        "graphPath"
-      );
+  const explosion =
+    document.getElementById("explosion");
 
-    const graphFill =
-      document.getElementById(
-        "graphFill"
-      );
+  const stars =
+    document.getElementById("stars");
 
-    const loginOverlay =
-      document.getElementById(
-        "loginOverlay"
-      );
+  const loginOverlay =
+    document.getElementById("loginOverlay");
 
-    const loginButton =
-      document.getElementById(
-        "loginButton"
-      );
+  const loginButton =
+    document.getElementById("loginButton");
 
 
-    /* =====================================================
-       FORMAT
-    ===================================================== */
+  /* =====================================================
+     FORMAT
+  ===================================================== */
 
-    function formatNumber(
-      value
-    ) {
+  function formatNumber(value) {
 
-      return Number(
-        value || 0
-      ).toLocaleString(
-        "en-US"
-      );
+    return Number(
+      value || 0
+    ).toLocaleString("en-US");
 
+  }
+
+
+  function formatMultiplier(value) {
+
+    return (
+      Number(value || 1)
+        .toFixed(2) +
+      "x"
+    );
+
+  }
+
+
+  /* =====================================================
+     BALANCE
+  ===================================================== */
+
+  function setBalance(value) {
+
+    balance =
+      Number(value || 0);
+
+    const formatted =
+      formatNumber(balance);
+
+    balanceElement.textContent =
+      formatted;
+
+    headerBalance.textContent =
+      formatted;
+
+  }
+
+
+  /* =====================================================
+     MESSAGE
+  ===================================================== */
+
+  function setMessage(
+    text,
+    type = ""
+  ) {
+
+    message.textContent =
+      text;
+
+    message.className =
+      "message";
+
+    if (type) {
+      message.classList.add(type);
     }
 
+  }
 
-    function formatMultiplier(
-      value
-    ) {
 
-      return (
-        Number(value || 1)
-          .toFixed(2) +
-        "x"
+  /* =====================================================
+     STATUS
+  ===================================================== */
+
+  function setStatus(
+    text,
+    state = ""
+  ) {
+
+    statusText.textContent =
+      text;
+
+    liveDot.className =
+      "live-dot";
+
+    if (state) {
+      liveDot.classList.add(state);
+    }
+
+  }
+
+
+  /* =====================================================
+     MULTIPLIER
+  ===================================================== */
+
+  function setMultiplier(
+    value,
+    state = ""
+  ) {
+
+    const formatted =
+      formatMultiplier(value);
+
+    multiplier.textContent =
+      formatted;
+
+    currentStat.textContent =
+      formatted;
+
+    multiplier.classList.remove(
+      "won",
+      "crashed"
+    );
+
+    if (state) {
+      multiplier.classList.add(
+        state
+      );
+    }
+
+  }
+
+
+  /* =====================================================
+     SERVER MULTIPLIER
+  ===================================================== */
+
+  function calculateMultiplier(
+    startedAt
+  ) {
+
+    const start =
+      new Date(
+        startedAt
+      ).getTime();
+
+    const elapsed =
+      Math.max(
+        0,
+        Date.now() - start
       );
 
-    }
-
-
-    /* =====================================================
-       BALANCE
-    ===================================================== */
-
-    function updateBalance(
-      value
-    ) {
-
-      balance =
-        Number(value || 0);
-
-      const formatted =
-        formatNumber(balance);
-
-      balanceElement.textContent =
-        formatted;
-
-      headerBalance.textContent =
-        formatted;
-
-    }
-
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    function showMessage(
-      text,
-      type = ""
-    ) {
-
-      messageElement.textContent =
-        text;
-
-      messageElement.className =
-        "message";
-
-      if (type) {
-        messageElement.classList.add(
-          type
-        );
-      }
-
-    }
-
-
-    /* =====================================================
-       STATUS
-    ===================================================== */
-
-    function setStatus(
-      text,
-      state = ""
-    ) {
-
-      statusText.textContent =
-        text;
-
-      statusDot.className =
-        "status-dot";
-
-      if (state) {
-        statusDot.classList.add(
-          state
-        );
-      }
-
-    }
-
-
-    /* =====================================================
-       MULTIPLIER
-    ===================================================== */
-
-    function setMultiplier(
-      value,
-      state = ""
-    ) {
-
-      lastMultiplier =
-        Number(value);
-
-      const formatted =
-        formatMultiplier(
-          lastMultiplier
-        );
-
-      multiplierElement.textContent =
-        formatted;
-
-      infoCurrent.textContent =
-        formatted;
-
-      multiplierElement.classList.remove(
-        "crashed",
-        "won",
-        "crash-anim"
-      );
-
-      if (state) {
-
-        multiplierElement.classList.add(
-          state
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       RESET GRAPH
-    ===================================================== */
-
-    function resetGraph() {
-
-      graphPath.setAttribute(
-        "d",
-        ""
-      );
-
-      graphFill.setAttribute(
-        "d",
-        ""
-      );
-
-      rocket.classList.remove(
-        "active",
-        "crashed"
-      );
-
-      rocket.style.left =
-        "5%";
-
-      rocket.style.bottom =
-        "8%";
-
-    }
-
-
-    /* =====================================================
-       DRAW GRAPH
-    ===================================================== */
-
-    function drawGraph(
-      multiplier
-    ) {
-
-      const board =
-        document.getElementById(
-          "crashBoard"
-        );
-
-      if (!board) {
-        return;
-      }
-
-
-      const width =
-        1000;
-
-      const height =
-        500;
-
-
-      /*
-       * Convert multiplier into
-       * graph position.
-       */
-
-      const progress =
-        Math.min(
-          1,
-          Math.log(
-            Math.max(
-              1,
-              multiplier
-            )
-          ) /
-          Math.log(20)
-        );
-
-
-      const x =
-        40 +
-        progress * 900;
-
-
-      const y =
-        455 -
-        progress * 330;
-
-
-      const previous =
-        graphPath.getAttribute(
-          "d"
-        );
-
-
-      if (!previous) {
-
-        const d =
-          `M 40 455 L ${x} ${y}`;
-
-        graphPath.setAttribute(
-          "d",
-          d
-        );
-
-      } else {
-
-        graphPath.setAttribute(
-          "d",
-          `${previous} L ${x} ${y}`
-        );
-
-      }
-
-
-      graphFill.setAttribute(
-        "d",
-        `M 40 455 ${graphPath
-          .getAttribute("d")
-          .replace(/^M 40 455 /, "")
-        } L ${x} 455 Z`
+    let value =
+      1 +
+      (
+        elapsed / 1000
+      ) *
+      0.25;
+
+    value =
+      Math.floor(
+        value * 100
+      ) / 100;
+
+    return value;
+
+  }
+
+
+  /* =====================================================
+     ROCKET POSITION
+  ===================================================== */
+
+  function updateRocket(
+    value
+  ) {
+
+    /*
+      Convert multiplier to a smooth
+      flight percentage.
+
+      Logarithmic scaling means:
+
+      1x   = bottom
+      2x   = noticeably higher
+      5x   = very high
+      10x  = near top
+      20x+ = top
+    */
+
+    const normalized =
+      Math.min(
+        1,
+        Math.log(
+          Math.max(1, value)
+        ) /
+        Math.log(20)
       );
 
 
-      const rocketX =
-        Math.min(
-          95,
-          4 +
-          progress * 90
-        );
-
-      const rocketBottom =
-        Math.min(
-          82,
-          8 +
-          progress * 65
-        );
+    const bottom =
+      8 +
+      normalized * 76;
 
 
-      rocket.style.left =
-        `${rocketX}%`;
+    rocketContainer.style.bottom =
+      `${bottom}%`;
 
-      rocket.style.bottom =
-        `${rocketBottom}%`;
 
-      rocket.classList.add(
-        "active"
-      );
+    /*
+      Make the rocket feel like
+      it's accelerating.
+    */
 
+    if (value >= 2) {
+      stars.classList.add("fast");
     }
 
-
-    /* =====================================================
-       CALCULATE SERVER-SIDE MULTIPLIER
-    ===================================================== */
-
-    function calculateMultiplier(
-      startedAt
-    ) {
-
-      const start =
-        new Date(
-          startedAt
-        ).getTime();
-
-      const elapsed =
-        Math.max(
-          0,
-          Date.now() - start
-        );
-
-
-      /*
-       * Must match the server's
-       * multiplier progression.
-       */
-
-      let value =
-        1 +
-        (
-          elapsed / 1000
-        ) *
-        0.25;
-
-
-      value =
-        Math.floor(
-          value * 100
-        ) / 100;
-
-
-      return value;
-
+    if (value >= 5) {
+      stars.style.opacity = ".8";
     }
 
+  }
 
-    /* =====================================================
-       ANIMATION
-    ===================================================== */
 
-    function stopAnimation() {
+  /* =====================================================
+     RESET VISUALS
+  ===================================================== */
+
+  function resetVisuals() {
+
+    rocketContainer.style.bottom =
+      "9%";
+
+    rocketContainer.classList.remove(
+      "flying"
+    );
+
+    stars.classList.remove(
+      "fast"
+    );
+
+    stars.style.opacity =
+      ".55";
+
+    explosion.classList.remove(
+      "active"
+    );
+
+    multiplier.classList.remove(
+      "won",
+      "crashed"
+    );
+
+    setMultiplier(1);
+
+  }
+
+
+  /* =====================================================
+     START ANIMATION
+  ===================================================== */
+
+  function startAnimation() {
+
+    stopAnimation();
+
+    if (!game) {
+      return;
+    }
+
+    running = true;
+
+    rocketContainer.classList.add(
+      "flying"
+    );
+
+
+    function frame() {
 
       if (
-        animationFrame !== null
+        !running ||
+        !game
       ) {
-
-        cancelAnimationFrame(
-          animationFrame
-        );
-
-        animationFrame =
-          null;
-
-      }
-
-    }
-
-
-    function startAnimation() {
-
-      stopAnimation();
-
-
-      if (!game) {
         return;
       }
 
 
-      roundRunning =
-        true;
-
-
-      function frame() {
-
-        if (
-          !roundRunning ||
-          !game
-        ) {
-          return;
-        }
-
-
-        const multiplier =
-          calculateMultiplier(
-            game.startedAt
-          );
-
-
-        setMultiplier(
-          multiplier
-        );
-
-        drawGraph(
-          multiplier
+      const current =
+        calculateMultiplier(
+          game.startedAt
         );
 
 
-        /*
-         * AUTO CASH OUT
-         */
-
-        if (
-          selectedAutoCashout &&
-          multiplier >=
-            selectedAutoCashout &&
-          !cashoutLocked
-        ) {
-
-          cashOut();
-
-          return;
-
-        }
+      setMultiplier(
+        current
+      );
 
 
-        animationFrame =
-          requestAnimationFrame(
-            frame
-          );
+      updateRocket(
+        current
+      );
+
+
+      /*
+        Auto cash out
+      */
+
+      if (
+        autoCashout &&
+        current >= autoCashout &&
+        !cashoutLocked
+      ) {
+
+        cashOut();
+
+        return;
 
       }
 
@@ -2089,523 +2124,414 @@
     }
 
 
-    /* =====================================================
-       START ROUND
-    ===================================================== */
-
-    async function startCrash() {
-
-      if (
-        roundRunning
-      ) {
-        return;
-      }
-
-
-      const wager =
-        Number(
-          wagerInput.value
-        );
-
-
-      if (
-        !Number.isInteger(wager) ||
-        wager < 1
-      ) {
-
-        showMessage(
-          "Enter a valid wager.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      if (
-        wager > 1000000
-      ) {
-
-        showMessage(
-          "Maximum wager is 1,000,000.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      if (
-        wager > balance
-      ) {
-
-        showMessage(
-          "You do not have enough coins for this wager.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      mainButton.disabled =
-        true;
-
-      wagerInput.disabled =
-        true;
-
-
-      showMessage(
-        "Starting Crash round..."
+    animationFrame =
+      requestAnimationFrame(
+        frame
       );
 
+  }
 
-      resetGraph();
 
-      setMultiplier(
-        1
-      );
+  /* =====================================================
+     STOP ANIMATION
+  ===================================================== */
 
-      setStatus(
-        "Starting..."
-      );
+  function stopAnimation() {
 
-      infoStatus.textContent =
-        "Starting";
-
-
-      try {
-
-        const response =
-          await fetch(
-            PLAY_ENDPOINT,
-            {
-
-              method:
-                "POST",
-
-              credentials:
-                "include",
-
-              headers: {
-
-                "Content-Type":
-                  "application/json"
-
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "start",
-
-                  wager
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (
-          !response.ok ||
-          !data.success
-        ) {
-
-          throw new Error(
-            data.error ||
-            "Unable to start Crash."
-          );
-
-        }
-
-
-        game =
-          data.game;
-
-
-        updateBalance(
-          data.balance
-        );
-
-
-        roundRunning =
-          true;
-
-        cashoutLocked =
-          false;
-
-
-        roundIdElement.textContent =
-          game.gameId;
-
-
-        infoWager.textContent =
-          formatNumber(
-            game.wager
-          );
-
-
-        infoStatus.textContent =
-          "Live";
-
-
-        setStatus(
-          "Live",
-          "live"
-        );
-
-
-        subStatusElement.textContent =
-          "Cash out before the crash";
-
-
-        mainButton.textContent =
-          "Cash Out";
-
-        mainButton.classList.add(
-          "cashout"
-        );
-
-        mainButton.disabled =
-          false;
-
-
-        showMessage(
-          "Round started. Watch the multiplier.",
-          ""
-        );
-
-
-        startAnimation();
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
-
-        showMessage(
-          error.message ||
-          "Unable to start Crash.",
-          "error"
-        );
-
-
-        mainButton.disabled =
-          false;
-
-        wagerInput.disabled =
-          false;
-
-        setStatus(
-          "Ready"
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       CASH OUT
-    ===================================================== */
-
-    async function cashOut() {
-
-      if (
-        !game ||
-        !roundRunning ||
-        cashoutLocked
-      ) {
-        return;
-      }
-
-
-      cashoutLocked =
-        true;
-
-      mainButton.disabled =
-        true;
-
-
-      const localMultiplier =
-        calculateMultiplier(
-          game.startedAt
-        );
-
-
-      setMultiplier(
-        localMultiplier,
-        "won"
-      );
-
-
-      setStatus(
-        "Cashing out..."
-      );
-
-
-      showMessage(
-        `Cashing out at ${formatMultiplier(localMultiplier)}...`
-      );
-
-
-      try {
-
-        const response =
-          await fetch(
-            PLAY_ENDPOINT,
-            {
-
-              method:
-                "POST",
-
-              credentials:
-                "include",
-
-              headers: {
-
-                "Content-Type":
-                  "application/json"
-
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "cashout",
-
-                  gameId:
-                    game.gameId
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        /*
-         * SERVER SAYS WE MISSED
-         */
-
-        if (
-          !response.ok ||
-          !data.success
-        ) {
-
-          if (
-            data.code ===
-            "ROUND_ALREADY_ENDED"
-          ) {
-
-            handleCrash(
-              data.game
-            );
-
-            return;
-
-          }
-
-
-          throw new Error(
-            data.error ||
-            "Cash out failed."
-          );
-
-        }
-
-
-        /*
-         * SERVER IS AUTHORITATIVE.
-         */
-
-        const finalGame =
-          data.game;
-
-
-        roundRunning =
-          false;
-
-        stopAnimation();
-
-
-        setMultiplier(
-          finalGame.multiplier,
-          "won"
-        );
-
-
-        updateBalance(
-          data.balance
-        );
-
-
-        setStatus(
-          "Cashed out",
-          "live"
-        );
-
-
-        infoStatus.textContent =
-          "Won";
-
-
-        subStatusElement.textContent =
-          `Won ${formatNumber(finalGame.payout)} coins`;
-
-
-        showMessage(
-
-          `Cashed out at ${formatMultiplier(finalGame.multiplier)} for ${formatNumber(finalGame.payout)} coins (+${formatNumber(finalGame.profit)} profit).`,
-
-          "success"
-
-        );
-
-
-        mainButton.textContent =
-          "Start Crash";
-
-        mainButton.classList.remove(
-          "cashout"
-        );
-
-        mainButton.disabled =
-          false;
-
-        wagerInput.disabled =
-          false;
-
-
-        game =
-          null;
-
-        cashoutLocked =
-          false;
-
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
-
-        /*
-         * IMPORTANT:
-         *
-         * Don't automatically create
-         * another round after a failed
-         * request.
-         */
-
-        showMessage(
-          error.message ||
-          "Cash out failed. Check the round status.",
-          "error"
-        );
-
-
-        mainButton.disabled =
-          false;
-
-        cashoutLocked =
-          false;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       HANDLE CRASH
-    ===================================================== */
-
-    function handleCrash(
-      crashGame
+    if (
+      animationFrame !== null
     ) {
 
-      roundRunning =
+      cancelAnimationFrame(
+        animationFrame
+      );
+
+      animationFrame =
+        null;
+
+    }
+
+  }
+
+
+  /* =====================================================
+     START CRASH
+  ===================================================== */
+
+  async function startCrash() {
+
+    if (running) {
+      return;
+    }
+
+
+    const wager =
+      Number(
+        wagerInput.value
+      );
+
+
+    if (
+      !Number.isInteger(wager) ||
+      wager < 1
+    ) {
+
+      setMessage(
+        "Enter a valid wager.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      wager > 1000000
+    ) {
+
+      setMessage(
+        "Maximum wager is 1,000,000 coins.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      wager > balance
+    ) {
+
+      setMessage(
+        "You don't have enough coins.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    actionButton.disabled =
+      true;
+
+    wagerInput.disabled =
+      true;
+
+
+    resetVisuals();
+
+
+    setStatus(
+      "Launching..."
+    );
+
+
+    statusStat.textContent =
+      "Launching";
+
+
+    multiplierLabel.textContent =
+      "launching";
+
+
+    setMessage(
+      "Preparing rocket..."
+    );
+
+
+    try {
+
+      const response =
+        await fetch(
+          PLAY_ENDPOINT,
+          {
+
+            method: "POST",
+
+            credentials: "include",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+
+                action: "start",
+
+                wager
+
+              })
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Unable to start Crash."
+        );
+
+      }
+
+
+      game =
+        data.game;
+
+
+      setBalance(
+        data.balance
+      );
+
+
+      running =
+        true;
+
+      cashoutLocked =
+        false;
+
+
+      gameId.textContent =
+        game.gameId;
+
+
+      wagerStat.textContent =
+        formatNumber(
+          game.wager
+        );
+
+
+      statusStat.textContent =
+        "Live";
+
+
+      setStatus(
+        "Rocket launched",
+        "live"
+      );
+
+
+      multiplierLabel.textContent =
+        "flight multiplier";
+
+
+      actionButton.textContent =
+        "Cash Out";
+
+      actionButton.classList.add(
+        "cashout"
+      );
+
+      actionButton.disabled =
+        false;
+
+
+      setMessage(
+        "Cash out before the rocket disappears.",
+        ""
+      );
+
+
+      startAnimation();
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      setMessage(
+        error.message ||
+        "Unable to start Crash.",
+        "error"
+      );
+
+
+      actionButton.disabled =
+        false;
+
+      wagerInput.disabled =
+        false;
+
+
+      setStatus(
+        "Ready"
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     CASH OUT
+  ===================================================== */
+
+  async function cashOut() {
+
+    if (
+      !game ||
+      !running ||
+      cashoutLocked
+    ) {
+      return;
+    }
+
+
+    cashoutLocked =
+      true;
+
+    actionButton.disabled =
+      true;
+
+
+    const localMultiplier =
+      calculateMultiplier(
+        game.startedAt
+      );
+
+
+    setMessage(
+      `Cashing out at ${formatMultiplier(localMultiplier)}...`
+    );
+
+
+    try {
+
+      const response =
+        await fetch(
+          PLAY_ENDPOINT,
+          {
+
+            method: "POST",
+
+            credentials: "include",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+
+                action: "cashout",
+
+                gameId:
+                  game.gameId
+
+              })
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      /*
+        We missed the crash.
+      */
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        if (
+          data.code ===
+          "ROUND_ALREADY_ENDED"
+        ) {
+
+          handleCrash(
+            data.game
+          );
+
+          return;
+
+        }
+
+
+        throw new Error(
+          data.error ||
+          "Cash out failed."
+        );
+
+      }
+
+
+      const finalGame =
+        data.game;
+
+
+      running =
         false;
 
       stopAnimation();
 
 
-      const crashMultiplier =
-        Number(
-          crashGame?.crashPoint ||
-          crashGame?.multiplier ||
-          lastMultiplier ||
-          1
-        );
-
-
       setMultiplier(
-        crashMultiplier,
-        "crashed"
+        finalGame.multiplier,
+        "won"
       );
 
 
-      multiplierElement.classList.add(
-        "crash-anim"
+      updateRocket(
+        finalGame.multiplier
       );
 
 
-      rocket.classList.remove(
-        "active"
-      );
-
-      rocket.classList.add(
-        "crashed"
+      setBalance(
+        data.balance
       );
 
 
       setStatus(
-        "Crashed",
-        "crashed"
+        "Cashed out",
+        "live"
       );
 
 
-      infoStatus.textContent =
-        "Lost";
+      statusStat.textContent =
+        "Won";
 
 
-      subStatusElement.textContent =
-        `Crashed at ${formatMultiplier(crashMultiplier)}`;
+      multiplierLabel.textContent =
+        "successful cash out";
 
 
-      showMessage(
+      setMessage(
 
-        `The round crashed at ${formatMultiplier(crashMultiplier)}. Your ${formatNumber(game?.wager || 0)} coin wager was lost.`,
+        `Cashed out at ${formatMultiplier(finalGame.multiplier)} for ${formatNumber(finalGame.payout)} coins. Profit: +${formatNumber(finalGame.profit)}.`,
 
-        "error"
+        "success"
 
       );
 
 
-      mainButton.textContent =
+      actionButton.textContent =
         "Start Crash";
 
-      mainButton.classList.remove(
+      actionButton.classList.remove(
         "cashout"
       );
 
-      mainButton.disabled =
+      actionButton.disabled =
         false;
 
       wagerInput.disabled =
@@ -2618,276 +2544,389 @@
       cashoutLocked =
         false;
 
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      setMessage(
+        error.message ||
+        "Cash out failed.",
+        "error"
+      );
+
+
+      actionButton.disabled =
+        false;
+
+      cashoutLocked =
+        false;
+
     }
 
+  }
 
-    /* =====================================================
-       LOGIN
-    ===================================================== */
 
-    async function loadUser() {
+  /* =====================================================
+     HANDLE CRASH
+  ===================================================== */
 
-      try {
+  function handleCrash(
+    crashGame
+  ) {
 
-        const response =
-          await fetch(
-            USER_ENDPOINT,
-            {
+    const crashPoint =
+      Number(
+        crashGame?.crashPoint ||
+        crashGame?.multiplier ||
+        1
+      );
 
-              method:
-                "GET",
 
-              credentials:
-                "include",
+    running =
+      false;
 
-              headers: {
+    stopAnimation();
 
-                "Accept":
-                  "application/json"
 
-              }
+    /*
+      Put rocket where the crash happened.
+    */
 
+    updateRocket(
+      crashPoint
+    );
+
+
+    rocketContainer.classList.remove(
+      "flying"
+    );
+
+
+    rocketContainer.style.filter =
+      "grayscale(.4) brightness(.8)";
+
+
+    /*
+      Explosion.
+    */
+
+    explosion.classList.remove(
+      "active"
+    );
+
+
+    void explosion.offsetWidth;
+
+
+    explosion.classList.add(
+      "active"
+    );
+
+
+    setMultiplier(
+      crashPoint,
+      "crashed"
+    );
+
+
+    setStatus(
+      "Rocket crashed",
+      "crashed"
+    );
+
+
+    statusStat.textContent =
+      "Lost";
+
+
+    multiplierLabel.textContent =
+      "crashed";
+
+
+    setMessage(
+
+      `The rocket crashed at ${formatMultiplier(crashPoint)}. Your ${formatNumber(game?.wager || 0)} coin wager was lost.`,
+
+      "error"
+
+    );
+
+
+    actionButton.textContent =
+      "Start Crash";
+
+    actionButton.classList.remove(
+      "cashout"
+    );
+
+    actionButton.disabled =
+      false;
+
+    wagerInput.disabled =
+      false;
+
+
+    game =
+      null;
+
+    cashoutLocked =
+      false;
+
+  }
+
+
+  /* =====================================================
+     LOAD USER
+  ===================================================== */
+
+  async function loadUser() {
+
+    try {
+
+      const response =
+        await fetch(
+          USER_ENDPOINT,
+          {
+
+            credentials:
+              "include",
+
+            headers: {
+              Accept:
+                "application/json"
             }
-          );
 
-
-        const data =
-          await response.json();
-
-
-        if (
-          !response.ok ||
-          !data.success ||
-          !data.user
-        ) {
-
-          loginOverlay.classList.add(
-            "show"
-          );
-
-          mainButton.disabled =
-            true;
-
-          wagerInput.disabled =
-            true;
-
-          return;
-
-        }
-
-
-        user =
-          data.user;
-
-
-        updateBalance(
-          user.balance
+          }
         );
 
 
-        loginOverlay.classList.remove(
-          "show"
-        );
+      const data =
+        await response.json();
 
 
-        mainButton.disabled =
-          false;
-
-        wagerInput.disabled =
-          false;
-
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.user
+      ) {
 
         loginOverlay.classList.add(
           "show"
         );
 
-        mainButton.disabled =
+        actionButton.disabled =
           true;
 
         wagerInput.disabled =
           true;
 
+        setMessage(
+          "Login required.",
+          "error"
+        );
+
+        return;
+
       }
+
+
+      user =
+        data.user;
+
+
+      setBalance(
+        user.balance
+      );
+
+
+      loginOverlay.classList.remove(
+        "show"
+      );
+
+
+      actionButton.disabled =
+        false;
+
+      wagerInput.disabled =
+        false;
+
+
+      setMessage(
+        "Ready to launch."
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      loginOverlay.classList.add(
+        "show"
+      );
+
+      actionButton.disabled =
+        true;
+
+      wagerInput.disabled =
+        true;
+
+
+      setMessage(
+        "Unable to load your account.",
+        "error"
+      );
 
     }
 
+  }
 
-    /* =====================================================
-       LOGIN BUTTON
-    ===================================================== */
 
-    loginButton.addEventListener(
-      "click",
-      () => {
+  /* =====================================================
+     LOGIN
+  ===================================================== */
 
-        window.location.href =
-          `${API}/auth/discord`;
+  loginButton.addEventListener(
+    "click",
+    () => {
 
+      window.location.href =
+        `${API}/auth/discord`;
+
+    }
+  );
+
+
+  /* =====================================================
+     ACTION BUTTON
+  ===================================================== */
+
+  actionButton.addEventListener(
+    "click",
+    () => {
+
+      if (running) {
+        cashOut();
+      } else {
+        startCrash();
       }
-    );
+
+    }
+  );
 
 
-    /* =====================================================
-       MAIN BUTTON
-    ===================================================== */
+  /* =====================================================
+     QUICK BETS
+  ===================================================== */
 
-    mainButton.addEventListener(
-      "click",
-      () => {
+  document
+    .querySelectorAll("[data-bet]")
+    .forEach(button => {
 
-        if (
-          roundRunning
-        ) {
+      button.addEventListener(
+        "click",
+        () => {
 
-          cashOut();
-
-        } else {
-
-          startCrash();
-
-        }
-
-      }
-    );
-
-
-    /* =====================================================
-       QUICK BETS
-    ===================================================== */
-
-    document
-      .querySelectorAll(
-        "[data-bet]"
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              const value =
-                button.dataset.bet;
-
-              wagerInput.value =
-                value;
-
-            }
-          );
+          wagerInput.value =
+            button.dataset.bet;
 
         }
       );
 
-
-    /* =====================================================
-       AUTO CASHOUT BUTTONS
-    ===================================================== */
-
-    document
-      .querySelectorAll(
-        "[data-target]"
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              document
-                .querySelectorAll(
-                  "[data-target]"
-                )
-                .forEach(
-                  item => {
-
-                    item.classList.remove(
-                      "active"
-                    );
-
-                  }
-                );
+    });
 
 
-              button.classList.add(
+  /* =====================================================
+     AUTO CASHOUT
+  ===================================================== */
+
+  document
+    .querySelectorAll("[data-target]")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          document
+            .querySelectorAll(
+              "[data-target]"
+            )
+            .forEach(item => {
+
+              item.classList.remove(
                 "active"
               );
 
-
-              const target =
-                button.dataset.target;
+            });
 
 
-              if (
-                target ===
-                "manual"
-              ) {
-
-                selectedAutoCashout =
-                  null;
-
-              } else {
-
-                selectedAutoCashout =
-                  Number(target);
-
-              }
-
-            }
+          button.classList.add(
+            "active"
           );
+
+
+          const target =
+            button.dataset.target;
+
+
+          if (
+            target === "manual"
+          ) {
+
+            autoCashout =
+              null;
+
+          } else {
+
+            autoCashout =
+              Number(target);
+
+          }
 
         }
       );
 
+    });
 
-    /* =====================================================
-       PAGE VISIBILITY
-    =====================================================
 
-       Don't stop a live round just because
-       the browser tab becomes hidden.
+  /* =====================================================
+     VISIBILITY
+  ===================================================== */
 
-       The server remains authoritative.
-    */
+  document.addEventListener(
+    "visibilitychange",
+    () => {
 
-    document.addEventListener(
-      "visibilitychange",
-      () => {
+      if (
+        !document.hidden &&
+        game &&
+        running
+      ) {
 
-        if (
-          !document.hidden &&
-          game &&
-          roundRunning
-        ) {
-
-          startAnimation();
-
-        }
+        startAnimation();
 
       }
-    );
+
+    }
+  );
 
 
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
+  /* =====================================================
+     INITIALIZE
+  ===================================================== */
 
-    resetGraph();
+  resetVisuals();
 
-    setMultiplier(
-      1
-    );
+  loadUser();
 
-    loadUser();
-
-  </script>
+</script>
 
 </body>
 </html>
