@@ -116,6 +116,10 @@
     {
     "source": "/plinko",
     "destination": "/plinko.html"
+   },
+   {
+    "source": "/crash",
+    "destination": "/crash.html"
    }
   ]
 }
