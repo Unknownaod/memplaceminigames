@@ -1725,6 +1725,10 @@
   const PLAY_ENDPOINT =
     `${API}/api/games/crash/play`;
 
+  /*
+   * Both start and cashout now use the
+   * SAME backend route.
+   */
   const CASHOUT_ENDPOINT =
     `${API}/api/games/crash/play`;
 
@@ -1891,11 +1895,15 @@
     const formatted =
       formatNumber(balance);
 
-    balanceElement.textContent =
-      formatted;
+    if (balanceElement) {
+      balanceElement.textContent =
+        formatted;
+    }
 
-    headerBalance.textContent =
-      formatted;
+    if (headerBalance) {
+      headerBalance.textContent =
+        formatted;
+    }
 
   }
 
@@ -1908,6 +1916,10 @@
     text,
     type = ""
   ) {
+
+    if (!message) {
+      return;
+    }
 
     message.textContent =
       text;
@@ -1931,14 +1943,20 @@
     state = ""
   ) {
 
-    statusText.textContent =
-      text;
+    if (statusText) {
+      statusText.textContent =
+        text;
+    }
 
-    liveDot.className =
-      "live-dot";
+    if (liveDot) {
 
-    if (state) {
-      liveDot.classList.add(state);
+      liveDot.className =
+        "live-dot";
+
+      if (state) {
+        liveDot.classList.add(state);
+      }
+
     }
 
   }
@@ -1956,22 +1974,30 @@
     const formatted =
       formatMultiplier(value);
 
-    multiplier.textContent =
-      formatted;
+    if (multiplier) {
 
-    currentStat.textContent =
-      formatted;
+      multiplier.textContent =
+        formatted;
 
-    multiplier.classList.remove(
-      "won",
-      "crashed"
-    );
-
-    if (state) {
-
-      multiplier.classList.add(
-        state
+      multiplier.classList.remove(
+        "won",
+        "crashed"
       );
+
+      if (state) {
+
+        multiplier.classList.add(
+          state
+        );
+
+      }
+
+    }
+
+    if (currentStat) {
+
+      currentStat.textContent =
+        formatted;
 
     }
 
@@ -1981,9 +2007,7 @@
   /* =====================================================
      SERVER-SYNCED MULTIPLIER
      
-     MUST MATCH play.js
-     
-     Backend:
+     MUST MATCH BACKEND:
      
      Math.pow(1.25, seconds)
   ===================================================== */
@@ -2008,7 +2032,8 @@
     const elapsed =
       Math.max(
         0,
-        Date.now() - start
+        Date.now() -
+        start
       );
 
     const seconds =
@@ -2038,6 +2063,10 @@
     value
   ) {
 
+    if (!rocketContainer) {
+      return;
+    }
+
     const normalized =
       Math.min(
         1,
@@ -2050,17 +2079,18 @@
         Math.log(20)
       );
 
-
     const bottom =
       8 +
       normalized * 76;
-
 
     rocketContainer.style.bottom =
       `${bottom}%`;
 
 
-    if (value >= 2) {
+    if (
+      stars &&
+      value >= 2
+    ) {
 
       stars.classList.add(
         "fast"
@@ -2069,7 +2099,10 @@
     }
 
 
-    if (value >= 5) {
+    if (
+      stars &&
+      value >= 5
+    ) {
 
       stars.style.opacity =
         ".8";
@@ -2085,47 +2118,87 @@
 
   function resetVisuals() {
 
-    rocketContainer.style.bottom =
-      "9%";
+    if (rocketContainer) {
 
-    rocketContainer.classList.remove(
-      "flying"
-    );
+      rocketContainer.style.bottom =
+        "9%";
 
-    rocketContainer.style.filter =
-      "";
+      rocketContainer.classList.remove(
+        "flying"
+      );
 
-    stars.classList.remove(
-      "fast"
-    );
+      rocketContainer.style.filter =
+        "";
 
-    stars.style.opacity =
-      ".55";
+    }
 
-    explosion.classList.remove(
-      "active"
-    );
 
-    multiplier.classList.remove(
-      "won",
-      "crashed"
-    );
+    if (stars) {
+
+      stars.classList.remove(
+        "fast"
+      );
+
+      stars.style.opacity =
+        ".55";
+
+    }
+
+
+    if (explosion) {
+
+      explosion.classList.remove(
+        "active"
+      );
+
+    }
+
+
+    if (multiplier) {
+
+      multiplier.classList.remove(
+        "won",
+        "crashed"
+      );
+
+    }
+
 
     setMultiplier(
       1
     );
 
-    gameIdElement.textContent =
-      "No active round";
 
-    wagerStat.textContent =
-      "—";
+    if (gameIdElement) {
 
-    statusStat.textContent =
-      "Waiting";
+      gameIdElement.textContent =
+        "No active round";
 
-    multiplierLabel.textContent =
-      "waiting for launch";
+    }
+
+
+    if (wagerStat) {
+
+      wagerStat.textContent =
+        "—";
+
+    }
+
+
+    if (statusStat) {
+
+      statusStat.textContent =
+        "Waiting";
+
+    }
+
+
+    if (multiplierLabel) {
+
+      multiplierLabel.textContent =
+        "waiting for launch";
+
+    }
 
   }
 
@@ -2144,12 +2217,17 @@
 
     running = true;
 
-    rocketContainer.classList.add(
-      "flying"
-    );
 
-    rocketContainer.style.filter =
-      "";
+    if (rocketContainer) {
+
+      rocketContainer.classList.add(
+        "flying"
+      );
+
+      rocketContainer.style.filter =
+        "";
+
+    }
 
 
     function frame() {
@@ -2158,7 +2236,9 @@
         !running ||
         !game
       ) {
+
         return;
+
       }
 
 
@@ -2239,21 +2319,72 @@
 
   function resetAfterRound() {
 
-    actionButton.textContent =
-      "Start Crash";
+    if (actionButton) {
 
-    actionButton.classList.remove(
-      "cashout"
-    );
+      actionButton.textContent =
+        "Start Crash";
 
-    actionButton.disabled =
-      false;
+      actionButton.classList.remove(
+        "cashout"
+      );
 
-    wagerInput.disabled =
-      false;
+      actionButton.disabled =
+        false;
+
+    }
+
+
+    if (wagerInput) {
+
+      wagerInput.disabled =
+        false;
+
+    }
+
 
     cashoutLocked =
       false;
+
+  }
+
+
+  /* =====================================================
+     NORMALIZE GAME
+  ===================================================== */
+
+  function normalizeGame(
+    serverGame
+  ) {
+
+    if (!serverGame) {
+      return null;
+    }
+
+    return {
+
+      ...serverGame,
+
+      /*
+       * Backend supports both id and gameId.
+       */
+
+      gameId:
+        serverGame.gameId ||
+        serverGame.id,
+
+      id:
+        serverGame.id ||
+        serverGame.gameId,
+
+      wager:
+        Number(
+          serverGame.wager || 0
+        ),
+
+      startedAt:
+        serverGame.startedAt
+
+    };
 
   }
 
@@ -2269,7 +2400,9 @@
       starting ||
       cashoutLocked
     ) {
+
       return;
+
     }
 
 
@@ -2278,6 +2411,10 @@
         wagerInput.value
       );
 
+
+    /* ===================================================
+       VALIDATE
+    =================================================== */
 
     if (
       !Number.isInteger(wager) ||
@@ -2325,6 +2462,7 @@
     starting =
       true;
 
+
     actionButton.disabled =
       true;
 
@@ -2357,6 +2495,10 @@
 
     try {
 
+      /*
+       * START REQUEST
+       */
+
       const response =
         await fetch(
           PLAY_ENDPOINT,
@@ -2369,11 +2511,13 @@
               "include",
 
             headers: {
+
               "Content-Type":
                 "application/json",
 
               "Accept":
                 "application/json"
+
             },
 
             body:
@@ -2397,84 +2541,103 @@
         );
 
 
+      /* =================================================
+         ACTIVE GAME ALREADY EXISTS
+      ================================================= */
+
+      if (
+        response.status === 409 &&
+        data.game &&
+        data.game.startedAt
+      ) {
+
+        game =
+          normalizeGame(
+            data.game
+          );
+
+
+        running =
+          true;
+
+        cashoutLocked =
+          false;
+
+
+        gameIdElement.textContent =
+          game.gameId;
+
+
+        wagerStat.textContent =
+          formatNumber(
+            game.wager
+          );
+
+
+        statusStat.textContent =
+          "Live";
+
+
+        setStatus(
+          "Rocket launched",
+          "live"
+        );
+
+
+        multiplierLabel.textContent =
+          "flight multiplier";
+
+
+        actionButton.textContent =
+          "Cash Out";
+
+
+        actionButton.classList.add(
+          "cashout"
+        );
+
+
+        actionButton.disabled =
+          false;
+
+
+        wagerInput.disabled =
+          true;
+
+
+        setMessage(
+          "Your active Crash game was restored."
+        );
+
+
+        startAnimation();
+
+
+        return;
+
+      }
+
+
+      /* =================================================
+         NORMAL ERROR
+      ================================================= */
+
       if (
         !response.ok ||
         !data.success
       ) {
 
-        /*
-         * If the backend says an active
-         * game already exists, restore it
-         * into the UI.
-         */
-
-        if (
-          response.status === 409 &&
-          data.game &&
-          data.game.startedAt
-        ) {
-
-          game =
-            normalizeGame(
-              data.game
-            );
-
-          running =
-            true;
-
-          cashoutLocked =
-            false;
-
-          gameIdElement.textContent =
-            game.gameId;
-
-          wagerStat.textContent =
-            formatNumber(
-              game.wager
-            );
-
-          statusStat.textContent =
-            "Live";
-
-          setStatus(
-            "Rocket launched",
-            "live"
-          );
-
-          multiplierLabel.textContent =
-            "flight multiplier";
-
-          actionButton.textContent =
-            "Cash Out";
-
-          actionButton.classList.add(
-            "cashout"
-          );
-
-          actionButton.disabled =
-            false;
-
-          wagerInput.disabled =
-            true;
-
-          setMessage(
-            "Your active Crash game was restored."
-          );
-
-          startAnimation();
-
-          return;
-
-        }
-
-
         throw new Error(
           data.error ||
-          "Unable to start Crash."
+          `Unable to start Crash (${response.status}).`
         );
 
       }
 
+
+      /* =================================================
+         GAME VALIDATION
+      ================================================= */
 
       if (
         !data.game
@@ -2487,15 +2650,9 @@
       }
 
 
-      /*
-       * Backend returns:
-       *
-       * game.id
-       *
-       * Frontend internally uses:
-       *
-       * game.gameId
-       */
+      /* =================================================
+         STORE GAME
+      ================================================= */
 
       game =
         normalizeGame(
@@ -2503,9 +2660,19 @@
         );
 
 
-      setBalance(
-        data.balance
-      );
+      /* =================================================
+         UPDATE BALANCE
+      ================================================= */
+
+      if (
+        data.balance !== undefined
+      ) {
+
+        setBalance(
+          data.balance
+        );
+
+      }
 
 
       running =
@@ -2514,6 +2681,10 @@
       cashoutLocked =
         false;
 
+
+      /* =================================================
+         GAME UI
+      ================================================= */
 
       gameIdElement.textContent =
         game.gameId;
@@ -2557,6 +2728,10 @@
       );
 
 
+      /* =================================================
+         START LOCAL DISPLAY
+      ================================================= */
+
       startAnimation();
 
     } catch (error) {
@@ -2572,6 +2747,7 @@
 
       game =
         null;
+
 
       stopAnimation();
 
@@ -2609,49 +2785,6 @@
 
 
   /* =====================================================
-     NORMALIZE GAME
-  ===================================================== */
-
-  function normalizeGame(
-    serverGame
-  ) {
-
-    if (!serverGame) {
-      return null;
-    }
-
-
-    return {
-
-      ...serverGame,
-
-      /*
-       * Backend uses `id`.
-       * Frontend uses `gameId`.
-       */
-
-      gameId:
-        serverGame.gameId ||
-        serverGame.id,
-
-      id:
-        serverGame.id ||
-        serverGame.gameId,
-
-      wager:
-        Number(
-          serverGame.wager || 0
-        ),
-
-      startedAt:
-        serverGame.startedAt
-
-    };
-
-  }
-
-
-  /* =====================================================
      CASH OUT
   ===================================================== */
 
@@ -2662,12 +2795,15 @@
       !running ||
       cashoutLocked
     ) {
+
       return;
+
     }
 
 
     cashoutLocked =
       true;
+
 
     actionButton.disabled =
       true;
@@ -2686,6 +2822,18 @@
 
     try {
 
+      /*
+       * IMPORTANT:
+       *
+       * The combined backend requires:
+       *
+       * action: "cashout"
+       *
+       * AND:
+       *
+       * gameId
+       */
+
       const response =
         await fetch(
           CASHOUT_ENDPOINT,
@@ -2698,15 +2846,20 @@
               "include",
 
             headers: {
+
               "Content-Type":
                 "application/json",
 
               "Accept":
                 "application/json"
+
             },
 
             body:
               JSON.stringify({
+
+                action:
+                  "cashout",
 
                 gameId:
                   game.gameId
@@ -2723,19 +2876,14 @@
         );
 
 
-      /*
-       * Backend returned a crash.
-       */
+      /* =================================================
+         SERVER SAYS THE ROCKET CRASHED
+      ================================================= */
 
       if (
         data.result ===
         "crashed"
       ) {
-
-        /*
-         * Update balance if the backend
-         * provided one.
-         */
 
         if (
           data.balance !== undefined
@@ -2752,42 +2900,32 @@
           data.game
         );
 
+
         return;
 
       }
 
 
-      /*
-       * Some versions of the backend
-       * may return ROUND_ALREADY_ENDED.
-       */
+      /* =================================================
+         ERROR
+      ================================================= */
 
       if (
         !response.ok ||
         !data.success
       ) {
 
-        if (
-          data.code ===
-          "ROUND_ALREADY_ENDED"
-        ) {
-
-          handleCrash(
-            data.game
-          );
-
-          return;
-
-        }
-
-
         throw new Error(
           data.error ||
-          "Cash out failed."
+          `Cash out failed (${response.status}).`
         );
 
       }
 
+
+      /* =================================================
+         COMPLETED GAME
+      ================================================= */
 
       if (
         !data.game
@@ -2807,8 +2945,13 @@
       running =
         false;
 
+
       stopAnimation();
 
+
+      /* =================================================
+         FINAL MULTIPLIER
+      ================================================= */
 
       const finalMultiplier =
         Number(
@@ -2829,15 +2972,33 @@
       );
 
 
-      rocketContainer.classList.remove(
-        "flying"
-      );
+      if (rocketContainer) {
+
+        rocketContainer.classList.remove(
+          "flying"
+        );
+
+      }
 
 
-      setBalance(
-        data.balance
-      );
+      /* =================================================
+         BALANCE
+      ================================================= */
 
+      if (
+        data.balance !== undefined
+      ) {
+
+        setBalance(
+          data.balance
+        );
+
+      }
+
+
+      /* =================================================
+         STATUS
+      ================================================= */
 
       setStatus(
         "Cashed out",
@@ -2852,6 +3013,10 @@
       multiplierLabel.textContent =
         "successful cash out";
 
+
+      /* =================================================
+         PAYOUT
+      ================================================= */
 
       const payout =
         Number(
@@ -2889,10 +3054,10 @@
 
 
       /*
-       * We do NOT immediately assume the
-       * player lost if the request failed.
+       * DO NOT automatically mark the game
+       * as lost if the HTTP request failed.
        *
-       * The game may still be active.
+       * The server remains authoritative.
        */
 
       setMessage(
@@ -2906,11 +3071,10 @@
         false;
 
 
-      /*
-       * Allow another cashout attempt.
-       */
-
-      if (game && running) {
+      if (
+        game &&
+        running
+      ) {
 
         actionButton.disabled =
           false;
@@ -2933,11 +3097,6 @@
   function handleCrash(
     crashGame
   ) {
-
-    /*
-     * Keep the wager before clearing
-     * the game.
-     */
 
     const wager =
       Number(
@@ -2962,40 +3121,49 @@
     stopAnimation();
 
 
-    /*
-     * Put rocket where the crash happened.
-     */
+    /* ===================================================
+       ROCKET POSITION
+    =================================================== */
 
     updateRocket(
       crashPoint
     );
 
 
-    rocketContainer.classList.remove(
-      "flying"
-    );
+    if (rocketContainer) {
+
+      rocketContainer.classList.remove(
+        "flying"
+      );
+
+      rocketContainer.style.filter =
+        "grayscale(.4) brightness(.8)";
+
+    }
 
 
-    rocketContainer.style.filter =
-      "grayscale(.4) brightness(.8)";
+    /* ===================================================
+       EXPLOSION
+    =================================================== */
+
+    if (explosion) {
+
+      explosion.classList.remove(
+        "active"
+      );
+
+      void explosion.offsetWidth;
+
+      explosion.classList.add(
+        "active"
+      );
+
+    }
 
 
-    /*
-     * Explosion.
-     */
-
-    explosion.classList.remove(
-      "active"
-    );
-
-
-    void explosion.offsetWidth;
-
-
-    explosion.classList.add(
-      "active"
-    );
-
+    /* ===================================================
+       DISPLAY
+    =================================================== */
 
     setMultiplier(
       crashPoint,
@@ -3166,37 +3334,45 @@
      LOGIN
   ===================================================== */
 
-  loginButton.addEventListener(
-    "click",
-    () => {
+  if (loginButton) {
 
-      window.location.href =
-        `${API}/auth/discord`;
+    loginButton.addEventListener(
+      "click",
+      () => {
 
-    }
-  );
+        window.location.href =
+          `${API}/auth/discord`;
+
+      }
+    );
+
+  }
 
 
   /* =====================================================
      ACTION BUTTON
   ===================================================== */
 
-  actionButton.addEventListener(
-    "click",
-    () => {
+  if (actionButton) {
 
-      if (running) {
+    actionButton.addEventListener(
+      "click",
+      () => {
 
-        cashOut();
+        if (running) {
 
-      } else {
+          cashOut();
 
-        startCrash();
+        } else {
+
+          startCrash();
+
+        }
 
       }
+    );
 
-    }
-  );
+  }
 
 
   /* =====================================================
@@ -3214,7 +3390,9 @@
           if (
             wagerInput.disabled
           ) {
+
             return;
+
           }
 
 
@@ -3320,9 +3498,9 @@
   /* =====================================================
      PAGE UNLOAD
      
-     Do NOT automatically cash out here.
+     Never automatically cash out.
      
-     The server remains authoritative.
+     Server remains authoritative.
   ===================================================== */
 
   window.addEventListener(
@@ -3344,6 +3522,7 @@
   loadUser();
 
 </script>
+
 
 </body>
 </html>
