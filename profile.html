@@ -4598,6 +4598,34 @@ body.theme-sakura
 
 }
 
+
+/* LOGOUT BUTTON */
+.logout {
+  display: none;
+  align-items: center;
+  padding: 9px 13px;
+  border-radius: 9px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: color .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.logout:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--surface-2);
+}
+
+/* Show logout whenever the user button is visible */
+#userButton[style*="display: flex"] + #logoutButton {
+  display: inline-flex !important;
+}    
+
     </style>
   
 </head>
@@ -4927,7 +4955,14 @@ body.theme-sakura
           href="/profile"
           style="display:none;"
         >
-
+         <button
+  id="logoutButton"
+  class="logout"
+  type="button"
+  style="display:none;"
+>
+  Logout
+</button>
           <img
             id="headerAvatar"
             src=""
@@ -7388,6 +7423,48 @@ function getNameplate(
   }
 
 
+  /* ==========================================
+   LOGOUT
+========================================== */
+
+const logoutButton =
+  document.getElementById("logoutButton");
+
+if (logoutButton) {
+
+  logoutButton.addEventListener(
+    "click",
+    async () => {
+
+      logoutButton.disabled = true;
+
+      try {
+
+        await fetch(
+          API_URL + "/api/auth/logout",
+          {
+            method: "POST",
+            credentials: "include",
+            cache: "no-store"
+          }
+        );
+
+      } catch (error) {
+
+        console.error("LOGOUT ERROR:", error);
+
+      }
+
+      loggedInUser = null;
+      currentUser = null;
+
+      window.location.href = "/";
+
+    }
+  );
+
+}
+  
   /* ==========================================
      INIT
   ========================================== */
